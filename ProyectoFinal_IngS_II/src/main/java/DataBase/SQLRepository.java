@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConexionSQLite {
+public class SQLRepository {
     private static final String URL = "jdbc:sqlite:piedraAzul.db";
 
     public static Connection conectar() {
