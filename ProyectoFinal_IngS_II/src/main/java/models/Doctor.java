@@ -1,5 +1,5 @@
 
-package Domain;
+package models;
 
 public class Doctor extends User {
     private double codDoc;
