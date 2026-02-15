@@ -1,5 +1,5 @@
 
-package co.unicauca.domain;
+package Domain;
 
 
 public class User {
