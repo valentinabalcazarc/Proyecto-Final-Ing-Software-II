@@ -1,11 +1,11 @@
 package Main;
-import DataBase.ConexionSQLite;
+import DataBase.SQLRepository;
 
 
 public class main {
 
     public static void main(String[] args) {
-        ConexionSQLite.conectar();
+        SQLRepository.conectar();
     }
     
 }
