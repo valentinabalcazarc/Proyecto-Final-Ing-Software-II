@@ -13,8 +13,9 @@ public class UserRepositoryImpl implements UserRepository {
     public void save(User user) {
 
         String sql = "INSERT INTO USERS (CEDUSER, PASSUSER, NAMEUSER, SECOND_NAMEUSER, " +
-                     "LASTNAMEUSER, SECOND_LASTNAMEUSER, STATUSUSER, TYPEUSER) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                     "LASTNAMEUSER, SECOND_LASTNAMEUSER, STATUSUSER, TYPEUSER, " +
+                     "SECURITYQUESTION, SECURITYANSWER) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = SQLRepository.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -26,7 +27,9 @@ public class UserRepositoryImpl implements UserRepository {
             stmt.setString(5, user.getLastNameUser());
             stmt.setString(6, user.getSecondLastNameUser());
             stmt.setString(7, user.getStatusUser());
-            stmt.setString(8, user.getTypeUser());
+            stmt.setString(8, user.getRoleUser());
+            stmt.setString(9, user.getSecurityQuestion());
+            stmt.setString(10, user.getSecurityAnswer());
 
             stmt.executeUpdate();
 
@@ -106,7 +109,8 @@ public class UserRepositoryImpl implements UserRepository {
     public void update(User user) {
 
         String sql = "UPDATE USERS SET CEDUSER=?, PASSUSER=?, NAMEUSER=?, SECOND_NAMEUSER=?, " +
-                     "LASTNAMEUSER=?, SECOND_LASTNAMEUSER=?, STATUSUSER=?, TYPEUSER=? " +
+                     "LASTNAMEUSER=?, SECOND_LASTNAMEUSER=?, STATUSUSER=?, TYPEUSER=?, " +
+                     "SECURITYQUESTION=?, SECURITYANSWER=? " +
                      "WHERE CODUSER=?";
 
         try (Connection conn = SQLRepository.conectar();
@@ -119,8 +123,10 @@ public class UserRepositoryImpl implements UserRepository {
             stmt.setString(5, user.getLastNameUser());
             stmt.setString(6, user.getSecondLastNameUser());
             stmt.setString(7, user.getStatusUser());
-            stmt.setString(8, user.getTypeUser());
-            stmt.setInt(9, user.getCodUser());
+            stmt.setString(8, user.getRoleUser());
+            stmt.setString(9, user.getSecurityQuestion());
+            stmt.setString(10, user.getSecurityAnswer());
+            stmt.setInt(11, user.getCodUser());
 
             stmt.executeUpdate();
 
@@ -157,7 +163,9 @@ public class UserRepositoryImpl implements UserRepository {
                 rs.getString("LASTNAMEUSER"),
                 rs.getString("SECOND_LASTNAMEUSER"),
                 rs.getString("STATUSUSER"),
-                rs.getString("TYPEUSER")
+                rs.getString("TYPEUSER"),
+                rs.getString("SECURITYQUESTION"),
+                rs.getString("SECURITYANSWER")
         );
     }
 }

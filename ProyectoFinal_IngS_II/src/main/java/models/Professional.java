@@ -23,6 +23,11 @@ public class Professional extends User {
     
     
 
+    public Professional(int codUser, int cedUser, String passUser, String nameUser, String secondNameUser, String lastNameUser, String secondLastNameUser, String statusUser, String roleUser, String securityQuestion, String securityAnswer) {
+        super(codUser, cedUser, passUser, nameUser, secondNameUser, lastNameUser, secondLastNameUser, statusUser, roleUser, securityQuestion, securityAnswer);
+    }
+    
+
     public double getCodProf() {
         return codProf;
     }
