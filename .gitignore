@@ -1,3 +1,9 @@
+#BD SQLITE
+*.db
+*.sqlite
+*.sqlite3
+
+
 # Compiled class file
 *.class
 
@@ -23,4 +29,3 @@
 hs_err_pid*
 replay_pid*
 /ProyectoFinal_IngS_II/target/
-*.db
