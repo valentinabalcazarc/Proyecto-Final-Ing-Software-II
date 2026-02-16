@@ -7,13 +7,18 @@ public class Doctor extends User {
     private double phoneMed;
     private String statusDoc;
 
-    public Doctor(double codDoc, String genDoc, double phoneMed, String statusDoc, double codUser, double cedUser, double passUser, String nameUser, String lastName, String statusUser, String typeUser) {
-        super(codUser, cedUser, passUser, nameUser, lastName, statusUser, typeUser);
+    public Doctor(double codDoc, String genDoc, double phoneMed, String statusDoc, int codUser, int cedUser, String passUser, String nameUser, String secondNameUser, String lastNameUser, String secondLastNameUser, String statusUser, String typeUser) {
+        super(codUser, cedUser, passUser, nameUser, secondNameUser, lastNameUser, secondLastNameUser, statusUser, typeUser);
         this.codDoc = codDoc;
         this.genDoc = genDoc;
         this.phoneMed = phoneMed;
         this.statusDoc = statusDoc;
     }
+
+    public Doctor() {
+    }
+
+    
 
     public double getCodDoc() {
         return codDoc;
