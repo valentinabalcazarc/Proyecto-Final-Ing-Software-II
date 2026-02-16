@@ -12,9 +12,11 @@ public class User {
     private String lastNameUser;
     private String secondLastNameUser;
     private String statusUser;
-    private String typeUser;
+    private String roleUser;
+    private String securityQuestion;
+    private String securityAnswer;
 
-    public User(int codUser, int cedUser, String passUser, String nameUser, String secondNameUser, String lastNameUser, String secondLastNameUser, String statusUser, String typeUser) {
+    public User(int codUser, int cedUser, String passUser, String nameUser, String secondNameUser, String lastNameUser, String secondLastNameUser, String statusUser, String roleUser, String securityQuestion, String securityAnswer) {
         this.codUser = codUser;
         this.cedUser = cedUser;
         this.passUser = passUser;
@@ -23,10 +25,9 @@ public class User {
         this.lastNameUser = lastNameUser;
         this.secondLastNameUser = secondLastNameUser;
         this.statusUser = statusUser;
-        this.typeUser = typeUser;
-    }
-
-    public User() {
+        this.roleUser = roleUser;
+        this.securityQuestion = securityQuestion;
+        this.securityAnswer = securityAnswer;
     }
 
     public int getCodUser() {
@@ -93,14 +94,29 @@ public class User {
         this.statusUser = statusUser;
     }
 
-    public String getTypeUser() {
-        return typeUser;
+    public String getRoleUser() {
+        return roleUser;
     }
 
-    public void setTypeUser(String typeUser) {
-        this.typeUser = typeUser;
+    public void setRoleUser(String roleUser) {
+        this.roleUser = roleUser;
     }
-    
-    
+
+    public String getSecurityQuestion() {
+        return securityQuestion;
+    }
+
+    public void setSecurityQuestion(String securityQuestion) {
+        this.securityQuestion = securityQuestion;
+    }
+
+    public String getSecurityAnswer() {
+        return securityAnswer;
+    }
+
+    public void setSecurityAnswer(String securityAnswer) {
+        this.securityAnswer = securityAnswer;
+    }
+
     
 }
