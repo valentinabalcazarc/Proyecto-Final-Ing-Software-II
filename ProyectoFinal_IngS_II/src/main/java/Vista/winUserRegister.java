@@ -1,11 +1,81 @@
 package Vista;
-public class winUserRegister extends javax.swing.JFrame {
 
-   
+import javax.swing.JOptionPane;
+import models.StatusUserEnum;
+import models.TypeProfEnum;
+import models.User;
+import models.roleUserEnum;
+
+public class winUserRegister extends javax.swing.JFrame {
+    
     public winUserRegister() {
         initComponents();
     }
 
+    private boolean validarCampos() {
+
+        // validacion de vacios importantes
+        if (tF_userID.getText().trim().isEmpty() ||
+            pF_password.getPassword().length == 0 ||
+            pF_password2.getPassword().length == 0 ||
+            tF_userFirstName.getText().trim().isEmpty() ||
+            tF_userFirstLastName.getText().trim().isEmpty() ||
+            tF_SecurityQuestion.getText().trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Debe llenar al menos: Cédula, Contraseña, Primer Nombre y Primer Apellido.");
+            return false;
+        }
+
+        // validación de cedula numérica
+        try {
+            Long.valueOf(tF_userID.getText().trim());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "La cédula debe contener solo números.");
+            return false;
+        }
+
+        // validar cadenas sin numeros
+        if (!esNombreValido(tF_userFirstName.getText().trim())) {
+            JOptionPane.showMessageDialog(this, "El primer nombre contiene caracteres inválidos.");
+            return false;
+        }
+
+        if (!tF_userSecondName.getText().trim().isEmpty() &&
+            !esNombreValido(tF_userSecondName.getText().trim())) {
+            JOptionPane.showMessageDialog(this, "El segundo nombre contiene caracteres inválidos.");
+            return false;
+        }
+
+        if (!esNombreValido(tF_userFirstLastName.getText().trim())) {
+            JOptionPane.showMessageDialog(this, "El primer apellido contiene caracteres inválidos.");
+            return false;
+        }
+
+        if (!tF_userSecondLastName.getText().trim().isEmpty() &&
+            !esNombreValido(tF_userSecondLastName.getText().trim())) {
+            JOptionPane.showMessageDialog(this, "El segundo apellido contiene caracteres inválidos.");
+            return false;
+        }
+        
+        if (!tF_SecurityQuestion.getText().trim().isEmpty() &&
+            !esNombreValido(tF_SecurityQuestion.getText().trim())) {
+            JOptionPane.showMessageDialog(this, "La respuesta de seguridad contiene caracteres inválidos.");
+            return false;
+        }
+        
+        if(!(pF_password.equals(pF_password2))){
+            JOptionPane.showMessageDialog(this, "La contraseña no concuerda con su confirmación.");
+            return false;
+        }
+
+        return true;
+    }
+
+    
+    private boolean esNombreValido(String texto) {
+        return texto.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+");
+    }
    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -117,6 +187,11 @@ public class winUserRegister extends javax.swing.JFrame {
         jb_Eye.setText("eye");
 
         btn_Save.setText("GUARDAR");
+        btn_Save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_SaveActionPerformed(evt);
+            }
+        });
 
         btn_Cancel.setText("CANCELAR");
 
@@ -303,6 +378,61 @@ public class winUserRegister extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SaveActionPerformed
+        if (!validarCampos()) return;
+
+        try{
+            User u = new User();
+           
+            u.setCedUser(Integer.parseInt(tF_userID.getText().trim()));
+            u.setPassUser(new String(pF_password.getPassword()));
+            u.setNameUser(tF_userFirstName.getText().trim());
+            u.setSecondNameUser(tF_userSecondName.getText().trim());
+            u.setLastNameUser(tF_userFirstLastName.getText().trim());
+            u.setSecondLastNameUser(tF_userSecondLastName.getText().trim());
+            u.setStatusUser(StatusUserEnum.Active);
+            u.setRoleUser(roleUserEnum.Patient);
+            u.setSecurityQuestion(cbx_SecurityQuestion.getSelectedItem().toString());
+            u.setSecurityAnswer(tF_SecurityQuestion.getText().trim());
+            
+        }catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error inesperado.");
+        }
+        
+        
+        
+        
+        /*
+        
+        try {
+            Cliente c = new Cliente();
+
+            c.setCedula(txtCedula.getText().trim());
+            c.setPassword(new String(txtPassword.getPassword()));
+            c.setPrimerNombre(txtPrimerNombre.getText().trim());
+            c.setSegundoNombre(txtSegundoNombre.getText().trim());
+            c.setPrimerApellido(txtPrimerApellido.getText().trim());
+            c.setSegundoApellido(txtSegundoApellido.getText().trim());
+            c.setSaldo(0); // saldo inicial
+            c.setEstado(EstadoCliente.NORMAL);
+
+            boolean ok = clienteDAO.registrarCliente(c);
+
+            if (ok) {
+                JOptionPane.showMessageDialog(this, "Registro exitoso.");
+                this.dispose();  // cerrar ventana
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al registrar. ¿Cédula duplicada?");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error inesperado.");
+        }
+        */
+    }//GEN-LAST:event_btn_SaveActionPerformed
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
