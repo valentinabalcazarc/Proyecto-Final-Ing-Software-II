@@ -11,12 +11,12 @@ public class User {
     private String secondNameUser;
     private String lastNameUser;
     private String secondLastNameUser;
-    private String statusUser;
-    private String roleUser;
+    private StatusUserEnum statusUser;
+    private roleUserEnum roleUser;
     private String securityQuestion;
     private String securityAnswer;
 
-    public User(int codUser, int cedUser, String passUser, String nameUser, String secondNameUser, String lastNameUser, String secondLastNameUser, String statusUser, String roleUser, String securityQuestion, String securityAnswer) {
+    public User(int codUser, int cedUser, String passUser, String nameUser, String secondNameUser, String lastNameUser, String secondLastNameUser, StatusUserEnum statusUser, roleUserEnum roleUser, String securityQuestion, String securityAnswer) {
         this.codUser = codUser;
         this.cedUser = cedUser;
         this.passUser = passUser;
@@ -30,6 +30,11 @@ public class User {
         this.securityAnswer = securityAnswer;
     }
 
+    public User() {
+    }
+
+    
+    
     public int getCodUser() {
         return codUser;
     }
@@ -86,19 +91,19 @@ public class User {
         this.secondLastNameUser = secondLastNameUser;
     }
 
-    public String getStatusUser() {
+    public StatusUserEnum getStatusUser() {
         return statusUser;
     }
 
-    public void setStatusUser(String statusUser) {
+    public void setStatusUser(StatusUserEnum statusUser) {
         this.statusUser = statusUser;
     }
 
-    public String getRoleUser() {
+    public roleUserEnum getRoleUser() {
         return roleUser;
     }
 
-    public void setRoleUser(String roleUser) {
+    public void setRoleUser(roleUserEnum roleUser) {
         this.roleUser = roleUser;
     }
 
@@ -118,5 +123,4 @@ public class User {
         this.securityAnswer = securityAnswer;
     }
 
-    
 }
