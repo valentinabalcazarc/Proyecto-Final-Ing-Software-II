@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Professional;
+import models.StatusUserEnum;
+import models.TypeProfEnum;
+import models.SpecialityProfEnum;
+import models.roleUserEnum;
 import DataBase.SQLRepository;
 
 public class ProfessionalRepositoryImpl implements ProfessionalRepository {
@@ -22,9 +26,12 @@ public class ProfessionalRepositoryImpl implements ProfessionalRepository {
             stmt.setInt(1, professional.getCodUser());
             stmt.setString(2, professional.getGenProf());
             stmt.setDouble(3, professional.getPhoneProf());
-            stmt.setString(4, professional.getStatusProf());
-            stmt.setString(5, professional.getTypeProf());
-            stmt.setString(6, professional.getSpecialityProf());
+
+            // ENUM → STRING
+            stmt.setString(4, professional.getStatusProf().name());
+            stmt.setString(5, professional.getTypeProf().name());
+            stmt.setString(6, professional.getSpecialityProf().name());
+
             stmt.setShort(7, professional.getAttentionInterval());
 
             stmt.executeUpdate();
@@ -95,9 +102,12 @@ public class ProfessionalRepositoryImpl implements ProfessionalRepository {
 
             stmt.setString(1, professional.getGenProf());
             stmt.setDouble(2, professional.getPhoneProf());
-            stmt.setString(3, professional.getStatusProf());
-            stmt.setString(4, professional.getTypeProf());
-            stmt.setString(5, professional.getSpecialityProf());
+
+            // ENUM → STRING
+            stmt.setString(3, professional.getStatusProf().name());
+            stmt.setString(4, professional.getTypeProf().name());
+            stmt.setString(5, professional.getSpecialityProf().name());
+
             stmt.setShort(6, professional.getAttentionInterval());
             stmt.setInt(7, (int) professional.getCodProf());
 
@@ -130,12 +140,15 @@ public class ProfessionalRepositoryImpl implements ProfessionalRepository {
                 rs.getDouble("CODPROF"),
                 rs.getString("GENPROF"),
                 rs.getDouble("PHONEPROF"),
-                rs.getString("STATUSPROF"),
-                rs.getString("TYPEPROF"),
-                rs.getString("SPECIALITYPROF"),
+
+                // STRING → ENUM (Professional)
+                StatusUserEnum.valueOf(rs.getString("STATUSPROF")),
+                TypeProfEnum.valueOf(rs.getString("TYPEPROF")),
+                SpecialityProfEnum.valueOf(rs.getString("SPECIALITYPROF")),
+
                 rs.getShort("ATTENTIONINTERVAL"),
 
-                // Datos heredados de USER
+                // Datos heredados de USER (STRING → ENUM)
                 rs.getInt("CODUSER"),
                 rs.getInt("CEDUSER"),
                 rs.getString("PASSUSER"),
@@ -143,8 +156,8 @@ public class ProfessionalRepositoryImpl implements ProfessionalRepository {
                 rs.getString("SECOND_NAMEUSER"),
                 rs.getString("LASTNAMEUSER"),
                 rs.getString("SECOND_LASTNAMEUSER"),
-                rs.getString("STATUSUSER"),
-                rs.getString("TYPEUSER"),
+                StatusUserEnum.valueOf(rs.getString("STATUSUSER")),
+                roleUserEnum.valueOf(rs.getString("TYPEUSER")),
                 rs.getString("SECURITYQUESTION"),
                 rs.getString("SECURITYANSWER")
         );

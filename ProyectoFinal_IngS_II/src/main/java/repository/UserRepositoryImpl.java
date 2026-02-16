@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.User;
+import models.StatusUserEnum;
+import models.roleUserEnum;
 import DataBase.SQLRepository;
 
 public class UserRepositoryImpl implements UserRepository {
@@ -26,8 +28,11 @@ public class UserRepositoryImpl implements UserRepository {
             stmt.setString(4, user.getSecondNameUser());
             stmt.setString(5, user.getLastNameUser());
             stmt.setString(6, user.getSecondLastNameUser());
-            stmt.setString(7, user.getStatusUser());
-            stmt.setString(8, user.getRoleUser());
+
+            // ENUM → STRING
+            stmt.setString(7, user.getStatusUser().name());
+            stmt.setString(8, user.getRoleUser().name());
+
             stmt.setString(9, user.getSecurityQuestion());
             stmt.setString(10, user.getSecurityAnswer());
 
@@ -122,10 +127,14 @@ public class UserRepositoryImpl implements UserRepository {
             stmt.setString(4, user.getSecondNameUser());
             stmt.setString(5, user.getLastNameUser());
             stmt.setString(6, user.getSecondLastNameUser());
-            stmt.setString(7, user.getStatusUser());
-            stmt.setString(8, user.getRoleUser());
+
+            // ENUM → STRING
+            stmt.setString(7, user.getStatusUser().name());
+            stmt.setString(8, user.getRoleUser().name());
+
             stmt.setString(9, user.getSecurityQuestion());
             stmt.setString(10, user.getSecurityAnswer());
+
             stmt.setInt(11, user.getCodUser());
 
             stmt.executeUpdate();
@@ -151,7 +160,6 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-    // Método auxiliar para mapear el ResultSet a un objeto User
     private User mapResultSetToUser(ResultSet rs) throws SQLException {
 
         return new User(
@@ -162,8 +170,11 @@ public class UserRepositoryImpl implements UserRepository {
                 rs.getString("SECOND_NAMEUSER"),
                 rs.getString("LASTNAMEUSER"),
                 rs.getString("SECOND_LASTNAMEUSER"),
-                rs.getString("STATUSUSER"),
-                rs.getString("TYPEUSER"),
+
+                // STRING → ENUM
+                StatusUserEnum.valueOf(rs.getString("STATUSUSER")),
+                roleUserEnum.valueOf(rs.getString("TYPEUSER")),
+
                 rs.getString("SECURITYQUESTION"),
                 rs.getString("SECURITYANSWER")
         );
