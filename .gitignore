@@ -1,3 +1,9 @@
+#BD SQLITE
+*.db
+*.sqlite
+*.sqlite3
+
+
 # Compiled class file
 *.class
 

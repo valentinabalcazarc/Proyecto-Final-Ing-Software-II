@@ -1,5 +1,5 @@
 
-package co.unicauca.domain;
+package models;
 
 import java.util.Date;
 
