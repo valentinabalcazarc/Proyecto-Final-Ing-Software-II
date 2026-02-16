@@ -3,12 +3,12 @@ package Vista;
 
 import javax.swing.JOptionPane;
 
-public class Login extends javax.swing.JFrame {
+public class winLogin extends javax.swing.JFrame {
 
     private final String ADMIN_USER = "admin";
     private final String ADMIN_PASS = "12345";
     
-    public Login() {
+    public winLogin() {
         initComponents();
     }
 
@@ -166,14 +166,6 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnInicioSecionActionPerformed
 
-    public static void main(String args[]) {
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Login().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnInicioSecion;
