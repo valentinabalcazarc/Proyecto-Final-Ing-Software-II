@@ -5,12 +5,12 @@ public class Professional extends User {
     private double codProf;
     private String genProf;
     private double phoneProf;
-    private String statusProf;
-    private String typeProf;
-    private String SpecialityProf;
+    private StatusUserEnum statusProf;
+    private TypeProfEnum typeProf;
+    private SpecialityProfEnum SpecialityProf;
     private short attentionInterval;
 
-    public Professional(double codProf, String genProf, double phoneProf, String statusProf, String typeProf, String SpecialityProf, short attentionInterval, int codUser, int cedUser, String passUser, String nameUser, String secondNameUser, String lastNameUser, String secondLastNameUser, String statusUser, String roleUser, String securityQuestion, String securityAnswer) {
+    public Professional(double codProf, String genProf, double phoneProf, StatusUserEnum statusProf, TypeProfEnum typeProf, SpecialityProfEnum SpecialityProf, short attentionInterval, int codUser, int cedUser, String passUser, String nameUser, String secondNameUser, String lastNameUser, String secondLastNameUser, StatusUserEnum statusUser, roleUserEnum roleUser, String securityQuestion, String securityAnswer) {
         super(codUser, cedUser, passUser, nameUser, secondNameUser, lastNameUser, secondLastNameUser, statusUser, roleUser, securityQuestion, securityAnswer);
         this.codProf = codProf;
         this.genProf = genProf;
@@ -20,6 +20,8 @@ public class Professional extends User {
         this.SpecialityProf = SpecialityProf;
         this.attentionInterval = attentionInterval;
     }
+    
+    
 
     public double getCodProf() {
         return codProf;
@@ -45,27 +47,27 @@ public class Professional extends User {
         this.phoneProf = phoneProf;
     }
 
-    public String getStatusProf() {
+    public StatusUserEnum getStatusProf() {
         return statusProf;
     }
 
-    public void setStatusProf(String statusProf) {
+    public void setStatusProf(StatusUserEnum statusProf) {
         this.statusProf = statusProf;
     }
 
-    public String getTypeProf() {
+    public TypeProfEnum getTypeProf() {
         return typeProf;
     }
 
-    public void setTypeProf(String typeProf) {
+    public void setTypeProf(TypeProfEnum typeProf) {
         this.typeProf = typeProf;
     }
 
-    public String getSpecialityProf() {
+    public SpecialityProfEnum getSpecialityProf() {
         return SpecialityProf;
     }
 
-    public void setSpecialityProf(String SpecialityProf) {
+    public void setSpecialityProf(SpecialityProfEnum SpecialityProf) {
         this.SpecialityProf = SpecialityProf;
     }
 
@@ -77,5 +79,6 @@ public class Professional extends User {
         this.attentionInterval = attentionInterval;
     }
 
+    
     
 }
