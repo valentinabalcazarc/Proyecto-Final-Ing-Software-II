@@ -1,13 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package repository;
 
-/**
- *
- * @author JESUS
- */
+import java.util.List;
+import models.User;
+
 public interface UserRepository {
-    
+
+    void save(User user);
+
+    User findById(int codUser);
+
+    User findByCedUser(int cedUser);
+
+    List<User> findAll();
+
+    void update(User user);
+
+    void delete(int codUser);
 }
+
+

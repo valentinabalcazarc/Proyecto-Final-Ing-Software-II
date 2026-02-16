@@ -3,45 +3,53 @@ package models;
 
 
 public class User {
-    protected double codUser;
-    protected double cedUser;
-    protected double passUser;
-    protected String  nameUser;
-    protected String lastName;
-    protected String statusUser;
-    protected String typeUser;
 
-    public User(double codUser, double cedUser, double passUser, String nameUser, String lastName, String statusUser, String typeUser) {
+    private int codUser;
+    private int cedUser;
+    private String passUser;
+    private String nameUser;
+    private String secondNameUser;
+    private String lastNameUser;
+    private String secondLastNameUser;
+    private String statusUser;
+    private String typeUser;
+
+    public User(int codUser, int cedUser, String passUser, String nameUser, String secondNameUser, String lastNameUser, String secondLastNameUser, String statusUser, String typeUser) {
         this.codUser = codUser;
         this.cedUser = cedUser;
         this.passUser = passUser;
         this.nameUser = nameUser;
-        this.lastName = lastName;
+        this.secondNameUser = secondNameUser;
+        this.lastNameUser = lastNameUser;
+        this.secondLastNameUser = secondLastNameUser;
         this.statusUser = statusUser;
         this.typeUser = typeUser;
     }
 
-    public double getCodUser() {
+    public User() {
+    }
+
+    public int getCodUser() {
         return codUser;
     }
 
-    public void setCodUser(double codUser) {
+    public void setCodUser(int codUser) {
         this.codUser = codUser;
     }
 
-    public double getCedUser() {
+    public int getCedUser() {
         return cedUser;
     }
 
-    public void setCedUser(double cedUser) {
+    public void setCedUser(int cedUser) {
         this.cedUser = cedUser;
     }
 
-    public double getPassUser() {
+    public String getPassUser() {
         return passUser;
     }
 
-    public void setPassUser(double passUser) {
+    public void setPassUser(String passUser) {
         this.passUser = passUser;
     }
 
@@ -53,12 +61,28 @@ public class User {
         this.nameUser = nameUser;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getSecondNameUser() {
+        return secondNameUser;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setSecondNameUser(String secondNameUser) {
+        this.secondNameUser = secondNameUser;
+    }
+
+    public String getLastNameUser() {
+        return lastNameUser;
+    }
+
+    public void setLastNameUser(String lastNameUser) {
+        this.lastNameUser = lastNameUser;
+    }
+
+    public String getSecondLastNameUser() {
+        return secondLastNameUser;
+    }
+
+    public void setSecondLastNameUser(String secondLastNameUser) {
+        this.secondLastNameUser = secondLastNameUser;
     }
 
     public String getStatusUser() {
@@ -76,6 +100,7 @@ public class User {
     public void setTypeUser(String typeUser) {
         this.typeUser = typeUser;
     }
+    
     
     
 }
