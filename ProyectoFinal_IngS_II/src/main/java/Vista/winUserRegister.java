@@ -5,8 +5,11 @@ import models.StatusUserEnum;
 import models.TypeProfEnum;
 import models.User;
 import models.roleUserEnum;
+import services.IUserService;
 
 public class winUserRegister extends javax.swing.JFrame {
+    
+    IUserService iuserservice; 
     
     public winUserRegister() {
         initComponents();
@@ -396,42 +399,20 @@ public class winUserRegister extends javax.swing.JFrame {
             u.setSecurityQuestion(cbx_SecurityQuestion.getSelectedItem().toString());
             u.setSecurityAnswer(tF_SecurityQuestion.getText().trim());
             
-        }catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error inesperado.");
-        }
-        
-        
-        
-        
-        /*
-        
-        try {
-            Cliente c = new Cliente();
-
-            c.setCedula(txtCedula.getText().trim());
-            c.setPassword(new String(txtPassword.getPassword()));
-            c.setPrimerNombre(txtPrimerNombre.getText().trim());
-            c.setSegundoNombre(txtSegundoNombre.getText().trim());
-            c.setPrimerApellido(txtPrimerApellido.getText().trim());
-            c.setSegundoApellido(txtSegundoApellido.getText().trim());
-            c.setSaldo(0); // saldo inicial
-            c.setEstado(EstadoCliente.NORMAL);
-
-            boolean ok = clienteDAO.registrarCliente(c);
+            boolean ok = iuserservice.regUser(u);
 
             if (ok) {
                 JOptionPane.showMessageDialog(this, "Registro exitoso.");
                 this.dispose();  // cerrar ventana
             } else {
-                JOptionPane.showMessageDialog(this, "Error al registrar. ¿Cédula duplicada?");
+                JOptionPane.showMessageDialog(this, "Error al registrar.");
             }
-
-        } catch (Exception e) {
+            
+        }catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error inesperado.");
         }
-        */
+        
     }//GEN-LAST:event_btn_SaveActionPerformed
 
     
