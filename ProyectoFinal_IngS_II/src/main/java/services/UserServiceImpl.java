@@ -42,14 +42,15 @@ public class UserServiceImpl implements UserService {
         if (password == null) {
             return false;
         }
-
+        
+        String hash = authService.encrypt(password);
         User user = userRepository.findByCedUser(cedUser);
 
         if (user == null) {
             return false;
         }
 
-        return authService.verify(user.getPassUser(), password);
+        return authService.verify(user, hash);
     }
 
     @Override
@@ -59,13 +60,14 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
+        String hash = authService.encrypt(answer);
         User user = userRepository.findByCedUser(cedUser);
 
         if (user == null) {
             return false;
         }
 
-        return authService.verify(user.getSecurityAnswer(), answer);
+        return authService.verify(user, hash);
     }
 
     @Override

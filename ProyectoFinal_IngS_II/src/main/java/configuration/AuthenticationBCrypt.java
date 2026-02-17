@@ -1,5 +1,6 @@
 
 package configuration;
+import models.User;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
@@ -21,8 +22,23 @@ public class AuthenticationBCrypt implements IAuthenticationService{
         @param password: la contraseña en texto plano ingresada en el login
     */
     @Override
-    public boolean verify(String passUser, String password) {
-         return BCrypt.checkpw(password, passUser);
+    public boolean verify(User user, String password) {
+        
+        if(BCrypt.checkpw(password, user.getPassUser())){
+            
+            return true;
+        }
+        
+        if(user.getPassUser().equals(password)){
+            
+            String newpass = encrypt(user.getPassUser());
+            
+            user.setPassUser(newpass);
+            
+            return true;
+        }
+        
+        return false;
     }
     
 }
