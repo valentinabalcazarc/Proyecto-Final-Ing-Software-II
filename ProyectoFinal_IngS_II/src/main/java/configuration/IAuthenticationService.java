@@ -5,7 +5,7 @@ package configuration;
  *
  * @author SAM
  */
-public interface IAutehnticationService {
+public interface IAuthenticationService {
     /*
         @brief encripta la contraseña que ingresa el usuario al registrarse
     */

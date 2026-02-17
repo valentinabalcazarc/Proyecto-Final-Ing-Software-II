@@ -4,12 +4,12 @@ import javax.swing.JOptionPane;
 import models.StatusUserEnum;
 import models.TypeProfEnum;
 import models.User;
-import models.roleUserEnum;
-import services.IUserService;
+import models.RoleUserEnum;
+import services.UserService;
 
 public class winUserRegister extends javax.swing.JFrame {
     
-    IUserService iuserservice; 
+    UserService iuserservice; 
     
     public winUserRegister() {
         initComponents();
@@ -395,7 +395,7 @@ public class winUserRegister extends javax.swing.JFrame {
             u.setLastNameUser(tF_userFirstLastName.getText().trim());
             u.setSecondLastNameUser(tF_userSecondLastName.getText().trim());
             u.setStatusUser(StatusUserEnum.Active);
-            u.setRoleUser(roleUserEnum.Patient);
+            u.setRoleUser(RoleUserEnum.Patient);
             u.setSecurityQuestion(cbx_SecurityQuestion.getSelectedItem().toString());
             u.setSecurityAnswer(tF_SecurityQuestion.getText().trim());
             

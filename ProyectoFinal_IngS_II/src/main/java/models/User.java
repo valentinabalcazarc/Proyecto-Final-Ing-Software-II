@@ -12,11 +12,11 @@ public class User {
     private String lastNameUser;
     private String secondLastNameUser;
     private StatusUserEnum statusUser;
-    private roleUserEnum roleUser;
+    private RoleUserEnum roleUser;
     private String securityQuestion;
     private String securityAnswer;
 
-    public User(int codUser, int cedUser, String passUser, String nameUser, String secondNameUser, String lastNameUser, String secondLastNameUser, StatusUserEnum statusUser, roleUserEnum roleUser, String securityQuestion, String securityAnswer) {
+    public User(int codUser, int cedUser, String passUser, String nameUser, String secondNameUser, String lastNameUser, String secondLastNameUser, StatusUserEnum statusUser, RoleUserEnum roleUser, String securityQuestion, String securityAnswer) {
         this.codUser = codUser;
         this.cedUser = cedUser;
         this.passUser = passUser;
@@ -99,11 +99,11 @@ public class User {
         this.statusUser = statusUser;
     }
 
-    public roleUserEnum getRoleUser() {
+    public RoleUserEnum getRoleUser() {
         return roleUser;
     }
 
-    public void setRoleUser(roleUserEnum roleUser) {
+    public void setRoleUser(RoleUserEnum roleUser) {
         this.roleUser = roleUser;
     }
 

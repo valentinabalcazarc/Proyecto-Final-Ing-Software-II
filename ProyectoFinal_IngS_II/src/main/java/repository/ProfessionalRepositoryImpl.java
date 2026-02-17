@@ -8,7 +8,7 @@ import models.Professional;
 import models.StatusUserEnum;
 import models.TypeProfEnum;
 import models.SpecialityProfEnum;
-import models.roleUserEnum;
+import models.RoleUserEnum;
 import DataBase.SQLRepository;
 
 public class ProfessionalRepositoryImpl implements ProfessionalRepository {
@@ -157,7 +157,7 @@ public class ProfessionalRepositoryImpl implements ProfessionalRepository {
                 rs.getString("LASTNAMEUSER"),
                 rs.getString("SECOND_LASTNAMEUSER"),
                 StatusUserEnum.valueOf(rs.getString("STATUSUSER")),
-                roleUserEnum.valueOf(rs.getString("TYPEUSER")),
+                RoleUserEnum.valueOf(rs.getString("TYPEUSER")),
                 rs.getString("SECURITYQUESTION"),
                 rs.getString("SECURITYANSWER")
         );
