@@ -2,7 +2,7 @@
 package models;
 
 
-public enum roleUserEnum {
+public enum RoleUserEnum {
     Doctor,
     Scheduler,
     Patient

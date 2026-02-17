@@ -1,16 +1,27 @@
-
 package Vista;
 
 import javax.swing.JOptionPane;
 
+import repository.UserRepository;
+import repository.UserRepositoryImpl;
+import services.UserService;
+import services.UserServiceImpl;
+import configuration.IAuthenticationService;
+import configuration.AuthenticationBCrypt;
+
 public class winLogin extends javax.swing.JFrame {
 
-    private final String ADMIN_USER = "admin";
-    private final String ADMIN_PASS = "12345";
-    
+    private UserService userService;
+
     public winLogin() {
         initComponents();
+
+        // Inicialización de dependencias
+        UserRepository userRepository = new UserRepositoryImpl();
+        IAuthenticationService authService = new AuthenticationBCrypt();
+        userService = new UserServiceImpl(userRepository, authService);
     }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -156,14 +167,34 @@ public class winLogin extends javax.swing.JFrame {
 
     private void btnInicioSecionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioSecionActionPerformed
 
-        String user, password;
-        user = txtUser_login.getText();
-        password = txtPass_Login.getText();
-        
-        if (user.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar usuario y contraseña.");
-            return;
-        }
+    String cedText = txtUser_login.getText().trim();
+    String password = txtPass_Login.getText().trim();
+
+    if (cedText.isEmpty() || password.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar usuario y contraseña.");
+        return;
+    }
+
+    int ced;
+
+    try {
+        ced = Integer.parseInt(cedText);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El usuario debe ser numérico.");
+        return;
+    }
+    
+    System.out.println("cedula: "+ ced);
+    System.out.println("pass: "+ password);
+
+    boolean autenticado = userService.authUser(ced, password);
+
+    if (autenticado) {
+        JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso.");
+    } else {
+        JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.");
+    }
+
     }//GEN-LAST:event_btnInicioSecionActionPerformed
 
 

@@ -6,17 +6,20 @@ import java.util.List;
 
 import models.User;
 import models.StatusUserEnum;
-import models.roleUserEnum;
+import models.RoleUserEnum;
 import DataBase.SQLRepository;
 
 public class UserRepositoryImpl implements UserRepository {
 
+    // =========================
+    // INSERT
+    // =========================
     @Override
-    public void save(User user) {
+    public boolean save(User user) {
 
         String sql = "INSERT INTO USERS (CEDUSER, PASSUSER, NAMEUSER, SECOND_NAMEUSER, " +
-                     "LASTNAMEUSER, SECOND_LASTNAMEUSER, STATUSUSER, TYPEUSER, " +
-                     "SECURITYQUESTION, SECURITYANSWER) " +
+                     "LASTNAMEUSER, SECOND_LASTNAMEUSER, STATUSUSER, ROLEUSER, " +
+                     "QUESTUSER, ANSWERUSER) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = SQLRepository.conectar();
@@ -28,21 +31,21 @@ public class UserRepositoryImpl implements UserRepository {
             stmt.setString(4, user.getSecondNameUser());
             stmt.setString(5, user.getLastNameUser());
             stmt.setString(6, user.getSecondLastNameUser());
-
-            // ENUM → STRING
             stmt.setString(7, user.getStatusUser().name());
             stmt.setString(8, user.getRoleUser().name());
-
             stmt.setString(9, user.getSecurityQuestion());
             stmt.setString(10, user.getSecurityAnswer());
 
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error al guardar usuario", e);
         }
     }
 
+    // =========================
+    // BUSCAR POR ID
+    // =========================
     @Override
     public User findById(int codUser) {
 
@@ -66,6 +69,9 @@ public class UserRepositoryImpl implements UserRepository {
         return user;
     }
 
+    // =========================
+    // BUSCAR POR CÉDULA
+    // =========================
     @Override
     public User findByCedUser(int cedUser) {
 
@@ -89,6 +95,9 @@ public class UserRepositoryImpl implements UserRepository {
         return user;
     }
 
+    // =========================
+    // LISTAR TODOS
+    // =========================
     @Override
     public List<User> findAll() {
 
@@ -110,12 +119,15 @@ public class UserRepositoryImpl implements UserRepository {
         return users;
     }
 
+    // =========================
+    // ACTUALIZAR
+    // =========================
     @Override
-    public void update(User user) {
+    public boolean update(User user) {
 
         String sql = "UPDATE USERS SET CEDUSER=?, PASSUSER=?, NAMEUSER=?, SECOND_NAMEUSER=?, " +
-                     "LASTNAMEUSER=?, SECOND_LASTNAMEUSER=?, STATUSUSER=?, TYPEUSER=?, " +
-                     "SECURITYQUESTION=?, SECURITYANSWER=? " +
+                     "LASTNAMEUSER=?, SECOND_LASTNAMEUSER=?, STATUSUSER=?, ROLEUSER=?, " +
+                     "QUESTUSER=?, ANSWERUSER=? " +
                      "WHERE CODUSER=?";
 
         try (Connection conn = SQLRepository.conectar();
@@ -127,25 +139,24 @@ public class UserRepositoryImpl implements UserRepository {
             stmt.setString(4, user.getSecondNameUser());
             stmt.setString(5, user.getLastNameUser());
             stmt.setString(6, user.getSecondLastNameUser());
-
-            // ENUM → STRING
             stmt.setString(7, user.getStatusUser().name());
             stmt.setString(8, user.getRoleUser().name());
-
             stmt.setString(9, user.getSecurityQuestion());
             stmt.setString(10, user.getSecurityAnswer());
-
             stmt.setInt(11, user.getCodUser());
 
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error al actualizar usuario", e);
         }
     }
 
+    // =========================
+    // ELIMINAR
+    // =========================
     @Override
-    public void delete(int codUser) {
+    public boolean delete(int codUser) {
 
         String sql = "DELETE FROM USERS WHERE CODUSER = ?";
 
@@ -153,13 +164,16 @@ public class UserRepositoryImpl implements UserRepository {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, codUser);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error al eliminar usuario", e);
         }
     }
 
+    // =========================
+    // MÉTODO PRIVADO DE MAPEO
+    // =========================
     private User mapResultSetToUser(ResultSet rs) throws SQLException {
 
         return new User(
@@ -170,13 +184,10 @@ public class UserRepositoryImpl implements UserRepository {
                 rs.getString("SECOND_NAMEUSER"),
                 rs.getString("LASTNAMEUSER"),
                 rs.getString("SECOND_LASTNAMEUSER"),
-
-                // STRING → ENUM
                 StatusUserEnum.valueOf(rs.getString("STATUSUSER")),
-                roleUserEnum.valueOf(rs.getString("TYPEUSER")),
-
-                rs.getString("SECURITYQUESTION"),
-                rs.getString("SECURITYANSWER")
+                RoleUserEnum.valueOf(rs.getString("ROLEUSER")),
+                rs.getString("QUESTUSER"),
+                rs.getString("ANSWERUSER")
         );
     }
 }

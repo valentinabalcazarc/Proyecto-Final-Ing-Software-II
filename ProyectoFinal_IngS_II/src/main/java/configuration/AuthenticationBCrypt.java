@@ -6,7 +6,7 @@ import org.mindrot.jbcrypt.BCrypt;
  *
  * @author SAM
  */
-public class AuthenticationBCrypt implements IAutehnticationService{
+public class AuthenticationBCrypt implements IAuthenticationService{
 
     /*
         @param password: la contraseña en texto plano al momento de registro
