@@ -92,6 +92,11 @@ public class winLogin extends javax.swing.JFrame {
         btnRegister_Login.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         btnRegister_Login.setForeground(new java.awt.Color(255, 255, 255));
         btnRegister_Login.setText("Registro");
+        btnRegister_Login.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegister_LoginActionPerformed(evt);
+            }
+        });
 
         txtUser_login.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
 
@@ -196,6 +201,15 @@ public class winLogin extends javax.swing.JFrame {
     }
 
     }//GEN-LAST:event_btnInicioSecionActionPerformed
+
+    private void btnRegister_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegister_LoginActionPerformed
+
+        winRegisterProfessional winProfessional = new winRegisterProfessional();
+        
+        winProfessional.setVisible(true);
+
+
+    }//GEN-LAST:event_btnRegister_LoginActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
