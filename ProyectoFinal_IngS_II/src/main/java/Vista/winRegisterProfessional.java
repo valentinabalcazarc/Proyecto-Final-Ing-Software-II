@@ -6,13 +6,12 @@ import models.Professional;
 import models.SpecialityProfEnum;
 import models.StatusUserEnum;
 import models.TypeProfEnum;
-import models.User;
-import models.roleUserEnum;
-import services.IUserService;
+import models.RoleUserEnum;
+import services.UserService;
 
 public class winRegisterProfessional extends javax.swing.JFrame {
 
-    IUserService iuserservice; 
+    UserService iuserservice; 
     
     public winRegisterProfessional() {
         initComponents();
@@ -291,10 +290,11 @@ public class winRegisterProfessional extends javax.swing.JFrame {
                 .addGap(2, 2, 2)
                 .addComponent(lb_errorID)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEye_RProf))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEye_RProf, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(1, 1, 1)
                 .addComponent(lb_errorPassword_RProf)
                 .addGap(18, 18, 18)
@@ -454,7 +454,7 @@ public class winRegisterProfessional extends javax.swing.JFrame {
             p.setSecondLastNameUser(txtSecondLastName.getText().trim());
             p.setPhoneProf(Double.parseDouble(txtPhoneNumber.getText().trim()));
             p.setStatusUser(StatusUserEnum.Active);
-            p.setRoleUser(roleUserEnum.Doctor);
+            p.setRoleUser(RoleUserEnum.Doctor);
             p.setSecurityQuestion(cbx_SecurityQuestion_RProf.getSelectedItem().toString());
             p.setSecurityAnswer(txt_SecurityQuestion.getText().trim());
             

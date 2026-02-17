@@ -5,12 +5,12 @@ import javax.swing.JOptionPane;
 import models.StatusUserEnum;
 import models.TypeProfEnum;
 import models.User;
-import models.roleUserEnum;
-import services.IUserService;
+import models.RoleUserEnum;
+import services.UserService;
 
 public class winRegisterScheduler extends javax.swing.JFrame {
 
-    IUserService iuserservice;
+    UserService iuserservice;
     
     public winRegisterScheduler() {
         initComponents();
@@ -414,7 +414,7 @@ public class winRegisterScheduler extends javax.swing.JFrame {
            u.setLastNameUser(txtFirstLastName_RSched.getText().trim());
            u.setSecondLastNameUser(txtSecondLastName_RSched.getText().trim());
            u.setStatusUser(StatusUserEnum.Active);
-           u.setRoleUser(roleUserEnum.Scheduler);
+           u.setRoleUser(RoleUserEnum.Scheduler);
            u.setSecurityQuestion(cbx_SecurityQuestion_RSched.getSelectedItem().toString());
            u.setSecurityAnswer(txtRASecurity_RSched.getText().trim());
            
