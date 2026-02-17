@@ -72,70 +72,70 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                  <Component id="jLabel3" min="-2" pref="286" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="cbx_SecurityQuestion_RProf" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jLabel12" alignment="0" min="-2" pref="305" max="-2" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="jLabel3" min="-2" pref="286" max="-2" attributes="0"/>
+                          <Component id="jLabel14" min="-2" pref="93" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="txt_SecurityQuestion" min="-2" pref="179" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="jLabel15" alignment="0" min="-2" pref="305" max="-2" attributes="0"/>
+                      <Component id="cbxTipoProf" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel16" alignment="0" min="-2" pref="305" max="-2" attributes="0"/>
+                      <Component id="cbxEspecialidad" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="cbx_SecurityQuestion_RProf" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jLabel12" alignment="0" min="-2" pref="305" max="-2" attributes="0"/>
+                              <Component id="jLabel13" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel8" alignment="0" min="-2" pref="65" max="-2" attributes="0"/>
+                              <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel11" alignment="0" min="-2" pref="65" max="-2" attributes="0"/>
+                              <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtSecondName" alignment="0" min="-2" pref="142" max="-2" attributes="0"/>
+                              <Component id="txtFirstNamame" alignment="0" min="-2" pref="142" max="-2" attributes="0"/>
+                              <Component id="txtConPassword" alignment="0" min="-2" pref="142" max="-2" attributes="0"/>
+                              <Component id="lb_errorSecondName_RProf" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
+                              <Component id="lb_errorFistName_RProf" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel14" min="-2" pref="93" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="txtA_RProf" min="-2" pref="179" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="jLabel15" alignment="0" min="-2" pref="305" max="-2" attributes="0"/>
-                              <Component id="cbxTipoProf" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel16" alignment="0" min="-2" pref="305" max="-2" attributes="0"/>
-                              <Component id="cbxEspecialidad" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jLabel13" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel8" alignment="0" min="-2" pref="65" max="-2" attributes="0"/>
-                                      <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel11" alignment="0" min="-2" pref="65" max="-2" attributes="0"/>
+                                      <Component id="lb_errorID" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
+                                      <Component id="txtNumCedula" alignment="0" min="-2" pref="142" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="3" pref="3" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtSecName_RProf" alignment="0" min="-2" pref="142" max="-2" attributes="0"/>
-                                      <Component id="txtFirstNam_RProf" alignment="0" min="-2" pref="142" max="-2" attributes="0"/>
-                                      <Component id="txtConPass_RProff" alignment="0" min="-2" pref="142" max="-2" attributes="0"/>
-                                      <Component id="lb_errorSecondName_RProf" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
-                                      <Component id="lb_errorFistName_RProf" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="lb_errorID" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
-                                              <Component id="txtNumCedula_RProf" alignment="0" min="-2" pref="142" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="3" pref="3" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="lb_errorFistLastName_RProf" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
-                                              <Component id="txtFLName_RProf" alignment="0" min="-2" pref="142" max="-2" attributes="0"/>
-                                              <Component id="txtSecondLasName_RProf" alignment="0" min="-2" pref="142" max="-2" attributes="0"/>
-                                              <Component id="lb_errorSecondLastName_RProf" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="lb_errorPassword_RProf" min="-2" pref="123" max="-2" attributes="0"/>
-                                              <Group type="102" attributes="0">
-                                                  <Component id="txtPssw_RProf" min="-2" pref="144" max="-2" attributes="0"/>
-                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                  <Component id="btnEye_RProf" min="-2" pref="57" max="-2" attributes="0"/>
-                                              </Group>
-                                          </Group>
+                                      <Component id="lb_errorFistLastName_RProf" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
+                                      <Component id="txtFirstLastName" alignment="0" min="-2" pref="142" max="-2" attributes="0"/>
+                                      <Component id="txtSecondLastName" alignment="0" min="-2" pref="142" max="-2" attributes="0"/>
+                                      <Component id="lb_errorSecondLastName_RProf" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
+                                      <Component id="txtPhoneNumber" alignment="0" min="-2" pref="142" max="-2" attributes="0"/>
+                                      <Component id="lb_ErrorPhoneNumber" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lb_errorPassword_RProf" min="-2" pref="123" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="txtPassword" min="-2" pref="144" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="btnEye_RProf" min="-2" pref="57" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -149,19 +149,19 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtNumCedula_RProf" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtNumCedula" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="lb_errorID" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtPssw_RProf" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtPassword" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnEye_RProf" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
@@ -169,19 +169,19 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtConPass_RProff" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtConPassword" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtFirstNam_RProf" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtFirstNamame" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="lb_errorFistName_RProf" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtSecName_RProf" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtSecondName" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -191,14 +191,14 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtFLName_RProf" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtFirstLastName" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="lb_errorFistLastName_RProf" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtSecondLasName_RProf" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtSecondLastName" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -206,13 +206,20 @@
                       <Component id="lb_errorSecondLastName_RProf" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtPhoneNumber" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel17" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="lb_ErrorPhoneNumber" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="cbx_SecurityQuestion_RProf" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtA_RProf" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txt_SecurityQuestion" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
@@ -222,7 +229,7 @@
                   <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="cbxEspecialidad" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="45" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -233,15 +240,15 @@
             <Property name="text" type="java.lang.String" value="eye"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JPasswordField" name="txtConPass_RProff">
+        <Component class="javax.swing.JPasswordField" name="txtConPassword">
         </Component>
-        <Component class="javax.swing.JTextField" name="txtFirstNam_RProf">
+        <Component class="javax.swing.JTextField" name="txtFirstNamame">
         </Component>
-        <Component class="javax.swing.JTextField" name="txtFLName_RProf">
+        <Component class="javax.swing.JTextField" name="txtFirstLastName">
         </Component>
-        <Component class="javax.swing.JTextField" name="txtSecondLasName_RProf">
+        <Component class="javax.swing.JTextField" name="txtSecondLastName">
         </Component>
-        <Component class="javax.swing.JTextField" name="txtSecName_RProf">
+        <Component class="javax.swing.JTextField" name="txtSecondName">
         </Component>
         <Component class="javax.swing.JLabel" name="lb_errorID">
           <Properties>
@@ -406,7 +413,7 @@
             <Property name="text" type="java.lang.String" value="Segundo apellido:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtA_RProf">
+        <Component class="javax.swing.JTextField" name="txt_SecurityQuestion">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel11">
           <Properties>
@@ -419,7 +426,7 @@
             <Property name="text" type="java.lang.String" value="(Opcional)"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtNumCedula_RProf">
+        <Component class="javax.swing.JTextField" name="txtNumCedula">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel13">
           <Properties>
@@ -429,7 +436,7 @@
             <Property name="text" type="java.lang.String" value="Confirme contrase&#xf1;a:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JPasswordField" name="txtPssw_RProf">
+        <Component class="javax.swing.JPasswordField" name="txtPassword">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel15">
           <Properties>
@@ -444,7 +451,7 @@
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="2">
                 <StringItem index="0" value="Doctor"/>
-                <StringItem index="1" value="Terapista"/>
+                <StringItem index="1" value="Terapeuta"/>
               </StringArray>
             </Property>
           </Properties>
@@ -473,6 +480,27 @@
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel17">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Cascadia Code" size="14" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="N&#xfa;mero de t&#xe9;lefono: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtPhoneNumber">
+        </Component>
+        <Component class="javax.swing.JLabel" name="lb_ErrorPhoneNumber">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="13" style="0"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="ff" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Error"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -513,6 +541,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="GUARDAR"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_Save_RProfActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
