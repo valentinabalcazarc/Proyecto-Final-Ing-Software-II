@@ -12,6 +12,8 @@ import configuration.AuthenticationBCrypt;
 public class winLogin extends javax.swing.JFrame {
 
     private UserService userService;
+    private final String ADMIN_USER = "101010";
+    private final String ADMIN_PASS = "12345";
 
     public winLogin() {
         initComponents();
@@ -174,12 +176,22 @@ public class winLogin extends javax.swing.JFrame {
 
     String cedText = txtUser_login.getText().trim();
     String password = txtPass_Login.getText().trim();
-
+    
     if (cedText.isEmpty() || password.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Debe ingresar usuario y contraseña.");
         return;
     }
+    
+    // validar si es admin
+    if (cedText.equals(ADMIN_USER) && password.equals(ADMIN_PASS)) {
+        JOptionPane.showMessageDialog(this, "Bienvenido Administrador");
 
+        new winAdmin(userService).setVisible(true);
+        this.dispose();
+        return;
+    }
+    
+    // validar si es  usuario 
     int ced;
 
     try {
@@ -189,13 +201,15 @@ public class winLogin extends javax.swing.JFrame {
         return;
     }
     
-    System.out.println("cedula: "+ ced);
-    System.out.println("pass: "+ password);
-
+    //System.out.println("cedula: "+ ced);
+    //System.out.println("pass: "+ password);
+    
     boolean autenticado = userService.authUser(ced, password);
 
     if (autenticado) {
         JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso.");
+        new winPrincipal().setVisible(true);
+        this.dispose();
     } else {
         JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.");
     }
@@ -204,11 +218,14 @@ public class winLogin extends javax.swing.JFrame {
 
     private void btnRegister_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegister_LoginActionPerformed
 
-        winRegisterProfessional winProfessional = new winRegisterProfessional(userService);
+        /*winRegisterProfessional winProfessional = new winRegisterProfessional(userService);
         
         winProfessional.setVisible(true);
         
-        this.dispose();
+        this.dispose();*/
+        
+        winUserRegister winUserReg = new winUserRegister(userService);
+        winUserReg.setVisible(true);
 
 
     }//GEN-LAST:event_btnRegister_LoginActionPerformed

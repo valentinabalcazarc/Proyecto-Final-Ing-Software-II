@@ -12,12 +12,14 @@ public class winUserRegister extends javax.swing.JFrame {
     UserService iuserservice; 
     private boolean mostrarPassword = false;
     
-    public winUserRegister() {
+    public winUserRegister(UserService iuserservice) {
         initComponents();
+        this.iuserservice=iuserservice;
         lb_errorID.setVisible(false);
         lb_errorFistName.setVisible(false);
         lb_errorSecondName.setVisible(false);
         lb_errorFistLastName.setVisible(false);
+        lb_errorSecondLastName.setVisible(false);
         lb_errorPassword.setVisible(false);
     }
 
@@ -227,6 +229,11 @@ public class winUserRegister extends javax.swing.JFrame {
         });
 
         btn_Cancel.setText("CANCELAR");
+        btn_Cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_CancelActionPerformed(evt);
+            }
+        });
 
         lb_errorID.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lb_errorID.setForeground(new java.awt.Color(255, 0, 0));
@@ -261,6 +268,11 @@ public class winUserRegister extends javax.swing.JFrame {
         jLabel14.setText("Respuesta:");
 
         btnRegresar.setText("Regresar");
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -450,7 +462,7 @@ public class winUserRegister extends javax.swing.JFrame {
 
             if (ok) {
                 JOptionPane.showMessageDialog(this, "Registro exitoso.");
-                this.dispose();  // cerrar ventana
+                this.dispose();  
             } else {
                 JOptionPane.showMessageDialog(this, "Error al registrar.");
             }
@@ -470,6 +482,14 @@ public class winUserRegister extends javax.swing.JFrame {
             mostrarPassword = true;
         }  
     }//GEN-LAST:event_jb_EyeActionPerformed
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void btn_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CancelActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btn_CancelActionPerformed
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

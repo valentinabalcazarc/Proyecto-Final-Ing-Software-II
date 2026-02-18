@@ -1,10 +1,15 @@
 
 package Vista;
 
-public class winAdmin extends javax.swing.JFrame {
+import services.UserService;
 
-    public winAdmin() {
+public class winAdmin extends javax.swing.JFrame {
+        UserService iuserservice; 
+
+
+    public winAdmin(UserService iuserService) {
         initComponents();
+        this.iuserservice=iuserService;
     }
 
     @SuppressWarnings("unchecked")
@@ -48,7 +53,6 @@ public class winAdmin extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        btnRegProfessional.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/professional.png"))); // NOI18N
         btnRegProfessional.setText("Registrar profesional");
         btnRegProfessional.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -56,7 +60,6 @@ public class winAdmin extends javax.swing.JFrame {
             }
         });
 
-        btnRegScheduler.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/scheduler.png"))); // NOI18N
         btnRegScheduler.setText("Registrar agendador");
         btnRegScheduler.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -122,8 +125,8 @@ public class winAdmin extends javax.swing.JFrame {
 
     //enlace a la ventana de registro de profesionales (comentado mientras tanto, falta inyectar dependencia al constructor de winRegProf
     private void btnRegProfessionalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegProfessionalActionPerformed
-     //   winRegisterProfessional winRegProf = new winRegisterProfessional();
-     //   winRegProf.setVisible(true);
+        winRegisterProfessional winRegProf = new winRegisterProfessional(iuserservice);
+        winRegProf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegProfessionalActionPerformed
 
