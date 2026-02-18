@@ -13,8 +13,9 @@ public class winRegisterProfessional extends javax.swing.JFrame {
 
     UserService iuserservice; 
     
-    public winRegisterProfessional() {
+    public winRegisterProfessional(UserService iuserService) {
         initComponents();
+        this.iuserservice=iuserService;
     }
     
     private boolean validarCampos(){
@@ -68,7 +69,7 @@ public class winRegisterProfessional extends javax.swing.JFrame {
             return false;
         }
         
-        if(!(txtPassword.equals(txtConPassword))){
+        if((txtPassword.equals(txtConPassword))){
             JOptionPane.showMessageDialog(this, "La contraseña no concuerda con su confirmación.");
             return false;
         }

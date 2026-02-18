@@ -120,10 +120,10 @@ public class winAdmin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //enlace a la ventana de registro de profesionales
+    //enlace a la ventana de registro de profesionales (comentado mientras tanto, falta inyectar dependencia al constructor de winRegProf
     private void btnRegProfessionalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegProfessionalActionPerformed
-        winRegisterProfessional winRegProf = new winRegisterProfessional();
-        winRegProf.setVisible(true);
+     //   winRegisterProfessional winRegProf = new winRegisterProfessional();
+     //   winRegProf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegProfessionalActionPerformed
 
