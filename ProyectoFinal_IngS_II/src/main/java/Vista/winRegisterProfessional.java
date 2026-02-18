@@ -130,7 +130,7 @@ public class winRegisterProfessional extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        btnEye_RProf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/eye.png"))); // NOI18N
+        btnEye_RProf.setText("eye");
 
         lb_errorID.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lb_errorID.setForeground(new java.awt.Color(255, 0, 0));
@@ -356,10 +356,8 @@ public class winRegisterProfessional extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        btn_Cancel_RProf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/close.png"))); // NOI18N
         btn_Cancel_RProf.setText("CANCELAR");
 
-        btn_Save_RProf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/save.png"))); // NOI18N
         btn_Save_RProf.setText("GUARDAR");
         btn_Save_RProf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -189,9 +189,8 @@ public class winUserRegister extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
         jLabel13.setText("Confirme contraseña:");
 
-        jb_Eye.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/eye.png"))); // NOI18N
+        jb_Eye.setText("eye");
 
-        btn_Save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/save.png"))); // NOI18N
         btn_Save.setText("GUARDAR");
         btn_Save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,7 +198,6 @@ public class winUserRegister extends javax.swing.JFrame {
             }
         });
 
-        btn_Cancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/close.png"))); // NOI18N
         btn_Cancel.setText("CANCELAR");
 
         lb_errorID.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N

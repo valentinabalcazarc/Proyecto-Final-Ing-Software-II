@@ -230,9 +230,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="btnEye_RProf">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Recursos/eye.png"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="eye"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JPasswordField" name="txtConPassword">
@@ -534,17 +532,11 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="btn_Cancel_RProf">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Recursos/close.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="CANCELAR"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btn_Save_RProf">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Recursos/save.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="GUARDAR"/>
           </Properties>
           <Events>

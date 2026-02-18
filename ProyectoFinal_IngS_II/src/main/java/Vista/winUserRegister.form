@@ -348,9 +348,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jb_Eye">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Recursos/eye.png"/>
-            </Property>
+            <Property name="text" type="java.lang.String" value="eye"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JPasswordField" name="pF_password2">
@@ -365,9 +363,6 @@
         </Component>
         <Component class="javax.swing.JButton" name="btn_Save">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Recursos/save.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="GUARDAR"/>
           </Properties>
           <Events>
@@ -376,9 +371,6 @@
         </Component>
         <Component class="javax.swing.JButton" name="btn_Cancel">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Recursos/close.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="CANCELAR"/>
           </Properties>
         </Component>

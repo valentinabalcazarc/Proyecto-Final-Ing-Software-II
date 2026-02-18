@@ -215,7 +215,7 @@ public class winRegisterScheduler extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
         jLabel13.setText("Confirme contraseña:");
 
-        btnEye_RProf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/eye.png"))); // NOI18N
+        btnEye_RProf.setText("eye");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -346,7 +346,6 @@ public class winRegisterScheduler extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
-        btnSave_RSched.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/save.png"))); // NOI18N
         btnSave_RSched.setText("GUARDAR");
         btnSave_RSched.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
