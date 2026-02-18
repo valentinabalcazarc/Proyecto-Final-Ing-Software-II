@@ -485,6 +485,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="&lt;- Regresar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegresarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -533,6 +536,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="CANCELAR"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_Cancel1_RSchedActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

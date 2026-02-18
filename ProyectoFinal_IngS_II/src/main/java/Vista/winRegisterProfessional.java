@@ -409,6 +409,11 @@ public class winRegisterProfessional extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         btn_Cancel_RProf.setText("CANCELAR");
+        btn_Cancel_RProf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_Cancel_RProfActionPerformed(evt);
+            }
+        });
 
         btn_Save_RProf.setText("GUARDAR");
         btn_Save_RProf.addActionListener(new java.awt.event.ActionListener() {
@@ -539,8 +544,7 @@ public class winRegisterProfessional extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_Save_RProfActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        winLogin winlog = new winLogin();
-        winlog.setVisible(true);
+        new winAdmin(iuserservice).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
 
@@ -553,6 +557,11 @@ public class winRegisterProfessional extends javax.swing.JFrame {
             mostrarPassword = true;
         } 
     }//GEN-LAST:event_btnEye_RProfActionPerformed
+
+    private void btn_Cancel_RProfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Cancel_RProfActionPerformed
+        new winLogin().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btn_Cancel_RProfActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEye_RProf;

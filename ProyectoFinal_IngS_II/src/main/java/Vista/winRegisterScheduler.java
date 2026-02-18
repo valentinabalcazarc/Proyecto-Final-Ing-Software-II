@@ -13,8 +13,9 @@ public class winRegisterScheduler extends javax.swing.JFrame {
     UserService iuserservice;
     private boolean mostrarPassword = false;
     
-    public winRegisterScheduler() {
+    public winRegisterScheduler(UserService iuserservice) {
         initComponents();
+        this.iuserservice = iuserservice;
         lb_errorFistName_RSh.setVisible(false);
         lb_errorFistLastName_RSh.setVisible(false);
         lb_errorID_RSh.setVisible(false);
@@ -79,8 +80,18 @@ public class winRegisterScheduler extends javax.swing.JFrame {
             return false;
         }
         
-        if(!(txtPassword.equals(txtConfPass_RSched))){
+        if (!java.util.Arrays.equals(txtPassword.getPassword(), txtConfPass_RSched.getPassword())) {
             JOptionPane.showMessageDialog(this, "La contraseña no concuerda con su confirmación.");
+            return false;
+        }
+        
+        if (!validarPasswordSegura(txtPassword.getPassword())) {
+            JOptionPane.showMessageDialog(this,
+                    "La contraseña debe tener:\n" +
+                    "- Mínimo 6 caracteres\n" +
+                    "- Al menos una mayúscula\n" +
+                    "- Al menos un número\n" +
+                    "- Al menos un carácter especial");
             return false;
         }
 
@@ -89,6 +100,13 @@ public class winRegisterScheduler extends javax.swing.JFrame {
     
     private boolean esNombreValido(String texto) {
         return texto.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+");
+    }
+    
+    private boolean validarPasswordSegura(char[] passwordChars) {
+        String password = new String(passwordChars);
+
+        String regex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-]).{6,}$";
+        return password.matches(regex);
     }
     
     @SuppressWarnings("unchecked")
@@ -231,6 +249,11 @@ public class winRegisterScheduler extends javax.swing.JFrame {
         });
 
         btnRegresar.setText("<- Regresar");
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -381,6 +404,11 @@ public class winRegisterScheduler extends javax.swing.JFrame {
         });
 
         btn_Cancel1_RSched.setText("CANCELAR");
+        btn_Cancel1_RSched.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_Cancel1_RSchedActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -468,6 +496,16 @@ public class winRegisterScheduler extends javax.swing.JFrame {
             mostrarPassword = true;
         } 
     }//GEN-LAST:event_btnEye_RProfActionPerformed
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        new winAdmin(iuserservice).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void btn_Cancel1_RSchedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Cancel1_RSchedActionPerformed
+        new winAdmin(iuserservice).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_Cancel1_RSchedActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
