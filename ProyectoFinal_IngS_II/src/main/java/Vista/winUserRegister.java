@@ -67,8 +67,18 @@ public class winUserRegister extends javax.swing.JFrame {
             return false;
         }
         
-        if(!(pF_password.equals(pF_password2))){
+        if (!java.util.Arrays.equals(pF_password.getPassword(), pF_password2.getPassword())) {
             JOptionPane.showMessageDialog(this, "La contraseña no concuerda con su confirmación.");
+            return false;
+        }
+        
+        if (!validarPasswordSegura(pF_password.getPassword())) {
+            JOptionPane.showMessageDialog(this,
+                    "La contraseña debe tener:\n" +
+                    "- Mínimo 6 caracteres\n" +
+                    "- Al menos una mayúscula\n" +
+                    "- Al menos un número\n" +
+                    "- Al menos un carácter especial");
             return false;
         }
 
@@ -79,6 +89,14 @@ public class winUserRegister extends javax.swing.JFrame {
     private boolean esNombreValido(String texto) {
         return texto.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+");
     }
+    
+    private boolean validarPasswordSegura(char[] passwordChars) {
+        String password = new String(passwordChars);
+
+        String regex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-]).{6,}$";
+        return password.matches(regex);
+    }
+
    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -118,6 +136,7 @@ public class winUserRegister extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         tF_SecurityQuestion = new javax.swing.JTextField();
+        btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -230,6 +249,8 @@ public class winUserRegister extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Cascadia Code", 0, 13)); // NOI18N
         jLabel14.setText("Respuesta:");
 
+        btnRegresar.setText("Regresar");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -288,16 +309,22 @@ public class winUserRegister extends javax.swing.JFrame {
                                         .addComponent(jb_Eye, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(btn_Save, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(pF_password2, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(43, Short.MAX_VALUE))
+                                        .addComponent(pF_password2, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addContainerGap(43, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRegresar)
+                        .addGap(14, 14, 14))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel3)
-                .addGap(21, 21, 21)
+                .addGap(15, 15, 15)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(btnRegresar))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(2, 2, 2)
@@ -428,6 +455,7 @@ public class winUserRegister extends javax.swing.JFrame {
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JButton btn_Cancel;
     private javax.swing.JButton btn_Save;
     private javax.swing.JComboBox<String> cbx_SecurityQuestion;
