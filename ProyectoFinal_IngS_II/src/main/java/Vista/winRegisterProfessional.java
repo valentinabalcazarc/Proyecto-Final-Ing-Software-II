@@ -132,7 +132,6 @@ public class winRegisterProfessional extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        btnEye_RProf.setIcon(new javax.swing.ImageIcon("C:\\Users\\ACER\\OneDrive\\Documentos\\A_Universidad\\6_Semestre\\L_Sofware_II\\PROYECTO_FINAL\\Proyecto-Final-Ing-Software-II\\ProyectoFinal_IngS_II\\src\\main\\java\\recursos\\eye.png")); // NOI18N
         btnEye_RProf.setText("eye");
 
         lb_errorPassword_RProf.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
@@ -217,6 +216,11 @@ public class winRegisterProfessional extends javax.swing.JFrame {
         lb_errorID.setText("Error");
 
         btnRegresar.setText("Regresar");
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -494,7 +498,7 @@ public class winRegisterProfessional extends javax.swing.JFrame {
                 
                 if (ok) {
                     JOptionPane.showMessageDialog(this, "Registro exitoso.");
-                    this.dispose();  // cerrar ventana
+                    //this.dispose();  // cerrar ventana
                 } else {
                     JOptionPane.showMessageDialog(this, "Error al registrar.");
                 }
@@ -503,6 +507,12 @@ public class winRegisterProfessional extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error inesperado.");
         }
     }//GEN-LAST:event_btn_Save_RProfActionPerformed
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        winLogin winlog = new winLogin();
+        winlog.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegresarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEye_RProf;
