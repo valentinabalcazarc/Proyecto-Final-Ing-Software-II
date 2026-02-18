@@ -207,6 +207,8 @@ public class winLogin extends javax.swing.JFrame {
         winRegisterProfessional winProfessional = new winRegisterProfessional();
         
         winProfessional.setVisible(true);
+        
+        this.dispose();
 
 
     }//GEN-LAST:event_btnRegister_LoginActionPerformed

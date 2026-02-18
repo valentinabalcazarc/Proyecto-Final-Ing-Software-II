@@ -24,7 +24,7 @@ public class AuthenticationBCrypt implements IAuthenticationService{
     @Override
     public boolean verify(User user, String password) {
         
-        if(BCrypt.checkpw(password, user.getPassUser())){
+        if(BCrypt.checkpw(password, user.getPassUser())){   
             
             return true;
         }

@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
+        //porque es un != aqui, wtf
         if (userRepository.findByCedUser(newUser.getCedUser()) != null) {
             return false;
         }
@@ -42,13 +43,18 @@ public class UserServiceImpl implements UserService {
         if (password == null) {
             return false;
         }
-        
-        String hash = authService.encrypt(password);
+
         User user = userRepository.findByCedUser(cedUser);
 
         if (user == null) {
             return false;
         }
+
+        if(authService.verify(user, password)){
+            return true;
+        }
+        
+        String hash = authService.encrypt(password);
 
         return authService.verify(user, hash);
     }
