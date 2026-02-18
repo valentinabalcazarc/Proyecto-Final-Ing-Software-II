@@ -17,6 +17,13 @@ public class winRegisterProfessional extends javax.swing.JFrame {
     public winRegisterProfessional(UserService iuserService) {
         initComponents();
         this.iuserservice=iuserService;
+        lb_errorFistName_RProf.setVisible(false);
+        lb_errorSecondName_RProf.setVisible(false);
+        lb_errorFistLastName_RProf.setVisible(false);
+        lb_errorSecondLastName_RProf.setVisible(false);
+        lb_errorID.setVisible(false);
+        lb_errorPassword_RProf.setVisible(false);
+        lb_ErrorPhoneNumber.setVisible(false);
     }
     
     private boolean validarCampos(){
@@ -70,8 +77,18 @@ public class winRegisterProfessional extends javax.swing.JFrame {
             return false;
         }
         
-        if((txtPassword.equals(txtConPassword))){
+        if (!java.util.Arrays.equals(txtPassword.getPassword(), txtConPassword.getPassword())) {
             JOptionPane.showMessageDialog(this, "La contraseña no concuerda con su confirmación.");
+            return false;
+        }
+        
+        if (!validarPasswordSegura(txtPassword.getPassword())) {
+            JOptionPane.showMessageDialog(this,
+                    "La contraseña debe tener:\n" +
+                    "- Mínimo 6 caracteres\n" +
+                    "- Al menos una mayúscula\n" +
+                    "- Al menos un número\n" +
+                    "- Al menos un carácter especial");
             return false;
         }
 
@@ -80,6 +97,13 @@ public class winRegisterProfessional extends javax.swing.JFrame {
     
     private boolean esNombreValido(String texto) {
         return texto.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+");
+    }
+    
+    private boolean validarPasswordSegura(char[] passwordChars) {
+        String password = new String(passwordChars);
+
+        String regex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-]).{6,}$";
+        return password.matches(regex);
     }
    
     @SuppressWarnings("unchecked")
