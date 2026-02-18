@@ -11,6 +11,7 @@ import services.UserService;
 public class winRegisterScheduler extends javax.swing.JFrame {
 
     UserService iuserservice;
+    private boolean mostrarPassword = false;
     
     public winRegisterScheduler() {
         initComponents();
@@ -217,6 +218,11 @@ public class winRegisterScheduler extends javax.swing.JFrame {
         jLabel13.setText("Confirme contraseña:");
 
         btnEye_RProf.setText("eye");
+        btnEye_RProf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEye_RProfActionPerformed(evt);
+            }
+        });
 
         btnRegresar.setText("Regresar");
 
@@ -446,6 +452,17 @@ public class winRegisterScheduler extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error inesperado.");
         }
     }//GEN-LAST:event_btnSave_RSchedActionPerformed
+
+    private void btnEye_RProfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEye_RProfActionPerformed
+       
+         if (mostrarPassword) {
+            txtPassword.setEchoChar('•'); 
+            mostrarPassword = false;
+        } else {
+            txtPassword.setEchoChar((char)0);
+            mostrarPassword = true;
+        } 
+    }//GEN-LAST:event_btnEye_RProfActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

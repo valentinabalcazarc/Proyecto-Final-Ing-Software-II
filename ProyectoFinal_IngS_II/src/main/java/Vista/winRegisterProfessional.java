@@ -12,6 +12,7 @@ import services.UserService;
 public class winRegisterProfessional extends javax.swing.JFrame {
 
     UserService iuserservice; 
+    private boolean mostrarPassword = false;
     
     public winRegisterProfessional(UserService iuserService) {
         initComponents();
@@ -133,6 +134,11 @@ public class winRegisterProfessional extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         btnEye_RProf.setText("eye");
+        btnEye_RProf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEye_RProfActionPerformed(evt);
+            }
+        });
 
         lb_errorPassword_RProf.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lb_errorPassword_RProf.setForeground(new java.awt.Color(255, 0, 0));
@@ -513,6 +519,16 @@ public class winRegisterProfessional extends javax.swing.JFrame {
         winlog.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void btnEye_RProfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEye_RProfActionPerformed
+        if (mostrarPassword) {
+            txtPassword.setEchoChar('•'); 
+            mostrarPassword = false;
+        } else {
+            txtPassword.setEchoChar((char)0);
+            mostrarPassword = true;
+        } 
+    }//GEN-LAST:event_btnEye_RProfActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEye_RProf;

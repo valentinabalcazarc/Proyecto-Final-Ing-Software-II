@@ -10,6 +10,7 @@ import services.UserService;
 public class winUserRegister extends javax.swing.JFrame {
     
     UserService iuserservice; 
+    private boolean mostrarPassword = false;
     
     public winUserRegister() {
         initComponents();
@@ -212,6 +213,11 @@ public class winUserRegister extends javax.swing.JFrame {
         jLabel13.setText("Confirme contraseña:");
 
         jb_Eye.setText("eye");
+        jb_Eye.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jb_EyeActionPerformed(evt);
+            }
+        });
 
         btn_Save.setText("GUARDAR");
         btn_Save.addActionListener(new java.awt.event.ActionListener() {
@@ -364,9 +370,7 @@ public class winUserRegister extends javax.swing.JFrame {
                                 .addComponent(lb_errorSecondLastName))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(25, 25, 25))
+                            .addComponent(jLabel4)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(tF_userID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(2, 2, 2)
@@ -376,8 +380,7 @@ public class winUserRegister extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addGap(43, 43, 43)
-                                .addComponent(jLabel13)
-                                .addGap(6, 6, 6))
+                                .addComponent(jLabel13))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(pF_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -457,6 +460,16 @@ public class winUserRegister extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error inesperado.");
         }
     }//GEN-LAST:event_btn_SaveActionPerformed
+
+    private void jb_EyeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_EyeActionPerformed
+        if (mostrarPassword) {
+            pF_password.setEchoChar('•'); 
+            mostrarPassword = false;
+        } else {
+            pF_password.setEchoChar((char)0);
+            mostrarPassword = true;
+        }  
+    }//GEN-LAST:event_jb_EyeActionPerformed
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

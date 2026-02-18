@@ -386,6 +386,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="eye"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jb_EyeActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JPasswordField" name="pF_password2">
         </Component>
