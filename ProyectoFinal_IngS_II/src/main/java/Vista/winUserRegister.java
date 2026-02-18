@@ -67,8 +67,18 @@ public class winUserRegister extends javax.swing.JFrame {
             return false;
         }
         
-        if(!(pF_password.equals(pF_password2))){
+        if (!java.util.Arrays.equals(pF_password.getPassword(), pF_password2.getPassword())) {
             JOptionPane.showMessageDialog(this, "La contraseña no concuerda con su confirmación.");
+            return false;
+        }
+        
+        if (!validarPasswordSegura(pF_password.getPassword())) {
+            JOptionPane.showMessageDialog(this,
+                    "La contraseña debe tener:\n" +
+                    "- Mínimo 6 caracteres\n" +
+                    "- Al menos una mayúscula\n" +
+                    "- Al menos un número\n" +
+                    "- Al menos un carácter especial");
             return false;
         }
 
@@ -79,6 +89,14 @@ public class winUserRegister extends javax.swing.JFrame {
     private boolean esNombreValido(String texto) {
         return texto.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+");
     }
+    
+    private boolean validarPasswordSegura(char[] passwordChars) {
+        String password = new String(passwordChars);
+
+        String regex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-]).{6,}$";
+        return password.matches(regex);
+    }
+
    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
