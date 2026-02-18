@@ -214,7 +214,7 @@ public class winUserRegister extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
         jLabel13.setText("Confirme contraseña:");
 
-        jb_Eye.setText("eye");
+        jb_Eye.setText("(-)");
         jb_Eye.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jb_EyeActionPerformed(evt);
@@ -267,7 +267,7 @@ public class winUserRegister extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Cascadia Code", 0, 13)); // NOI18N
         jLabel14.setText("Respuesta:");
 
-        btnRegresar.setText("Regresar");
+        btnRegresar.setText("<- Regresar");
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);

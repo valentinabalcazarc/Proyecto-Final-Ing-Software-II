@@ -15,6 +15,12 @@ public class winRegisterScheduler extends javax.swing.JFrame {
     
     public winRegisterScheduler() {
         initComponents();
+        lb_errorFistName_RSh.setVisible(false);
+        lb_errorFistLastName_RSh.setVisible(false);
+        lb_errorID_RSh.setVisible(false);
+        lb_errorPassword_RSh.setVisible(false);
+        lb_errorSecondLastName_RSh.setVisible(false);
+        lb_errorSecondName_RSh.setVisible(false);
     }
     
     private boolean validarCampos(){
@@ -217,14 +223,14 @@ public class winRegisterScheduler extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
         jLabel13.setText("Confirme contraseña:");
 
-        btnEye_RProf.setText("eye");
+        btnEye_RProf.setText("(-)");
         btnEye_RProf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEye_RProfActionPerformed(evt);
             }
         });
 
-        btnRegresar.setText("Regresar");
+        btnRegresar.setText("<- Regresar");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -374,7 +380,6 @@ public class winRegisterScheduler extends javax.swing.JFrame {
             }
         });
 
-        btn_Cancel1_RSched.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/close.png"))); // NOI18N
         btn_Cancel1_RSched.setText("CANCELAR");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);

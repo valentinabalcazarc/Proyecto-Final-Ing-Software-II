@@ -475,7 +475,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnEye_RProf">
           <Properties>
-            <Property name="text" type="java.lang.String" value="eye"/>
+            <Property name="text" type="java.lang.String" value="(-)"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEye_RProfActionPerformed"/>
@@ -483,7 +483,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnRegresar">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Regresar"/>
+            <Property name="text" type="java.lang.String" value="&lt;- Regresar"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -531,9 +531,6 @@
         </Component>
         <Component class="javax.swing.JButton" name="btn_Cancel1_RSched">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Recursos/close.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="CANCELAR"/>
           </Properties>
         </Component>

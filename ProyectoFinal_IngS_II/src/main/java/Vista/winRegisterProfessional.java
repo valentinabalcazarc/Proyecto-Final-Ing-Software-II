@@ -157,7 +157,7 @@ public class winRegisterProfessional extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        btnEye_RProf.setText("eye");
+        btnEye_RProf.setText("(-)");
         btnEye_RProf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEye_RProfActionPerformed(evt);
@@ -222,7 +222,7 @@ public class winRegisterProfessional extends javax.swing.JFrame {
         jLabel13.setText("Confirme contraseña:");
 
         jLabel15.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
-        jLabel15.setText("Tipo de profeción");
+        jLabel15.setText("Tipo de profesión");
 
         cbxTipoProf.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Doctor", "Terapeuta" }));
 
@@ -245,7 +245,7 @@ public class winRegisterProfessional extends javax.swing.JFrame {
         lb_errorID.setForeground(new java.awt.Color(255, 0, 0));
         lb_errorID.setText("Error");
 
-        btnRegresar.setText("Regresar");
+        btnRegresar.setText("<- Regresar");
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);

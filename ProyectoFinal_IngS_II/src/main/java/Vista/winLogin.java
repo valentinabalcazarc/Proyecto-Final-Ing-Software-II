@@ -35,11 +35,11 @@ public class winLogin extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtPass_Login = new javax.swing.JTextField();
         btnInicioSecion = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         btnRegister_Login = new javax.swing.JButton();
         txtUser_login = new javax.swing.JTextField();
+        txtPass_Login = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,8 +74,6 @@ public class winLogin extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
         jLabel4.setText("Ingrese sus credenciales");
-
-        txtPass_Login.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
 
         btnInicioSecion.setBackground(new java.awt.Color(102, 102, 255));
         btnInicioSecion.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
@@ -123,9 +121,9 @@ public class winLogin extends javax.swing.JFrame {
                             .addComponent(jLabel3)
                             .addComponent(jLabel2))
                         .addGap(49, 49, 49)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtUser_login, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPass_Login, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtUser_login, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                            .addComponent(txtPass_Login)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(118, 118, 118)
                         .addComponent(jLabel5)))
@@ -141,16 +139,16 @@ public class winLogin extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(txtUser_login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtPass_Login, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(21, 21, 21)
                 .addComponent(btnInicioSecion, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnRegister_Login, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -175,7 +173,8 @@ public class winLogin extends javax.swing.JFrame {
     private void btnInicioSecionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioSecionActionPerformed
 
     String cedText = txtUser_login.getText().trim();
-    String password = txtPass_Login.getText().trim();
+    //String password = txtPass_Login.getText().trim();
+    String password = new String(txtPass_Login.getPassword());
     
     if (cedText.isEmpty() || password.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Debe ingresar usuario y contraseña.");
@@ -241,7 +240,7 @@ public class winLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField txtPass_Login;
+    private javax.swing.JPasswordField txtPass_Login;
     private javax.swing.JTextField txtUser_login;
     // End of variables declaration//GEN-END:variables
 }
