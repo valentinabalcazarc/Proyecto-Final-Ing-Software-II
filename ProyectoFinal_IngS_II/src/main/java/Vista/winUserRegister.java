@@ -13,6 +13,11 @@ public class winUserRegister extends javax.swing.JFrame {
     
     public winUserRegister() {
         initComponents();
+        lb_errorID.setVisible(false);
+        lb_errorFistName.setVisible(false);
+        lb_errorSecondName.setVisible(false);
+        lb_errorFistLastName.setVisible(false);
+        lb_errorPassword.setVisible(false);
     }
 
     private boolean validarCampos() {
