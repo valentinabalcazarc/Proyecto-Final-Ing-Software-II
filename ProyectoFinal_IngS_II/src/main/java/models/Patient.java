@@ -5,59 +5,87 @@ import java.util.Date;
 
 
 public class Patient {
-    private double codPat;
-    private double phonePat;
-    private String statusPat;
-    private Date dateBirthPat;
-    private String genPat;
+    private double idPatient;
+    private String namePatient;
+    private String secondNamePatient;
+    private String lastNamePatient;
+    private String secondLastNamePatient;
+    private double phonePatient;
+    private Date dateBirthPatient;
+    private String genderPatient;
 
-    public Patient(double codPat, double phonePat, String statusPat, Date dateBirthPat, String genPat) {
-        this.codPat = codPat;
-        this.phonePat = phonePat;
-        this.statusPat = statusPat;
-        this.dateBirthPat = dateBirthPat;
-        this.genPat = genPat;
+    public Patient(double idPatient, String namePatient, String secondNamePatient, String lastNamePatient, String secondLastNamePatient, double phonePatient, Date dateBirthPatient, String genderPatient) {
+        this.idPatient = idPatient;
+        this.namePatient = namePatient;
+        this.secondNamePatient = secondNamePatient;
+        this.lastNamePatient = lastNamePatient;
+        this.secondLastNamePatient = secondLastNamePatient;
+        this.phonePatient = phonePatient;
+        this.dateBirthPatient = dateBirthPatient;
+        this.genderPatient = genderPatient;
     }
 
-    public double getCodPat() {
-        return codPat;
+    public double getIdPatient() {
+        return idPatient;
     }
 
-    public void setCodPat(double codPat) {
-        this.codPat = codPat;
+    public void setIdPatient(double idPatient) {
+        this.idPatient = idPatient;
     }
 
-    public double getPhonePat() {
-        return phonePat;
+    public String getNamePatient() {
+        return namePatient;
     }
 
-    public void setPhonePat(double phonePat) {
-        this.phonePat = phonePat;
+    public void setNamePatient(String namePatient) {
+        this.namePatient = namePatient;
     }
 
-    public String getStatusPat() {
-        return statusPat;
+    public String getSecondNamePatient() {
+        return secondNamePatient;
     }
 
-    public void setStatusPat(String statusPat) {
-        this.statusPat = statusPat;
+    public void setSecondNamePatient(String secondNamePatient) {
+        this.secondNamePatient = secondNamePatient;
     }
 
-    public Date getDateBirthPat() {
-        return dateBirthPat;
+    public String getLastNamePatient() {
+        return lastNamePatient;
     }
 
-    public void setDateBirthPat(Date dateBirthPat) {
-        this.dateBirthPat = dateBirthPat;
+    public void setLastNamePatient(String lastNamePatient) {
+        this.lastNamePatient = lastNamePatient;
     }
 
-    public String getGenPat() {
-        return genPat;
+    public String getSecondLastNamePatient() {
+        return secondLastNamePatient;
     }
 
-    public void setGenPat(String genPat) {
-        this.genPat = genPat;
+    public void setSecondLastNamePatient(String secondLastNamePatient) {
+        this.secondLastNamePatient = secondLastNamePatient;
     }
-    
-    
+
+    public double getPhonePatient() {
+        return phonePatient;
+    }
+
+    public void setPhonePatient(double phonePatient) {
+        this.phonePatient = phonePatient;
+    }
+
+    public Date getDateBirthPatient() {
+        return dateBirthPatient;
+    }
+
+    public void setDateBirthPatient(Date dateBirthPatient) {
+        this.dateBirthPatient = dateBirthPatient;
+    }
+
+    public String getGenderPatient() {
+        return genderPatient;
+    }
+
+    public void setGenderPatient(String genderPatient) {
+        this.genderPatient = genderPatient;
+    } 
 }

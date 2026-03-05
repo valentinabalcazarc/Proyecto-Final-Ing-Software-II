@@ -1,6 +1,9 @@
 
 package models;
 
+import enums.StatusUserEnum;
+import enums.RoleUserEnum;
+
 
 public class User {
 

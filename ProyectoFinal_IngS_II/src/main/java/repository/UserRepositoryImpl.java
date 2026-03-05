@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.User;
-import models.StatusUserEnum;
-import models.RoleUserEnum;
+import enums.StatusUserEnum;
+import enums.RoleUserEnum;
 import DataBase.SQLRepository;
 
 public class UserRepositoryImpl implements UserRepository {

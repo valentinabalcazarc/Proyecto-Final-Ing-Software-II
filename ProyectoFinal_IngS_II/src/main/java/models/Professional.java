@@ -1,6 +1,11 @@
 
 package models;
 
+import enums.StatusUserEnum;
+import enums.TypeProfEnum;
+import enums.SpecialityProfEnum;
+import enums.RoleUserEnum;
+
 public class Professional extends User {
     private double codProf;
     private String genProf;

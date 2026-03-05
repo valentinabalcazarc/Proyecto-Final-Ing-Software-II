@@ -2,10 +2,10 @@
 package Vista;
 
 import javax.swing.JOptionPane;
-import models.StatusUserEnum;
-import models.TypeProfEnum;
+import enums.StatusUserEnum;
+import enums.TypeProfEnum;
 import models.User;
-import models.RoleUserEnum;
+import enums.RoleUserEnum;
 import services.UserService;
 
 public class winRegisterScheduler extends javax.swing.JFrame {
