@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Professional;
-import models.StatusUserEnum;
-import models.TypeProfEnum;
-import models.SpecialityProfEnum;
-import models.RoleUserEnum;
+import enums.StatusUserEnum;
+import enums.TypeProfEnum;
+import enums.SpecialityProfEnum;
+import enums.RoleUserEnum;
 import DataBase.SQLRepository;
 
 public class ProfessionalRepositoryImpl implements ProfessionalRepository {

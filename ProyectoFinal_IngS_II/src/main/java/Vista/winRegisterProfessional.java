@@ -3,10 +3,10 @@ package Vista;
 
 import javax.swing.JOptionPane;
 import models.Professional;
-import models.SpecialityProfEnum;
-import models.StatusUserEnum;
-import models.TypeProfEnum;
-import models.RoleUserEnum;
+import enums.SpecialityProfEnum;
+import enums.StatusUserEnum;
+import enums.TypeProfEnum;
+import enums.RoleUserEnum;
 import services.UserService;
 
 public class winRegisterProfessional extends javax.swing.JFrame {
