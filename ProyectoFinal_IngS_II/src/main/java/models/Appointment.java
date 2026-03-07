@@ -1,54 +1,86 @@
-
 package models;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import enums.StatusAppointment;
-import java.util.Date;
-
 
 public class Appointment {
-    private double codApp;
-    private Date dateApp;
-    private String descApp;
-    private StatusAppointment statusApp;  
 
-    public Appointment(double codApp, Date dateApp, String descApp, StatusAppointment statusApp) {
-        this.codApp = codApp;
-        this.dateApp = dateApp;
-        this.descApp = descApp;
-        this.statusApp = statusApp;
+    private int id;
+    private int patientId;
+    private int professionalId;
+    private LocalDate date;
+    private LocalTime time;
+    private String description;
+    private StatusAppointment status;
+
+    public Appointment() {
+        this.status = StatusAppointment.Scheduled; //estado por defecto
     }
 
-    public double getCodApp() {
-        return codApp;
+    public Appointment(int id, int patientId, int professionalId, LocalDate date, LocalTime time, String description, StatusAppointment status) {
+        this.id = id;
+        this.patientId = patientId;
+        this.professionalId = professionalId;
+        this.date = date;
+        this.time = time;
+        this.description = description;
+        this.status = status;
     }
 
-    public void setCodApp(double codApp) {
-        this.codApp = codApp;
+    public int getId() {
+        return id;
     }
 
-    public Date getDateApp() {
-        return dateApp;
+    public int getPatientId() {
+        return patientId;
     }
 
-    public void setDateApp(Date dateApp) {
-        this.dateApp = dateApp;
+    public int getProfessionalId() {
+        return professionalId;
     }
 
-    public String getDescApp() {
-        return descApp;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setDescApp(String descApp) {
-        this.descApp = descApp;
+    public LocalTime getTime() {
+        return time;
     }
 
-    public StatusAppointment getStatusApp() {
-        return statusApp;
+    public String getDescription(){
+        return description;
+    }
+    
+    public StatusAppointment getStatus() {
+        return status;
     }
 
-    public void setStatusApp(StatusAppointment statusApp) {
-        this.statusApp = statusApp;
-    }   
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
+    }
+
+    public void setProfessionalId(int professionalId) {
+        this.professionalId = professionalId;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    public void setStatus(StatusAppointment status) {
+        this.status = status;
+    }
 }
-
-

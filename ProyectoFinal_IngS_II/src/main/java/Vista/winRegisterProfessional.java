@@ -515,9 +515,9 @@ public class winRegisterProfessional extends javax.swing.JFrame {
             
             String seleccionTipoProf = cbxTipoProf.getSelectedItem().toString();
                 if (seleccionTipoProf.equals("Doctor")) {
-                    p.setTypeProf(TypeProfEnum.DOCTOR);
+                    p.setTypeProf(TypeProfEnum.Doctor);
                 } else if (seleccionTipoProf.equals("Terapeuta")) {
-                    p.setTypeProf(TypeProfEnum.THERAPIST);
+                    p.setTypeProf(TypeProfEnum.Therapist);
                 }
             String seleccionEspecProf = cbxEspecialidad.getSelectedItem().toString();
             
@@ -526,7 +526,7 @@ public class winRegisterProfessional extends javax.swing.JFrame {
                 } else if (seleccionEspecProf.equals("Quiropraxia")) {
                     p.setSpecialityProf(SpecialityProfEnum.Chiropractor);
                 } else if (seleccionEspecProf.equals("Fisioterapia")){
-                    p.setSpecialityProf(SpecialityProfEnum.Pysiotherapy);
+                    p.setSpecialityProf(SpecialityProfEnum.Physiotherapy);
                 }
                 
                 boolean ok = iuserservice.regUser(p);
