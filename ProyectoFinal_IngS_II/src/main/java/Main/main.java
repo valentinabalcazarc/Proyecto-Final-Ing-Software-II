@@ -1,8 +1,17 @@
 package Main;
 import DataBase.SQLRepository;
+import Vista.winExport;
 import Vista.winLogin;
 import javax.swing.UIManager;
 import org.mindrot.jbcrypt.BCrypt;
+import repository.AppointmentRepository;
+import repository.AppointmentRepositoryImpl;
+import repository.ProfessionalRepository;
+import repository.ProfessionalRepositoryImpl;
+import services.AppointmentService;
+import services.AppointmentServiceImpl;
+import services.ProfessionalService;
+import services.ProfessionalServiceImpl;
 
 
 public class main {
@@ -11,14 +20,25 @@ public class main {
         SQLRepository.conectar();
         seleccionarLookAndField();
         
+        
+        
         String password = "jesus123";
         String hash = BCrypt.hashpw(password, BCrypt.gensalt());
         System.out.println(hash);
         
         
         System.out.println(new java.io.File("piedraAzul.db").getAbsolutePath());
-        winLogin winPrincipal = new winLogin();
-        winPrincipal.setVisible(true);
+        //winLogin winPrincipal = new winLogin();
+        //winPrincipal.setVisible(true);
+        
+        //Vista exportar
+        AppointmentRepository appointmentRepository = new AppointmentRepositoryImpl();
+        ProfessionalRepository professionalRepository = new ProfessionalRepositoryImpl();
+        AppointmentService appointmentService = new AppointmentServiceImpl(appointmentRepository);
+        ProfessionalService profesionalService = new ProfessionalServiceImpl(professionalRepository);
+        
+        winExport export = new winExport(appointmentService, profesionalService);
+        export.setVisible(true);
     }
     
     
