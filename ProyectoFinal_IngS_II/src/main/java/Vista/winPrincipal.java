@@ -60,6 +60,7 @@ public class winPrincipal extends javax.swing.JFrame {
         );
 
         jPanelMenu.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelMenu.setVerifyInputWhenFocusTarget(false);
 
         jButtonAddAppoinment.setBackground(new java.awt.Color(249, 249, 249));
         jButtonAddAppoinment.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N

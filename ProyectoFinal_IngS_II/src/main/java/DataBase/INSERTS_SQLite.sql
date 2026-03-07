@@ -14,9 +14,9 @@ VALUES
 (303040, '789', 'Luis', 'Pérez', 'Patient', 'Color?', 'Azul');
 
 
-INSERT INTO PROFESSIONAL (CODUSER, GENDOC, PHONEMED, TYPEDOC, SPECIALDOC, INTVALATTDOC)
+INSERT INTO PROFESSIONAL (CODUSER, GENPROF, PHONEPROF, TYPEPROF, SPECIALITYPROF, ATTENTIONINTERVAL)
 VALUES 
-(1, 'Male', '555', 'Doctor', 'Neural_therapy', 30),
+(1, 'Male', '555', 'Doctor', 'Neural_Therapy', 30),
 (1, 'Male', '666', 'Therapist', 'Chiropractor', 45),
 (1, 'Male', '777', 'Doctor', 'Physiotherapy', 60);
 
@@ -28,8 +28,8 @@ VALUES
 (300, 'Jorge', 'Ruiz', 300789, '2000-01-10', 'Male');
 
 
-INSERT INTO APPOINTMENT (CODDOC, CODPATIENT, DATEAPP, DESCAPP, STATUSAPP)
+INSERT INTO APPOINTMENT (CODPROF, CODPATIENT, DATEAPP, TIMEAPP, STATUSAPP)
 VALUES 
-(1, 1, '2026-03-10 08:00:00', 'Consulta inicial de terapia neural', 'Scheduled'),
-(2, 2, '2026-03-11 10:30:00', 'Ajuste quiropráctico de rutina', 'Scheduled'),
-(3, 3, '2026-03-12 14:00:00', 'Sesión de fisioterapia post-operatoria', 'Scheduled');
+(1, 1, '2026-03-10', '08:00', 'Scheduled'),
+(2, 2, '2026-03-11', '10:30', 'Scheduled'),
+(3, 3, '2026-03-12', '14:00', 'Scheduled');

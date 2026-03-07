@@ -16,7 +16,7 @@ public class ProfessionalRepositoryImpl implements ProfessionalRepository {
     @Override
     public void save(Professional professional) {
 
-        String sql = "INSERT INTO PROFESSIONALS (CODUSER, GENPROF, PHONEPROF, STATUSPROF, " +
+        String sql = "INSERT INTO PROFESSIONAL (CODUSER, GENPROF, PHONEPROF, STATUSPROF, " +
                      "TYPEPROF, SPECIALITYPROF, ATTENTIONINTERVAL) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -70,8 +70,10 @@ public class ProfessionalRepositoryImpl implements ProfessionalRepository {
     @Override
     public List<Professional> findAll() {
 
-        String sql = "SELECT p.*, u.* FROM PROFESSIONALS p " +
+        String sql = "SELECT p.*, u.* FROM PROFESSIONAL p " +
                      "JOIN USERS u ON p.CODUSER = u.CODUSER";
+        
+        //String sql = "SELECT * FROM PROFESSIONAL";
 
         List<Professional> professionals = new ArrayList<>();
 
@@ -93,7 +95,7 @@ public class ProfessionalRepositoryImpl implements ProfessionalRepository {
     @Override
     public void update(Professional professional) {
 
-        String sql = "UPDATE PROFESSIONALS SET GENPROF=?, PHONEPROF=?, STATUSPROF=?, " +
+        String sql = "UPDATE PROFESSIONAL SET GENPROF=?, PHONEPROF=?, STATUSPROF=?, " +
                      "TYPEPROF=?, SPECIALITYPROF=?, ATTENTIONINTERVAL=? " +
                      "WHERE CODPROF=?";
 
@@ -157,9 +159,9 @@ public class ProfessionalRepositoryImpl implements ProfessionalRepository {
                 rs.getString("LASTNAMEUSER"),
                 rs.getString("SECOND_LASTNAMEUSER"),
                 StatusUserEnum.valueOf(rs.getString("STATUSUSER")),
-                RoleUserEnum.valueOf(rs.getString("TYPEUSER")),
-                rs.getString("SECURITYQUESTION"),
-                rs.getString("SECURITYANSWER")
+                RoleUserEnum.valueOf(rs.getString("ROLEUSER")),
+                rs.getString("QUESTUSER"),
+                rs.getString("ANSWERUSER")
         );
     }
 }

@@ -90,6 +90,10 @@ public class Professional extends User {
         this.attentionInterval = attentionInterval;
     }
 
+    @Override
+    public String toString() {
+        return getNameUser() + " " + getLastNameUser();
+    }
     
     
 }
