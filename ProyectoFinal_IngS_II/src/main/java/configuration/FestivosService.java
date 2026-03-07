@@ -1,4 +1,4 @@
-package Vista;
+package configuration;
 
 import com.toedter.calendar.JCalendar;
 import java.awt.Color;
