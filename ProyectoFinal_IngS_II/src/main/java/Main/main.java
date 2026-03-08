@@ -5,8 +5,15 @@ import views.winLogin;
 import filters.CedulaFormatter;
 import filters.TransformCamelCaseNameStage;
 import filters.TransformDateStage;
+import java.io.Console;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.UIManager;
 import org.mindrot.jbcrypt.BCrypt;
+import plugin.manager.AppointmentPluginManager;
 import repository.AppointmentRepository;
 import repository.AppointmentRepositoryImpl;
 import repository.ProfessionalRepository;
@@ -23,6 +30,15 @@ public class main {
         SQLRepository.conectar();
         seleccionarLookAndField();
         
+        //Inicializar el plugin manager con la ruta base de la aplicación.
+        String basePath = getBaseFilePath();
+        try {
+            AppointmentPluginManager.init(basePath);
+        } catch (Exception ex) {
+            Logger.getLogger("Application").log(Level.SEVERE, "Error al ejecutar la aplicación", ex);
+        }
+        
+        /*
         CedulaFormatter cedF = new CedulaFormatter();
         
         int ced = 1058932819;
@@ -51,7 +67,7 @@ public class main {
         String password = "jesus123";
         String hash = BCrypt.hashpw(password, BCrypt.gensalt());
         System.out.println(hash);
-        
+        */
         
         System.out.println(new java.io.File("piedraAzul.db").getAbsolutePath());
         //winLogin winPrincipal = new winLogin();
@@ -75,6 +91,27 @@ public class main {
                 UIManager.setLookAndFeel(laf.getClassName());
                  } catch (Exception ex) {
             }
+        }
+    }
+    
+    private static String getBaseFilePath() {
+        try {
+            String path = main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            path = URLDecoder.decode(path, "UTF-8"); //This should solve the problem with spaces and special characters.
+            File pathFile = new File(path);
+            if (pathFile.isFile()) {
+                path = pathFile.getParent();
+                
+                if (!path.endsWith(File.separator)) {
+                    path += File.separator;
+                }
+                
+            }
+            System.out.println(path);
+            return path;
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, "Error al eliminar espacios en la ruta del archivo", ex);
+            return null;
         }
     }
 }

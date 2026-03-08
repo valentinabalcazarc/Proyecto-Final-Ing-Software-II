@@ -6,7 +6,7 @@ import interfacePlugin.IReportPlugin;
 import java.util.List;
 import models.Appointment;
 
-public class ReportJsonPlugin implements IReportPlugin<String>{
+public class ReportJsonPlugin implements IReportPlugin{
 
     @Override
     public String generateReport(List<Appointment> data) {
