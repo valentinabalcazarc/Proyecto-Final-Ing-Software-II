@@ -1,5 +1,5 @@
 
-package Vista;
+package views;
 
 import services.UserService;
 

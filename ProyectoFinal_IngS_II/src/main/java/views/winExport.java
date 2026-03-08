@@ -1,4 +1,4 @@
-package Vista;
+package views;
 import configuration.FestivosService;
 import com.toedter.calendar.JCalendar;
 import java.time.LocalDate;
