@@ -2,7 +2,7 @@ package models;
 
 import java.time.LocalDate;
 
-public class Appointment {
+public class AppointmentRep {
 
     private int codApp;
     private LocalDate date;
@@ -10,7 +10,7 @@ public class Appointment {
     private int idPat;
     private String nameProff;
 
-    public Appointment(int codApp, LocalDate date, String namePat, int idPat, String nameProff) {
+    public AppointmentRep(int codApp, LocalDate date, String namePat, int idPat, String nameProff) {
         this.codApp = codApp;
         this.date = date;
         this.namePat = namePat;
@@ -18,7 +18,7 @@ public class Appointment {
         this.nameProff = nameProff;
     }
 
-    public Appointment() {
+    public AppointmentRep() {
     }
 
     public int getCodApp() {

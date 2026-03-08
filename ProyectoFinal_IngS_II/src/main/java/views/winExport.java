@@ -1,13 +1,19 @@
 package views;
 import configuration.FestivosService;
 import com.toedter.calendar.JCalendar;
+import interfacePlugin.IReportPlugin;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import models.AppointmentRep;
 import models.Professional;
+import plugin.manager.AppointmentPluginManager;
 import services.AppointmentService;
 import services.ProfessionalService;
 
@@ -323,7 +329,21 @@ public class winExport extends javax.swing.JFrame {
     }//GEN-LAST:event_button_EraseFilterActionPerformed
 
     private void button_ExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_ExportActionPerformed
-        
+        //EJEMPLO DE USO
+    try {
+        AppointmentPluginManager.init("src/main/resources/");
+    } catch (Exception ex) {
+        Logger.getLogger(winExport.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+    AppointmentPluginManager manager = AppointmentPluginManager.getInstance();
+
+    IReportPlugin plugin = manager.getReportPlugin("html");
+
+    List<AppointmentRep> datos = appointmentService.getAppointmentForReport();
+
+    String datosPrint = plugin.generateReport(datos);
+    System.out.println(datosPrint);
     }//GEN-LAST:event_button_ExportActionPerformed
 
    

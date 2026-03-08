@@ -3,6 +3,7 @@ package services;
 import java.time.LocalDate;
 import java.util.List;
 import models.Appointment;
+import models.AppointmentRep;
 import repository.AppointmentRepository;
 
 public class AppointmentServiceImpl implements AppointmentService {
@@ -31,6 +32,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<Object[]> getAppointmentsForTable() {
         return appointmentRepository.findAllForTable();
+    }
+    
+    @Override
+    public List<AppointmentRep> getAppointmentForReport(){
+        return appointmentRepository.findAllForReport();
     }
     
     @Override
