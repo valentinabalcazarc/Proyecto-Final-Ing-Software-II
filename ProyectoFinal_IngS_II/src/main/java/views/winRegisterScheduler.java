@@ -1,5 +1,5 @@
 
-package Vista;
+package views;
 
 import javax.swing.JOptionPane;
 import enums.StatusUserEnum;

@@ -1,7 +1,7 @@
 package Main;
 import DataBase.SQLRepository;
-import Vista.winExport;
-import Vista.winLogin;
+import views.winExport;
+import views.winLogin;
 import filters.CedulaFormatter;
 import filters.TransformCamelCaseNameStage;
 import filters.TransformDateStage;
