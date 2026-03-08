@@ -26,6 +26,7 @@ services\ProfessionalService.class
 enums\TypeProfEnum.class
 Vista\winAdmin.class
 Vista\winRegisterProfessional$1.class
+filters\CedulaFormatter.class
 Vista\winRegisterScheduler$3.class
 Vista\winUserRegister.class
 Vista\winExport$2.class
@@ -42,6 +43,7 @@ repository\ProfessionalRepository.class
 Vista\winExport$3.class
 Vista\winRegisterScheduler.class
 Vista\winAdmin$1.class
+filters\TransformDateStage.class
 Vista\winExport.class
 Vista\winRegisterScheduler$4.class
 filters\ValidationStage.class
@@ -55,6 +57,7 @@ models\Patient.class
 Vista\winPrincipal$1.class
 enums\StatusAppointment.class
 repository\AdminRepositoryImpl.class
+filters\TransformCamelCaseNameStage.class
 enums\RoleUserEnum.class
 Vista\winPrincipal.class
 services\AppointmentServiceImpl.class

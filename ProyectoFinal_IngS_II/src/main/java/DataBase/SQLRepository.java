@@ -14,9 +14,9 @@ public class SQLRepository {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(URL);
-            System.out.println("Conexión exitosa a SQLite");
+            System.out.println("Conexion exitosa a SQLite");
         } catch (SQLException e) {
-            System.out.println("Error de conexión: " + e.getMessage());
+            System.out.println("Error de conexion: " + e.getMessage());
         }
         return conn;
     }

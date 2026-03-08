@@ -7,7 +7,10 @@ C:\Users\User\Desktop\UNICAUCA\SEMESTRE 6\Proyecto-Final-Ing-Software-II\Proyect
 C:\Users\User\Desktop\UNICAUCA\SEMESTRE 6\Proyecto-Final-Ing-Software-II\ProyectoFinal_IngS_II\src\main\java\enums\StatusAppointment.java
 C:\Users\User\Desktop\UNICAUCA\SEMESTRE 6\Proyecto-Final-Ing-Software-II\ProyectoFinal_IngS_II\src\main\java\enums\StatusUserEnum.java
 C:\Users\User\Desktop\UNICAUCA\SEMESTRE 6\Proyecto-Final-Ing-Software-II\ProyectoFinal_IngS_II\src\main\java\enums\TypeProfEnum.java
+C:\Users\User\Desktop\UNICAUCA\SEMESTRE 6\Proyecto-Final-Ing-Software-II\ProyectoFinal_IngS_II\src\main\java\filters\CedulaFormatter.java
 C:\Users\User\Desktop\UNICAUCA\SEMESTRE 6\Proyecto-Final-Ing-Software-II\ProyectoFinal_IngS_II\src\main\java\filters\IFilter.java
+C:\Users\User\Desktop\UNICAUCA\SEMESTRE 6\Proyecto-Final-Ing-Software-II\ProyectoFinal_IngS_II\src\main\java\filters\TransformCamelCaseNameStage.java
+C:\Users\User\Desktop\UNICAUCA\SEMESTRE 6\Proyecto-Final-Ing-Software-II\ProyectoFinal_IngS_II\src\main\java\filters\TransformDateStage.java
 C:\Users\User\Desktop\UNICAUCA\SEMESTRE 6\Proyecto-Final-Ing-Software-II\ProyectoFinal_IngS_II\src\main\java\filters\ValidationStage.java
 C:\Users\User\Desktop\UNICAUCA\SEMESTRE 6\Proyecto-Final-Ing-Software-II\ProyectoFinal_IngS_II\src\main\java\Main\main.java
 C:\Users\User\Desktop\UNICAUCA\SEMESTRE 6\Proyecto-Final-Ing-Software-II\ProyectoFinal_IngS_II\src\main\java\models\Admin.java
