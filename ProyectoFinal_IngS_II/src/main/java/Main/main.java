@@ -2,6 +2,9 @@ package Main;
 import DataBase.SQLRepository;
 import Vista.winExport;
 import Vista.winLogin;
+import filters.CedulaFormatter;
+import filters.TransformCamelCaseNameStage;
+import filters.TransformDateStage;
 import javax.swing.UIManager;
 import org.mindrot.jbcrypt.BCrypt;
 import repository.AppointmentRepository;
@@ -20,7 +23,30 @@ public class main {
         SQLRepository.conectar();
         seleccionarLookAndField();
         
+        CedulaFormatter cedF = new CedulaFormatter();
         
+        int ced = 1058932819;
+        String cedS = (String) cedF.filter(ced);
+        
+        System.out.println(cedS);
+        
+        TransformCamelCaseNameStage nameF = new TransformCamelCaseNameStage();
+        
+        String name = "jesus eduardo lasso muñoz";
+        
+        String nameFlt = nameF.filter(name);
+        
+        System.out.println(nameFlt);
+        
+        
+        TransformDateStage dateFilter = new TransformDateStage();
+
+        String fecha = "2006-03-23";
+
+        String resultado = dateFilter.filter(fecha);
+
+        System.out.println(resultado);
+
         
         String password = "jesus123";
         String hash = BCrypt.hashpw(password, BCrypt.gensalt());
