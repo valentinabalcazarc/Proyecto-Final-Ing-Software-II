@@ -8,6 +8,7 @@ import DataBase.SQLRepository;
 import enums.StatusAppointment;
 import java.time.LocalDate;
 import models.Appointment;
+import models.AppointmentRep;
 
 public class AppointmentRepositoryImpl implements AppointmentRepository {
     
@@ -107,6 +108,57 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+
+        return lista;
+    }
+    
+    @Override
+    public List<AppointmentRep> findAllForReport() {
+
+        List<AppointmentRep> lista = new ArrayList<>();
+
+        String sql = "SELECT a.CODAPP, a.DATEAPP, " +
+                    "COALESCE(p.NAMEPATIENT,'') || ' ' || " +
+                    "COALESCE(p.SECOND_NAMEPATIENT,'') || ' ' || " +
+                    "COALESCE(p.LASTNAMEPATIENT,'') || ' ' || " +
+                    "COALESCE(p.SECOND_LASTNAMEPATIENT,'') AS FULL_NAME_PATIENT, " +
+                    "p.IDPATIENT, " +
+                    "COALESCE(u.NAMEUSER,'') || ' ' || " +
+                    "COALESCE(u.SECOND_NAMEUSER,'') || ' ' || " +
+                    "COALESCE(u.LASTNAMEUSER,'') || ' ' || " +
+                    "COALESCE(u.SECOND_LASTNAMEUSER,'') AS FULL_NAME_PROFF " +
+                    "FROM APPOINTMENT a " +
+                    "JOIN PATIENT p ON a.CODPATIENT = p.CODPATIENT " +
+                    "JOIN PROFESSIONAL pr ON a.CODPROF = pr.CODPROF " +
+                    "JOIN USERS u ON pr.CODUSER = u.CODUSER " +
+                    "ORDER BY a.CODAPP";
+
+        try (Connection conn = SQLRepository.conectar();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+
+                String dateStr = rs.getString("DATEAPP");
+                LocalDate fecha = null;
+                if (dateStr != null && !dateStr.isEmpty()) {
+                    fecha = LocalDate.parse(dateStr);
+                }
+
+                AppointmentRep appRep = new AppointmentRep();
+                appRep.setCodApp(rs.getInt("CODAPP"));
+                appRep.setDate(fecha);
+                appRep.setNamePat(rs.getString("FULL_NAME_PATIENT"));
+                appRep.setIdPat(rs.getInt("IDPATIENT"));
+                appRep.setNameProff(rs.getString("FULL_NAME_PROFF"));
+
+                lista.add(appRep);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Aquí puedes lanzar una excepción personalizada si lo deseas
         }
 
         return lista;
