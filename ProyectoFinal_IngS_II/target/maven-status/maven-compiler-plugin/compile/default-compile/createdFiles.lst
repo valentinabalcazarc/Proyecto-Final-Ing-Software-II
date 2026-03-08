@@ -16,13 +16,16 @@ repository\ProfessionalRepositoryImpl.class
 repository\UserRepository.class
 configuration\IAuthenticationService.class
 Vista\winRegisterProfessional$3.class
+Vista\winScheduleAppointment$2.class
 models\Appointment.class
 Vista\winExport$1.class
 repository\AppointmentRepository.class
 Vista\winAdmin$2.class
+Vista\winCreateAppointment.class
 repository\UserRepositoryImpl.class
 Vista\winLogin$2.class
 services\ProfessionalService.class
+Vista\winScheduleAppointment$1.class
 enums\TypeProfEnum.class
 Vista\winAdmin.class
 Vista\winRegisterProfessional$1.class
@@ -32,6 +35,7 @@ Vista\winUserRegister.class
 Vista\winExport$2.class
 configuration\FestivosService.class
 Vista\winViewAppoinment.class
+Vista\winCreateAppointment_Part2.class
 Vista\winLogin.class
 Vista\winRegisterProfessional$4.class
 enums\SpecialityProfEnum.class
@@ -43,6 +47,7 @@ repository\ProfessionalRepository.class
 Vista\winExport$3.class
 Vista\winRegisterScheduler.class
 Vista\winAdmin$1.class
+Vista\winCreateAppointment_Part2$1.class
 filters\TransformDateStage.class
 Vista\winExport.class
 Vista\winRegisterScheduler$4.class
@@ -54,10 +59,13 @@ Vista\winRegisterScheduler$1.class
 Vista\winUserRegister$2.class
 Vista\winRegisterProfessional$2.class
 models\Patient.class
+Vista\winCreateAppointment$1.class
 Vista\winPrincipal$1.class
 enums\StatusAppointment.class
 repository\AdminRepositoryImpl.class
+Vista\winScheduleAppointment.class
 filters\TransformCamelCaseNameStage.class
 enums\RoleUserEnum.class
+Vista\winScheduleAppointment$3.class
 Vista\winPrincipal.class
 services\AppointmentServiceImpl.class
