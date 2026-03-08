@@ -3,7 +3,7 @@ package interfacePlugin;
 import java.util.List;
 import models.Appointment;
 
-public interface IReportPlugin <Output>{
+public interface IReportPlugin{
     
-    Output generateReport(List<Appointment> data);
+    String generateReport(List<Appointment> data);
 }
