@@ -66,6 +66,8 @@ public class winExport extends javax.swing.JFrame {
         inicializarTablaCitas();
         cargarTabla();
         cargarProfesionales();
+        
+        cbx_Professional.setSelectedItem(null);
     }
 
     
@@ -144,14 +146,14 @@ public class winExport extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(281, 281, 281))
+                .addGap(363, 363, 363))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(29, 29, 29)
                 .addComponent(jLabel1)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         panel.setBackground(new java.awt.Color(255, 255, 255));
@@ -223,10 +225,6 @@ public class winExport extends javax.swing.JFrame {
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(button_EraseFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(64, 64, 64))
             .addGroup(panelLayout.createSequentialGroup()
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelLayout.createSequentialGroup()
@@ -240,21 +238,26 @@ public class winExport extends javax.swing.JFrame {
                         .addGap(43, 43, 43)
                         .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cbx_Professional, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jDate_ExportDate, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)))
+                            .addComponent(jDate_ExportDate, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)))
                     .addGroup(panelLayout.createSequentialGroup()
                         .addGap(30, 30, 30)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 830, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(34, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 998, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(29, Short.MAX_VALUE))
             .addGroup(panelLayout.createSequentialGroup()
                 .addGap(140, 140, 140)
                 .addComponent(button_Back)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 498, Short.MAX_VALUE)
                 .addComponent(button_Export)
                 .addGap(183, 183, 183))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(button_Find, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(153, 153, 153))
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
+                        .addComponent(button_Find, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(153, 153, 153))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
+                        .addComponent(button_EraseFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(55, 55, 55))))
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,9 +276,9 @@ public class winExport extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(button_EraseFilter)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(button_Back)
                     .addComponent(button_Export))
@@ -326,24 +329,25 @@ public class winExport extends javax.swing.JFrame {
 
     private void button_EraseFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_EraseFilterActionPerformed
         cargarTabla();
+        cbx_Professional.setSelectedItem(null);
+        jDate_ExportDate.setDate(null);
     }//GEN-LAST:event_button_EraseFilterActionPerformed
 
     private void button_ExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_ExportActionPerformed
-        //EJEMPLO DE USO
-    try {
-        AppointmentPluginManager.init("src/main/resources/");
-    } catch (Exception ex) {
-        Logger.getLogger(winExport.class.getName()).log(Level.SEVERE, null, ex);
-    }
+        Integer codDoc = null;
+        LocalDate fecha = null;
 
-    AppointmentPluginManager manager = AppointmentPluginManager.getInstance();
+        if (cbx_Professional.getSelectedItem() != null) {
+            Professional prof = (Professional) cbx_Professional.getSelectedItem();
+            codDoc = (int)prof.getCodProf();
+        }
 
-    IReportPlugin plugin = manager.getReportPlugin("html");
-
-    List<AppointmentRep> datos = appointmentService.getAppointmentForReport();
-
-    String datosPrint = plugin.generateReport(datos);
-    System.out.println(datosPrint);
+        if (jDate_ExportDate.getDate() != null) {
+            fecha = jDate_ExportDate.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }
+        
+        winExportFormatSelection formatSelection = new winExportFormatSelection(appointmentService);
+        formatSelection.setVisible(true);
     }//GEN-LAST:event_button_ExportActionPerformed
 
    
