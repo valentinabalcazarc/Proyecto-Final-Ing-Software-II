@@ -71,6 +71,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         return appointments;
     }
     
+    @Override
     public List<Object[]> findAllForTable() {
 
         String sql =
@@ -133,7 +134,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                     "JOIN PROFESSIONAL pr ON a.CODPROF = pr.CODPROF " +
                     "JOIN USERS u ON pr.CODUSER = u.CODUSER " +
                     "ORDER BY a.CODAPP";
-
+        
         try (Connection conn = SQLRepository.conectar();
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery()) {
