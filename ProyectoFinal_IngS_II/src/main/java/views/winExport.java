@@ -74,6 +74,7 @@ public class winExport extends javax.swing.JFrame {
     private void inicializarTablaCitas() {
         DefaultTableModel model = new DefaultTableModel();
         
+        model.addColumn("Codigo Cita");
         model.addColumn("Fecha");
         model.addColumn("Hora");
         model.addColumn("ID Paciente");
@@ -109,7 +110,52 @@ public class winExport extends javax.swing.JFrame {
             cbx_Professional.addItem(p);
         }
     }
-    
+
+    private List<AppointmentRep> obtenerCitasDeTabla(){
+
+        DefaultTableModel model = (DefaultTableModel) table_App.getModel();
+        List<AppointmentRep> lista = new ArrayList<>();
+
+        for(int i = 0; i < model.getRowCount(); i++){
+
+            AppointmentRep ap = new AppointmentRep();
+
+            // Codigo de la cita
+            Object cod = model.getValueAt(i,0);
+            if(cod != null){
+                ap.setCodApp(Integer.parseInt(cod.toString()));
+            }
+
+            // Fecha
+            Object fecha = model.getValueAt(i,1);
+            if(fecha != null){
+                ap.setDate(LocalDate.parse(fecha.toString()));
+            }
+
+            // ID del paciente
+            Object id = model.getValueAt(i,3);
+            if(id != null){
+                ap.setIdPat(Integer.parseInt(id.toString()));
+            }
+
+            // Nombre del paciente
+            Object namePat = model.getValueAt(i,4);
+            if(namePat != null){
+                ap.setNamePat(namePat.toString());
+            }
+
+            // Nombre del profesional
+            Object nameProf = model.getValueAt(i,5);
+            if(nameProf != null){
+                ap.setNameProff(nameProf.toString());
+            }
+
+            lista.add(ap);
+        }
+
+        return lista;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -334,19 +380,10 @@ public class winExport extends javax.swing.JFrame {
     }//GEN-LAST:event_button_EraseFilterActionPerformed
 
     private void button_ExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_ExportActionPerformed
-        Integer codDoc = null;
-        LocalDate fecha = null;
 
-        if (cbx_Professional.getSelectedItem() != null) {
-            Professional prof = (Professional) cbx_Professional.getSelectedItem();
-            codDoc = (int)prof.getCodProf();
-        }
-
-        if (jDate_ExportDate.getDate() != null) {
-            fecha = jDate_ExportDate.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        }
+        List<AppointmentRep> lista = obtenerCitasDeTabla();
         
-        winExportFormatSelection formatSelection = new winExportFormatSelection(appointmentService);
+        winExportFormatSelection formatSelection = new winExportFormatSelection(appointmentService, lista);
         formatSelection.setVisible(true);
     }//GEN-LAST:event_button_ExportActionPerformed
 

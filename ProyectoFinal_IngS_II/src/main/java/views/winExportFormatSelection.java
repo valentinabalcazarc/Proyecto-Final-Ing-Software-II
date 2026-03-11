@@ -1,21 +1,21 @@
 package views;
 
 import interfacePlugin.IReportPlugin;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import models.Appointment;
 import models.AppointmentRep;
 import plugin.manager.AppointmentPluginManager;
 import services.AppointmentService;
 
 public class winExportFormatSelection extends javax.swing.JFrame {
     private AppointmentService appointmentService;
+    private List<AppointmentRep> appointmentReps;
     
-    public winExportFormatSelection(AppointmentService appointmentService) {
+    public winExportFormatSelection(AppointmentService appointmentService, List<AppointmentRep> appointmentReps) {
         initComponents();
         this.appointmentService = appointmentService;
+        this.appointmentReps = appointmentReps;
     }
 
     
@@ -155,7 +155,7 @@ public class winExportFormatSelection extends javax.swing.JFrame {
 
         List<AppointmentRep> datos = appointmentService.getAppointmentForReport();
 
-        String datosPrint = plugin.generateReport(datos);
+        String datosPrint = plugin.generateReport(appointmentReps);
         System.out.println(datosPrint);
     }//GEN-LAST:event_button_JsonActionPerformed
 
@@ -172,7 +172,7 @@ public class winExportFormatSelection extends javax.swing.JFrame {
 
         List<AppointmentRep> datos = appointmentService.getAppointmentForReport();
 
-        String datosPrint = plugin.generateReport(datos);
+        String datosPrint = plugin.generateReport(appointmentReps);
         System.out.println(datosPrint);
     }//GEN-LAST:event_button_HtmlActionPerformed
 
