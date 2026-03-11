@@ -14,6 +14,7 @@ public class winExportFormatSelection extends javax.swing.JFrame {
     
     public winExportFormatSelection(AppointmentService appointmentService, List<AppointmentRep> appointmentReps) {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         this.appointmentService = appointmentService;
         this.appointmentReps = appointmentReps;
     }
@@ -30,6 +31,8 @@ public class winExportFormatSelection extends javax.swing.JFrame {
         button_Json = new javax.swing.JButton();
         button_Html = new javax.swing.JButton();
         button_Back = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        textArea_Export = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -90,6 +93,10 @@ public class winExportFormatSelection extends javax.swing.JFrame {
             }
         });
 
+        textArea_Export.setColumns(20);
+        textArea_Export.setRows(5);
+        jScrollPane1.setViewportView(textArea_Export);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -106,7 +113,10 @@ public class winExportFormatSelection extends javax.swing.JFrame {
                         .addComponent(jLabel2))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(button_Back)))
+                        .addComponent(button_Back))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 566, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -118,7 +128,9 @@ public class winExportFormatSelection extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(button_Json, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(button_Html, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addComponent(button_Back)
                 .addContainerGap())
         );
@@ -156,7 +168,8 @@ public class winExportFormatSelection extends javax.swing.JFrame {
         List<AppointmentRep> datos = appointmentService.getAppointmentForReport();
 
         String datosPrint = plugin.generateReport(appointmentReps);
-        System.out.println(datosPrint);
+        textArea_Export.setText(datosPrint);
+        //System.out.println(datosPrint);
     }//GEN-LAST:event_button_JsonActionPerformed
 
     private void button_HtmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_HtmlActionPerformed
@@ -173,7 +186,8 @@ public class winExportFormatSelection extends javax.swing.JFrame {
         List<AppointmentRep> datos = appointmentService.getAppointmentForReport();
 
         String datosPrint = plugin.generateReport(appointmentReps);
-        System.out.println(datosPrint);
+        textArea_Export.setText(datosPrint);
+        //System.out.println(datosPrint);
     }//GEN-LAST:event_button_HtmlActionPerformed
 
     private void button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_BackActionPerformed
@@ -190,5 +204,7 @@ public class winExportFormatSelection extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea textArea_Export;
     // End of variables declaration//GEN-END:variables
 }
