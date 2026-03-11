@@ -38,7 +38,7 @@ public class main {
             Logger.getLogger("Application").log(Level.SEVERE, "Error al ejecutar la aplicación", ex);
         }
         
-        /*
+        
         CedulaFormatter cedF = new CedulaFormatter();
         
         int ced = 1058932819;
@@ -48,7 +48,7 @@ public class main {
         
         TransformCamelCaseNameStage nameF = new TransformCamelCaseNameStage();
         
-        String name = "jesus eduardo lasso muñoz";
+        String name = "jesus eduardo lasso munoz";
         
         String nameFlt = nameF.filter(name);
         
@@ -63,11 +63,6 @@ public class main {
 
         System.out.println(resultado);
 
-        
-        String password = "jesus123";
-        String hash = BCrypt.hashpw(password, BCrypt.gensalt());
-        System.out.println(hash);
-        */
         
         System.out.println(new java.io.File("piedraAzul.db").getAbsolutePath());
         //winLogin winPrincipal = new winLogin();

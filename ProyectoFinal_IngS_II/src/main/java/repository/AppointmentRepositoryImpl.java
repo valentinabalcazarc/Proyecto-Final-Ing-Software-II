@@ -6,6 +6,7 @@ import java.util.List;
 
 import DataBase.SQLRepository;
 import enums.StatusAppointment;
+import filters.IFilter;
 import java.time.LocalDate;
 import models.Appointment;
 import models.AppointmentRep;
@@ -152,7 +153,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                 appRep.setCodApp(rs.getInt("CODAPP"));
                 appRep.setDate(fecha);
                 appRep.setNamePat(rs.getString("FULL_NAME_PATIENT"));
-                appRep.setIdPat(rs.getInt("IDPATIENT"));
+                appRep.setIdPat(rs.getString("IDPATIENT"));
                 appRep.setNameProff(rs.getString("FULL_NAME_PROFF"));
 
                 lista.add(appRep);

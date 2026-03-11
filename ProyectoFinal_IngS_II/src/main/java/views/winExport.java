@@ -1,6 +1,9 @@
 package views;
 import configuration.FestivosService;
 import com.toedter.calendar.JCalendar;
+import filters.CedulaFormatter;
+import filters.TransformCamelCaseNameStage;
+import filters.TransformDateStage;
 import interfacePlugin.IReportPlugin;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -116,6 +119,11 @@ public class winExport extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) table_App.getModel();
         List<AppointmentRep> lista = new ArrayList<>();
 
+        // filtros
+        TransformDateStage dateFilter = new TransformDateStage();
+        TransformCamelCaseNameStage nameFilter = new TransformCamelCaseNameStage();
+        CedulaFormatter cedulaFilter = new CedulaFormatter();
+
         for(int i = 0; i < model.getRowCount(); i++){
 
             AppointmentRep ap = new AppointmentRep();
@@ -129,25 +137,34 @@ public class winExport extends javax.swing.JFrame {
             // Fecha
             Object fecha = model.getValueAt(i,1);
             if(fecha != null){
-                ap.setDate(LocalDate.parse(fecha.toString()));
-            }
 
+                LocalDate fechaDate = LocalDate.parse(fecha.toString());
+
+                ap.setDate(fechaDate);
+            }
             // ID del paciente
             Object id = model.getValueAt(i,3);
             if(id != null){
-                ap.setIdPat(Integer.parseInt(id.toString()));
+
+                String idStr = cedulaFilter.filter((Integer) id);
+
+                ap.setIdPat(idStr);
             }
 
             // Nombre del paciente
             Object namePat = model.getValueAt(i,4);
             if(namePat != null){
-                ap.setNamePat(namePat.toString());
+
+                String name = nameFilter.filter(namePat.toString());
+                ap.setNamePat(name);
             }
 
             // Nombre del profesional
             Object nameProf = model.getValueAt(i,5);
             if(nameProf != null){
-                ap.setNameProff(nameProf.toString());
+
+                String name = nameFilter.filter(nameProf.toString());
+                ap.setNameProff(name);
             }
 
             lista.add(ap);

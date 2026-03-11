@@ -7,10 +7,10 @@ public class AppointmentRep {
     private int codApp;
     private LocalDate date;
     private String namePat;
-    private int idPat;
+    private String idPat;
     private String nameProff;
 
-    public AppointmentRep(int codApp, LocalDate date, String namePat, int idPat, String nameProff) {
+    public AppointmentRep(int codApp, LocalDate date, String namePat, String idPat, String nameProff) {
         this.codApp = codApp;
         this.date = date;
         this.namePat = namePat;
@@ -45,11 +45,11 @@ public class AppointmentRep {
         this.namePat = namePat;
     }
 
-    public int getIdPat() {
+    public String getIdPat() {
         return idPat;
     }
 
-    public void setIdPat(int idPat) {
+    public void setIdPat(String idPat) {
         this.idPat = idPat;
     }
 

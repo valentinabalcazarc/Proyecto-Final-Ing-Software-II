@@ -7,8 +7,8 @@ import java.sql.SQLException;
 public class SQLRepository {
     
     //private static final String URL = "jdbc:sqlite:piedraAzul.db";
-    //private static final String URL = "jdbc:sqlite:C:\\Users\\User\\Desktop\\piedraAzul.db";
-    private static final String URL = "jdbc:sqlite:C:\\Semestre 6\\ProyectoFinal_IngS_II\\Proyecto-Final-Ing-Software-II\\piedraAzul.db";
+    private static final String URL = "jdbc:sqlite:C:\\Users\\User\\Desktop\\piedraAzul.db";
+    //private static final String URL = "jdbc:sqlite:C:\\Semestre 6\\ProyectoFinal_IngS_II\\Proyecto-Final-Ing-Software-II\\piedraAzul.db";
 
 
     public static Connection conectar() {
