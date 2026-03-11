@@ -75,10 +75,10 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     public List<Object[]> findAllForTable() {
 
         String sql =
-            "SELECT a.DATEAPP, a.TIMEAPP, a.STATUSAPP," +
+            "SELECT a.CODAPP, a.DATEAPP, a.TIMEAPP, " +
             "p.IDPATIENT, p.NAMEPATIENT, p.LASTNAMEPATIENT, " +
             "u.NAMEUSER, u.LASTNAMEUSER, " +
-            "pr.TYPEPROF, pr.SPECIALITYPROF " +
+            "pr.TYPEPROF, pr.SPECIALITYPROF, a.STATUSAPP " +
             "FROM APPOINTMENT a " +
             "JOIN PATIENT p ON a.CODPATIENT = p.CODPATIENT " +
             "JOIN PROFESSIONAL pr ON a.CODPROF = pr.CODPROF " +
@@ -88,12 +88,13 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         List<Object[]> lista = new ArrayList<>();
 
         try (Connection conn = SQLRepository.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
 
                 Object[] fila = {
+                    rs.getInt("CODAPP"),
                     rs.getString("DATEAPP"),
                     rs.getString("TIMEAPP"),
                     rs.getInt("IDPATIENT"),
@@ -171,10 +172,10 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         List<Object[]> lista = new ArrayList<>();
 
         StringBuilder sql = new StringBuilder(
-            "SELECT a.DATEAPP, a.TIMEAPP, a.STATUSAPP," +
+            "SELECT a.CODAPP, a.DATEAPP, a.TIMEAPP, " +
             "p.IDPATIENT, p.NAMEPATIENT, p.LASTNAMEPATIENT, " +
             "u.NAMEUSER, u.LASTNAMEUSER, " +
-            "pr.TYPEPROF, pr.SPECIALITYPROF " +
+            "pr.TYPEPROF, pr.SPECIALITYPROF, a.STATUSAPP " +
             "FROM APPOINTMENT a " +
             "JOIN PATIENT p ON a.CODPATIENT = p.CODPATIENT " +
             "JOIN PROFESSIONAL pr ON a.CODPROF = pr.CODPROF " +
@@ -200,7 +201,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         sql.append(" ORDER BY a.DATEAPP");
 
         try (Connection conn = SQLRepository.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+            PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
 
             for (int i = 0; i < params.size(); i++) {
                 stmt.setObject(i + 1, params.get(i));
@@ -211,6 +212,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
             while (rs.next()) {
 
                 Object[] fila = {
+                    rs.getInt("CODAPP"),
                     rs.getString("DATEAPP"),
                     rs.getString("TIMEAPP"),
                     rs.getInt("IDPATIENT"),
