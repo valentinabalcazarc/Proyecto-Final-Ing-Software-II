@@ -509,7 +509,7 @@ public class winRegisterProfessional extends javax.swing.JFrame {
             p.setSecondLastNameUser(txtSecondLastName.getText().trim());
             p.setPhoneProf(Double.parseDouble(txtPhoneNumber.getText().trim()));
             p.setStatusUser(StatusUserEnum.Active);
-            p.setRoleUser(RoleUserEnum.Doctor);
+            p.setRoleUser(RoleUserEnum.Professional);
             p.setSecurityQuestion(cbx_SecurityQuestion_RProf.getSelectedItem().toString());
             p.setSecurityAnswer(txt_SecurityQuestion.getText().trim());
             

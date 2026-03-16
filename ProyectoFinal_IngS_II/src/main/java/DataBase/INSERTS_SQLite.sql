@@ -1,12 +1,10 @@
-INSERT INTO ADMIN (USERADMIN, PASSADMIN) 
-VALUES ('super_admin', 'Hash_Secure_99*');
-
 INSERT INTO USERS (CEDUSER, PASSUSER, NAMEUSER, LASTNAMEUSER, ROLEUSER, QUESTUSER, ANSWERUSER)
 VALUES 
-(1010202030, '123', 'Carlos', 'Mendoza', 'Doctor', 'Mascota?', 'Firulais'),
-(1032456789, '456', 'Ana', 'García', 'Doctor', 'Ciudad?', 'Bogota'),
-(1088123456, '123', 'Andrea', 'Díaz', 'Doctor', 'Color?', 'Morado'),
-(1075982341, '789', 'Luis', 'Pérez', 'Patient', 'Color?', 'Azul');
+(101010, '123', 'Carlos', 'Mendoza', 'Professional', 'Mascota?', 'Firulais'),
+(1032456789, '456', 'Ana', 'García', 'Professional', 'Ciudad?', 'Bogota'),
+(1088123456, '123', 'Andrea', 'Díaz', 'Professional', 'Color?', 'Morado'),
+(121212, '123', 'Luis', 'Pérez', 'Patient', 'Color?', 'Azul');
+(131313, '123', 'Libardo', 'Pantoja', 'Admin', 'Color?', 'Azul');
 
 
 INSERT INTO PROFESSIONAL (CODUSER, GENPROF, PHONEPROF, TYPEPROF, SPECIALITYPROF, ATTENTIONINTERVAL)

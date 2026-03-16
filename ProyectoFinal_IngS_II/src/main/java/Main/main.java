@@ -38,7 +38,7 @@ public class main {
             Logger.getLogger("Application").log(Level.SEVERE, "Error al ejecutar la aplicación", ex);
         }
         
-        
+        /*
         CedulaFormatter cedF = new CedulaFormatter();
         
         int ced = 1058932819;
@@ -62,13 +62,15 @@ public class main {
         String resultado = dateFilter.filter(fecha);
 
         System.out.println(resultado);
-
+        */
         
         System.out.println(new java.io.File("piedraAzul.db").getAbsolutePath());
-        //winLogin winPrincipal = new winLogin();
-        //winPrincipal.setVisible(true);
+        
+        winLogin login = new winLogin();
+        login.setVisible(true);
         
         //Vista exportar
+        /*
         AppointmentRepository appointmentRepository = new AppointmentRepositoryImpl();
         ProfessionalRepository professionalRepository = new ProfessionalRepositoryImpl();
         AppointmentService appointmentService = new AppointmentServiceImpl(appointmentRepository);
@@ -76,6 +78,7 @@ public class main {
         
         winExport export = new winExport(appointmentService, profesionalService);
         export.setVisible(true);
+        */
     }
     
     
