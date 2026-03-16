@@ -134,8 +134,8 @@
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                       <Component id="btnRegProfessional" min="-2" pref="182" max="-2" attributes="0"/>
                       <EmptySpace pref="28" max="32767" attributes="0"/>
-                      <Component id="btnRegScheduler" min="-2" pref="183" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                      <Component id="btnProfessionalSchedule" min="-2" pref="208" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -144,7 +144,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="btnRegScheduler" pref="46" max="32767" attributes="0"/>
+                          <Component id="btnProfessionalSchedule" pref="46" max="32767" attributes="0"/>
                           <Component id="btnRegProfessional" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace pref="14" max="32767" attributes="0"/>
@@ -161,12 +161,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegProfessionalActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="btnRegScheduler">
+            <Component class="javax.swing.JButton" name="btnProfessionalSchedule">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Registrar agendador"/>
+                <Property name="text" type="java.lang.String" value="Gestionar horario profesional"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegSchedulerActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProfessionalScheduleActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

@@ -3,6 +3,7 @@ package services;
 import models.User;
 import repository.UserRepository;
 import configuration.IAuthenticationService;
+import enums.RoleUserEnum;
 
 public class UserServiceImpl implements UserService {
 
@@ -38,20 +39,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean authUser(int cedUser, String password) {
+    public Enum<RoleUserEnum> authUser(int cedUser, String password) {
 
         if (password == null) {
-            return false;
+            return null;
         }
 
         User user = userRepository.findByCedUser(cedUser);
 
         if (user == null) {
-            return false;
+            return null;
         }
 
         if(authService.verify(user, password)){
-            return true;
+            return user.getRoleUser();
         }
         
         String hash = authService.encrypt(password);

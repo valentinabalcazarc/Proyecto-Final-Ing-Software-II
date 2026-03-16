@@ -21,7 +21,7 @@ public class winAdmin extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         btnRegProfessional = new javax.swing.JButton();
-        btnRegScheduler = new javax.swing.JButton();
+        btnProfessionalSchedule = new javax.swing.JButton();
         btn_CerrarSesion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -61,10 +61,10 @@ public class winAdmin extends javax.swing.JFrame {
             }
         });
 
-        btnRegScheduler.setText("Registrar agendador");
-        btnRegScheduler.addActionListener(new java.awt.event.ActionListener() {
+        btnProfessionalSchedule.setText("Gestionar horario profesional");
+        btnProfessionalSchedule.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegSchedulerActionPerformed(evt);
+                btnProfessionalScheduleActionPerformed(evt);
             }
         });
 
@@ -76,15 +76,15 @@ public class winAdmin extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addComponent(btnRegProfessional, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addComponent(btnRegScheduler, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31))
+                .addComponent(btnProfessionalSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnRegScheduler, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                    .addComponent(btnProfessionalSchedule, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
                     .addComponent(btnRegProfessional, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
@@ -145,11 +145,9 @@ public class winAdmin extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnRegProfessionalActionPerformed
 
-    private void btnRegSchedulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegSchedulerActionPerformed
-        winRegisterScheduler winRegSchlr = new winRegisterScheduler(iuserservice);
-        winRegSchlr.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnRegSchedulerActionPerformed
+    private void btnProfessionalScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfessionalScheduleActionPerformed
+        
+    }//GEN-LAST:event_btnProfessionalScheduleActionPerformed
 
     private void btn_CerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CerrarSesionActionPerformed
         new winLogin().setVisible(true);
@@ -157,8 +155,8 @@ public class winAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_CerrarSesionActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnProfessionalSchedule;
     private javax.swing.JButton btnRegProfessional;
-    private javax.swing.JButton btnRegScheduler;
     private javax.swing.JButton btn_CerrarSesion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

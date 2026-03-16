@@ -3,7 +3,7 @@ package enums;
 
 
 public enum RoleUserEnum {
-    Doctor,
-    Scheduler,
+    Professional,
+    Admin,
     Patient
 }
