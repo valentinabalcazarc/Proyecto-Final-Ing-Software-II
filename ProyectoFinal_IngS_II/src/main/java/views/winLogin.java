@@ -8,12 +8,13 @@ import services.UserService;
 import services.UserServiceImpl;
 import configuration.IAuthenticationService;
 import configuration.AuthenticationBCrypt;
+import enums.RoleUserEnum;
 
 public class winLogin extends javax.swing.JFrame {
 
     private UserService userService;
-    private final String ADMIN_USER = "101010";
-    private final String ADMIN_PASS = "12345";
+    //private final String ADMIN_USER = "101010";
+    //private final String ADMIN_PASS = "12345";
 
     public winLogin() {
         initComponents();
@@ -181,6 +182,7 @@ public class winLogin extends javax.swing.JFrame {
         return;
     }
     
+    /*
     // validar si es admin
     if (cedText.equals(ADMIN_USER) && password.equals(ADMIN_PASS)) {
         JOptionPane.showMessageDialog(this, "Bienvenido Administrador");
@@ -189,7 +191,7 @@ public class winLogin extends javax.swing.JFrame {
         this.dispose();
         return;
     }
-    
+    */
     // validar si es  usuario 
     int ced;
 
@@ -200,19 +202,25 @@ public class winLogin extends javax.swing.JFrame {
         return;
     }
     
-    //System.out.println("cedula: "+ ced);
-    //System.out.println("pass: "+ password);
-    
-    boolean autenticado = userService.authUser(ced, password);
+    RoleUserEnum rol = (RoleUserEnum) userService.authUser(ced, password);
 
-    if (autenticado) {
-        JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso.");
-        new winPrincipal().setVisible(true);
-        this.dispose();
-    } else {
-        JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.");
+    switch (rol) {
+        case Admin:
+            new winAdmin(userService).setVisible(true);
+            this.dispose();
+            System.out.println("ENTRANDO A ADMIN");
+            break;
+        case Patient:
+            new winPrincipal().setVisible(true);
+            this.dispose();
+            System.out.println("ENTRANDO A PACIENTE");
+        case Professional:
+            new winPrincipal().setVisible(true);
+            this.dispose();
+            System.out.println("ENTRANDO A PACIENTE");
+        default:
+            throw new AssertionError();
     }
-
     }//GEN-LAST:event_btnInicioSecionActionPerformed
 
     private void btnRegister_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegister_LoginActionPerformed

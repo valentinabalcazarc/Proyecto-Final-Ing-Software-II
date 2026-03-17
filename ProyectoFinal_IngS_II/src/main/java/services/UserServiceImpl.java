@@ -41,23 +41,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public Enum<RoleUserEnum> authUser(int cedUser, String password) {
 
+        User user = userRepository.findByCedUser(cedUser);
+
         if (password == null) {
             return null;
         }
-
-        User user = userRepository.findByCedUser(cedUser);
 
         if (user == null) {
             return null;
         }
 
-        if(authService.verify(user, password)){
-            return user.getRoleUser();
-        }
-        
         String hash = authService.encrypt(password);
 
-        return authService.verify(user, hash);
+        if(authService.verify(user, password)){
+            return user.getRoleUser();
+        }else{
+            return null;
+        }       
     }
 
     @Override
