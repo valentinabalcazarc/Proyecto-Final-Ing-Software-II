@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package views;
+package views.Patient;
 
 /**
  *
@@ -42,11 +42,11 @@ public class winAutomaticRecommendation extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 255));
 
-        jLabelTitle.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabelTitle.setFont(new java.awt.Font("Cascadia Code", 1, 18)); // NOI18N
         jLabelTitle.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelTitle.setText("Asistente de agendamiento");
+        jLabelTitle.setText("Asistente de Agendamiento");
 
-        jLabelInfo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabelInfo.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
         jLabelInfo.setForeground(new java.awt.Color(255, 255, 255));
         jLabelInfo.setText("Programa tu cita ahora");
 
@@ -73,15 +73,18 @@ public class winAutomaticRecommendation extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
         jLabel1.setText("La cita mas cercana disponible es:");
 
         jPanel3.setBackground(new java.awt.Color(221, 221, 221));
 
+        jLabel2.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
         jLabel2.setText("jLabel2");
 
+        jLabel3.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
         jLabel3.setText("jLabel3");
 
+        jLabel4.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
         jLabel4.setText("jLabel4");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -109,12 +112,22 @@ public class winAutomaticRecommendation extends javax.swing.JFrame {
         );
 
         jButtonOtherTimes.setBackground(new java.awt.Color(217, 79, 79));
-        jButtonOtherTimes.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonOtherTimes.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
         jButtonOtherTimes.setText("Ver otros horarios disponibles ");
+        jButtonOtherTimes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonOtherTimesActionPerformed(evt);
+            }
+        });
 
         jButtonConfirmAppointment.setBackground(new java.awt.Color(102, 204, 0));
-        jButtonConfirmAppointment.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonConfirmAppointment.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
         jButtonConfirmAppointment.setText("Confirmar cita");
+        jButtonConfirmAppointment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConfirmAppointmentActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -123,14 +136,13 @@ public class winAutomaticRecommendation extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(jLabel1)
-                .addContainerGap(427, Short.MAX_VALUE))
+                .addContainerGap(381, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButtonConfirmAppointment)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jButtonOtherTimes, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonOtherTimes, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(67, 67, 67))
         );
         jPanel2Layout.setVerticalGroup(
@@ -142,7 +154,7 @@ public class winAutomaticRecommendation extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonOtherTimes, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
                 .addComponent(jButtonConfirmAppointment)
                 .addGap(73, 73, 73))
         );
@@ -164,6 +176,15 @@ public class winAutomaticRecommendation extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonOtherTimesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOtherTimesActionPerformed
+        winSelectSpecificAppointment_Pat specificApp = new winSelectSpecificAppointment_Pat();
+        specificApp.setVisible(true);
+    }//GEN-LAST:event_jButtonOtherTimesActionPerformed
+
+    private void jButtonConfirmAppointmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfirmAppointmentActionPerformed
+        
+    }//GEN-LAST:event_jButtonConfirmAppointmentActionPerformed
 
  
 

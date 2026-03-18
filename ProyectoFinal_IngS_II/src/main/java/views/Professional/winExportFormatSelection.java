@@ -1,4 +1,4 @@
-package views;
+package views.Professional;
 
 import interfacePlugin.IReportPlugin;
 import java.util.List;

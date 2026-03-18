@@ -1,6 +1,6 @@
 package Main;
 import DataBase.SQLRepository;
-import views.winExport;
+import views.Professional.winExport;
 import views.winLogin;
 import filters.CedulaFormatter;
 import filters.TransformCamelCaseNameStage;

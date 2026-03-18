@@ -1,5 +1,5 @@
 
-package views;
+package views.Admin;
 
 import javax.swing.JOptionPane;
 import models.Professional;
@@ -8,6 +8,7 @@ import enums.StatusUserEnum;
 import enums.TypeProfEnum;
 import enums.RoleUserEnum;
 import services.UserService;
+import views.winLogin;
 
 public class winRegisterProfessional extends javax.swing.JFrame {
 

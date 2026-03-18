@@ -1,7 +1,8 @@
 
-package views;
+package views.Admin;
 
 import services.UserService;
+import views.winLogin;
 
 public class winAdmin extends javax.swing.JFrame {
         UserService iuserservice; 
