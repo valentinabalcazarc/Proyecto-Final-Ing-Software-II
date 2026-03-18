@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package views;
+package views.Patient;
 
 /**
  *
  * @author Valeria
  */
-public class winViewAppoinment extends javax.swing.JInternalFrame {
+public class winViewAppoinment_Pat extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form winViewAppoinment
      */
-    public winViewAppoinment() {
+    public winViewAppoinment_Pat() {
         initComponents();
     }
 
@@ -34,10 +34,10 @@ public class winViewAppoinment extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableAppointments = new javax.swing.JTable();
 
-        jPanel1.setBackground(new java.awt.Color(0, 102, 204));
+        jPanel1.setBackground(new java.awt.Color(102, 102, 255));
         jPanel1.setForeground(new java.awt.Color(0, 51, 255));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Cascadia Code", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("VER CITAS");
 
@@ -58,15 +58,16 @@ public class winViewAppoinment extends javax.swing.JInternalFrame {
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
         jButton1.setText("Cancelar cita");
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
         jButton2.setText("Reagendar cita");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
         jLabel2.setText("CITAS PROGRAMADAS:");
 
+        jTableAppointments.setFont(new java.awt.Font("Cascadia Code", 1, 18)); // NOI18N
         jTableAppointments.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -105,7 +106,7 @@ public class winViewAppoinment extends javax.swing.JInternalFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))

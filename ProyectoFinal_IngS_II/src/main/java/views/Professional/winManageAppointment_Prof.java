@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package views;
+package views.Professional;
 
 /**
  *
  * @author ACER
  */
-public class winScheduleAppointment extends javax.swing.JFrame {
+public class winManageAppointment_Prof extends javax.swing.JFrame {
 
     /**
      * Creates new form winScheduleAppointment
      */
-    public winScheduleAppointment() {
+    public winManageAppointment_Prof() {
         initComponents();
     }
 

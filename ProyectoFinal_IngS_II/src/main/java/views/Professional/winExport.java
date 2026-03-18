@@ -1,4 +1,4 @@
-package views;
+package views.Professional;
 import configuration.FestivosService;
 import com.toedter.calendar.JCalendar;
 import filters.CedulaFormatter;

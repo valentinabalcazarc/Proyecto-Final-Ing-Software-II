@@ -1,5 +1,9 @@
 package views;
 
+import views.Admin.winAdmin;
+import views.Admin.winUserRegister;
+import views.Patient.winPrincipal_Pat;
+import views.Professional.winPrincipal_Prof;
 import javax.swing.JOptionPane;
 
 import repository.UserRepository;
@@ -211,13 +215,13 @@ public class winLogin extends javax.swing.JFrame {
             System.out.println("ENTRANDO A ADMIN");
             break;
         case Patient:
-            new winPrincipal().setVisible(true);
+            new winPrincipal_Pat().setVisible(true);
             this.dispose();
             System.out.println("ENTRANDO A PACIENTE");
         case Professional:
-            new winPrincipal().setVisible(true);
+            new winPrincipal_Prof().setVisible(true);
             this.dispose();
-            System.out.println("ENTRANDO A PACIENTE");
+            System.out.println("ENTRANDO A PROFESIONAL");
         default:
             throw new AssertionError();
     }

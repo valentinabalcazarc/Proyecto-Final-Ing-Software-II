@@ -1,4 +1,4 @@
-package views;
+package views.Admin;
 
 import javax.swing.JOptionPane;
 import enums.StatusUserEnum;

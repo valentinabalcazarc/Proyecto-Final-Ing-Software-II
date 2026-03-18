@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package views;
+package views.Patient;
 
 /**
  *
  * @author Valeria
  */
-public class winSelectService extends javax.swing.JFrame {
+public class winSelectService_Pat extends javax.swing.JFrame {
 
     /**
      * Creates new form winSelectService
      */
-    public winSelectService() {
+    public winSelectService_Pat() {
         initComponents();
     }
 
@@ -83,6 +83,11 @@ public class winSelectService extends javax.swing.JFrame {
         jButtonChiropractic.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonChiropractic.setForeground(new java.awt.Color(255, 255, 255));
         jButtonChiropractic.setText("Quiropractica");
+        jButtonChiropractic.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonChiropracticActionPerformed(evt);
+            }
+        });
 
         jTextAreaNeutralTherapy.setBackground(new java.awt.Color(245, 212, 115));
         jTextAreaNeutralTherapy.setColumns(20);
@@ -94,6 +99,11 @@ public class winSelectService extends javax.swing.JFrame {
         jButtonNeutralTherapy.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonNeutralTherapy.setForeground(new java.awt.Color(255, 255, 255));
         jButtonNeutralTherapy.setText("Terapia neutral");
+        jButtonNeutralTherapy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNeutralTherapyActionPerformed(evt);
+            }
+        });
 
         jTextAreaChiropractic.setBackground(new java.awt.Color(176, 210, 108));
         jTextAreaChiropractic.setColumns(20);
@@ -105,6 +115,11 @@ public class winSelectService extends javax.swing.JFrame {
         jButtonPhysiotherapy.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonPhysiotherapy.setForeground(new java.awt.Color(255, 255, 255));
         jButtonPhysiotherapy.setText("Fisioterapia");
+        jButtonPhysiotherapy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPhysiotherapyActionPerformed(evt);
+            }
+        });
 
         jTextAreaPhysiotherapy.setBackground(new java.awt.Color(232, 154, 115));
         jTextAreaPhysiotherapy.setColumns(20);
@@ -145,11 +160,11 @@ public class winSelectService extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(26, 26, 26)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
                     .addComponent(jButtonNeutralTherapy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
                     .addComponent(jButtonChiropractic, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -175,6 +190,21 @@ public class winSelectService extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonNeutralTherapyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNeutralTherapyActionPerformed
+        winAutomaticRecommendation recomendation = new winAutomaticRecommendation();
+        recomendation.setVisible(true);
+    }//GEN-LAST:event_jButtonNeutralTherapyActionPerformed
+
+    private void jButtonChiropracticActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonChiropracticActionPerformed
+        winAutomaticRecommendation recomendation = new winAutomaticRecommendation();
+        recomendation.setVisible(true);
+    }//GEN-LAST:event_jButtonChiropracticActionPerformed
+
+    private void jButtonPhysiotherapyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPhysiotherapyActionPerformed
+        winAutomaticRecommendation recomendation = new winAutomaticRecommendation();
+        recomendation.setVisible(true);
+    }//GEN-LAST:event_jButtonPhysiotherapyActionPerformed
 
  
 
