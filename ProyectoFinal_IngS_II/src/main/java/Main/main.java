@@ -25,14 +25,13 @@ public class main {
         SQLRepository.conectar();
         seleccionarLookAndField();
         
-        //Inicializar el plugin manager con la ruta base de la aplicación.
         String basePath = getBaseFilePath();
         try {
             AppointmentPluginManager.init(basePath);
         } catch (Exception ex) {
             Logger.getLogger("Application").log(Level.SEVERE, "Error al ejecutar la aplicación", ex);
         }
-        
+        /*
         StatusAppointment statusmanual = StatusAppointment.Cancelled;
         
         AppointmentDirector director = new AppointmentDirector();
@@ -95,7 +94,7 @@ public class main {
         mostrarCita(citaReprogramada);
         
         System.out.println(new java.io.File("piedraAzul.db").getAbsolutePath());
-        
+        */
         winLogin login = new winLogin();
         login.setVisible(true);
         
@@ -125,7 +124,7 @@ public class main {
     private static String getBaseFilePath() {
         try {
             String path = main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-            path = URLDecoder.decode(path, "UTF-8"); //This should solve the problem with spaces and special characters.
+            path = URLDecoder.decode(path, "UTF-8");
             File pathFile = new File(path);
             if (pathFile.isFile()) {
                 path = pathFile.getParent();
