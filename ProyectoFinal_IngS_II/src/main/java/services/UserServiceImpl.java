@@ -24,7 +24,6 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        //porque es un != aqui, wtf
         if (userRepository.findByCedUser(newUser.getCedUser()) != null) {
             return false;
         }
@@ -39,25 +38,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Enum<RoleUserEnum> authUser(int cedUser, String password) {
+    public RoleUserEnum authUser(int cedUser, String password) {
 
-        User user = userRepository.findByCedUser(cedUser);
-
-        if (password == null) {
+        if (password == null || password.isEmpty()) {
             return null;
         }
+
+        User user = userRepository.findByCedUser(cedUser);
 
         if (user == null) {
             return null;
         }
 
-        String hash = authService.encrypt(password);
-
-        if(authService.verify(user, password)){
+        if (authService.verify(user, password)) {
             return user.getRoleUser();
-        }else{
-            return null;
-        }       
+        }
+
+        return null;
     }
 
     @Override

@@ -1,13 +1,13 @@
-
 package configuration;
+
 import models.User;
 import org.mindrot.jbcrypt.BCrypt;
+import repository.UserRepository;
+import repository.UserRepositoryImpl;
 
-/**
- *
- * @author SAM
- */
-public class AuthenticationBCrypt implements IAuthenticationService{
+public class AuthenticationBCrypt implements IAuthenticationService {
+
+    private UserRepository userRepository = new UserRepositoryImpl();
 
     /*
         @param password: la contraseña en texto plano al momento de registro
@@ -18,27 +18,36 @@ public class AuthenticationBCrypt implements IAuthenticationService{
     }
 
     /*
-        @param passUser: el hash almacenado en la base de datos
-        @param password: la contraseña en texto plano ingresada en el login
+        @param user: usuario con contraseña almacenada
+        @param password: contraseña ingresada en login
     */
     @Override
     public boolean verify(User user, String password) {
-        
-        if(BCrypt.checkpw(password, user.getPassUser())){   
-            
+
+        if (user == null || password == null) {
+            return false;
+        }
+
+        String storedPass = user.getPassUser();
+
+        if (storedPass.startsWith("$2a$") || storedPass.startsWith("$2b$")) {
+
+            // Caso normal
+            return BCrypt.checkpw(password, storedPass);
+        }
+
+        // Caso texto plano (colocado inserts sql)
+        if (storedPass.equals(password)) {
+
+            String newHash = encrypt(password);
+            user.setPassUser(newHash);
+
+            //cambio a hash y actualizo en la base de datos
+            userRepository.update(user);
+
             return true;
         }
-        
-        if(user.getPassUser().equals(password)){
-            
-            String newpass = encrypt(user.getPassUser());
-            
-            user.setPassUser(newpass);
-            
-            return true;
-        }
-        
+
         return false;
     }
-    
 }

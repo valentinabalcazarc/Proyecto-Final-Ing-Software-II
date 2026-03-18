@@ -177,54 +177,47 @@ public class winLogin extends javax.swing.JFrame {
 
     private void btnInicioSecionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioSecionActionPerformed
 
-    String cedText = txtUser_login.getText().trim();
-    //String password = txtPass_Login.getText().trim();
-    String password = new String(txtPass_Login.getPassword());
-    
-    if (cedText.isEmpty() || password.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Debe ingresar usuario y contraseña.");
-        return;
-    }
-    
-    /*
-    // validar si es admin
-    if (cedText.equals(ADMIN_USER) && password.equals(ADMIN_PASS)) {
-        JOptionPane.showMessageDialog(this, "Bienvenido Administrador");
+        String cedText = txtUser_login.getText().trim();
+        String password = new String(txtPass_Login.getPassword());
 
-        new winAdmin(userService).setVisible(true);
+        if (cedText.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar usuario y contraseña.");
+            return;
+        }
+
+        int ced;
+        try {
+            ced = Integer.parseInt(cedText);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El usuario debe ser numérico.");
+            return;
+        }
+
+        RoleUserEnum rol = (RoleUserEnum) userService.authUser(ced, password);
+
+        if (rol == null) {
+            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.");
+            return;
+        }
+
+        switch (rol) {
+            case Admin:
+                new winAdmin(userService).setVisible(true);
+                System.out.println("ENTRANDO A ADMIN");
+                break;
+
+            case Patient:
+                new winPrincipal_Pat().setVisible(true);
+                System.out.println("ENTRANDO A PACIENTE");
+                break;
+
+            case Professional:
+                new winPrincipal_Prof().setVisible(true);
+                System.out.println("ENTRANDO A PROFESIONAL");
+                break;
+        }
+
         this.dispose();
-        return;
-    }
-    */
-    // validar si es  usuario 
-    int ced;
-
-    try {
-        ced = Integer.parseInt(cedText);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "El usuario debe ser numérico.");
-        return;
-    }
-    
-    RoleUserEnum rol = (RoleUserEnum) userService.authUser(ced, password);
-
-    switch (rol) {
-        case Admin:
-            new winAdmin(userService).setVisible(true);
-            this.dispose();
-            System.out.println("ENTRANDO A ADMIN");
-            break;
-        case Patient:
-            new winPrincipal_Pat().setVisible(true);
-            this.dispose();
-            System.out.println("ENTRANDO A PACIENTE");
-        case Professional:
-            new winPrincipal_Prof().setVisible(true);
-            this.dispose();
-            System.out.println("ENTRANDO A PROFESIONAL");
-        default:
-            throw new AssertionError();
-    }
     }//GEN-LAST:event_btnInicioSecionActionPerformed
 
     private void btnRegister_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegister_LoginActionPerformed
