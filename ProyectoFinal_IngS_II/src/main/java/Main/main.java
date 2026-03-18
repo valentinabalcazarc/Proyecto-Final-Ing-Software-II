@@ -1,27 +1,22 @@
 package Main;
 import DataBase.SQLRepository;
-import views.Professional.winExport;
+import builder.AppointmentDirector;
+import builder.ManualAppointmentBuilder;
+import builder.RescheduledAppointmentBuilder;
+import builder.SelfServiceAppointmentBuilder;
+import enums.StatusAppointment;
+import models.Appointment;
 import views.winLogin;
-import filters.CedulaFormatter;
-import filters.TransformCamelCaseNameStage;
-import filters.TransformDateStage;
-import java.io.Console;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
-import org.mindrot.jbcrypt.BCrypt;
 import plugin.manager.AppointmentPluginManager;
-import repository.AppointmentRepository;
-import repository.AppointmentRepositoryImpl;
-import repository.ProfessionalRepository;
-import repository.ProfessionalRepositoryImpl;
-import services.AppointmentService;
-import services.AppointmentServiceImpl;
-import services.ProfessionalService;
-import services.ProfessionalServiceImpl;
+
 
 
 public class main {
@@ -38,31 +33,66 @@ public class main {
             Logger.getLogger("Application").log(Level.SEVERE, "Error al ejecutar la aplicación", ex);
         }
         
-        /*
-        CedulaFormatter cedF = new CedulaFormatter();
+        StatusAppointment statusmanual = StatusAppointment.Cancelled;
         
-        int ced = 1058932819;
-        String cedS = (String) cedF.filter(ced);
-        
-        System.out.println(cedS);
-        
-        TransformCamelCaseNameStage nameF = new TransformCamelCaseNameStage();
-        
-        String name = "jesus eduardo lasso munoz";
-        
-        String nameFlt = nameF.filter(name);
-        
-        System.out.println(nameFlt);
-        
-        
-        TransformDateStage dateFilter = new TransformDateStage();
+        AppointmentDirector director = new AppointmentDirector();
 
-        String fecha = "2006-03-23";
+        // =============================
+        // 1. CITA MANUAL
+        // =============================
+        director.setAppointmentBuilder(new ManualAppointmentBuilder());
 
-        String resultado = dateFilter.filter(fecha);
+        director.buildManualAppointment(
+                1,
+                100,
+                LocalDate.now(),
+                LocalTime.of(9, 0),
+                "Consulta general",
+                statusmanual
+        );
 
-        System.out.println(resultado);
-        */
+        Appointment citaManual = director.getAppointment();
+
+        System.out.println("===== CITA MANUAL =====");
+        mostrarCita(citaManual);
+
+
+        // =============================
+        // 2. CITA AUTO-SERVICIO
+        // =============================
+        director.setAppointmentBuilder(new SelfServiceAppointmentBuilder());
+
+        director.buildSelfServiceAppointment(
+                2,
+                200,
+                LocalDate.now().plusDays(1),
+                LocalTime.of(10, 30),
+                "Agendada por paciente"
+        );
+
+        Appointment citaAuto = director.getAppointment();
+
+        System.out.println("===== CITA AUTO-SERVICIO =====");
+        mostrarCita(citaAuto);
+
+
+        // =============================
+        // 3. CITA REPROGRAMADA
+        // =============================
+        director.setAppointmentBuilder(new RescheduledAppointmentBuilder());
+
+        director.buildRescheduledAppointment(
+                3,
+                300,
+                LocalDate.now().plusDays(2),
+                LocalTime.of(14, 0),
+                "Cambio de horario"
+        );
+
+        Appointment citaReprogramada = director.getAppointment();
+
+        System.out.println("===== CITA REPROGRAMADA =====");
+        mostrarCita(citaReprogramada);
         
         System.out.println(new java.io.File("piedraAzul.db").getAbsolutePath());
         
@@ -111,5 +141,16 @@ public class main {
             Logger.getLogger(main.class.getName()).log(Level.SEVERE, "Error al eliminar espacios en la ruta del archivo", ex);
             return null;
         }
+    }
+    
+    private static void mostrarCita(Appointment cita){
+        System.out.println(
+            "Cita -> Paciente: " + cita.getPatientId() +
+            ", Profesional: " + cita.getProfessionalId() +
+            ", Fecha: " + cita.getDate() +
+            ", Hora: " + cita.getTime() +
+            ", Descripcion: " + cita.getDescription() +
+            ", Estado: " + cita.getStatus()
+        );
     }
 }
