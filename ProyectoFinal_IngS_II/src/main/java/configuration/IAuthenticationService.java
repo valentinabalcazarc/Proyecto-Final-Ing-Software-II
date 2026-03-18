@@ -3,10 +3,6 @@ package configuration;
 
 import models.User;
 
-/**
- *
- * @author SAM
- */
 public interface IAuthenticationService {
     /*
         @brief encripta la contraseña que ingresa el usuario al registrarse
