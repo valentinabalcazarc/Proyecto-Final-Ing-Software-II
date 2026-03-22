@@ -6,16 +6,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.AppointmentRep;
 import plugin.manager.AppointmentPluginManager;
-import services.AppointmentService;
+import services.ServiceManager;
+import views.ViewManager;
 
 public class winExportFormatSelection extends javax.swing.JFrame {
-    private AppointmentService appointmentService;
     private List<AppointmentRep> appointmentReps;
     
-    public winExportFormatSelection(AppointmentService appointmentService, List<AppointmentRep> appointmentReps) {
+    public winExportFormatSelection(List<AppointmentRep> appointmentReps) {
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        this.appointmentService = appointmentService;
         this.appointmentReps = appointmentReps;
     }
 
@@ -172,7 +171,7 @@ public class winExportFormatSelection extends javax.swing.JFrame {
 
         IReportPlugin plugin = manager.getReportPlugin("json");
 
-        List<AppointmentRep> datos = appointmentService.getAppointmentForReport();
+        List<AppointmentRep> datos = ServiceManager.getInstance().getAppointmentService().getAppointmentForReport();
 
         String datosPrint = plugin.generateReport(appointmentReps);
         textArea_Export.setText(datosPrint);
@@ -190,7 +189,7 @@ public class winExportFormatSelection extends javax.swing.JFrame {
 
         IReportPlugin plugin = manager.getReportPlugin("html");
 
-        List<AppointmentRep> datos = appointmentService.getAppointmentForReport();
+        List<AppointmentRep> datos = ServiceManager.getInstance().getAppointmentService().getAppointmentForReport();
 
         String datosPrint = plugin.generateReport(appointmentReps);
         textArea_Export.setText(datosPrint);
@@ -198,7 +197,8 @@ public class winExportFormatSelection extends javax.swing.JFrame {
     }//GEN-LAST:event_button_HtmlActionPerformed
 
     private void button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_BackActionPerformed
-        this.dispose();
+        ViewManager.getInstance().getExport().setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_button_BackActionPerformed
 
     

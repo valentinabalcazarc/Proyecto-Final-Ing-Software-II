@@ -233,4 +233,141 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
 
         return lista;
     }
+    
+    @Override
+    public List<Object[]> generateAppForTable() {
+        List<Object[]> apps = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+
+        // 1. SQL solo para Profesionales (sin JOIN con Appointment aquí para evitar duplicados)
+        String sqlProf = "SELECT pr.CODPROF, u.NAMEUSER, u.LASTNAMEUSER, pr.TYPEPROF, " +
+                         "pr.SPECIALITYPROF, pr.ATTENTIONINTERVAL " +
+                         "FROM PROFESSIONAL pr " +
+                         "JOIN USERS u ON pr.CODUSER = u.CODUSER " +
+                         "WHERE pr.STATUSPROF = 'Active'";
+
+        // 2. SQL para saber qué horas ya están ocupadas HOY
+        String sqlOcupadas = "SELECT CODPROF, TIMEAPP, STATUSAPP FROM APPOINTMENT WHERE DATEAPP = ? AND STATUSAPP = 'Scheduled'";
+
+        try (Connection conn = SQLRepository.conectar()) {
+
+            // Mapeamos las citas ocupadas: "ID_PROF-HORA" -> "ESTADO"
+            java.util.Map<String, String> ocupadas = new java.util.HashMap<>();
+            try (PreparedStatement stOcup = conn.prepareStatement(sqlOcupadas)) {
+                stOcup.setString(1, today.toString());
+                ResultSet rsOcup = stOcup.executeQuery();
+                while (rsOcup.next()) {
+                    String llave = rsOcup.getInt("CODPROF") + "-" + rsOcup.getString("TIMEAPP");
+                    ocupadas.put(llave, rsOcup.getString("STATUSAPP"));
+                }
+            }
+
+            // 3. Generamos los horarios
+            try (PreparedStatement stmt = conn.prepareStatement(sqlProf);
+                 ResultSet rs = stmt.executeQuery()) {
+
+                java.time.LocalTime startDay = java.time.LocalTime.of(7, 0);
+                java.time.LocalTime endDay = java.time.LocalTime.of(14, 0);
+
+                while (rs.next()) {
+                    int interval = rs.getInt("ATTENTIONINTERVAL");
+                    int codProf = rs.getInt("CODPROF");
+                    String profName = rs.getString("NAMEUSER") + " " + rs.getString("LASTNAMEUSER");
+
+                    java.time.LocalTime currentTime = startDay;
+
+                    while (currentTime.plusMinutes(interval).isBefore(endDay.plusMinutes(1))) {
+                        String horaActual = currentTime.toString();
+                        String llaveBusqueda = codProf + "-" + horaActual;
+
+                        // Si la hora está en el mapa de ocupadas, saltamos
+                        if (!ocupadas.containsKey(llaveBusqueda)) {
+                            Object[] fila = {
+                                today.toString(),
+                                horaActual,
+                                profName,
+                                rs.getString("TYPEPROF"),
+                                rs.getString("SPECIALITYPROF")
+                            };
+                            apps.add(fila);
+                        } 
+                        currentTime = currentTime.plusMinutes(interval);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return apps;
+    }
+    
+    @Override
+    public List<Object[]> filterGeneretedApp(Integer codProf, LocalDate fecha) {
+        List<Object[]> allSlots = new ArrayList<>();
+        LocalDate targetDate = (fecha != null) ? fecha : LocalDate.now();
+
+        // 1. SQL para Profesionales (con filtro opcional de ID)
+        String sqlProf = "SELECT pr.CODPROF, u.NAMEUSER, u.LASTNAMEUSER, pr.TYPEPROF, " +
+                         "pr.SPECIALITYPROF, pr.ATTENTIONINTERVAL " +
+                         "FROM PROFESSIONAL pr " +
+                         "JOIN USERS u ON pr.CODUSER = u.CODUSER " +
+                         "WHERE pr.STATUSPROF = 'Active'";
+
+        if (codProf != null) {
+            sqlProf += " AND pr.CODPROF = " + codProf;
+        }
+
+        // 2. SQL para Citas ocupadas en la fecha seleccionada
+        String sqlOcupadas = "SELECT CODPROF, TIMEAPP FROM APPOINTMENT WHERE DATEAPP = ? AND STATUSAPP = 'Scheduled'";
+
+        try (Connection conn = SQLRepository.conectar()) {
+
+            // Mapeamos ocupación para la fecha destino
+            java.util.Set<String> ocupadas = new java.util.HashSet<>();
+            try (PreparedStatement stOcup = conn.prepareStatement(sqlOcupadas)) {
+                stOcup.setString(1, targetDate.toString());
+                ResultSet rsOcup = stOcup.executeQuery();
+                while (rsOcup.next()) {
+                    // Llave: "IDPROF-HH:mm"
+                    ocupadas.add(rsOcup.getInt("CODPROF") + "-" + rsOcup.getString("TIMEAPP"));
+                }
+            }
+
+            // 3. Generamos los intervalos filtrados
+            try (PreparedStatement stmt = conn.prepareStatement(sqlProf);
+                 ResultSet rs = stmt.executeQuery()) {
+
+                java.time.LocalTime startDay = java.time.LocalTime.of(7, 0);
+                java.time.LocalTime endDay = java.time.LocalTime.of(14, 0);
+
+                while (rs.next()) {
+                    int interval = rs.getInt("ATTENTIONINTERVAL");
+                    int currentCodProf = rs.getInt("CODPROF");
+                    String profName = rs.getString("NAMEUSER") + " " + rs.getString("LASTNAMEUSER");
+
+                    java.time.LocalTime currentTime = startDay;
+
+                    while (currentTime.plusMinutes(interval).isBefore(endDay.plusMinutes(1))) {
+                        String horaActual = currentTime.toString();
+                        String llave = currentCodProf + "-" + horaActual;
+
+                        // SOLO agregamos si NO está en el conjunto de ocupadas
+                        if (!ocupadas.contains(llave)) {
+                            allSlots.add(new Object[]{
+                                targetDate.toString(),
+                                horaActual,
+                                profName,
+                                rs.getString("TYPEPROF"),
+                                rs.getString("SPECIALITYPROF")
+                            });
+                        }
+                        currentTime = currentTime.plusMinutes(interval);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return allSlots;
+    }
 }

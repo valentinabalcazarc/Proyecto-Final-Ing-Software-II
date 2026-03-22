@@ -1,31 +1,27 @@
 package views.Professional;
-import configuration.FestivosService;
+
 import com.toedter.calendar.JCalendar;
-import filters.CedulaFormatter;
-import filters.TransformCamelCaseNameStage;
-import filters.TransformDateStage;
+import configuration.FestivosService;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import models.AppointmentRep;
 import models.Professional;
 import services.ServiceManager;
 import views.ViewManager;
 
 
-public class winExport extends javax.swing.JFrame {
+public class winViewAppointments_Prof extends javax.swing.JFrame {
 
     
-    public winExport() {
+    public winViewAppointments_Prof() {
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        
-        logicaCalendario();
 
+        logicaCalendario();
+        
         //logica tabla
         inicializarTablaCitas();
         cargarTabla();
@@ -70,7 +66,6 @@ public class winExport extends javax.swing.JFrame {
         jDate_ExportDate.setMaxSelectableDate(fechaMaxima);
     }
 
-    
     private void inicializarTablaCitas() {
         DefaultTableModel model = new DefaultTableModel();
         
@@ -111,71 +106,11 @@ public class winExport extends javax.swing.JFrame {
         }
     }
 
-    private List<AppointmentRep> obtenerCitasDeTabla(){
-
-        DefaultTableModel model = (DefaultTableModel) table_App.getModel();
-        List<AppointmentRep> lista = new ArrayList<>();
-
-        // filtros
-        TransformDateStage dateFilter = new TransformDateStage();
-        TransformCamelCaseNameStage nameFilter = new TransformCamelCaseNameStage();
-        CedulaFormatter cedulaFilter = new CedulaFormatter();
-
-        for(int i = 0; i < model.getRowCount(); i++){
-
-            AppointmentRep ap = new AppointmentRep();
-
-            // Codigo de la cita
-            Object cod = model.getValueAt(i,0);
-            if(cod != null){
-                ap.setCodApp(Integer.parseInt(cod.toString()));
-            }
-
-            // Fecha
-            Object fecha = model.getValueAt(i,1);
-            if(fecha != null){
-
-                LocalDate fechaDate = LocalDate.parse(fecha.toString());
-
-                ap.setDate(fechaDate);
-            }
-            // ID del paciente
-            Object id = model.getValueAt(i,3);
-            if(id != null){
-
-                String idStr = cedulaFilter.filter((Integer) id);
-
-                ap.setIdPat(idStr);
-            }
-
-            // Nombre del paciente
-            Object namePat = model.getValueAt(i,4);
-            if(namePat != null){
-
-                String name = nameFilter.filter(namePat.toString());
-                ap.setNamePat(name);
-            }
-
-            // Nombre del profesional
-            Object nameProf = model.getValueAt(i,5);
-            if(nameProf != null){
-
-                String name = nameFilter.filter(nameProf.toString());
-                ap.setNameProff(name);
-            }
-
-            lista.add(ap);
-        }
-
-        return lista;
-    }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         panel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -189,33 +124,11 @@ public class winExport extends javax.swing.JFrame {
         button_Find = new javax.swing.JButton();
         button_EraseFilter = new javax.swing.JButton();
         button_Back = new javax.swing.JButton();
-        button_Export = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabelPiedraAzul2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jPanel1.setBackground(new java.awt.Color(89, 71, 255));
-        jPanel1.setForeground(new java.awt.Color(0, 102, 204));
-
-        jLabel1.setFont(new java.awt.Font("Cascadia Code", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("EXPORTACIÓN DE CITAS");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(410, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(363, 363, 363))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel1)
-                .addContainerGap(37, Short.MAX_VALUE))
-        );
 
         panel.setBackground(new java.awt.Color(255, 255, 255));
         panel.setAutoscrolls(true);
@@ -280,15 +193,6 @@ public class winExport extends javax.swing.JFrame {
             }
         });
 
-        button_Export.setBackground(new java.awt.Color(232, 232, 232));
-        button_Export.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
-        button_Export.setText("Exportar citas");
-        button_Export.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button_ExportActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
@@ -310,22 +214,17 @@ public class winExport extends javax.swing.JFrame {
                     .addGroup(panelLayout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 998, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(53, Short.MAX_VALUE))
-            .addGroup(panelLayout.createSequentialGroup()
-                .addGap(140, 140, 140)
-                .addComponent(button_Back)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 498, Short.MAX_VALUE)
-                .addComponent(button_Export)
-                .addGap(183, 183, 183))
+                .addContainerGap(29, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
-                        .addComponent(button_Find, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(153, 153, 153))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
-                        .addComponent(button_EraseFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(55, 55, 55))))
+                .addComponent(button_Find, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(153, 153, 153))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addComponent(button_Back)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(button_EraseFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55))
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -345,15 +244,48 @@ public class winExport extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(button_EraseFilter)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(button_Back)
-                    .addComponent(button_Export))
-                .addGap(36, 36, 36))
+                    .addComponent(button_EraseFilter)
+                    .addComponent(button_Back))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
 
         jScrollPane2.setViewportView(panel);
+
+        jPanel1.setBackground(new java.awt.Color(89, 71, 255));
+        jPanel1.setForeground(new java.awt.Color(0, 102, 204));
+
+        jLabel1.setFont(new java.awt.Font("Cascadia Code", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("VISUALIZACIÓN DE CITAS");
+
+        jLabelPiedraAzul2.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
+        jLabelPiedraAzul2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelPiedraAzul2.setText("Profesional");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(371, 371, 371)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(490, 490, 490)
+                        .addComponent(jLabelPiedraAzul2)))
+                .addContainerGap(375, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelPiedraAzul2)
+                .addGap(21, 21, 21))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -370,7 +302,7 @@ public class winExport extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -406,24 +338,16 @@ public class winExport extends javax.swing.JFrame {
         jDate_ExportDate.setDate(null);
     }//GEN-LAST:event_button_EraseFilterActionPerformed
 
-    private void button_ExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_ExportActionPerformed
-
-        List<AppointmentRep> lista = obtenerCitasDeTabla();
-        
-        winExportFormatSelection formatSelection = new winExportFormatSelection(lista);
-        formatSelection.setVisible(true);
-    }//GEN-LAST:event_button_ExportActionPerformed
-
     private void button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_BackActionPerformed
         ViewManager.getInstance().getPrincipalProf().setVisible(true);
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_button_BackActionPerformed
 
-   
+    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_Back;
     private javax.swing.JButton button_EraseFilter;
-    private javax.swing.JButton button_Export;
     private javax.swing.JButton button_Find;
     private javax.swing.JComboBox<Professional> cbx_Professional;
     private com.toedter.calendar.JDateChooser jDate_ExportDate;
@@ -431,6 +355,7 @@ public class winExport extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabelPiedraAzul2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

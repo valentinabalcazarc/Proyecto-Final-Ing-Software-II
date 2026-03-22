@@ -43,4 +43,14 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List<Object[]> searchAppointments(Integer codProf, LocalDate fecha) {
         return appointmentRepository.findFiltered(codProf, fecha);
     }
+    
+    @Override
+    public List<Object[]> getGeneretedAppointments() {
+        return appointmentRepository.generateAppForTable();
+    }
+    
+    @Override
+    public List<Object[]> getGeneretedAppointmentsFiltered(Integer codProf, LocalDate fecha) {
+        return appointmentRepository.filterGeneretedApp(codProf, fecha);
+    }
 }

@@ -12,4 +12,6 @@ public interface AppointmentRepository {
     List<Object[]> findAllForTable();
     List<AppointmentRep> findAllForReport();
     List<Object[]> findFiltered(Integer codProf, LocalDate fecha);
+    List<Object[]> generateAppForTable();
+    List<Object[]> filterGeneretedApp(Integer codProf, LocalDate fecha);
 }

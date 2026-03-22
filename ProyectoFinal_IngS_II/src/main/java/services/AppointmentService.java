@@ -16,4 +16,8 @@ public interface AppointmentService {
     List<AppointmentRep> getAppointmentForReport();
     
     List<Object[]> searchAppointments(Integer codProf, LocalDate fecha);
+    
+    List<Object[]> getGeneretedAppointments();
+    
+    List<Object[]> getGeneretedAppointmentsFiltered(Integer codProf, LocalDate fecha);
 }

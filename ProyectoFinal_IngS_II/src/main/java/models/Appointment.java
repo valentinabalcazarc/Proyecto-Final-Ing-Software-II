@@ -15,7 +15,7 @@ public class Appointment {
     private StatusAppointment status;
 
     public Appointment() {
-        this.status = StatusAppointment.Scheduled; //estado por defecto
+        this.status = StatusAppointment.Scheduled;
     }
 
     public Appointment(int id, int patientId, int professionalId, LocalDate date, LocalTime time, String description, StatusAppointment status) {

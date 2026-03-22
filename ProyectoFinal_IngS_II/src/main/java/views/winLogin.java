@@ -6,27 +6,15 @@ import views.Patient.winPrincipal_Pat;
 import views.Professional.winPrincipal_Prof;
 import javax.swing.JOptionPane;
 
-import repository.UserRepository;
-import repository.UserRepositoryImpl;
-import services.UserService;
-import services.UserServiceImpl;
-import configuration.IAuthenticationService;
-import configuration.AuthenticationBCrypt;
+
 import enums.RoleUserEnum;
+import services.ServiceManager;
+
 
 public class winLogin extends javax.swing.JFrame {
 
-    private UserService userService;
-    //private final String ADMIN_USER = "101010";
-    //private final String ADMIN_PASS = "12345";
-
     public winLogin() {
         initComponents();
-
-        // Inicialización de dependencias
-        UserRepository userRepository = new UserRepositoryImpl();
-        IAuthenticationService authService = new AuthenticationBCrypt();
-        userService = new UserServiceImpl(userRepository, authService);
     }
 
 
@@ -193,7 +181,7 @@ public class winLogin extends javax.swing.JFrame {
             return;
         }
 
-        RoleUserEnum rol = (RoleUserEnum) userService.authUser(ced, password);
+        RoleUserEnum rol = (RoleUserEnum) ServiceManager.getInstance().getUserService().authUser(ced, password);
 
         if (rol == null) {
             JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.");
@@ -201,20 +189,20 @@ public class winLogin extends javax.swing.JFrame {
         }
 
         switch (rol) {
-            case Admin:
-                new winAdmin(userService).setVisible(true);
+            case Admin -> {
+                new winAdmin().setVisible(true);
                 System.out.println("ENTRANDO A ADMIN");
-                break;
+            }
 
-            case Patient:
+            case Patient -> {
                 new winPrincipal_Pat().setVisible(true);
                 System.out.println("ENTRANDO A PACIENTE");
-                break;
+            }
 
-            case Professional:
+            case Professional -> {
                 new winPrincipal_Prof().setVisible(true);
                 System.out.println("ENTRANDO A PROFESIONAL");
-                break;
+            }
         }
 
         this.dispose();
@@ -222,15 +210,8 @@ public class winLogin extends javax.swing.JFrame {
 
     private void btnRegister_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegister_LoginActionPerformed
 
-        /*winRegisterProfessional winProfessional = new winRegisterProfessional(userService);
-        
-        winProfessional.setVisible(true);
-        
-        this.dispose();*/
-        
-        winUserRegister winUserReg = new winUserRegister(userService);
+        winUserRegister winUserReg = new winUserRegister();
         winUserReg.setVisible(true);
-
 
     }//GEN-LAST:event_btnRegister_LoginActionPerformed
 
