@@ -1,25 +1,34 @@
 package Main;
 import DataBase.SQLRepository;
-import builder.AppointmentDirector;
-import builder.ManualAppointmentBuilder;
-import builder.RescheduledAppointmentBuilder;
-import builder.SelfServiceAppointmentBuilder;
-import enums.StatusAppointment;
-import models.Appointment;
 import views.winLogin;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import plugin.manager.AppointmentPluginManager;
 
+import repository.UserRepositoryImpl;
+import repository.UserRepository;
+
+import services.AppointmentService;
+import services.ProfessionalService;
+import services.UserService;
+import services.UserServiceImpl;
+
+import configuration.IAuthenticationService;
+import configuration.AuthenticationBCrypt;
+
+
+
+
 
 
 public class main {
+    private static UserService userService;
+    private static AppointmentService appointmentService;
+    private static ProfessionalService professionalService;
 
     public static void main(String[] args) {
         SQLRepository.conectar();
@@ -31,83 +40,10 @@ public class main {
         } catch (Exception ex) {
             Logger.getLogger("Application").log(Level.SEVERE, "Error al ejecutar la aplicación", ex);
         }
-        /*
-        StatusAppointment statusmanual = StatusAppointment.Cancelled;
         
-        AppointmentDirector director = new AppointmentDirector();
-
-        // =============================
-        // 1. CITA MANUAL
-        // =============================
-        director.setAppointmentBuilder(new ManualAppointmentBuilder());
-
-        director.buildManualAppointment(
-                1,
-                100,
-                LocalDate.now(),
-                LocalTime.of(9, 0),
-                "Consulta general",
-                statusmanual
-        );
-
-        Appointment citaManual = director.getAppointment();
-
-        System.out.println("===== CITA MANUAL =====");
-        mostrarCita(citaManual);
-
-
-        // =============================
-        // 2. CITA AUTO-SERVICIO
-        // =============================
-        director.setAppointmentBuilder(new SelfServiceAppointmentBuilder());
-
-        director.buildSelfServiceAppointment(
-                2,
-                200,
-                LocalDate.now().plusDays(1),
-                LocalTime.of(10, 30),
-                "Agendada por paciente"
-        );
-
-        Appointment citaAuto = director.getAppointment();
-
-        System.out.println("===== CITA AUTO-SERVICIO =====");
-        mostrarCita(citaAuto);
-
-
-        // =============================
-        // 3. CITA REPROGRAMADA
-        // =============================
-        director.setAppointmentBuilder(new RescheduledAppointmentBuilder());
-
-        director.buildRescheduledAppointment(
-                3,
-                300,
-                LocalDate.now().plusDays(2),
-                LocalTime.of(14, 0),
-                "Cambio de horario"
-        );
-
-        Appointment citaReprogramada = director.getAppointment();
-
-        System.out.println("===== CITA REPROGRAMADA =====");
-        mostrarCita(citaReprogramada);
-        
-        System.out.println(new java.io.File("piedraAzul.db").getAbsolutePath());
-        */
         winLogin login = new winLogin();
         login.setVisible(true);
         
-        //Vista exportar
-        /*
-        AppointmentRepository appointmentRepository = new AppointmentRepositoryImpl();
-        ProfessionalRepository professionalRepository = new ProfessionalRepositoryImpl();
-        AppointmentService appointmentService = new AppointmentServiceImpl(appointmentRepository);
-        ProfessionalService profesionalService = new ProfessionalServiceImpl(professionalRepository);
-        
-        winExport export = new winExport(appointmentService, profesionalService);
-        export.setVisible(true);
-        */
     }
     
     
@@ -142,7 +78,7 @@ public class main {
         }
     }
     
-    private static void mostrarCita(Appointment cita){
+    /*private static void mostrarCita(Appointment cita){
         System.out.println(
             "Cita -> Paciente: " + cita.getPatientId() +
             ", Profesional: " + cita.getProfessionalId() +
@@ -151,5 +87,5 @@ public class main {
             ", Descripcion: " + cita.getDescription() +
             ", Estado: " + cita.getStatus()
         );
-    }
+    }*/
 }

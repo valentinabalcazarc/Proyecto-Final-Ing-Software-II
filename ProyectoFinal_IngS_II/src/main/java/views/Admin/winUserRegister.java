@@ -5,16 +5,15 @@ import enums.StatusUserEnum;
 import enums.TypeProfEnum;
 import models.User;
 import enums.RoleUserEnum;
+import services.ServiceManager;
 import services.UserService;
 
 public class winUserRegister extends javax.swing.JFrame {
     
-    UserService iuserservice; 
     private boolean mostrarPassword = false;
     
-    public winUserRegister(UserService iuserservice) {
+    public winUserRegister() {
         initComponents();
-        this.iuserservice=iuserservice;
         lb_errorID.setVisible(false);
         lb_errorFistName.setVisible(false);
         lb_errorSecondName.setVisible(false);
@@ -460,7 +459,7 @@ public class winUserRegister extends javax.swing.JFrame {
             u.setSecurityQuestion(cbx_SecurityQuestion.getSelectedItem().toString());
             u.setSecurityAnswer(tF_SecurityQuestion.getText().trim());
 
-            boolean ok = iuserservice.regUser(u);
+            boolean ok = ServiceManager.getInstance().getUserService().regUser(u);
 
             if (ok) {
                 JOptionPane.showMessageDialog(this, "Registro exitoso.");

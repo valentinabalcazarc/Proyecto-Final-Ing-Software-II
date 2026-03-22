@@ -7,17 +7,16 @@ import enums.SpecialityProfEnum;
 import enums.StatusUserEnum;
 import enums.TypeProfEnum;
 import enums.RoleUserEnum;
+import services.ServiceManager;
 import services.UserService;
 import views.winLogin;
 
 public class winRegisterProfessional extends javax.swing.JFrame {
 
-    UserService iuserservice; 
     private boolean mostrarPassword = false;
     
-    public winRegisterProfessional(UserService iuserService) {
+    public winRegisterProfessional() {
         initComponents();
-        this.iuserservice=iuserService;
         lb_errorFistName_RProf.setVisible(false);
         lb_errorSecondName_RProf.setVisible(false);
         lb_errorFistLastName_RProf.setVisible(false);
@@ -530,7 +529,7 @@ public class winRegisterProfessional extends javax.swing.JFrame {
                     p.setSpecialityProf(SpecialityProfEnum.Physiotherapy);
                 }
                 
-                boolean ok = iuserservice.regUser(p);
+                boolean ok = ServiceManager.getInstance().getUserService().regUser(p);
                 
                 if (ok) {
                     JOptionPane.showMessageDialog(this, "Registro exitoso.");
@@ -545,7 +544,7 @@ public class winRegisterProfessional extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_Save_RProfActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        new winAdmin(iuserservice).setVisible(true);
+        new winAdmin().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
 

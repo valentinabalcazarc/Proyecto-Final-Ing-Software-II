@@ -1,16 +1,14 @@
 
 package views.Admin;
 
+import services.ServiceManager;
 import services.UserService;
 import views.winLogin;
 
 public class winAdmin extends javax.swing.JFrame {
-        UserService iuserservice; 
-
-
-    public winAdmin(UserService iuserService) {
+   
+    public winAdmin() {
         initComponents();
-        this.iuserservice=iuserService;
     }
 
     @SuppressWarnings("unchecked")
@@ -141,7 +139,7 @@ public class winAdmin extends javax.swing.JFrame {
 
     //enlace a la ventana de registro de profesionales (comentado mientras tanto, falta inyectar dependencia al constructor de winRegProf
     private void btnRegProfessionalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegProfessionalActionPerformed
-        winRegisterProfessional winRegProf = new winRegisterProfessional(iuserservice);
+        winRegisterProfessional winRegProf = new winRegisterProfessional();
         winRegProf.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegProfessionalActionPerformed
