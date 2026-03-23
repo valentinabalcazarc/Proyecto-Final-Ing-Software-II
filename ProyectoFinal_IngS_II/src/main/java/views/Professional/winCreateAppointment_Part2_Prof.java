@@ -4,7 +4,10 @@ import com.toedter.calendar.JCalendar;
 import configuration.FestivosService;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import models.Appointment;
+import models.Patient;
+import services.ServiceManager;
 import views.ViewManager;
 
 
@@ -16,16 +19,17 @@ public class winCreateAppointment_Part2_Prof extends javax.swing.JFrame {
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         logicaCalendario();
+        inicializaciones();
         
-        lb_errorFistName.setVisible(false);
-        lb_errorSecondName.setVisible(false);
-        lb_errorFistLastName.setVisible(false);
-        lb_errorSecondLastName.setVisible(false);
-        
+        limpiarCampos();
+        ocultarErrores();
     }
 
     public void setApp(Appointment app) {
         this.app = app;
+        if (app != null) {
+            txt_DateAndTimeAppointment.setText(app.getDate().toString() + " | " + app.getTime().toString());
+        }
     }
     
     private void logicaCalendario(){
@@ -52,19 +56,104 @@ public class winCreateAppointment_Part2_Prof extends javax.swing.JFrame {
         
         //Fechas minima y maxima
         Calendar hoy = Calendar.getInstance();
-        Date fechaMinima = hoy.getTime();
+        Date fechaMaxima = hoy.getTime();
 
-        Calendar finDeAño = Calendar.getInstance();
-        finDeAño.set(Calendar.MONTH, Calendar.DECEMBER);
-        finDeAño.set(Calendar.DAY_OF_MONTH, 31);
-
-        Date fechaMaxima = finDeAño.getTime();
+        Calendar haceCienAnios = Calendar.getInstance();
+        haceCienAnios.add(Calendar.YEAR, -100);
+        Date fechaMinima = haceCienAnios.getTime();
 
         jDate_BirthDate.setMinSelectableDate(fechaMinima);
         jDate_BirthDate.setMaxSelectableDate(fechaMaxima);
     }
 
+    public int calcularEdad(java.time.LocalDate fechaNac) {
+        if (fechaNac == null) return 0;
+        return java.time.Period.between(fechaNac, java.time.LocalDate.now()).getYears();
+    }
     
+    private void limpiarCampos() {
+        txt_Cedula.setText("");
+        tF_userFirstName.setText("");
+        tF_userSecondName.setText("");
+        tF_userFirstLastName.setText("");
+        tF_userSecondLastName.setText("");
+        txt_PhoneNumber.setText("");
+        txt_Observation.setText(""); 
+        cbx_Gender.setSelectedIndex(0);
+        jDate_BirthDate.setDate(null);
+        lbl_Edad.setText("");
+    }
+    
+    private void ocultarErrores() {
+        lb_errorFistName.setVisible(false);
+        lb_errorSecondName.setVisible(false);
+        lb_errorFistLastName.setVisible(false);
+        lb_errorSecondLastName.setVisible(false);
+        lb_errorID.setVisible(false);
+        lb_errorCelular.setVisible(false);
+        lb_errorFecha.setVisible(false);
+    }
+    
+    private void inicializaciones(){
+        configurarValidacion(txt_Cedula, lb_errorID, "NUMERICO", true);
+        configurarValidacion(tF_userFirstName, lb_errorFistName, "TEXTO", true);
+        configurarValidacion(tF_userFirstLastName, lb_errorFistLastName, "TEXTO", true);
+        configurarValidacion(txt_PhoneNumber, lb_errorCelular, "NUMERICO", true);
+        
+        configurarValidacion(tF_userSecondName, lb_errorSecondName, "TEXTO", false);
+        configurarValidacion(tF_userSecondLastName, lb_errorSecondLastName, "TEXTO", false);
+
+        jDate_BirthDate.addPropertyChangeListener("date", evt -> {
+            if (jDate_BirthDate.getDate() != null) {
+                lb_errorFecha.setVisible(false);
+                
+                java.time.LocalDate fechaNac = convertirDateALocalDate(jDate_BirthDate.getDate());
+                lbl_Edad.setText(String.valueOf(calcularEdad(fechaNac)));
+            } else {
+                lb_errorFecha.setVisible(true);
+                lbl_Edad.setText("");
+            }
+        });
+    }
+    
+    private void configurarValidacion(javax.swing.JTextField field, javax.swing.JLabel label, String tipo, boolean esObligatorio) {
+        field.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                String texto = field.getText().trim();
+                boolean hayError = false;
+                String mensaje = "";
+
+                if (texto.isEmpty()) {
+                    if (esObligatorio) {
+                        hayError = true;
+                        mensaje = "Campo requerido";
+                    }
+                } else {
+                    if (tipo.equals("NUMERICO") && !texto.matches("\\d+")) {
+                        hayError = true;
+                        mensaje = "Solo números";
+                    } else if (tipo.equals("TEXTO") && !esNombreValido(texto)) {
+                        hayError = true;
+                        mensaje = "Solo letras";
+                    }
+                }
+                label.setText(mensaje);
+                label.setVisible(hayError);
+            }
+        });
+    }
+    
+    private boolean esNombreValido(String texto) {
+        return texto.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+");
+    }
+    
+    public java.time.LocalDate convertirDateALocalDate(java.util.Date date) {
+        if (date == null) return null;
+        return date.toInstant()
+                   .atZone(java.time.ZoneId.systemDefault())
+                   .toLocalDate();
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -110,6 +199,7 @@ public class winCreateAppointment_Part2_Prof extends javax.swing.JFrame {
         lb_errorCelular = new javax.swing.JLabel();
         txt_Observation = new javax.swing.JTextField();
         lb_errorID = new javax.swing.JLabel();
+        lb_errorFecha = new javax.swing.JLabel();
 
         jLabel18.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
         jLabel18.setText("Fecha y hora de la cita:");
@@ -155,6 +245,11 @@ public class winCreateAppointment_Part2_Prof extends javax.swing.JFrame {
         btnSaveAppointment.setBackground(new java.awt.Color(70, 175, 65));
         btnSaveAppointment.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
         btnSaveAppointment.setText("Guardar cita");
+        btnSaveAppointment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveAppointmentActionPerformed(evt);
+            }
+        });
 
         lb_errorFistName.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lb_errorFistName.setForeground(new java.awt.Color(255, 0, 0));
@@ -227,7 +322,7 @@ public class winCreateAppointment_Part2_Prof extends javax.swing.JFrame {
             }
         });
 
-        cbx_Gender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
+        cbx_Gender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female", "Other" }));
 
         jDate_BirthDate.setForeground(new java.awt.Color(232, 232, 232));
 
@@ -245,6 +340,10 @@ public class winCreateAppointment_Part2_Prof extends javax.swing.JFrame {
         lb_errorID.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lb_errorID.setForeground(new java.awt.Color(255, 0, 0));
         lb_errorID.setText("Error");
+
+        lb_errorFecha.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        lb_errorFecha.setForeground(new java.awt.Color(255, 0, 0));
+        lb_errorFecha.setText("Error");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -283,18 +382,16 @@ public class winCreateAppointment_Part2_Prof extends javax.swing.JFrame {
                                     .addComponent(lb_errorSecondLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lb_errorFistLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(149, 149, 149)
+                                .addGap(245, 245, 245)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel15)
                                     .addComponent(jLabel14)
-                                    .addComponent(jLabel16)
                                     .addComponent(jLabel20))
                                 .addGap(38, 38, 38)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txt_Observation, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txt_DateAndTimeAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lbl_Edad, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jDate_BirthDate, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txt_PhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(cbx_Gender, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lb_errorCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -306,7 +403,14 @@ public class winCreateAppointment_Part2_Prof extends javax.swing.JFrame {
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(txt_Cedula, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(26, 26, 26)
-                                        .addComponent(btn_Find, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(btn_Find, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel16)
+                                .addGap(38, 38, 38)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lb_errorFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jDate_BirthDate, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(122, 122, 122)))
                         .addContainerGap(148, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(55, 55, 55)
@@ -369,11 +473,13 @@ public class winCreateAppointment_Part2_Prof extends javax.swing.JFrame {
                         .addComponent(cbx_Gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lb_errorCelular)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel16)
                     .addComponent(jDate_BirthDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lb_errorFecha)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel20)
                     .addComponent(lbl_Edad))
@@ -386,7 +492,7 @@ public class winCreateAppointment_Part2_Prof extends javax.swing.JFrame {
                     .addComponent(jLabel19)
                     .addComponent(txt_Observation, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnSaveAppointment, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(42, 42, 42))
@@ -412,13 +518,111 @@ public class winCreateAppointment_Part2_Prof extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_FindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_FindActionPerformed
+        try {
+            int cedPatient = Integer.parseInt(txt_Cedula.getText());
+            Patient patient = ServiceManager.getInstance().getPatientService().findByCed(cedPatient);
 
+            if (patient != null) {
+                tF_userFirstName.setText(patient.getNamePatient());
+                tF_userSecondName.setText(patient.getSecondNamePatient() != null ? patient.getSecondNamePatient() : "");
+                tF_userFirstLastName.setText(patient.getLastNamePatient());
+                tF_userSecondLastName.setText(patient.getSecondLastNamePatient() != null ? patient.getSecondLastNamePatient() : "");
+                cbx_Gender.setSelectedItem(patient.getGenderPatient());
+                txt_PhoneNumber.setText(Integer.toString(patient.getPhonePatient()));
+
+                if (patient.getDateBirthPatient() != null) {
+                    java.util.Date date = java.sql.Date.valueOf(patient.getDateBirthPatient());
+                    jDate_BirthDate.setDate(date);
+
+                    lbl_Edad.setText(String.valueOf(calcularEdad(patient.getDateBirthPatient())));
+                }
+
+                if (app != null) {
+                    txt_DateAndTimeAppointment.setText(app.getDate().toString() + " | " + app.getTime().toString());
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "El paciente no fue encontrado. Llene los datos manualmente.");
+                
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un número de cédula válido.");
+        }
     }//GEN-LAST:event_btn_FindActionPerformed
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
         ViewManager.getInstance().getCreateApp_Prof().setVisible(true);
         this.setVisible(false);
+        limpiarCampos();
+        ocultarErrores();
     }//GEN-LAST:event_btnReturnActionPerformed
+
+    private void btnSaveAppointmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveAppointmentActionPerformed
+        if (lb_errorID.isVisible() || lb_errorFistName.isVisible() || 
+            lb_errorFistLastName.isVisible() || lb_errorCelular.isVisible() ||
+            lb_errorSecondName.isVisible() || lb_errorSecondLastName.isVisible() ||
+            lb_errorFecha.isVisible()) {
+
+            JOptionPane.showMessageDialog(this, "Por favor, corrija los errores.", "Validación", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        try{
+            int cedPatient = Integer.parseInt(txt_Cedula.getText());
+            Patient patient = ServiceManager.getInstance().getPatientService().findByCed(cedPatient);
+            
+            if (patient == null){
+                patient = new Patient();
+                patient.setIdPatient(cedPatient);
+                patient.setNamePatient(tF_userFirstName.getText());
+                patient.setSecondNamePatient(tF_userSecondName.getText());
+                patient.setLastNamePatient(tF_userFirstLastName.getText());
+                patient.setSecondLastNamePatient(tF_userSecondLastName.getText());
+                patient.setPhonePatient(Integer.parseInt(txt_PhoneNumber.getText()));
+                patient.setDateBirthPatient(convertirDateALocalDate(jDate_BirthDate.getDate()));
+                patient.setGenderPatient(cbx_Gender.getSelectedItem().toString());
+                
+                boolean regPatient = ServiceManager.getInstance().getPatientService().regPatient(patient);
+            
+                if(regPatient){
+                    patient = ServiceManager.getInstance().getPatientService().findByCed(cedPatient);
+                    app.setPatientId(patient.getCodPatient());
+                    app.setDescription(txt_Observation.getText().trim());
+
+                    boolean ok = ServiceManager.getInstance().getAppointmentService().registerAppointment(app);
+
+                    if (ok) {
+                        int respuesta = javax.swing.JOptionPane.showOptionDialog(
+                                    this, 
+                                    "¡Cita guardada con éxito!", 
+                                    "Confirmación", 
+                                    javax.swing.JOptionPane.DEFAULT_OPTION, 
+                                    javax.swing.JOptionPane.INFORMATION_MESSAGE, 
+                                    null, 
+                                    new Object[]{"OK"}, 
+                                    "OK"
+                            );
+                        if (respuesta == javax.swing.JOptionPane.OK_OPTION || respuesta == javax.swing.JOptionPane.CLOSED_OPTION) {
+                            limpiarCampos();
+                            ocultarErrores();
+                            ViewManager.getInstance().getPrincipalProf().setVisible(true);
+                            this.setVisible(false); 
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Error al registrar cita.");
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(this, "Error al registrar paciente.");
+                }
+                
+            }else{
+                JOptionPane.showMessageDialog(this, "Ya existe un paciente con la misma cedula.");
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error inesperado.");
+        }
+    }//GEN-LAST:event_btnSaveAppointmentActionPerformed
 
    
 
@@ -447,6 +651,7 @@ public class winCreateAppointment_Part2_Prof extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lb_errorCelular;
+    private javax.swing.JLabel lb_errorFecha;
     private javax.swing.JLabel lb_errorFistLastName;
     private javax.swing.JLabel lb_errorFistName;
     private javax.swing.JLabel lb_errorID;

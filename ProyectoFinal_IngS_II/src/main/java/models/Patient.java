@@ -1,20 +1,20 @@
-
 package models;
 
-import java.util.Date;
 
 
 public class Patient {
-    private double idPatient;
+    private int codPatient;
+    private int idPatient;
     private String namePatient;
     private String secondNamePatient;
     private String lastNamePatient;
     private String secondLastNamePatient;
-    private double phonePatient;
-    private Date dateBirthPatient;
+    private int phonePatient;
+    private java.time.LocalDate dateBirthPatient;
     private String genderPatient;
 
-    public Patient(double idPatient, String namePatient, String secondNamePatient, String lastNamePatient, String secondLastNamePatient, double phonePatient, Date dateBirthPatient, String genderPatient) {
+    public Patient(int codPatient, int idPatient, String namePatient, String secondNamePatient, String lastNamePatient, String secondLastNamePatient, int phonePatient, java.time.LocalDate dateBirthPatient, String genderPatient) {
+        this.codPatient = codPatient;
         this.idPatient = idPatient;
         this.namePatient = namePatient;
         this.secondNamePatient = secondNamePatient;
@@ -24,12 +24,22 @@ public class Patient {
         this.dateBirthPatient = dateBirthPatient;
         this.genderPatient = genderPatient;
     }
+    
+    public Patient() { }
+    
+    public int getCodPatient() {
+        return codPatient;
+    }
+    
+    public void setCodPatient(int codPatient) {
+        this.codPatient = codPatient;
+    }
 
-    public double getIdPatient() {
+    public int getIdPatient() {
         return idPatient;
     }
 
-    public void setIdPatient(double idPatient) {
+    public void setIdPatient(int idPatient) {
         this.idPatient = idPatient;
     }
 
@@ -65,19 +75,19 @@ public class Patient {
         this.secondLastNamePatient = secondLastNamePatient;
     }
 
-    public double getPhonePatient() {
+    public int getPhonePatient() {
         return phonePatient;
     }
 
-    public void setPhonePatient(double phonePatient) {
+    public void setPhonePatient(int phonePatient) {
         this.phonePatient = phonePatient;
     }
 
-    public Date getDateBirthPatient() {
+    public java.time.LocalDate getDateBirthPatient() {
         return dateBirthPatient;
     }
 
-    public void setDateBirthPatient(Date dateBirthPatient) {
+    public void setDateBirthPatient(java.time.LocalDate dateBirthPatient) {
         this.dateBirthPatient = dateBirthPatient;
     }
 

@@ -23,8 +23,8 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
 
             stmt.setInt(1, appointment.getPatientId());
             stmt.setInt(2, appointment.getProfessionalId());
-            stmt.setDate(3, Date.valueOf(appointment.getDate()));
-            stmt.setTime(4, Time.valueOf(appointment.getTime()));
+            stmt.setString(3, appointment.getDate().toString()); 
+            stmt.setString(4, appointment.getTime().toString());
             stmt.setString(5, appointment.getDescription());
 
             // guardar enum como String
@@ -239,19 +239,18 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         List<Object[]> apps = new ArrayList<>();
         LocalDate today = LocalDate.now();
 
-        // 1. SQL solo para Profesionales (sin JOIN con Appointment aquí para evitar duplicados)
         String sqlProf = "SELECT pr.CODPROF, u.NAMEUSER, u.LASTNAMEUSER, pr.TYPEPROF, " +
                          "pr.SPECIALITYPROF, pr.ATTENTIONINTERVAL " +
                          "FROM PROFESSIONAL pr " +
                          "JOIN USERS u ON pr.CODUSER = u.CODUSER " +
                          "WHERE pr.STATUSPROF = 'Active'";
 
-        // 2. SQL para saber qué horas ya están ocupadas HOY
+        
         String sqlOcupadas = "SELECT CODPROF, TIMEAPP, STATUSAPP FROM APPOINTMENT WHERE DATEAPP = ? AND STATUSAPP = 'Scheduled'";
 
         try (Connection conn = SQLRepository.conectar()) {
 
-            // Mapeamos las citas ocupadas: "ID_PROF-HORA" -> "ESTADO"
+            
             java.util.Map<String, String> ocupadas = new java.util.HashMap<>();
             try (PreparedStatement stOcup = conn.prepareStatement(sqlOcupadas)) {
                 stOcup.setString(1, today.toString());
@@ -262,7 +261,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                 }
             }
 
-            // 3. Generamos los horarios
+            
             try (PreparedStatement stmt = conn.prepareStatement(sqlProf);
                  ResultSet rs = stmt.executeQuery()) {
 
@@ -285,6 +284,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                             Object[] fila = {
                                 today.toString(),
                                 horaActual,
+                                codProf,
                                 profName,
                                 rs.getString("TYPEPROF"),
                                 rs.getString("SPECIALITYPROF")
@@ -306,7 +306,6 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         List<Object[]> allSlots = new ArrayList<>();
         LocalDate targetDate = (fecha != null) ? fecha : LocalDate.now();
 
-        // 1. SQL para Profesionales (con filtro opcional de ID)
         String sqlProf = "SELECT pr.CODPROF, u.NAMEUSER, u.LASTNAMEUSER, pr.TYPEPROF, " +
                          "pr.SPECIALITYPROF, pr.ATTENTIONINTERVAL " +
                          "FROM PROFESSIONAL pr " +
@@ -317,23 +316,20 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
             sqlProf += " AND pr.CODPROF = " + codProf;
         }
 
-        // 2. SQL para Citas ocupadas en la fecha seleccionada
+        
         String sqlOcupadas = "SELECT CODPROF, TIMEAPP FROM APPOINTMENT WHERE DATEAPP = ? AND STATUSAPP = 'Scheduled'";
 
         try (Connection conn = SQLRepository.conectar()) {
 
-            // Mapeamos ocupación para la fecha destino
             java.util.Set<String> ocupadas = new java.util.HashSet<>();
             try (PreparedStatement stOcup = conn.prepareStatement(sqlOcupadas)) {
                 stOcup.setString(1, targetDate.toString());
                 ResultSet rsOcup = stOcup.executeQuery();
                 while (rsOcup.next()) {
-                    // Llave: "IDPROF-HH:mm"
                     ocupadas.add(rsOcup.getInt("CODPROF") + "-" + rsOcup.getString("TIMEAPP"));
                 }
             }
 
-            // 3. Generamos los intervalos filtrados
             try (PreparedStatement stmt = conn.prepareStatement(sqlProf);
                  ResultSet rs = stmt.executeQuery()) {
 
@@ -351,11 +347,11 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                         String horaActual = currentTime.toString();
                         String llave = currentCodProf + "-" + horaActual;
 
-                        // SOLO agregamos si NO está en el conjunto de ocupadas
                         if (!ocupadas.contains(llave)) {
                             allSlots.add(new Object[]{
                                 targetDate.toString(),
                                 horaActual,
+                                currentCodProf,
                                 profName,
                                 rs.getString("TYPEPROF"),
                                 rs.getString("SPECIALITYPROF")
