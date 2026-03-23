@@ -4,6 +4,8 @@ import configuration.IAuthenticationService;
 import configuration.AuthenticationBCrypt;
 import repository.AppointmentRepository;
 import repository.AppointmentRepositoryImpl;
+import repository.PatientRepository;
+import repository.PatientRepositoryImpl;
 import repository.ProfessionalRepository;
 import repository.ProfessionalRepositoryImpl;
 import repository.UserRepository;
@@ -16,6 +18,7 @@ public class ServiceManager {
     private final UserService userService;
     private final AppointmentService appointmentService;
     private final ProfessionalService professionalService;
+    private final PatientService patientService;
 
     private ServiceManager() {
         // Inicialización de dependencias
@@ -29,6 +32,9 @@ public class ServiceManager {
         ProfessionalRepository profRepository = new ProfessionalRepositoryImpl();
         this.professionalService = new ProfessionalServiceImpl(profRepository);
         
+        PatientRepository patRepository = new PatientRepositoryImpl();
+        this.patientService = new PatientServiceImpl(patRepository);
+        
     }
 
     public static ServiceManager getInstance() {
@@ -41,4 +47,5 @@ public class ServiceManager {
     public UserService getUserService() { return userService; }
     public AppointmentService getAppointmentService() { return appointmentService; }
     public ProfessionalService getProfessionalService() { return professionalService;}
+    public PatientService getPatientService() { return patientService;}
 }

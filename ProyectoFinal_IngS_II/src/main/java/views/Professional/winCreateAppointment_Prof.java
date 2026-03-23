@@ -73,6 +73,7 @@ public class winCreateAppointment_Prof extends javax.swing.JFrame {
         
         model.addColumn("Fecha");
         model.addColumn("Hora");
+        model.addColumn("ID Profesional");
         model.addColumn("Nombre Profesional");
         model.addColumn("Tipo Profesional");
         model.addColumn("Especialidad");
@@ -98,7 +99,7 @@ public class winCreateAppointment_Prof extends javax.swing.JFrame {
         cbx_Professional.removeAllItems();
 
         List<Professional> lista = ServiceManager.getInstance().getProfessionalService().getAllProfessionals();
-        System.out.println("Profesionales encontrados: " + lista.size());
+        
         for (Professional p : lista) {
             cbx_Professional.addItem(p);
         }
@@ -305,20 +306,31 @@ public class winCreateAppointment_Prof extends javax.swing.JFrame {
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
         ViewManager.getInstance().getPrincipalProf().setVisible(true);
         this.setVisible(false);
+        cargarTabla();
+        cbx_Professional.setSelectedItem(null);
+        jDate_ExportDate.setDate(null);
     }//GEN-LAST:event_btnReturnActionPerformed
 
     private void btnContinueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinueActionPerformed
+        this.citaSeleccionada = table_App.getSelectedRow();
+        
         if (citaSeleccionada != -1) {
-            String fechaStr = table_App.getValueAt(citaSeleccionada, 1).toString();
-            String horaStr = table_App.getValueAt(citaSeleccionada, 2).toString();
+            String fechaStr = table_App.getValueAt(citaSeleccionada, 0).toString();
+            String horaStr = table_App.getValueAt(citaSeleccionada, 1).toString();
+            int codProf = (int) table_App.getValueAt(citaSeleccionada, 2);
 
             Appointment app = new Appointment();
             app.setDate(java.time.LocalDate.parse(fechaStr));
             app.setTime(java.time.LocalTime.parse(horaStr));
+            app.setProfessionalId(codProf);
 
             ViewManager.getInstance().getCreateAppPart2_Prof().setApp(app);
             ViewManager.getInstance().getCreateAppPart2_Prof().setVisible(true);
             this.setVisible(false);
+            
+            cargarTabla();
+            cbx_Professional.setSelectedItem(null);
+            jDate_ExportDate.setDate(null);
 
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Por favor, seleccione una cita de la tabla.");
@@ -326,7 +338,7 @@ public class winCreateAppointment_Prof extends javax.swing.JFrame {
     }//GEN-LAST:event_btnContinueActionPerformed
 
     private void table_AppMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_AppMouseClicked
-        this.citaSeleccionada = table_App.getSelectedRow();
+        
     }//GEN-LAST:event_table_AppMouseClicked
 
     private void button_EraseFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_EraseFilterActionPerformed

@@ -105,6 +105,14 @@ public class winViewAppointments_Prof extends javax.swing.JFrame {
             cbx_Professional.addItem(p);
         }
     }
+    
+    @Override
+    public void setVisible(boolean b) {
+        if (b) {
+            this.cargarTabla();
+        }
+        super.setVisible(b);
+    }
 
     
     @SuppressWarnings("unchecked")

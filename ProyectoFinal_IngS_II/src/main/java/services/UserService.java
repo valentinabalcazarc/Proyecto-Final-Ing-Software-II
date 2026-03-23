@@ -12,4 +12,6 @@ public interface UserService {
     boolean recoverPassword(int cedUser, String answer);
 
     boolean updatePassword(int cedUser, String newPassword);
+    
+    User findByCedUser(int cedUser);
 }

@@ -92,4 +92,9 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.update(user);
     }
+    
+    @Override
+    public User findByCedUser(int cedUser){
+        return userRepository.findByCedUser(cedUser);
+    }
 }
