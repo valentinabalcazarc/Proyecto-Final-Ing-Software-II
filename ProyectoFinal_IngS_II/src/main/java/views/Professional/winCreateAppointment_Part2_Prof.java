@@ -39,19 +39,19 @@ public class winCreateAppointment_Part2_Prof extends javax.swing.JFrame {
         calendar.setWeekOfYearVisible(false);
 
         // Pintar cuando abre la ventana
-        festivosService.pintarFindeSemana(calendar);
-        festivosService.pintarFestivos(calendar);
+        festivosService.pintarFindeSemanaBirthDate(calendar);
+        festivosService.pintarFestivosBirthDate(calendar);
 
         // Volver a pintar cuando cambie el mes
         calendar.getMonthChooser().addPropertyChangeListener(evt -> {
-            festivosService.pintarFindeSemana(calendar);
-            festivosService.pintarFestivos(calendar);
+            festivosService.pintarFindeSemanaBirthDate(calendar);
+            festivosService.pintarFestivosBirthDate(calendar);
         });
 
         // Volver a pintar cuando cambie el año
         calendar.getYearChooser().addPropertyChangeListener(evt -> {
-            festivosService.pintarFindeSemana(calendar);
-            festivosService.pintarFestivos(calendar);
+            festivosService.pintarFindeSemanaBirthDate(calendar);
+            festivosService.pintarFestivosBirthDate(calendar);
         });
         
         //Fechas minima y maxima

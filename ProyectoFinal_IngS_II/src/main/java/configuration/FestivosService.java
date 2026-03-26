@@ -88,7 +88,7 @@ public class FestivosService {
                         .getDayPanel()
                         .getComponentZOrder(dia) % 7;
 
-                if (columna == 6 || columna == 0) { // columna del domingo
+                if (columna == 6 || columna == 0) { 
                     dia.setForeground(Color.GRAY);
                     dia.setEnabled(false);
                 }
@@ -98,5 +98,60 @@ public class FestivosService {
     
     public boolean esDiaInvalido(LocalDate fecha) {
         return esFestivo(fecha) || fecha.getDayOfWeek() == java.time.DayOfWeek.SUNDAY  || fecha.getDayOfWeek() == java.time.DayOfWeek.SATURDAY;
+    }
+    
+    public void pintarFestivosBirthDate(JCalendar calendar){
+
+        int año = calendar.getYearChooser().getYear();
+        int mes = calendar.getMonthChooser().getMonth() + 1;
+
+        java.awt.Component[] dias =
+                calendar.getDayChooser().getDayPanel().getComponents();
+
+        for (java.awt.Component c : dias) {
+
+            if (c instanceof JButton) {
+
+                JButton dia = (JButton) c;
+
+                try {
+
+                    int numero = Integer.parseInt(dia.getText());
+
+                    LocalDate fecha = LocalDate.of(año, mes, numero);
+
+                    if (esFestivo(fecha)) {
+
+                        dia.setBackground(Color.RED);
+                        dia.setForeground(Color.WHITE);
+
+                    }
+
+                } catch (Exception e) {}
+
+            }
+        }
+    }
+    
+    public void pintarFindeSemanaBirthDate(JCalendar calendar){
+
+        java.awt.Component[] dias =
+                calendar.getDayChooser().getDayPanel().getComponents();
+
+        for (java.awt.Component c : dias) {
+
+            if (c instanceof JButton) {
+
+                JButton dia = (JButton) c;
+
+                int columna = calendar.getDayChooser()
+                        .getDayPanel()
+                        .getComponentZOrder(dia) % 7;
+
+                if (columna == 6 || columna == 0) { 
+                    dia.setForeground(Color.GRAY);
+                }
+            }
+        }
     }
 }
