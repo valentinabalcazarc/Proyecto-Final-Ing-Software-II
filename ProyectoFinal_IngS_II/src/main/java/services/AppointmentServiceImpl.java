@@ -1,5 +1,6 @@
 package services;
 
+import enums.SpecialityProfEnum;
 import java.time.LocalDate;
 import java.util.List;
 import models.Appointment;
@@ -52,5 +53,20 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<Object[]> getGeneretedAppointmentsFiltered(Integer codProf, LocalDate fecha) {
         return appointmentRepository.filterGeneretedApp(codProf, fecha);
+    }
+    
+    @Override
+    public Appointment getFirstAvailableBySpeciality(SpecialityProfEnum speciality){
+        return appointmentRepository.findFirstAvailableBySpeciality(speciality);
+    }
+    
+    @Override
+    public List<Object[]> getGeneretedAppointmentsBySpeciality(SpecialityProfEnum speciality){
+        return appointmentRepository.generateAppBySpeciality(speciality);
+    }
+    
+    @Override
+    public List<Object[]> getGeneretedAppointmentsBySpecialityFiltered(Integer codProf, LocalDate fecha, SpecialityProfEnum speciality){
+        return appointmentRepository.filterGeneratedAppBySpeciality(codProf, fecha, speciality);
     }
 }

@@ -1,13 +1,133 @@
 package views.Patient;
+import com.toedter.calendar.JCalendar;
+import configuration.FestivosService;
+import enums.SpecialityProfEnum;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import models.Appointment;
+import models.Patient;
 import models.Professional;
+import services.ServiceManager;
+import views.ViewManager;
 
 public class winSelectSpecificAppointment_Pat extends javax.swing.JFrame {
 
+    Patient pat;
+    SpecialityProfEnum speciality;
+    int citaSeleccionada = -1;
     
     public winSelectSpecificAppointment_Pat() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        
+        logicaCalendario();
+        
+        //logica tabla
+        inicializarTablaCitas();
+        cbx_Professional.setSelectedItem(null);
+    }
+    
+    public void inicializarVentana() {
+        if (this.speciality != null) {
+            cargarTabla();
+            cargarProfesionales();
+        }
     }
 
+    public void setPat(Patient pat) {
+        this.pat = pat;
+    }
+    
+    public void setSpeciality(SpecialityProfEnum speciality) {
+        this.speciality = speciality;
+    }
+    
+    private void logicaCalendario(){
+        FestivosService festivosService = new FestivosService();
+
+        JCalendar calendar = jDate_ExportDate.getJCalendar();
+        calendar.setWeekOfYearVisible(false);
+
+        // Pintar cuando abre la ventana
+        festivosService.pintarFindeSemana(calendar);
+        festivosService.pintarFestivos(calendar);
+
+        // Volver a pintar cuando cambie el mes
+        calendar.getMonthChooser().addPropertyChangeListener(evt -> {
+            festivosService.pintarFindeSemana(calendar);
+            festivosService.pintarFestivos(calendar);
+        });
+
+        // Volver a pintar cuando cambie el año
+        calendar.getYearChooser().addPropertyChangeListener(evt -> {
+            festivosService.pintarFindeSemana(calendar);
+            festivosService.pintarFestivos(calendar);
+        });
+        
+        //Fechas minima y maxima
+        Calendar hoy = Calendar.getInstance();
+        Date fechaMinima = hoy.getTime();
+
+        Calendar finDeAño = Calendar.getInstance();
+        finDeAño.set(Calendar.MONTH, Calendar.DECEMBER);
+        finDeAño.set(Calendar.DAY_OF_MONTH, 31);
+
+        Date fechaMaxima = finDeAño.getTime();
+
+        jDate_ExportDate.setMinSelectableDate(fechaMinima);
+        jDate_ExportDate.setMaxSelectableDate(fechaMaxima);
+    }
+    
+    private void inicializarTablaCitas() {
+        DefaultTableModel model = new DefaultTableModel();
+        
+        model.addColumn("Fecha");
+        model.addColumn("Hora");
+        model.addColumn("ID Profesional");
+        model.addColumn("Nombre Profesional");
+        model.addColumn("Tipo Profesional");
+        model.addColumn("Especialidad");
+
+        table_App.setModel(model);
+        
+    }
+    
+    private void cargarTabla() {
+
+        DefaultTableModel model = (DefaultTableModel) table_App.getModel();
+        model.setRowCount(0);
+
+        List<Object[]> lista = ServiceManager.getInstance().getAppointmentService().getGeneretedAppointmentsBySpeciality(speciality);
+
+        for (Object[] fila : lista) {
+            model.addRow(fila);
+        }
+    }
+    
+    private void cargarProfesionales() {
+
+        cbx_Professional.removeAllItems();
+
+        List<Professional> lista = ServiceManager.getInstance().getProfessionalService().getAllProfessionalsBySpeciality(speciality);
+        
+        for (Professional p : lista) {
+            cbx_Professional.addItem(p);
+        }
+    }
+    
+    @Override
+    public void setVisible(boolean b) {
+        if (b) {
+            this.cargarTabla();
+        }
+        super.setVisible(b);
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -28,7 +148,7 @@ public class winSelectSpecificAppointment_Pat extends javax.swing.JFrame {
         button_Find = new javax.swing.JButton();
         button_EraseFilter = new javax.swing.JButton();
         button_Back = new javax.swing.JButton();
-        button_Export = new javax.swing.JButton();
+        button_Confirmar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -120,14 +240,19 @@ public class winSelectSpecificAppointment_Pat extends javax.swing.JFrame {
 
         button_Back.setBackground(new java.awt.Color(232, 232, 232));
         button_Back.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
-        button_Back.setText("Regresar");
-
-        button_Export.setBackground(new java.awt.Color(70, 175, 65));
-        button_Export.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
-        button_Export.setText("Confirmar cita");
-        button_Export.addActionListener(new java.awt.event.ActionListener() {
+        button_Back.setText("<- Regresar");
+        button_Back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button_ExportActionPerformed(evt);
+                button_BackActionPerformed(evt);
+            }
+        });
+
+        button_Confirmar.setBackground(new java.awt.Color(70, 175, 65));
+        button_Confirmar.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
+        button_Confirmar.setText("Confirmar cita");
+        button_Confirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_ConfirmarActionPerformed(evt);
             }
         });
 
@@ -143,7 +268,7 @@ public class winSelectSpecificAppointment_Pat extends javax.swing.JFrame {
                 .addGap(179, 179, 179)
                 .addComponent(button_Back, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(button_Export)
+                .addComponent(button_Confirmar)
                 .addGap(137, 137, 137))
             .addGroup(panelLayout.createSequentialGroup()
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -187,7 +312,7 @@ public class winSelectSpecificAppointment_Pat extends javax.swing.JFrame {
                 .addComponent(button_EraseFilter)
                 .addGap(46, 46, 46)
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(button_Export)
+                    .addComponent(button_Confirmar)
                     .addComponent(button_Back))
                 .addContainerGap(136, Short.MAX_VALUE))
         );
@@ -217,23 +342,90 @@ public class winSelectSpecificAppointment_Pat extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void button_FindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_FindActionPerformed
-        
+        Integer codDoc = null;
+        LocalDate fecha = null;
+
+        if (cbx_Professional.getSelectedItem() != null) {
+            Professional prof = (Professional) cbx_Professional.getSelectedItem();
+            codDoc = (int)prof.getCodProf();
+        }
+
+        if (jDate_ExportDate.getDate() != null) {
+            fecha = jDate_ExportDate.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }
+
+        List<Object[]> resultados = ServiceManager.getInstance().getAppointmentService().getGeneretedAppointmentsBySpecialityFiltered(codDoc, fecha, speciality);
+
+        DefaultTableModel model = (DefaultTableModel) table_App.getModel();
+        model.setRowCount(0);
+
+        for (Object[] fila : resultados) {
+            model.addRow(fila);
+        }
     }//GEN-LAST:event_button_FindActionPerformed
 
     private void button_EraseFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_EraseFilterActionPerformed
-        
+        cargarTabla();
+        cbx_Professional.setSelectedItem(null);
+        jDate_ExportDate.setDate(null);
     }//GEN-LAST:event_button_EraseFilterActionPerformed
 
-    private void button_ExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_ExportActionPerformed
+    private void button_ConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_ConfirmarActionPerformed
+        this.citaSeleccionada = table_App.getSelectedRow();
+    
+        if (citaSeleccionada != -1) {
+            String fechaStr = table_App.getValueAt(citaSeleccionada, 0).toString();
+            String horaStr = table_App.getValueAt(citaSeleccionada, 1).toString();
+            int codProf = (int) table_App.getValueAt(citaSeleccionada, 2);
 
-    }//GEN-LAST:event_button_ExportActionPerformed
+            Patient patient = ServiceManager.getInstance().getPatientService().findByCed(pat.getIdPatient());
+
+            if (patient == null) {
+                boolean okReg = ServiceManager.getInstance().getPatientService().regPatient(pat);
+                if (okReg) {
+                    patient = ServiceManager.getInstance().getPatientService().findByCed(pat.getIdPatient());
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error crítico: No se pudo registrar al nuevo paciente.");
+                    return;
+                }
+            }
+
+            Appointment app = new Appointment();
+            app.setDate(java.time.LocalDate.parse(fechaStr));
+            app.setTime(java.time.LocalTime.parse(horaStr));
+            app.setProfessionalId(codProf);
+            app.setPatientId(patient.getCodPatient()); 
+
+            boolean okApp = ServiceManager.getInstance().getAppointmentService().registerAppointment(app);
+
+            if (okApp) {
+                JOptionPane.showMessageDialog(this, "¡Cita guardada con éxito!");
+                ViewManager.getInstance().getPrincipalPatient().setVisible(true);
+                this.setVisible(false);
+
+                cbx_Professional.setSelectedItem(null);
+                jDate_ExportDate.setDate(null);
+                cargarTabla();
+            } else {
+                JOptionPane.showMessageDialog(this, "Error: El horario ya no está disponible.");
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una fila de la tabla.");
+        }
+    }//GEN-LAST:event_button_ConfirmarActionPerformed
+
+    private void button_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_BackActionPerformed
+        ViewManager.getInstance().getAutoRecomendation().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_button_BackActionPerformed
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_Back;
+    private javax.swing.JButton button_Confirmar;
     private javax.swing.JButton button_EraseFilter;
-    private javax.swing.JButton button_Export;
     private javax.swing.JButton button_Find;
     private javax.swing.JComboBox<Professional> cbx_Professional;
     private com.toedter.calendar.JDateChooser jDate_ExportDate;

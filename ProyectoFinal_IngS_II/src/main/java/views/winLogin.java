@@ -16,6 +16,11 @@ public class winLogin extends javax.swing.JFrame {
     public winLogin() {
         initComponents();
     }
+    
+    public void limpiar(){
+        txtUser_login.setText("");
+        txtPass_Login.setText("");
+    }
 
 
     @SuppressWarnings("unchecked")
@@ -192,16 +197,19 @@ public class winLogin extends javax.swing.JFrame {
             case Admin -> {
                 new winAdmin().setVisible(true);
                 System.out.println("ENTRANDO A ADMIN");
+                limpiar();
             }
 
             case Patient -> {
                 new winPrincipal_Pat().setVisible(true);
                 System.out.println("ENTRANDO A PACIENTE");
+                limpiar();
             }
 
             case Professional -> {
                 new winPrincipal_Prof().setVisible(true);
                 System.out.println("ENTRANDO A PROFESIONAL");
+                limpiar();
             }
         }
 

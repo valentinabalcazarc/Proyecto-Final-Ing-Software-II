@@ -63,6 +63,7 @@ public class FestivosService {
 
                         dia.setBackground(Color.RED);
                         dia.setForeground(Color.WHITE);
+                        dia.setEnabled(false);
 
                     }
 
@@ -72,7 +73,7 @@ public class FestivosService {
         }
     }
     
-    public void pintarDomingos(JCalendar calendar){
+    public void pintarFindeSemana(JCalendar calendar){
 
         java.awt.Component[] dias =
                 calendar.getDayChooser().getDayPanel().getComponents();
@@ -87,12 +88,15 @@ public class FestivosService {
                         .getDayPanel()
                         .getComponentZOrder(dia) % 7;
 
-                if (columna == 6) { // columna del domingo
+                if (columna == 6 || columna == 0) { // columna del domingo
                     dia.setForeground(Color.GRAY);
+                    dia.setEnabled(false);
                 }
             }
         }
     }
     
-    
+    public boolean esDiaInvalido(LocalDate fecha) {
+        return esFestivo(fecha) || fecha.getDayOfWeek() == java.time.DayOfWeek.SUNDAY  || fecha.getDayOfWeek() == java.time.DayOfWeek.SATURDAY;
+    }
 }
