@@ -127,7 +127,7 @@
                       <EmptySpace min="-2" pref="179" max="-2" attributes="0"/>
                       <Component id="button_Back" min="-2" pref="154" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="button_Export" min="-2" max="-2" attributes="0"/>
+                      <Component id="button_Confirmar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="137" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
@@ -183,7 +183,7 @@
                       <Component id="button_EraseFilter" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="button_Export" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="button_Confirmar" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="button_Back" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="136" max="32767" attributes="0"/>
@@ -317,10 +317,13 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Cascadia Code" size="14" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Regresar"/>
+                <Property name="text" type="java.lang.String" value="&lt;- Regresar"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_BackActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="button_Export">
+            <Component class="javax.swing.JButton" name="button_Confirmar">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="41" green="af" red="46" type="rgb"/>
@@ -331,7 +334,7 @@
                 <Property name="text" type="java.lang.String" value="Confirmar cita"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_ExportActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="button_ConfirmarActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

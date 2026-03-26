@@ -1,11 +1,12 @@
 package views.Patient;
 
-import views.winLogin;
+import views.ViewManager;
 
 public class winPrincipal_Pat extends javax.swing.JFrame {
 
     public winPrincipal_Pat() {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     
@@ -154,19 +155,18 @@ public class winPrincipal_Pat extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_CerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CerrarSesionActionPerformed
-        new winLogin().setVisible(true);
-        this.dispose();
+        ViewManager.getInstance().getLogin().setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_btn_CerrarSesionActionPerformed
 
     private void button_AddAppoinmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_AddAppoinmentActionPerformed
-        winPatientInfo_Pat infoPatient = new winPatientInfo_Pat();
-        infoPatient.setVisible(true);
-        this.dispose();
+        ViewManager.getInstance().getInfoPatient_Pat().setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_button_AddAppoinmentActionPerformed
 
     private void button_ViewAppointmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_ViewAppointmentActionPerformed
-        winViewAppoinment_Pat viewApp = new winViewAppoinment_Pat();
-        viewApp.setVisible(true);
+        ViewManager.getInstance().getViewAppointment_Pat().setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_button_ViewAppointmentActionPerformed
 
 
