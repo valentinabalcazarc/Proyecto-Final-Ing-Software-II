@@ -67,7 +67,6 @@ public class winPatientInfo_Pat extends javax.swing.JFrame {
         tF_userFirstLastName.setText("");
         tF_userSecondLastName.setText("");
         txt_PhoneNumber.setText("");
-        txt_Observation.setText(""); 
         cbx_Gender.setSelectedIndex(0);
         jDate_BirthDate.setDate(null);
         lbl_Edad.setText("");
@@ -174,8 +173,6 @@ public class winPatientInfo_Pat extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         lbl_Edad = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
-        txt_Observation = new javax.swing.JTextField();
-        jLabel19 = new javax.swing.JLabel();
         btnReturn = new javax.swing.JButton();
         btn_Find = new javax.swing.JButton();
         tF_userFirstName = new javax.swing.JTextField();
@@ -289,9 +286,6 @@ public class winPatientInfo_Pat extends javax.swing.JFrame {
         jLabel17.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
         jLabel17.setText("Edad:");
 
-        jLabel19.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
-        jLabel19.setText("Observación:");
-
         btnReturn.setBackground(new java.awt.Color(232, 232, 232));
         btnReturn.setFont(new java.awt.Font("Cascadia Code", 0, 14)); // NOI18N
         btnReturn.setText("<- Regresar");
@@ -332,12 +326,6 @@ public class winPatientInfo_Pat extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addComponent(btnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -365,7 +353,8 @@ public class winPatientInfo_Pat extends javax.swing.JFrame {
                                         .addComponent(tF_userSecondLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(tF_userFirstLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(lb_errorSecondLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lb_errorFistLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(lb_errorFistLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addGap(18, 18, 18)
@@ -375,18 +364,16 @@ public class winPatientInfo_Pat extends javax.swing.JFrame {
                                         .addComponent(txt_Cedula, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(btn_Find, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(114, 114, 114)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel17)
-                                    .addComponent(jLabel19))
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGap(157, 157, 157)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(txt_Observation, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lbl_Edad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(170, 170, 170)
+                                .addComponent(jLabel17))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(271, 271, 271)
+                                .addComponent(lbl_Edad, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                            .addGap(114, 114, 114)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel16)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -404,8 +391,11 @@ public class winPatientInfo_Pat extends javax.swing.JFrame {
                                         .addGap(221, 221, 221)
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jDate_BirthDate, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(lb_errorFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
-                .addContainerGap(83, Short.MAX_VALUE))
+                                            .addComponent(lb_errorFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(82, 82, 82)
+                        .addComponent(btnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -469,15 +459,11 @@ public class winPatientInfo_Pat extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel17)
                     .addComponent(lbl_Edad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel19)
-                    .addComponent(txt_Observation, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(40, 40, 40)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(btnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(70, 70, 70))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -492,8 +478,8 @@ public class winPatientInfo_Pat extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -544,38 +530,6 @@ public class winPatientInfo_Pat extends javax.swing.JFrame {
         }
         
         try{
-            /*int cedPatient = Integer.parseInt(txt_Cedula.getText());
-            Patient patient = ServiceManager.getInstance().getPatientService().findByCed(cedPatient);
-            
-            if (patient == null){
-                patient = new Patient();
-                patient.setIdPatient(cedPatient);
-                patient.setNamePatient(tF_userFirstName.getText());
-                patient.setSecondNamePatient(tF_userSecondName.getText());
-                patient.setLastNamePatient(tF_userFirstLastName.getText());
-                patient.setSecondLastNamePatient(tF_userSecondLastName.getText());
-                patient.setPhonePatient(Integer.parseInt(txt_PhoneNumber.getText()));
-                patient.setDateBirthPatient(convertirDateALocalDate(jDate_BirthDate.getDate()));
-                patient.setGenderPatient(cbx_Gender.getSelectedItem().toString());
-                
-                boolean ok = ServiceManager.getInstance().getPatientService().regPatient(patient);
-                if (ok) {
-                    limpiarCampos();
-                    ocultarErrores();
-                    ViewManager.getInstance().getSelectService_Pat().setPat(patient);
-                    ViewManager.getInstance().getSelectService_Pat().setVisible(true);
-                    this.setVisible(false);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Error al registrar paciente.");
-                }
-            }
-            if (patient != null){
-                limpiarCampos();
-                ocultarErrores();
-                ViewManager.getInstance().getSelectService_Pat().setPat(patient);
-                ViewManager.getInstance().getSelectService_Pat().setVisible(true);
-                this.setVisible(false);
-            }*/
             Patient patient = new Patient();
             patient.setIdPatient(Integer.parseInt(txt_Cedula.getText()));
             patient.setNamePatient(tF_userFirstName.getText());
@@ -614,7 +568,6 @@ public class winPatientInfo_Pat extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -634,7 +587,6 @@ public class winPatientInfo_Pat extends javax.swing.JFrame {
     private javax.swing.JTextField tF_userSecondLastName;
     private javax.swing.JTextField tF_userSecondName;
     private javax.swing.JTextField txt_Cedula;
-    private javax.swing.JTextField txt_Observation;
     private javax.swing.JTextField txt_PhoneNumber;
     // End of variables declaration//GEN-END:variables
 }

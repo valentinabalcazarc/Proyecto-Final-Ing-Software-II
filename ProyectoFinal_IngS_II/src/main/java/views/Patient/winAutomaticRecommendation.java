@@ -248,31 +248,34 @@ public class winAutomaticRecommendation extends javax.swing.JFrame {
         Patient patient = ServiceManager.getInstance().getPatientService().findByCed(pat.getIdPatient());
 
         if (patient == null) {
-            boolean okReg = ServiceManager.getInstance().getPatientService().regPatient(pat);
+            boolean okReg = ServiceManager.getInstance().getPatientService().regPatient(this.pat); // Usamos 'this.pat', no 'patient' que es null
             if (okReg) {
                 patient = ServiceManager.getInstance().getPatientService().findByCed(pat.getIdPatient());
             } else {
-                JOptionPane.showMessageDialog(this, "Error crítico: No se pudo registrar al nuevo paciente.");
+                JOptionPane.showMessageDialog(this, "Error al registrar al nuevo paciente.");
                 return;
             }
         }
 
         Appointment appointment = new Appointment();
-        appointment.setDate(app.getDate());
-        appointment.setTime(app.getTime());
-        appointment.setProfessionalId((int)prof.getCodProf());
-        appointment.setPatientId(patient.getCodPatient()); 
+        appointment.setDate(this.app.getDate());
+        appointment.setTime(this.app.getTime());
+        appointment.setProfessionalId((int)this.prof.getCodProf());
+        appointment.setPatientId(patient.getCodPatient());
 
-        boolean okApp = ServiceManager.getInstance().getAppointmentService().registerAppointment(app);
+        boolean okApp = ServiceManager.getInstance().getAppointmentService().registerAppointment(appointment);
 
         if (okApp) {
             JOptionPane.showMessageDialog(this, "¡Cita guardada con éxito!");
-            ViewManager.getInstance().getViewApps_Prof().cargarTabla();
+
+            ViewManager.getInstance().getViewApps_Prof().cargarTabla(); 
             ViewManager.getInstance().getPrincipalPatient().setVisible(true);
             this.setVisible(false);
         } else {
-            JOptionPane.showMessageDialog(this, "Error: El horario ya no está disponible.");
+            JOptionPane.showMessageDialog(this, "Error al registrar la cita.");
         }
+
+        
     }//GEN-LAST:event_jButtonConfirmAppointmentActionPerformed
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed

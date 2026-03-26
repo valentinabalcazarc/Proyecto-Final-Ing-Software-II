@@ -23,6 +23,6 @@ VALUES
 
 INSERT INTO APPOINTMENT (CODPROF, CODPATIENT, DATEAPP, TIMEAPP, STATUSAPP)
 VALUES 
-(1, 1, '2026-03-25', '08:00', 'Scheduled'),
-(2, 2, '2026-03-25', '10:30', 'Scheduled'),
-(3, 3, '2026-03-25', '13:00', 'Scheduled');
+(1, 1, '2026-03-30', '08:00', 'Scheduled'),
+(2, 2, '2026-03-30', '10:45', 'Scheduled'),
+(3, 3, '2026-03-30', '13:00', 'Scheduled');
