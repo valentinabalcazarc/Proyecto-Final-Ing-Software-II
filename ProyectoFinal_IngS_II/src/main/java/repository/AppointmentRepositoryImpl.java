@@ -9,10 +9,14 @@ import enums.SpecialityProfEnum;
 import enums.StatusAppointment;
 import filters.IFilter;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 import models.Appointment;
 import models.AppointmentRep;
 
 public class AppointmentRepositoryImpl implements AppointmentRepository {
+    private static int HORA_FIN = 16;
     
     @Override
     public boolean save(Appointment appointment) {
@@ -239,6 +243,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     public List<Object[]> generateAppForTable() {
         List<Object[]> apps = new ArrayList<>();
         LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
 
         String sqlProf = "SELECT pr.CODPROF, u.NAMEUSER, u.LASTNAMEUSER, pr.TYPEPROF, " +
                          "pr.SPECIALITYPROF, pr.ATTENTIONINTERVAL " +
@@ -246,52 +251,50 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                          "JOIN USERS u ON pr.CODUSER = u.CODUSER " +
                          "WHERE pr.STATUSPROF = 'Active'";
 
-        
-        String sqlOcupadas = "SELECT CODPROF, TIMEAPP, STATUSAPP FROM APPOINTMENT WHERE DATEAPP = ? AND STATUSAPP = 'Scheduled'";
+        String sqlOcupadas = "SELECT CODPROF, TIMEAPP FROM APPOINTMENT WHERE DATEAPP = ? AND STATUSAPP = 'Scheduled'";
 
         try (Connection conn = SQLRepository.conectar()) {
 
-            
             java.util.Map<String, String> ocupadas = new java.util.HashMap<>();
             try (PreparedStatement stOcup = conn.prepareStatement(sqlOcupadas)) {
                 stOcup.setString(1, today.toString());
                 ResultSet rsOcup = stOcup.executeQuery();
                 while (rsOcup.next()) {
                     String llave = rsOcup.getInt("CODPROF") + "-" + rsOcup.getString("TIMEAPP");
-                    ocupadas.put(llave, rsOcup.getString("STATUSAPP"));
+                    ocupadas.put(llave, "Scheduled");
                 }
             }
 
-            
             try (PreparedStatement stmt = conn.prepareStatement(sqlProf);
                  ResultSet rs = stmt.executeQuery()) {
 
-                java.time.LocalTime startDay = java.time.LocalTime.of(7, 0);
-                java.time.LocalTime endDay = java.time.LocalTime.of(14, 0);
+                LocalTime startDay = LocalTime.of(7, 0);
+                LocalTime endDay = LocalTime.of(HORA_FIN, 0);
 
                 while (rs.next()) {
                     int interval = rs.getInt("ATTENTIONINTERVAL");
                     int codProf = rs.getInt("CODPROF");
                     String profName = rs.getString("NAMEUSER") + " " + rs.getString("LASTNAMEUSER");
 
-                    java.time.LocalTime currentTime = startDay;
+                    LocalTime currentTime = startDay;
 
                     while (currentTime.plusMinutes(interval).isBefore(endDay.plusMinutes(1))) {
-                        String horaActual = currentTime.toString();
-                        String llaveBusqueda = codProf + "-" + horaActual;
 
-                        // Si la hora está en el mapa de ocupadas, saltamos
-                        if (!ocupadas.containsKey(llaveBusqueda)) {
-                            Object[] fila = {
-                                today.toString(),
-                                horaActual,
-                                codProf,
-                                profName,
-                                rs.getString("TYPEPROF"),
-                                rs.getString("SPECIALITYPROF")
-                            };
-                            apps.add(fila);
-                        } 
+                        if (currentTime.isAfter(now)) { 
+                            String horaActualStr = currentTime.toString();
+                            String llaveBusqueda = codProf + "-" + horaActualStr;
+
+                            if (!ocupadas.containsKey(llaveBusqueda)) {
+                                apps.add(new Object[]{
+                                    today.toString(),
+                                    horaActualStr,
+                                    codProf,
+                                    profName,
+                                    rs.getString("TYPEPROF"),
+                                    rs.getString("SPECIALITYPROF")
+                                });
+                            }
+                        }
                         currentTime = currentTime.plusMinutes(interval);
                     }
                 }
@@ -302,10 +305,14 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         return apps;
     }
     
+    
+    
     @Override
     public List<Object[]> filterGeneretedApp(Integer codProf, LocalDate fecha) {
         List<Object[]> allSlots = new ArrayList<>();
         LocalDate targetDate = (fecha != null) ? fecha : LocalDate.now();
+        LocalTime now = LocalTime.now();
+        LocalDate today = LocalDate.now();
 
         String sqlProf = "SELECT pr.CODPROF, u.NAMEUSER, u.LASTNAMEUSER, pr.TYPEPROF, " +
                          "pr.SPECIALITYPROF, pr.ATTENTIONINTERVAL " +
@@ -335,7 +342,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                  ResultSet rs = stmt.executeQuery()) {
 
                 java.time.LocalTime startDay = java.time.LocalTime.of(7, 0);
-                java.time.LocalTime endDay = java.time.LocalTime.of(14, 0);
+                java.time.LocalTime endDay = java.time.LocalTime.of(HORA_FIN, 0);
 
                 while (rs.next()) {
                     int interval = rs.getInt("ATTENTIONINTERVAL");
@@ -345,20 +352,29 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                     java.time.LocalTime currentTime = startDay;
 
                     while (currentTime.plusMinutes(interval).isBefore(endDay.plusMinutes(1))) {
-                        String horaActual = currentTime.toString();
-                        String llave = currentCodProf + "-" + horaActual;
+                        boolean esHoraValida = true;
+                        if (targetDate.equals(today)) {
+                            if (!currentTime.isAfter(now)) {
+                                esHoraValida = false;
+                            }
+                        }
+                        if (esHoraValida) { 
+                            String horaActual = currentTime.toString();
+                            String llave = currentCodProf + "-" + horaActual;
 
-                        if (!ocupadas.contains(llave)) {
-                            allSlots.add(new Object[]{
-                                targetDate.toString(),
-                                horaActual,
-                                currentCodProf,
-                                profName,
-                                rs.getString("TYPEPROF"),
-                                rs.getString("SPECIALITYPROF")
-                            });
+                            if (!ocupadas.contains(llave)) {
+                                allSlots.add(new Object[]{
+                                    targetDate.toString(),
+                                    horaActual,
+                                    currentCodProf,
+                                    profName,
+                                    rs.getString("TYPEPROF"),
+                                    rs.getString("SPECIALITYPROF")
+                                });
+                            }
                         }
                         currentTime = currentTime.plusMinutes(interval);
+                        
                     }
                 }
             }
@@ -371,7 +387,8 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     @Override
     public Appointment findFirstAvailableBySpeciality(SpecialityProfEnum speciality) {
         LocalDate dateSearch = LocalDate.now();
-        LocalDate limitDate = dateSearch.plusDays(60); 
+        LocalDate limitDate = dateSearch.plusDays(60);
+        LocalTime now = LocalTime.now();
 
         String sqlProf = "SELECT pr.CODPROF, pr.ATTENTIONINTERVAL " +
                          "FROM PROFESSIONAL pr " +
@@ -380,9 +397,8 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         String sqlOcupadas = "SELECT TIMEAPP FROM APPOINTMENT WHERE DATEAPP = ? AND CODPROF = ? AND STATUSAPP = 'Scheduled'";
 
         try (Connection conn = SQLRepository.conectar()) {
-
             while (dateSearch.isBefore(limitDate)) {
-
+                // Saltamos fines de semana
                 if (dateSearch.getDayOfWeek() == java.time.DayOfWeek.SUNDAY || dateSearch.getDayOfWeek() == java.time.DayOfWeek.SATURDAY) {
                     dateSearch = dateSearch.plusDays(1);
                     continue;
@@ -396,7 +412,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                         int codProf = rsProf.getInt("CODPROF");
                         int interval = rsProf.getInt("ATTENTIONINTERVAL");
 
-                        java.util.Set<String> ocupadas = new java.util.HashSet<>();
+                        Set<String> ocupadas = new HashSet<>();
                         try (PreparedStatement stOcup = conn.prepareStatement(sqlOcupadas)) {
                             stOcup.setString(1, dateSearch.toString());
                             stOcup.setInt(2, codProf);
@@ -406,24 +422,27 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                             }
                         }
 
-                        java.time.LocalTime currentTime = java.time.LocalTime.of(7, 0);
-                        java.time.LocalTime endDay = java.time.LocalTime.of(14, 0);
+                        LocalTime currentTime = LocalTime.of(7, 0);
+                        LocalTime endDay = LocalTime.of(HORA_FIN, 0);
 
-                        while (currentTime.plusMinutes(interval).isBefore(endDay.plusMinutes(1))) {
-                            String horaStr = currentTime.toString();
+                        while (!currentTime.plusMinutes(interval).isAfter(endDay)) {
 
-                            if (dateSearch.equals(LocalDate.now()) && currentTime.isBefore(java.time.LocalTime.now())) {
-                                currentTime = currentTime.plusMinutes(interval);
-                                continue;
+                            boolean esHoraValida = true;
+                            if (dateSearch.equals(LocalDate.now())) {
+                                if (!currentTime.isAfter(now)) {
+                                    esHoraValida = false;
+                                }
                             }
 
-                            if (!ocupadas.contains(horaStr)) {
-                                Appointment available = new Appointment();
-                                available.setDate(dateSearch);
-                                available.setTime(currentTime);
-                                available.setProfessionalId(codProf);
-                                available.setStatus(StatusAppointment.Scheduled);
-                                return available; 
+                            if (esHoraValida) {
+                                String horaStr = currentTime.toString();
+                                if (!ocupadas.contains(horaStr)) {
+                                    Appointment available = new Appointment();
+                                    available.setDate(dateSearch);
+                                    available.setTime(currentTime);
+                                    available.setProfessionalId(codProf);
+                                    return available; 
+                                }
                             }
                             currentTime = currentTime.plusMinutes(interval);
                         }
@@ -441,6 +460,9 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     public List<Object[]> generateAppBySpeciality(SpecialityProfEnum speciality) {
         List<Object[]> apps = new ArrayList<>();
         LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+
+        LocalDate targetDate = today;
 
         String sqlProf = "SELECT pr.CODPROF, u.NAMEUSER, u.LASTNAMEUSER, pr.TYPEPROF, " +
                          "pr.SPECIALITYPROF, pr.ATTENTIONINTERVAL " +
@@ -455,7 +477,8 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
 
             java.util.Map<String, Boolean> ocupadas = new java.util.HashMap<>();
             try (PreparedStatement stOcup = conn.prepareStatement(sqlOcupadas)) {
-                stOcup.setString(1, today.toString());
+                // Buscamos ocupadas para la fecha específica
+                stOcup.setString(1, targetDate.toString());
                 try (ResultSet rsOcup = stOcup.executeQuery()) {
                     while (rsOcup.next()) {
                         String llave = rsOcup.getInt("CODPROF") + "-" + rsOcup.getString("TIMEAPP");
@@ -468,8 +491,8 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                 stmt.setString(1, speciality.toString());
 
                 try (ResultSet rs = stmt.executeQuery()) {
-                    java.time.LocalTime startDay = java.time.LocalTime.of(7, 0);
-                    java.time.LocalTime endDay = java.time.LocalTime.of(14, 0);
+                    LocalTime startDay = LocalTime.of(7, 0);
+                    LocalTime endDay = LocalTime.of(HORA_FIN, 0);
 
                     while (rs.next()) {
                         int interval = rs.getInt("ATTENTIONINTERVAL");
@@ -478,21 +501,31 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                         String typeProf = rs.getString("TYPEPROF");
                         String specStr = rs.getString("SPECIALITYPROF");
 
-                        java.time.LocalTime currentTime = startDay;
+                        LocalTime currentTime = startDay;
 
                         while (!currentTime.plusMinutes(interval).isAfter(endDay)) {
-                            String horaActual = currentTime.toString();
-                            String llaveBusqueda = codProf + "-" + horaActual;
 
-                            if (!ocupadas.containsKey(llaveBusqueda)) {
-                                apps.add(new Object[]{
-                                    today.toString(),
-                                    horaActual,
-                                    codProf,
-                                    profName,
-                                    typeProf,
-                                    specStr
-                                });
+                            boolean esHoraValida = true;
+                            if (targetDate.equals(today)) {
+                                if (!currentTime.isAfter(now)) {
+                                    esHoraValida = false;
+                                }
+                            }
+
+                            if (esHoraValida) { 
+                                String horaActual = currentTime.toString();
+                                String llaveBusqueda = codProf + "-" + horaActual;
+
+                                if (!ocupadas.containsKey(llaveBusqueda)) {
+                                    apps.add(new Object[]{
+                                        targetDate.toString(),
+                                        horaActual,
+                                        codProf,
+                                        profName,
+                                        typeProf,
+                                        specStr
+                                    });
+                                }
                             }
                             currentTime = currentTime.plusMinutes(interval);
                         }
@@ -501,7 +534,6 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
             }
         } catch (SQLException e) {
             System.err.println("Error en generación de agenda: " + e.getMessage());
-            e.printStackTrace();
         }
         return apps;
     }
@@ -510,6 +542,8 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     public List<Object[]> filterGeneratedAppBySpeciality(Integer codProf, LocalDate fecha, SpecialityProfEnum speciality) {
         List<Object[]> allSlots = new ArrayList<>();
         LocalDate targetDate = (fecha != null) ? fecha : LocalDate.now();
+        LocalTime now = LocalTime.now();
+        LocalDate today = LocalDate.now();
 
         StringBuilder sqlProf = new StringBuilder(
             "SELECT pr.CODPROF, u.NAMEUSER, u.LASTNAMEUSER, pr.TYPEPROF, " +
@@ -546,7 +580,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
 
                 try (ResultSet rs = stmt.executeQuery()) {
                     java.time.LocalTime startDay = java.time.LocalTime.of(7, 0);
-                    java.time.LocalTime endDay = java.time.LocalTime.of(14, 0);
+                    java.time.LocalTime endDay = java.time.LocalTime.of(HORA_FIN, 0);
 
                     while (rs.next()) {
                         int interval = rs.getInt("ATTENTIONINTERVAL");
@@ -558,18 +592,27 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                         java.time.LocalTime currentTime = startDay;
 
                         while (!currentTime.plusMinutes(interval).isAfter(endDay)) {
-                            String horaActual = currentTime.toString();
-                            String llave = currentCodProf + "-" + horaActual;
+                            boolean esHoraValida = true;
+                            if (targetDate.equals(today)) {
+                                if (!currentTime.isAfter(now)) {
+                                    esHoraValida = false;
+                                }
+                            }
+                            
+                            if (esHoraValida) {
+                                String horaActual = currentTime.toString();
+                                String llave = currentCodProf + "-" + horaActual;
 
-                            if (!ocupadas.contains(llave)) {
-                                allSlots.add(new Object[]{
-                                    targetDate.toString(),
-                                    horaActual,
-                                    currentCodProf,
-                                    profFull,
-                                    type,
-                                    spec
-                                });
+                                if (!ocupadas.contains(llave)) {
+                                    allSlots.add(new Object[]{
+                                        targetDate.toString(),
+                                        horaActual,
+                                        currentCodProf,
+                                        profFull,
+                                        type,
+                                        spec
+                                    });
+                                }
                             }
                             currentTime = currentTime.plusMinutes(interval);
                         }
