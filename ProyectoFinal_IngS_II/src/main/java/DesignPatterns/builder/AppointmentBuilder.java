@@ -1,4 +1,4 @@
-package builder;
+package DesignPatterns.builder;
 import enums.StatusAppointment;
 import java.time.LocalDate;
 import java.time.LocalTime;
