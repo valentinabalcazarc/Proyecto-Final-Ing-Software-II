@@ -1,5 +1,9 @@
 package builder;
 
+import DesignPatterns.builder.SelfServiceAppointmentBuilder;
+import DesignPatterns.builder.AppointmentDirector;
+import DesignPatterns.builder.RescheduledAppointmentBuilder;
+import DesignPatterns.builder.ManualAppointmentBuilder;
 import enums.StatusAppointment;
 import models.Appointment;
 import java.time.LocalDate;
