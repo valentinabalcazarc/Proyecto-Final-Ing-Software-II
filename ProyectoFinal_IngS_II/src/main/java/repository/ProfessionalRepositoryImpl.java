@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Professional;
-import models.StatusUserEnum;
-import models.TypeProfEnum;
-import models.SpecialityProfEnum;
-import models.roleUserEnum;
+import enums.StatusUserEnum;
+import enums.TypeProfEnum;
+import enums.SpecialityProfEnum;
+import enums.RoleUserEnum;
 import DataBase.SQLRepository;
 
 public class ProfessionalRepositoryImpl implements ProfessionalRepository {
@@ -16,7 +16,7 @@ public class ProfessionalRepositoryImpl implements ProfessionalRepository {
     @Override
     public void save(Professional professional) {
 
-        String sql = "INSERT INTO PROFESSIONALS (CODUSER, GENPROF, PHONEPROF, STATUSPROF, " +
+        String sql = "INSERT INTO PROFESSIONAL (CODUSER, GENPROF, PHONEPROF, STATUSPROF, " +
                      "TYPEPROF, SPECIALITYPROF, ATTENTIONINTERVAL) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -44,7 +44,7 @@ public class ProfessionalRepositoryImpl implements ProfessionalRepository {
     @Override
     public Professional findById(int codProf) {
 
-        String sql = "SELECT p.*, u.* FROM PROFESSIONALS p " +
+        String sql = "SELECT p.*, u.* FROM PROFESSIONAL p " +
                      "JOIN USERS u ON p.CODUSER = u.CODUSER " +
                      "WHERE p.CODPROF = ?";
 
@@ -70,8 +70,10 @@ public class ProfessionalRepositoryImpl implements ProfessionalRepository {
     @Override
     public List<Professional> findAll() {
 
-        String sql = "SELECT p.*, u.* FROM PROFESSIONALS p " +
+        String sql = "SELECT p.*, u.* FROM PROFESSIONAL p " +
                      "JOIN USERS u ON p.CODUSER = u.CODUSER";
+        
+        //String sql = "SELECT * FROM PROFESSIONAL";
 
         List<Professional> professionals = new ArrayList<>();
 
@@ -93,12 +95,12 @@ public class ProfessionalRepositoryImpl implements ProfessionalRepository {
     @Override
     public void update(Professional professional) {
 
-        String sql = "UPDATE PROFESSIONALS SET GENPROF=?, PHONEPROF=?, STATUSPROF=?, " +
+        String sql = "UPDATE PROFESSIONAL SET GENPROF=?, PHONEPROF=?, STATUSPROF=?, " +
                      "TYPEPROF=?, SPECIALITYPROF=?, ATTENTIONINTERVAL=? " +
                      "WHERE CODPROF=?";
 
         try (Connection conn = SQLRepository.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, professional.getGenProf());
             stmt.setDouble(2, professional.getPhoneProf());
@@ -157,9 +159,37 @@ public class ProfessionalRepositoryImpl implements ProfessionalRepository {
                 rs.getString("LASTNAMEUSER"),
                 rs.getString("SECOND_LASTNAMEUSER"),
                 StatusUserEnum.valueOf(rs.getString("STATUSUSER")),
-                roleUserEnum.valueOf(rs.getString("TYPEUSER")),
-                rs.getString("SECURITYQUESTION"),
-                rs.getString("SECURITYANSWER")
+                RoleUserEnum.valueOf(rs.getString("ROLEUSER")),
+                rs.getString("QUESTUSER"),
+                rs.getString("ANSWERUSER")
         );
+    }
+    
+    
+    @Override
+    public List<Professional> findAllBySpeciality(SpecialityProfEnum speciality) {
+        String sql = "SELECT p.*, u.* FROM PROFESSIONAL p " +
+                     "JOIN USERS u ON p.CODUSER = u.CODUSER " +
+                     "WHERE p.SPECIALITYPROF = ?";
+
+        List<Professional> professionals = new ArrayList<>();
+
+        try (Connection conn = SQLRepository.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, speciality.toString());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    professionals.add(mapResultSetToProfessional(rs));
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al buscar profesionales por especialidad: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return professionals;
     }
 }

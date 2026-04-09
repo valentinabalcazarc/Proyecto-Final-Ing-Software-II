@@ -30,3 +30,6 @@ hs_err_pid*
 replay_pid*
 /ProyectoFinal_IngS_II/target/
 *.db
+/ProyectF-common/target/
+/report-html-plugin/target/
+/report-json-plugin/target/

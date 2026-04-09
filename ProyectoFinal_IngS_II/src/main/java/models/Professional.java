@@ -1,6 +1,11 @@
 
 package models;
 
+import enums.StatusUserEnum;
+import enums.TypeProfEnum;
+import enums.SpecialityProfEnum;
+import enums.RoleUserEnum;
+
 public class Professional extends User {
     private double codProf;
     private String genProf;
@@ -10,7 +15,7 @@ public class Professional extends User {
     private SpecialityProfEnum SpecialityProf;
     private short attentionInterval;
 
-    public Professional(double codProf, String genProf, double phoneProf, StatusUserEnum statusProf, TypeProfEnum typeProf, SpecialityProfEnum SpecialityProf, short attentionInterval, int codUser, int cedUser, String passUser, String nameUser, String secondNameUser, String lastNameUser, String secondLastNameUser, StatusUserEnum statusUser, roleUserEnum roleUser, String securityQuestion, String securityAnswer) {
+    public Professional(double codProf, String genProf, double phoneProf, StatusUserEnum statusProf, TypeProfEnum typeProf, SpecialityProfEnum SpecialityProf, short attentionInterval, int codUser, int cedUser, String passUser, String nameUser, String secondNameUser, String lastNameUser, String secondLastNameUser, StatusUserEnum statusUser, RoleUserEnum roleUser, String securityQuestion, String securityAnswer) {
         super(codUser, cedUser, passUser, nameUser, secondNameUser, lastNameUser, secondLastNameUser, statusUser, roleUser, securityQuestion, securityAnswer);
         this.codProf = codProf;
         this.genProf = genProf;
@@ -26,7 +31,7 @@ public class Professional extends User {
         return codProf;
     }
 
-    public Professional(int codUser, int cedUser, String passUser, String nameUser, String secondNameUser, String lastNameUser, String secondLastNameUser, StatusUserEnum statusUser, roleUserEnum roleUser, String securityQuestion, String securityAnswer) {
+    public Professional(int codUser, int cedUser, String passUser, String nameUser, String secondNameUser, String lastNameUser, String secondLastNameUser, StatusUserEnum statusUser, RoleUserEnum roleUser, String securityQuestion, String securityAnswer) {
         super(codUser, cedUser, passUser, nameUser, secondNameUser, lastNameUser, secondLastNameUser, statusUser, roleUser, securityQuestion, securityAnswer);
     }
 
@@ -85,6 +90,10 @@ public class Professional extends User {
         this.attentionInterval = attentionInterval;
     }
 
+    @Override
+    public String toString() {
+        return getNameUser() + " " + getLastNameUser();
+    }
     
     
 }
