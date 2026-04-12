@@ -1,6 +1,8 @@
 package com.piedraazul.people_service.service;
 
 import com.piedraazul.people_service.dto.PatientDTO;
+import com.piedraazul.people_service.dto.UpdatePatientDTO;
+import com.piedraazul.people_service.messaging.PeopleEventPublisher;
 import com.piedraazul.people_service.model.Patient;
 import com.piedraazul.people_service.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import java.util.Optional;
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
+    private final PeopleEventPublisher peopleEventPublisher;
 
     @Override
     public Patient register(PatientDTO dto) {
@@ -28,7 +31,9 @@ public class PatientServiceImpl implements PatientService {
         patient.setPhonePatient(dto.getPhonePatient());
         patient.setDateBirthPatient(dto.getDateBirthPatient());
         patient.setGenderPatient(dto.getGenderPatient());
-        return patientRepository.save(patient);
+        Patient saved = patientRepository.save(patient);
+        peopleEventPublisher.publishPatientRegistered(saved);
+        return saved;
     }
 
     @Override
@@ -42,7 +47,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Patient update(Long id, PatientDTO dto) {
+    public Patient update(Long id, UpdatePatientDTO dto) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado"));
         if (dto.getNamePatient() != null) patient.setNamePatient(dto.getNamePatient());
@@ -52,7 +57,9 @@ public class PatientServiceImpl implements PatientService {
         if (dto.getPhonePatient() != null) patient.setPhonePatient(dto.getPhonePatient());
         if (dto.getDateBirthPatient() != null) patient.setDateBirthPatient(dto.getDateBirthPatient());
         if (dto.getGenderPatient() != null) patient.setGenderPatient(dto.getGenderPatient());
-        return patientRepository.save(patient);
+        Patient updated = patientRepository.save(patient);
+        peopleEventPublisher.publishPatientUpdated(updated);
+        return updated;
     }
 
     @Override

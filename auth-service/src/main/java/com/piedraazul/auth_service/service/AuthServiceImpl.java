@@ -87,7 +87,9 @@ public class AuthServiceImpl implements AuthService {
         if (dto.getSecurityQuestion() != null) user.setSecurityQuestion(dto.getSecurityQuestion());
         if (dto.getSecurityAnswer() != null) user.setSecurityAnswer(dto.getSecurityAnswer());
         if (dto.getStatusUser() != null) user.setStatusUser(dto.getStatusUser());
-        return userRepository.save(user);
+        User updated = userRepository.save(user);
+        userEventPublisher.publishUserUpdated(updated);
+        return updated;
     }
 
     @Override
@@ -96,6 +98,9 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         user.setStatusUser(StatusUserEnum.Inactive);
         userRepository.save(user);
+
+        User saved = userRepository.save(user);
+        userEventPublisher.publishUserDeactivated(saved);
     }
 
     @Override

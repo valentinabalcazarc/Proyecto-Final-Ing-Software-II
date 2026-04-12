@@ -12,8 +12,13 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
     public static final String USER_QUEUE = "user.registered";
+    public static final String USER_UPDATED_QUEUE = "user.updated";
+    public static final String USER_DEACTIVATED_QUEUE = "user.deactivated";
     public static final String PATIENT_QUEUE = "patient.registered";
+    public static final String PATIENT_UPDATED_QUEUE = "patient.updated";
+    public static final String PROFESSIONAL_UPDATED_QUEUE = "professional.updated";
     public static final String PROFESSIONAL_QUEUE = "professional.registered";
+
 
     @Bean
     public Queue userQueue() {
@@ -21,8 +26,28 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public Queue userUpdatedQueue() {
+        return new Queue(USER_UPDATED_QUEUE, true);
+    }
+
+    @Bean
+    public Queue userDeactivatedQueue() {
+        return new Queue(USER_DEACTIVATED_QUEUE, true);
+    }
+
+    @Bean
     public Queue patientQueue() {
         return new Queue(PATIENT_QUEUE, true);
+    }
+
+    @Bean
+    public Queue patientUpdatedQueue() {
+        return new Queue(PATIENT_UPDATED_QUEUE, true);
+    }
+
+    @Bean
+    public Queue professionalUpdatedQueue() {
+        return new Queue(PROFESSIONAL_UPDATED_QUEUE, true);
     }
 
     @Bean

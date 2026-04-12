@@ -14,4 +14,12 @@ public class UserEventPublisher {
     public void publishUserRegistered(User user) {
         rabbitTemplate.convertAndSend(RabbitMQConfig.USER_QUEUE, user);
     }
+
+    public void publishUserUpdated(User user) {
+        rabbitTemplate.convertAndSend(RabbitMQConfig.USER_UPDATED_QUEUE, user);
+    }
+
+    public void publishUserDeactivated(User user) {
+        rabbitTemplate.convertAndSend(RabbitMQConfig.USER_DEACTIVATED_QUEUE, user);
+    }
 }
