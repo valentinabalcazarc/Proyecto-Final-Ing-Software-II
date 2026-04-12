@@ -1,6 +1,7 @@
 package com.piedraazul.people_service.controller;
 
 import com.piedraazul.people_service.dto.PatientDTO;
+import com.piedraazul.people_service.dto.UpdatePatientDTO;
 import com.piedraazul.people_service.model.Patient;
 import com.piedraazul.people_service.service.PatientService;
 import jakarta.validation.Valid;
@@ -14,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/patients")
+@RequestMapping("patients")
 @RequiredArgsConstructor
 public class PatientController {
 
@@ -61,7 +62,8 @@ public class PatientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody PatientDTO dto, BindingResult result) {
+    public ResponseEntity<?> update(@PathVariable Long id,
+                                    @RequestBody UpdatePatientDTO dto, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(
                     result.getFieldErrors().stream()

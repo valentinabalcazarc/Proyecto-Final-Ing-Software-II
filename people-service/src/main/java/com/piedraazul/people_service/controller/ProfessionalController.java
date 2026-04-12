@@ -1,6 +1,7 @@
 package com.piedraazul.people_service.controller;
 
 import com.piedraazul.people_service.dto.ProfessionalDTO;
+import com.piedraazul.people_service.dto.UpdateProfessionalDTO;
 import com.piedraazul.people_service.enums.SpecialityProfEnum;
 import com.piedraazul.people_service.model.Professional;
 import com.piedraazul.people_service.service.ProfessionalService;
@@ -15,7 +16,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/professionals")
+@RequestMapping("professionals")
 @RequiredArgsConstructor
 public class ProfessionalController {
 
@@ -71,7 +72,7 @@ public class ProfessionalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ProfessionalDTO dto, BindingResult result) {
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody UpdateProfessionalDTO dto, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(
                     result.getFieldErrors().stream()

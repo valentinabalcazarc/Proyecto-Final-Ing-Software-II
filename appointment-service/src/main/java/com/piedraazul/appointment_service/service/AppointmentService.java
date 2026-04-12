@@ -12,9 +12,9 @@ public interface AppointmentService {
     Appointment create(AppointmentDTO dto);
     Optional<Appointment> findById(Long id);
     List<Appointment> findAll();
+    List<Appointment> findByStatus(StatusAppointment status);
     List<Appointment> findByCodProf(Long codProf);
     List<Appointment> findByCodPatient(Long codPatient);
-    List<Appointment> findByStatus(StatusAppointment status);
     List<Appointment> findByCodProfAndDate(Long codProf, LocalDate date);
     Appointment update(Long id, UpdateAppointmentDTO dto);
     boolean cancel(Long id);

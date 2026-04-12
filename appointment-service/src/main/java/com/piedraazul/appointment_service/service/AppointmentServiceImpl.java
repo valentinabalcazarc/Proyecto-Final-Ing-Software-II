@@ -4,7 +4,11 @@ import com.piedraazul.appointment_service.dto.AppointmentDTO;
 import com.piedraazul.appointment_service.dto.UpdateAppointmentDTO;
 import com.piedraazul.appointment_service.enums.StatusAppointment;
 import com.piedraazul.appointment_service.model.Appointment;
+import com.piedraazul.appointment_service.model.PatientRef;
+import com.piedraazul.appointment_service.model.ProfessionalRef;
 import com.piedraazul.appointment_service.repository.AppointmentRepository;
+import com.piedraazul.appointment_service.repository.PatientRefRepository;
+import com.piedraazul.appointment_service.repository.ProfessionalRefRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -16,12 +20,20 @@ import java.util.Optional;
 public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
+    private final ProfessionalRefRepository professionalRefRepository;
+    private final PatientRefRepository patientRefRepository;
 
     @Override
     public Appointment create(AppointmentDTO dto) {
+        PatientRef patientRef = patientRefRepository.findById(dto.getCodPatient())
+                .orElseThrow(() -> new RuntimeException("No existe el paciente con código: " + dto.getCodPatient()));
+
+        ProfessionalRef professionalRef = professionalRefRepository.findById(dto.getCodProf())
+                .orElseThrow(() -> new RuntimeException("No existe el profesional con código: " + dto.getCodProf()));
+
         Appointment appointment = new Appointment();
-        appointment.setCodProf(dto.getCodProf());
-        appointment.setCodPatient(dto.getCodPatient());
+        appointment.setPatientRef(patientRef);
+        appointment.setProfessionalRef(professionalRef);
         appointment.setDateApp(dto.getDateApp());
         appointment.setTimeApp(dto.getTimeApp());
         appointment.setDescApp(dto.getDescApp());
@@ -41,12 +53,16 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<Appointment> findByCodProf(Long codProf) {
-        return appointmentRepository.findByCodProf(codProf);
+        ProfessionalRef prof = professionalRefRepository.findById(codProf)
+                .orElseThrow(() -> new RuntimeException("Profesional no encontrado: " + codProf));
+        return appointmentRepository.findByProfessionalRef(prof);
     }
 
     @Override
     public List<Appointment> findByCodPatient(Long codPatient) {
-        return appointmentRepository.findByCodPatient(codPatient);
+        PatientRef patient = patientRefRepository.findById(codPatient)
+                .orElseThrow(() -> new RuntimeException("Paciente no encontrado: " + codPatient));
+        return appointmentRepository.findByPatientRef(patient);
     }
 
     @Override
@@ -56,7 +72,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<Appointment> findByCodProfAndDate(Long codProf, LocalDate date) {
-        return appointmentRepository.findByCodProfAndDateApp(codProf, date);
+        ProfessionalRef prof = professionalRefRepository.findById(codProf)
+                .orElseThrow(() -> new RuntimeException("Profesional no encontrado: " + codProf));
+        return appointmentRepository.findByProfessionalRefAndDateApp(prof, date);
     }
 
     @Override

@@ -20,8 +20,9 @@ public class Professional {
     @Column(name = "CODPROF")
     private Long codProf;
 
-    @Column(name = "CODUSER", nullable = false)
-    private Long codUser;
+    @ManyToOne
+    @JoinColumn(name = "CODUSER", nullable = false)
+    private UserRef userRef;
 
     @Column(name = "GENPROF", nullable = false)
     private String genProf;

@@ -20,11 +20,13 @@ public class Appointment {
     @Column(name = "CODAPP")
     private Long codApp;
 
-    @Column(name = "CODPROF", nullable = false)
-    private Long codProf;
+    @ManyToOne
+    @JoinColumn(name = "CODPROF", nullable = false)
+    private ProfessionalRef professionalRef;
 
-    @Column(name = "CODPATIENT", nullable = false)
-    private Long codPatient;
+    @ManyToOne
+    @JoinColumn(name = "CODPATIENT", nullable = false)
+    private PatientRef patientRef;
 
     @Column(name = "DATEAPP")
     private LocalDate dateApp;

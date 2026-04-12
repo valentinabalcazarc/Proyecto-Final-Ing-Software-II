@@ -24,8 +24,8 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/piedraAzul/auth/login", "/piedraAzul/auth/register").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/auth/login", "/auth/register").permitAll()
+                        .anyRequest().permitAll()
                 );
         return http.build();
     }
