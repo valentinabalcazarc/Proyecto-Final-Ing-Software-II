@@ -9,6 +9,7 @@ import com.piedraazul.auth_service.model.User;
 import java.util.List;
 import java.util.Optional;
 
+
 public interface AuthService {
     LoginResponseDTO login(LoginRequestDTO request);
     User register(RegisterUserDTO dto);
