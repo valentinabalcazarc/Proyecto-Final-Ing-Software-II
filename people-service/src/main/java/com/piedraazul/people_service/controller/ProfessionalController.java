@@ -15,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/professionals")
+@RequestMapping("professionals")
 @RequiredArgsConstructor
 public class ProfessionalController {
 

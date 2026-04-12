@@ -6,6 +6,7 @@ import com.piedraazul.auth_service.dto.RegisterUserDTO;
 import com.piedraazul.auth_service.dto.UpdateUserDTO;
 import com.piedraazul.auth_service.enums.RoleUserEnum;
 import com.piedraazul.auth_service.enums.StatusUserEnum;
+import com.piedraazul.auth_service.messaging.UserEventPublisher;
 import com.piedraazul.auth_service.model.User;
 import com.piedraazul.auth_service.repository.UserRepository;
 import com.piedraazul.auth_service.security.JwtUtil;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -22,6 +24,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final UserEventPublisher userEventPublisher;
 
     @Override
     public LoginResponseDTO login(LoginRequestDTO request) {
@@ -56,7 +59,10 @@ public class AuthServiceImpl implements AuthService {
         user.setSecurityQuestion(dto.getSecurityQuestion());
         user.setSecurityAnswer(dto.getSecurityAnswer());
         user.setStatusUser(StatusUserEnum.Active);
-        return userRepository.save(user);
+        User saved = userRepository.save(user);
+
+        userEventPublisher.publishUserRegistered(saved);
+        return saved;
     }
 
     @Override
