@@ -4,7 +4,9 @@ import com.piedraazul.people_service.dto.ProfessionalDTO;
 import com.piedraazul.people_service.enums.SpecialityProfEnum;
 import com.piedraazul.people_service.enums.StatusProfEnum;
 import com.piedraazul.people_service.model.Professional;
+import com.piedraazul.people_service.model.UserRef;
 import com.piedraazul.people_service.repository.ProfessionalRepository;
+import com.piedraazul.people_service.repository.UserRefRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -15,14 +17,19 @@ import java.util.Optional;
 public class ProfessionalServiceImpl implements ProfessionalService {
 
     private final ProfessionalRepository professionalRepository;
+    private final UserRefRepository userRefRepository;
 
     @Override
     public Professional register(ProfessionalDTO dto) {
-        if (professionalRepository.existsByCodUser(dto.getCodUser())) {
+        UserRef userRef = userRefRepository.findById(dto.getCodUser())
+                .orElseThrow(() -> new RuntimeException("No existe un usuario con ese código"));
+
+        if (professionalRepository.existsByUserRef(userRef)) {
             throw new RuntimeException("Ya existe un profesional con ese usuario");
         }
+
         Professional prof = new Professional();
-        prof.setCodUser(dto.getCodUser());
+        prof.setUserRef(userRef);
         prof.setGenProf(dto.getGenProf());
         prof.setPhoneProf(dto.getPhoneProf());
         prof.setTypeProf(dto.getTypeProf());
@@ -34,7 +41,9 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 
     @Override
     public Optional<Professional> findByCodUser(Long codUser) {
-        return professionalRepository.findByCodUser(codUser);
+        UserRef userRef = userRefRepository.findById(codUser)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + codUser));
+        return professionalRepository.findByUserRef(userRef);
     }
 
     @Override
