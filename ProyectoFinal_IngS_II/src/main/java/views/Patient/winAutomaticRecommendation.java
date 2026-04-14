@@ -1,4 +1,5 @@
 package views.Patient;
+
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import enums.SpecialityProfEnum;
@@ -8,6 +9,7 @@ import models.Patient;
 import models.Professional;
 import services.ServiceManager;
 import views.ViewManager;
+import DesignPatterns.facade.AppointmentFacade;
 
 
 public class winAutomaticRecommendation extends javax.swing.JFrame {
@@ -245,37 +247,23 @@ public class winAutomaticRecommendation extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonOtherTimesActionPerformed
 
     private void jButtonConfirmAppointmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfirmAppointmentActionPerformed
-        Patient patient = ServiceManager.getInstance().getPatientService().findByCed(pat.getIdPatient());
-
-        if (patient == null) {
-            boolean okReg = ServiceManager.getInstance().getPatientService().regPatient(this.pat); // Usamos 'this.pat', no 'patient' que es null
-            if (okReg) {
-                patient = ServiceManager.getInstance().getPatientService().findByCed(pat.getIdPatient());
-            } else {
-                JOptionPane.showMessageDialog(this, "Error al registrar al nuevo paciente.");
-                return;
-            }
-        }
-
         Appointment appointment = new Appointment();
         appointment.setDate(this.app.getDate());
         appointment.setTime(this.app.getTime());
-        appointment.setProfessionalId((int)this.prof.getCodProf());
-        appointment.setPatientId(patient.getCodPatient());
+        appointment.setProfessionalId((int) this.prof.getCodProf());
 
-        boolean okApp = ServiceManager.getInstance().getAppointmentService().registerAppointment(appointment);
+        int result = AppointmentFacade.getInstance().scheduleAppointment(this.pat, appointment);
 
-        if (okApp) {
+        if (result == 0) {
             JOptionPane.showMessageDialog(this, "¡Cita guardada con éxito!");
-
-            ViewManager.getInstance().getViewApps_Prof().cargarTabla(); 
+            ViewManager.getInstance().getViewApps_Prof().cargarTabla();
             ViewManager.getInstance().getPrincipalPatient().setVisible(true);
             this.setVisible(false);
+        } else if (result == 1) {
+            JOptionPane.showMessageDialog(this, "Error al registrar al nuevo paciente.");
         } else {
             JOptionPane.showMessageDialog(this, "Error al registrar la cita.");
         }
-
-        
     }//GEN-LAST:event_jButtonConfirmAppointmentActionPerformed
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed

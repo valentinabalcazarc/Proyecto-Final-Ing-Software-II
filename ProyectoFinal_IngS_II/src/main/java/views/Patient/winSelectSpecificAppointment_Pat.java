@@ -1,4 +1,5 @@
 package views.Patient;
+
 import com.toedter.calendar.JCalendar;
 import configuration.FestivosService;
 import enums.SpecialityProfEnum;
@@ -14,6 +15,7 @@ import models.Patient;
 import models.Professional;
 import services.ServiceManager;
 import views.ViewManager;
+import DesignPatterns.facade.AppointmentFacade;
 
 public class winSelectSpecificAppointment_Pat extends javax.swing.JFrame {
 
@@ -372,33 +374,20 @@ public class winSelectSpecificAppointment_Pat extends javax.swing.JFrame {
 
     private void button_ConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_ConfirmarActionPerformed
         this.citaSeleccionada = table_App.getSelectedRow();
-    
+
         if (citaSeleccionada != -1) {
             String fechaStr = table_App.getValueAt(citaSeleccionada, 0).toString();
             String horaStr = table_App.getValueAt(citaSeleccionada, 1).toString();
             int codProf = (int) table_App.getValueAt(citaSeleccionada, 2);
 
-            Patient patient = ServiceManager.getInstance().getPatientService().findByCed(pat.getIdPatient());
-
-            if (patient == null) {
-                boolean okReg = ServiceManager.getInstance().getPatientService().regPatient(pat);
-                if (okReg) {
-                    patient = ServiceManager.getInstance().getPatientService().findByCed(pat.getIdPatient());
-                } else {
-                    JOptionPane.showMessageDialog(this, "Error crítico: No se pudo registrar al nuevo paciente.");
-                    return;
-                }
-            }
-
             Appointment app = new Appointment();
             app.setDate(java.time.LocalDate.parse(fechaStr));
             app.setTime(java.time.LocalTime.parse(horaStr));
             app.setProfessionalId(codProf);
-            app.setPatientId(patient.getCodPatient()); 
 
-            boolean okApp = ServiceManager.getInstance().getAppointmentService().registerAppointment(app);
+            int result = AppointmentFacade.getInstance().scheduleAppointment(pat, app);
 
-            if (okApp) {
+            if (result == 0) {
                 JOptionPane.showMessageDialog(this, "¡Cita guardada con éxito!");
                 ViewManager.getInstance().getPrincipalPatient().setVisible(true);
                 this.setVisible(false);
@@ -406,6 +395,8 @@ public class winSelectSpecificAppointment_Pat extends javax.swing.JFrame {
                 cbx_Professional.setSelectedItem(null);
                 jDate_ExportDate.setDate(null);
                 cargarTabla();
+            } else if (result == 1) {
+                JOptionPane.showMessageDialog(this, "Error crítico: No se pudo registrar al nuevo paciente.");
             } else {
                 JOptionPane.showMessageDialog(this, "Error: El horario ya no está disponible.");
             }
