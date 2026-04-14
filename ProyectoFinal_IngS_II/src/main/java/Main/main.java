@@ -85,7 +85,7 @@ public class main {
             ", Fecha: " + cita.getDate() +
             ", Hora: " + cita.getTime() +
             ", Descripcion: " + cita.getDescription() +
-            ", Estado: " + cita.getStatus()
+            ", Estado: " + cita.getState()
         );
     }*/
 }

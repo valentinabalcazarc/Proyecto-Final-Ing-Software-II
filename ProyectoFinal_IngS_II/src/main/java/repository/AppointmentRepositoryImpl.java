@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import DataBase.SQLRepository;
+import DesignPatterns.state.*;
 import enums.SpecialityProfEnum;
-import enums.StatusAppointment;
 import filters.IFilter;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,6 +17,44 @@ import models.AppointmentRep;
 
 public class AppointmentRepositoryImpl implements AppointmentRepository {
     private static int HORA_FIN = 16;
+    
+    /**
+     * Convierte un AppointmentState a un string representativo del estado
+     */
+    private String stateToString(AppointmentState state) {
+        if (state instanceof CreatedState) {
+            return "Created";
+        } else if (state instanceof AttendedState) {
+            return "Attended";
+        } else if (state instanceof RescheduledState) {
+            return "Rescheduled";
+        } else if (state instanceof NoAttendedState) {
+            return "NoAttended";
+        } else if (state instanceof CanceledState) {
+            return "Canceled";
+        }
+        return "Created"; // default
+    }
+    
+    /**
+     * Convierte un string representativo del estado a un AppointmentState
+     */
+    private AppointmentState stringToState(String stateStr, Appointment appointment) {
+        switch (stateStr) {
+            case "Created":
+                return new CreatedState(appointment);
+            case "Attended":
+                return new AttendedState(appointment);
+            case "Rescheduled":
+                return new RescheduledState(appointment);
+            case "NoAttended":
+                return new NoAttendedState(appointment);
+            case "Canceled":
+                return new CanceledState(appointment);
+            default:
+                return new CreatedState(appointment); // default
+        }
+    }
     
     @Override
     public boolean save(Appointment appointment) {
@@ -32,8 +70,8 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
             stmt.setString(4, appointment.getTime().toString());
             stmt.setString(5, appointment.getDescription());
 
-            // guardar enum como String
-            stmt.setString(6, appointment.getStatus().name());
+            // guardar estado como String
+            stmt.setString(6, stateToString(appointment.getState()));
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -56,7 +94,6 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-
                 Appointment app = new Appointment(
                         rs.getInt("CODAPP"),
                         rs.getInt("CODPATIENT"),
@@ -64,8 +101,12 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                         rs.getDate("DATEAPP").toLocalDate(),
                         rs.getTime("TIMEAPP").toLocalTime(),
                         rs.getString("DESCAPP"),
-                        StatusAppointment.valueOf(rs.getString("STATUSAPP"))
+                        null // state será asignado después
                 );
+                
+                // Asignar el estado correcto
+                AppointmentState state = stringToState(rs.getString("STATUSAPP"), app);
+                app.setState(state);
 
                 appointments.add(app);
             }
@@ -251,7 +292,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                          "JOIN USERS u ON pr.CODUSER = u.CODUSER " +
                          "WHERE pr.STATUSPROF = 'Active'";
 
-        String sqlOcupadas = "SELECT CODPROF, TIMEAPP FROM APPOINTMENT WHERE DATEAPP = ? AND STATUSAPP = 'Scheduled'";
+        String sqlOcupadas = "SELECT CODPROF, TIMEAPP FROM APPOINTMENT WHERE DATEAPP = ? AND STATUSAPP = 'Created'";
 
         try (Connection conn = SQLRepository.conectar()) {
 
@@ -325,7 +366,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         }
 
         
-        String sqlOcupadas = "SELECT CODPROF, TIMEAPP FROM APPOINTMENT WHERE DATEAPP = ? AND STATUSAPP = 'Scheduled'";
+        String sqlOcupadas = "SELECT CODPROF, TIMEAPP FROM APPOINTMENT WHERE DATEAPP = ? AND STATUSAPP = 'Created'";
 
         try (Connection conn = SQLRepository.conectar()) {
 
@@ -394,7 +435,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                          "FROM PROFESSIONAL pr " +
                          "WHERE pr.SPECIALITYPROF = ? AND pr.STATUSPROF = 'Active'";
 
-        String sqlOcupadas = "SELECT TIMEAPP FROM APPOINTMENT WHERE DATEAPP = ? AND CODPROF = ? AND STATUSAPP = 'Scheduled'";
+        String sqlOcupadas = "SELECT TIMEAPP FROM APPOINTMENT WHERE DATEAPP = ? AND CODPROF = ? AND STATUSAPP = 'Created'";
 
         try (Connection conn = SQLRepository.conectar()) {
             while (dateSearch.isBefore(limitDate)) {
@@ -471,7 +512,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                          "WHERE pr.STATUSPROF = 'Active' " + 
                          "AND pr.SPECIALITYPROF = ?";
 
-        String sqlOcupadas = "SELECT CODPROF, TIMEAPP FROM APPOINTMENT WHERE DATEAPP = ? AND STATUSAPP = 'Scheduled'";
+        String sqlOcupadas = "SELECT CODPROF, TIMEAPP FROM APPOINTMENT WHERE DATEAPP = ? AND STATUSAPP = 'Created'";
 
         try (Connection conn = SQLRepository.conectar()) {
 

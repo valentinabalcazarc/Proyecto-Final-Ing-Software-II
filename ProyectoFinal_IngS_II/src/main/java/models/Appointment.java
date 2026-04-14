@@ -2,7 +2,7 @@ package models;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import enums.StatusAppointment;
+import DesignPatterns.state.AppointmentState;
 
 public class Appointment {
 
@@ -12,20 +12,20 @@ public class Appointment {
     private LocalDate date;
     private LocalTime time;
     private String description;
-    private StatusAppointment status;
+    private AppointmentState state;
 
     public Appointment() {
-        this.status = StatusAppointment.Scheduled;
+        this.state = AppointmentState.InitialState(this);
     }
 
-    public Appointment(int id, int patientId, int professionalId, LocalDate date, LocalTime time, String description, StatusAppointment status) {
+    public Appointment(int id, int patientId, int professionalId, LocalDate date, LocalTime time, String description, AppointmentState state) {
         this.id = id;
         this.patientId = patientId;
         this.professionalId = professionalId;
         this.date = date;
         this.time = time;
         this.description = description;
-        this.status = status;
+        this.state = state;
     }
 
     public int getId() {
@@ -52,8 +52,8 @@ public class Appointment {
         return description;
     }
     
-    public StatusAppointment getStatus() {
-        return status;
+    public AppointmentState getState() {
+        return state;
     }
 
     public void setId(int id) {
@@ -80,7 +80,7 @@ public class Appointment {
         this.description = description;
     }
     
-    public void setStatus(StatusAppointment status) {
-        this.status = status;
+    public void setState(AppointmentState state) {
+        this.state = state;
     }
 }

@@ -1,7 +1,7 @@
 package filters;
 
 import models.Appointment;
-import enums.StatusAppointment;
+import DesignPatterns.state.CreatedState;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class ValidationStageTest {
         cita.setPatientId(patientId);
         cita.setDate(LocalDate.now());
         cita.setTime(LocalTime.of(9, 0));
-        cita.setStatus(StatusAppointment.Scheduled);
+        cita.setState(new CreatedState(cita));
         return cita;
     }
 

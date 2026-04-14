@@ -1,6 +1,8 @@
 package DesignPatterns.builder;
 
-import enums.StatusAppointment;
+import DesignPatterns.state.AppointmentState;
+import DesignPatterns.state.CreatedState;
+import DesignPatterns.state.RescheduledState;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import models.Appointment;
@@ -17,13 +19,13 @@ public class AppointmentDirector {
         return appointmentBuilder.getAppointment();
     }
 
-    public void buildManualAppointment(int patientId, int professionalId, LocalDate date, LocalTime time, String description, StatusAppointment status) {
+    public void buildManualAppointment(int patientId, int professionalId, LocalDate date, LocalTime time, String description, AppointmentState state) {
 
         appointmentBuilder.createNewAppointment();
         appointmentBuilder.buildPatientData(patientId);
         appointmentBuilder.buildProfessionalData(professionalId);
         appointmentBuilder.buildDate(date, time);
-        appointmentBuilder.buildDetails(description, status);
+        appointmentBuilder.buildDetails(description, state);
     }
 
     public void buildSelfServiceAppointment(int patientId, int professionalId, LocalDate date, LocalTime time, String description) {
@@ -32,7 +34,7 @@ public class AppointmentDirector {
         appointmentBuilder.buildPatientData(patientId);
         appointmentBuilder.buildProfessionalData(professionalId);
         appointmentBuilder.buildDate(date, time);
-        appointmentBuilder.buildDetails(description, StatusAppointment.Scheduled);
+        appointmentBuilder.buildDetails(description, new CreatedState(appointmentBuilder.getAppointment()));
     }
 
     public void buildRescheduledAppointment(int patientId, int professionalId, LocalDate date, LocalTime time, String description) {
@@ -41,6 +43,6 @@ public class AppointmentDirector {
         appointmentBuilder.buildPatientData(patientId);
         appointmentBuilder.buildProfessionalData(professionalId);
         appointmentBuilder.buildDate(date, time);
-        appointmentBuilder.buildDetails(description, StatusAppointment.Rescheduled);
+        appointmentBuilder.buildDetails(description, new RescheduledState(appointmentBuilder.getAppointment()));
     }
 }

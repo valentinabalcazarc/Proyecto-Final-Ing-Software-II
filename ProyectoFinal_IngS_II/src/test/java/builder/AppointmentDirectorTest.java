@@ -4,7 +4,10 @@ import DesignPatterns.builder.SelfServiceAppointmentBuilder;
 import DesignPatterns.builder.AppointmentDirector;
 import DesignPatterns.builder.RescheduledAppointmentBuilder;
 import DesignPatterns.builder.ManualAppointmentBuilder;
-import enums.StatusAppointment;
+import DesignPatterns.state.AppointmentState;
+import DesignPatterns.state.CanceledState;
+import DesignPatterns.state.CreatedState;
+import DesignPatterns.state.RescheduledState;
 import models.Appointment;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -20,14 +23,15 @@ public class AppointmentDirectorTest {
         this.director = new AppointmentDirector();
         
         director.setAppointmentBuilder(new ManualAppointmentBuilder());
-        StatusAppointment statusManual = StatusAppointment.Cancelled;
+        Appointment canceledAppointment = new Appointment();
+        AppointmentState stateCanceled = new CanceledState(canceledAppointment);
 
-        director.buildManualAppointment(1, 100, LocalDate.now(), LocalTime.of(9, 0), "Consulta general", statusManual);
+        director.buildManualAppointment(1, 100, LocalDate.now(), LocalTime.of(9, 0), "Consulta general", stateCanceled);
         Appointment cita = director.getAppointment();
 
         assertNotNull(cita);
         assertEquals(1, cita.getPatientId());
-        assertEquals(StatusAppointment.Cancelled, cita.getStatus());
+        assertTrue(cita.getState() instanceof CanceledState);
     }
 
     @Test
@@ -41,7 +45,7 @@ public class AppointmentDirectorTest {
 
         assertNotNull(cita);
         assertEquals(2, cita.getPatientId());
-        assertEquals(StatusAppointment.Scheduled, cita.getStatus());
+        assertTrue(cita.getState() instanceof CreatedState);
     }
 
     @Test
@@ -55,6 +59,6 @@ public class AppointmentDirectorTest {
 
         assertNotNull(cita);
         assertEquals(3, cita.getPatientId());
-        assertEquals(StatusAppointment.Rescheduled, cita.getStatus());
+        assertTrue(cita.getState() instanceof RescheduledState);
     }
 }

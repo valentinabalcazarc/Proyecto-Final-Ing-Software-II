@@ -1,6 +1,6 @@
 package DesignPatterns.builder;
 
-import enums.StatusAppointment;
+import DesignPatterns.state.AppointmentState;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -23,8 +23,8 @@ public class ManualAppointmentBuilder extends AppointmentBuilder {
     }
 
     @Override
-    public void buildDetails(String description, StatusAppointment status) {
+    public void buildDetails(String description, AppointmentState state) {
         appointment.setDescription(description);
-        appointment.setStatus(status);
+        appointment.setState(state);
     }
 }

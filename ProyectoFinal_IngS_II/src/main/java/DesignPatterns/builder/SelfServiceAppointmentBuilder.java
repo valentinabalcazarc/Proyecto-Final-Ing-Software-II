@@ -1,6 +1,7 @@
 package DesignPatterns.builder;
 
-import enums.StatusAppointment;
+import DesignPatterns.state.AppointmentState;
+import DesignPatterns.state.CreatedState;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -23,8 +24,8 @@ public class SelfServiceAppointmentBuilder extends AppointmentBuilder {
     }
 
     @Override
-    public void buildDetails(String description, StatusAppointment status) {
+    public void buildDetails(String description, AppointmentState state) {
         appointment.setDescription(description + " (Auto-agendada)");
-        appointment.setStatus(StatusAppointment.Scheduled);
+        appointment.setState(new CreatedState(appointment));
     }
 }

@@ -1,6 +1,10 @@
 package models;
 
-import enums.StatusAppointment;
+import DesignPatterns.state.AppointmentState;
+import DesignPatterns.state.AttendedState;
+import DesignPatterns.state.CanceledState;
+import DesignPatterns.state.CreatedState;
+import DesignPatterns.state.RescheduledState;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,20 +23,21 @@ public class AppointmentTest {
     }
 
     @Test
-    public void testConstructorVacio_estadoPorDefectoEsScheduled() {
-        assertEquals(StatusAppointment.Scheduled, appointment.getStatus());
+    public void testConstructorVacio_estadoPorDefectoEsCreated() {
+        assertTrue(appointment.getState() instanceof CreatedState);
     }
 
     @Test
     public void testConstructorCompleto_asignaTodosLosCampos() {
-        Appointment cita = new Appointment(1, 10, 20, FECHA, HORA, "Consulta", StatusAppointment.Completed);
+        AppointmentState attendedState = new AttendedState(new Appointment());
+        Appointment cita = new Appointment(1, 10, 20, FECHA, HORA, "Consulta", attendedState);
         assertEquals(1, cita.getId());
         assertEquals(10, cita.getPatientId());
         assertEquals(20, cita.getProfessionalId());
         assertEquals(FECHA, cita.getDate());
         assertEquals(HORA, cita.getTime());
         assertEquals("Consulta", cita.getDescription());
-        assertEquals(StatusAppointment.Completed, cita.getStatus());
+        assertTrue(cita.getState() instanceof AttendedState);
     }
 
     @Test
@@ -72,15 +77,17 @@ public class AppointmentTest {
     }
 
     @Test
-    public void testSetStatus_actualizaEstado() {
-        appointment.setStatus(StatusAppointment.Cancelled);
-        assertEquals(StatusAppointment.Cancelled, appointment.getStatus());
+    public void testSetState_actualizaEstado() {
+        AppointmentState canceledState = new CanceledState(appointment);
+        appointment.setState(canceledState);
+        assertTrue(appointment.getState() instanceof CanceledState);
     }
 
     @Test
-    public void testSetStatus_cambiaDeScheduledARescheduled() {
-        appointment.setStatus(StatusAppointment.Rescheduled);
-        assertEquals(StatusAppointment.Rescheduled, appointment.getStatus());
+    public void testSetState_cambiaDeCreatedARescheduled() {
+        AppointmentState rescheduledState = new RescheduledState(appointment);
+        appointment.setState(rescheduledState);
+        assertTrue(appointment.getState() instanceof RescheduledState);
     }
 
     @Test
@@ -97,3 +104,4 @@ public class AppointmentTest {
         assertNull(appointment.getTime());
     }
 }
+
