@@ -2,15 +2,29 @@ package DesignPatterns.facade;
 
 import models.Appointment;
 import models.Patient;
+import services.AppointmentService;
+import services.PatientService;
 import services.ServiceManager;
 
 public class AppointmentFacade {
 
     private static AppointmentFacade instance;
 
+    // En AppointmentFacade.java
+    private PatientService patientService;
+    private AppointmentService appointmentService;
+
+    // Constructor para uso normal
     private AppointmentFacade() {
+        this.patientService = ServiceManager.getInstance().getPatientService();
+        this.appointmentService = ServiceManager.getInstance().getAppointmentService();
     }
 
+    // NUEVO: Constructor para pruebas (Simulación)
+    public AppointmentFacade(PatientService ps, AppointmentService as) {
+        this.patientService = ps;
+        this.appointmentService = as;
+    }
     public static AppointmentFacade getInstance() {
         if (instance == null) {
             instance = new AppointmentFacade();
@@ -22,15 +36,15 @@ public class AppointmentFacade {
         // return 0 exito
         // return 1 error al registrar paciente
         // return 2 error al registrar cita
-        Patient existingPatient = ServiceManager.getInstance().getPatientService().findByCed(patient.getIdPatient());
+        Patient existingPatient = patientService.findByCed(patient.getIdPatient());
 
         if (existingPatient == null) {
-            boolean regOk = ServiceManager.getInstance().getPatientService().regPatient(patient);
+            boolean regOk = patientService.regPatient(patient);
             if (!regOk) {
                 return 1;
             }
             
-            existingPatient = ServiceManager.getInstance().getPatientService().findByCed(patient.getIdPatient());
+            existingPatient = patientService.findByCed(patient.getIdPatient());
             if (existingPatient == null) {
                 return 1;
             }
@@ -38,7 +52,7 @@ public class AppointmentFacade {
 
         appointment.setPatientId(existingPatient.getCodPatient());
 
-        boolean appOk = ServiceManager.getInstance().getAppointmentService().registerAppointment(appointment);
+        boolean appOk = appointmentService.registerAppointment(appointment);
         
         if (appOk) {
             return 0;
