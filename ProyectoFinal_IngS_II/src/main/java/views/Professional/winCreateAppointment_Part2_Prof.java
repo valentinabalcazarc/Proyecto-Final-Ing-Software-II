@@ -9,6 +9,7 @@ import models.Appointment;
 import models.Patient;
 import services.ServiceManager;
 import views.ViewManager;
+import DesignPatterns.facade.AppointmentFacade;
 
 
 public class winCreateAppointment_Part2_Prof extends javax.swing.JFrame {
@@ -558,92 +559,54 @@ public class winCreateAppointment_Part2_Prof extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReturnActionPerformed
 
     private void btnSaveAppointmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveAppointmentActionPerformed
-        if (lb_errorID.isVisible() || lb_errorFistName.isVisible() || 
-            lb_errorFistLastName.isVisible() || lb_errorCelular.isVisible() ||
-            lb_errorSecondName.isVisible() || lb_errorSecondLastName.isVisible() ||
-            lb_errorFecha.isVisible()) {
-
-            JOptionPane.showMessageDialog(this, "Por favor, corrija los errores.", "Validación", JOptionPane.WARNING_MESSAGE);
+        if (lb_errorID.isVisible() || lb_errorFistName.isVisible() ||
+                lb_errorFistLastName.isVisible() || lb_errorCelular.isVisible() ||
+                lb_errorSecondName.isVisible() || lb_errorSecondLastName.isVisible() ||
+                lb_errorFecha.isVisible()) {
+            JOptionPane.showMessageDialog(this, "Por favor, corrija los errores.", "Validación",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
-        try{
+
+        try {
             int cedPatient = Integer.parseInt(txt_Cedula.getText());
-            Patient patient = ServiceManager.getInstance().getPatientService().findByCed(cedPatient);
-            
-            if (patient == null){
-                patient = new Patient();
-                patient.setIdPatient(cedPatient);
-                patient.setNamePatient(tF_userFirstName.getText());
-                patient.setSecondNamePatient(tF_userSecondName.getText());
-                patient.setLastNamePatient(tF_userFirstLastName.getText());
-                patient.setSecondLastNamePatient(tF_userSecondLastName.getText());
-                patient.setPhonePatient(Integer.parseInt(txt_PhoneNumber.getText()));
-                patient.setDateBirthPatient(convertirDateALocalDate(jDate_BirthDate.getDate()));
-                patient.setGenderPatient(cbx_Gender.getSelectedItem().toString());
-                
-                boolean regPatient = ServiceManager.getInstance().getPatientService().regPatient(patient);
-            
-                if(regPatient){
-                    patient = ServiceManager.getInstance().getPatientService().findByCed(cedPatient);
-                    app.setPatientId(patient.getCodPatient());
-                    app.setDescription(txt_Observation.getText().trim());
+            Patient patient = new Patient();
+            patient.setIdPatient(cedPatient);
+            patient.setNamePatient(tF_userFirstName.getText());
+            patient.setSecondNamePatient(tF_userSecondName.getText());
+            patient.setLastNamePatient(tF_userFirstLastName.getText());
+            patient.setSecondLastNamePatient(tF_userSecondLastName.getText());
+            patient.setPhonePatient(Integer.parseInt(txt_PhoneNumber.getText()));
+            patient.setDateBirthPatient(convertirDateALocalDate(jDate_BirthDate.getDate()));
+            patient.setGenderPatient(cbx_Gender.getSelectedItem().toString());
 
-                    boolean ok = ServiceManager.getInstance().getAppointmentService().registerAppointment(app);
+            app.setDescription(txt_Observation.getText().trim());
 
-                    if (ok) {
-                        int respuesta = javax.swing.JOptionPane.showOptionDialog(
-                                    this, 
-                                    "¡Cita guardada con éxito!", 
-                                    "Confirmación", 
-                                    javax.swing.JOptionPane.DEFAULT_OPTION, 
-                                    javax.swing.JOptionPane.INFORMATION_MESSAGE, 
-                                    null, 
-                                    new Object[]{"OK"}, 
-                                    "OK"
-                            );
-                        if (respuesta == javax.swing.JOptionPane.OK_OPTION || respuesta == javax.swing.JOptionPane.CLOSED_OPTION) {
-                            limpiarCampos();
-                            ocultarErrores();
-                            ViewManager.getInstance().getPrincipalProf().setVisible(true);
-                            this.setVisible(false); 
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Error al registrar cita.");
-                    }
-                }else{
-                    JOptionPane.showMessageDialog(this, "Error al registrar paciente.");
+            int result = AppointmentFacade.getInstance().scheduleAppointment(patient, app);
+
+            if (result == 0) {
+                int respuesta = javax.swing.JOptionPane.showOptionDialog(
+                        this,
+                        "¡Cita guardada con éxito!",
+                        "Confirmación",
+                        javax.swing.JOptionPane.DEFAULT_OPTION,
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE,
+                        null,
+                        new Object[] { "OK" },
+                        "OK");
+                if (respuesta == javax.swing.JOptionPane.OK_OPTION
+                        || respuesta == javax.swing.JOptionPane.CLOSED_OPTION) {
+                    limpiarCampos();
+                    ocultarErrores();
+                    ViewManager.getInstance().getPrincipalProf().setVisible(true);
+                    this.setVisible(false);
                 }
-                
+            } else if (result == 1) {
+                JOptionPane.showMessageDialog(this, "Error al registrar paciente.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al registrar cita.");
             }
-            if (patient != null) {
-                app.setPatientId(patient.getCodPatient()); 
-                app.setDescription(txt_Observation.getText().trim());
-
-                boolean ok = ServiceManager.getInstance().getAppointmentService().registerAppointment(app);
-
-                if (ok) {
-                    int respuesta = javax.swing.JOptionPane.showOptionDialog(
-                                this, 
-                                "¡Cita guardada con éxito!", 
-                                "Confirmación", 
-                                javax.swing.JOptionPane.DEFAULT_OPTION, 
-                                javax.swing.JOptionPane.INFORMATION_MESSAGE, 
-                                null, 
-                                new Object[]{"OK"}, 
-                                "OK"
-                        );
-                    if (respuesta == javax.swing.JOptionPane.OK_OPTION || respuesta == javax.swing.JOptionPane.CLOSED_OPTION) {
-                        limpiarCampos();
-                        ocultarErrores();
-                        ViewManager.getInstance().getPrincipalProf().setVisible(true);
-                        this.setVisible(false); 
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(this, "Error al registrar cita.");
-                }
-            }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error inesperado.");
         }
