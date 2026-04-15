@@ -8,6 +8,7 @@ public abstract class AppointmentDecorator extends Appointment {
     protected Appointment appointment;
 
     public AppointmentDecorator(Appointment appointment) {
+        super();
         this.appointment = appointment;
     }
 
