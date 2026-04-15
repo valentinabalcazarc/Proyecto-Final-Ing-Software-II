@@ -11,4 +11,10 @@ public class PriorityAppointment extends AppointmentDecorator {
     public String getDescription() {
         return appointment.getDescription() + " [PRIORIDAD ALTA]";
     }
+    
+    @Override
+    public String toString() {
+        return "PriorityAppointment";
+    }
 }
+

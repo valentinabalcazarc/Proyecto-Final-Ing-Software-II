@@ -12,4 +12,8 @@ public class UrgentAppointment extends AppointmentDecorator {
     public String getDescription() {
         return appointment.getDescription() + " [URGENTE]";
     }
+    @Override
+    public String toString() {
+        return "UrgentAppointment";
+}
 }

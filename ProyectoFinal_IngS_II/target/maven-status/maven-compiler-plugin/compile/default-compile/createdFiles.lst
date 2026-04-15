@@ -131,6 +131,7 @@ views\Admin\winUserRegister$1.class
 views\winLogin$2.class
 views\ViewManager.class
 models\Patient.class
+DesignPatterns\decorator\MainDecorator.class
 views\Admin\winAdmin$1.class
 views\Patient\winPrincipal_Pat$2.class
 DesignPatterns\builder\SelfServiceAppointmentBuilder.class
