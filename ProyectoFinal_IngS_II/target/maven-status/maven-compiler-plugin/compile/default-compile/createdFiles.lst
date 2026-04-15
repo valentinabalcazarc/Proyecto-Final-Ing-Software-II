@@ -19,6 +19,8 @@ repository\UserRepository.class
 configuration\IAuthenticationService.class
 models\Appointment.class
 views\Admin\winUserRegister.class
+DesignPatterns\builder\ManualAppointmentBuilder.class
+DesignPatterns\templateMethod\AppointmentSchedulerTemplateExample.class
 views\Patient\winPatientInfo_Pat.class
 views\Professional\winCreateAppointment_Part2_Prof$2.class
 views\Professional\winCreateAppointment_Part2_Prof.class
@@ -48,6 +50,7 @@ filters\TransformDateStage.class
 views\winLogin.class
 views\Admin\winUserRegister$4.class
 repository\AppointmentRepositoryImpl.class
+DesignPatterns\templateMethod\AutonomousScheduler.class
 models\Admin.class
 views\Patient\winPatientInfo_Pat$3.class
 views\Patient\winSelectSpecificAppointment_Pat$4.class
@@ -61,6 +64,7 @@ views\Patient\winAutomaticRecommendation$2.class
 views\Professional\winCreateAppointment_Part2_Prof$4.class
 views\Patient\winSelectService_Pat.class
 filters\TransformCamelCaseNameStage.class
+DesignPatterns\builder\AppointmentBuilder.class
 enums\RoleUserEnum.class
 views\Professional\winViewAppointments_Prof$3.class
 DesignPatterns\state\RescheduledState.class
@@ -84,8 +88,10 @@ repository\AppointmentRepository.class
 views\Professional\winManageAppointment_Prof$2.class
 views\Admin\winUserRegister$3.class
 views\Patient\winPrincipal_Pat$1.class
+DesignPatterns\templateMethod\ManualScheduler.class
 views\Professional\winViewAppointments_Prof$1.class
 services\ProfessionalService.class
+DesignPatterns\templateMethod\AppointmentScheduler.class
 enums\TypeProfEnum.class
 configuration\FestivosService.class
 views\Patient\winSelectService_Pat$1.class
@@ -111,12 +117,15 @@ filters\ValidationStage.class
 views\Professional\winExportFormatSelection$1.class
 views\Admin\winAdmin$2.class
 views\Professional\winExport$3.class
+DesignPatterns\builder\RescheduledAppointmentBuilder.class
+DesignPatterns\builder\AppointmentDirector.class
 views\Admin\winUserRegister$1.class
 views\winLogin$2.class
 views\ViewManager.class
 models\Patient.class
 views\Admin\winAdmin$1.class
 views\Patient\winPrincipal_Pat$2.class
+DesignPatterns\builder\SelfServiceAppointmentBuilder.class
 repository\PatientRepositoryImpl.class
 views\Professional\winManageAppointment_Prof$4.class
 DesignPatterns\state\NoAttendedState.class
