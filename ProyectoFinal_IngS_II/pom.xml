@@ -24,7 +24,13 @@
             <artifactId>jBCrypt</artifactId>
         <version>0.4.3</version>
         </dependency>
-        
+                
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20240303</version>
+        </dependency>
+
         <dependency>
             <groupId>com.toedter</groupId>
             <artifactId>jcalendar</artifactId>
