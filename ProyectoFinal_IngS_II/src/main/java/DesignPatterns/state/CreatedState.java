@@ -61,4 +61,9 @@ public class CreatedState extends AppointmentState {
         // En este estado, las transiciones se hacen explícitamente
         return getContext().getState();
     }
+    
+    @Override
+    public String toString() {
+        return "CreatedState";
+    }
 }
