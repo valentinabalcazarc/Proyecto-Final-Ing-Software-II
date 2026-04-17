@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="486.0" prefWidth="593.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.piedraazul.app_client.controllers.LoginController">
+   <children>
+      <Pane prefHeight="137.0" prefWidth="593.0" style="-fx-background-color: #6666FF;">
+         <children>
+            <Label layoutX="173.0" layoutY="35.0" prefHeight="44.0" prefWidth="247.0" text="PIEDRA AZUL" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Cascadia Code Regular" size="37.0" />
+               </font>
+            </Label>
+            <Label layoutX="200.0" layoutY="79.0" prefHeight="23.0" prefWidth="193.0" text="Servicios Médicos" textFill="WHITE">
+               <font>
+                  <Font name="Cascadia Code Regular" size="19.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Label layoutX="244.0" layoutY="156.0" text="BIENVENIDO">
+         <font>
+            <Font name="Cascadia Code Regular" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="88.0" layoutY="214.0" prefHeight="18.0" prefWidth="162.0" text="usuario (cédula):">
+         <font>
+            <Font name="Cascadia Code Regular" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="88.0" layoutY="264.0" text="contraseña:">
+         <font>
+            <Font name="Cascadia Code Regular" size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtUser_login" layoutX="264.0" layoutY="209.0" prefHeight="25.0" prefWidth="193.0" style="-fx-background-color: #E8E8E8;">
+         <font>
+            <Font name="Cascadia Code Regular" size="16.0" />
+         </font>
+      </TextField>
+      <PasswordField fx:id="txtPass_Login" layoutX="264.0" layoutY="259.0" prefHeight="29.0" prefWidth="193.0" style="-fx-background-color: #E8E8E8;">
+         <font>
+            <Font name="Cascadia Code Regular" size="16.0" />
+         </font>
+      </PasswordField>
+      <Button fx:id="btnInicio_Sesion" layoutX="194.0" layoutY="324.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="1.0" prefWidth="206.0" style="-fx-background-color: #6666FF;" text="Ingresar" textFill="WHITE">
+         <font>
+            <Font name="Cascadia Code Regular" size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnRegister_Login" layoutX="194.0" layoutY="415.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="206.0" style="-fx-background-color: #6666FF;" text="Registrarse" textFill="WHITE">
+         <font>
+            <Font name="Cascadia Code Regular" size="16.0" />
+         </font>
+      </Button>
+      <Label layoutX="157.0" layoutY="374.0" prefHeight="19.0" prefWidth="280.0" text="¿No tienes cuenta? Regístrate" textAlignment="CENTER">
+         <font>
+            <Font name="Cascadia Code Regular" size="16.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
