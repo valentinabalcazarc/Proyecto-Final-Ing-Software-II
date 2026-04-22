@@ -10,7 +10,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/AdminView.fxml"));
         Scene scene = new Scene(root);
         stage.setTitle("Piedra Azul - Login");
         stage.setScene(scene);
