@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="320.0" prefWidth="560.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.piedraazul.app_client.controllers.AdminController">
+   <children>
+
+      <!-- Header azul -->
+      <Pane prefHeight="100.0" prefWidth="560.0" style="-fx-background-color: #6666FF;">
+         <children>
+            <Label layoutX="40.0" layoutY="30.0" prefWidth="480.0" text="INGRESASTE COMO ADMINISTRADOR"
+                   textFill="WHITE" textAlignment="CENTER">
+               <font><Font name="Cascadia Code Bold" size="20.0"/></font>
+            </Label>
+         </children>
+      </Pane>
+
+      <!-- Contenido principal -->
+      <Pane layoutY="106.0" prefHeight="170.0" prefWidth="560.0" style="-fx-background-color: WHITE;">
+         <children>
+            <!-- Borde panel botones -->
+            <Pane layoutX="28.0" layoutY="20.0" prefHeight="80.0" prefWidth="504.0"
+                  style="-fx-border-color: #AAAAAA; -fx-border-width: 1; -fx-border-radius: 4;">
+               <children>
+                  <Button fx:id="btnRegProfessional" layoutX="25.0" layoutY="17.0"
+                          prefHeight="46.0" prefWidth="182.0"
+                          text="Registrar profesional"
+                          onAction="#handleRegProfessional"
+                          style="-fx-background-color: #6666FF; -fx-text-fill: WHITE; -fx-cursor: hand;">
+                     <font><Font name="Cascadia Code Regular" size="13.0"/></font>
+                  </Button>
+
+                  <Button fx:id="btnProfessionalSchedule" layoutX="297.0" layoutY="17.0"
+                          prefHeight="46.0" prefWidth="182.0"
+                          text="Gestionar horario profesional"
+                          onAction="#handleProfessionalSchedule"
+                          style="-fx-background-color: #6666FF; -fx-text-fill: WHITE; -fx-cursor: hand;">
+                     <font><Font name="Cascadia Code Regular" size="11.0"/></font>
+                  </Button>
+               </children>
+            </Pane>
+
+            <!-- Botón cerrar sesión -->
+            <Button fx:id="btnCerrarSesion" layoutX="200.0" layoutY="118.0"
+                    prefHeight="32.0" prefWidth="160.0"
+                    text="CERRAR SESIÓN"
+                    onAction="#handleCerrarSesion"
+                    style="-fx-background-color: #6666FF; -fx-text-fill: WHITE; -fx-cursor: hand;">
+               <font><Font name="Cascadia Code Regular" size="14.0"/></font>
+            </Button>
+         </children>
+      </Pane>
+
+   </children>
+</AnchorPane>
