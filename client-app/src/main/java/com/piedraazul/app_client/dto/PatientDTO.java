@@ -2,6 +2,9 @@ package com.piedraazul.app_client.dto;
 
 import java.time.LocalDate;
 
+import lombok.Data;
+
+@Data
 public class PatientDTO {
     private Long idPatient;
     private String namePatient;

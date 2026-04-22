@@ -2,49 +2,68 @@ package com.piedraazul.app_client.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
-
 import com.piedraazul.app_client.enums.RoleUserEnum;
 import com.piedraazul.app_client.enums.SpecialityProfEnum;
 import com.piedraazul.app_client.enums.StatusUserEnum;
 import com.piedraazul.app_client.enums.TypeProfEnum;
 import com.piedraazul.app_client.models.Professional;
+import com.piedraazul.app_client.services.NavigationService;
 import com.piedraazul.app_client.services.ServiceManager;
 
 public class RegisterProfessionalController {
 
     // --- Campos del formulario ---
-    @FXML private TextField     txtNumCedula;
-    @FXML private TextField     txtFirstName;
-    @FXML private TextField     txtSecondName;
-    @FXML private TextField     txtFirstLastName;
-    @FXML private TextField     txtSecondLastName;
-    @FXML private TextField     txtPhoneNumber;
-    @FXML private PasswordField txtPassword;
-    @FXML private PasswordField txtConPassword;
-    @FXML private TextField     txtSecurityAnswer;
+    @FXML
+    private TextField txtNumCedula;
+    @FXML
+    private TextField txtFirstName;
+    @FXML
+    private TextField txtSecondName;
+    @FXML
+    private TextField txtFirstLastName;
+    @FXML
+    private TextField txtSecondLastName;
+    @FXML
+    private TextField txtPhoneNumber;
+    @FXML
+    private PasswordField txtPassword;
+    @FXML
+    private PasswordField txtConPassword;
+    @FXML
+    private TextField txtSecurityAnswer;
 
-    @FXML private ComboBox<String> cbxTipoProf;
-    @FXML private ComboBox<String> cbxEspecialidad;
-    @FXML private ComboBox<String> cbxSecurityQuestion;
+    @FXML
+    private ComboBox<String> cbxTipoProf;
+    @FXML
+    private ComboBox<String> cbxEspecialidad;
+    @FXML
+    private ComboBox<String> cbxSecurityQuestion;
 
     // --- Etiquetas de error ---
-    @FXML private Label lb_errorID;
-    @FXML private Label lb_errorFirstName;
-    @FXML private Label lb_errorSecondName;
-    @FXML private Label lb_errorFirstLastName;
-    @FXML private Label lb_errorSecondLastName;
-    @FXML private Label lb_errorPhone;
-    @FXML private Label lb_errorPassword;
+    @FXML
+    private Label lb_errorID;
+    @FXML
+    private Label lb_errorFirstName;
+    @FXML
+    private Label lb_errorSecondName;
+    @FXML
+    private Label lb_errorFirstLastName;
+    @FXML
+    private Label lb_errorSecondLastName;
+    @FXML
+    private Label lb_errorPhone;
+    @FXML
+    private Label lb_errorPassword;
 
-    @FXML private Button btnEye;
-    @FXML private Button btnSave;
-    @FXML private Button btnCancel;
-    @FXML private Button btnRegresar;
+    @FXML
+    private Button btnEye;
+    @FXML
+    private Button btnSave;
+    @FXML
+    private Button btnCancel;
+    @FXML
+    private Button btnRegresar;
 
     private boolean mostrarPassword = false;
 
@@ -84,7 +103,8 @@ public class RegisterProfessionalController {
     @FXML
     public void handleSave() {
         ocultarErrores();
-        if (!validarCampos()) return;
+        if (!validarCampos())
+            return;
 
         try {
             Professional p = new Professional();
@@ -102,13 +122,13 @@ public class RegisterProfessionalController {
             p.setSecurityAnswer(txtSecurityAnswer.getText().trim());
 
             switch (cbxTipoProf.getValue()) {
-                case "Doctor"    -> p.setTypeProf(TypeProfEnum.Doctor);
+                case "Doctor" -> p.setTypeProf(TypeProfEnum.Doctor);
                 case "Terapeuta" -> p.setTypeProf(TypeProfEnum.Therapist);
             }
             switch (cbxEspecialidad.getValue()) {
                 case "Terapia neural" -> p.setSpecialityProf(SpecialityProfEnum.Neural_Therapy);
-                case "Quiropraxia"    -> p.setSpecialityProf(SpecialityProfEnum.Chiropractor);
-                case "Fisioterapia"   -> p.setSpecialityProf(SpecialityProfEnum.Physiotherapy);
+                case "Quiropraxia" -> p.setSpecialityProf(SpecialityProfEnum.Chiropractor);
+                case "Fisioterapia" -> p.setSpecialityProf(SpecialityProfEnum.Physiotherapy);
             }
 
             boolean ok = ServiceManager.getInstance().getUserService().regUser(p);
@@ -129,13 +149,13 @@ public class RegisterProfessionalController {
     // ---- Cancelar --------------------------------------------------
     @FXML
     public void handleCancel() {
-        navigateTo("/fxml/LoginView.fxml", "Piedra Azul - Login", btnCancel);
+        NavigationService.getInstance().navigateTo("/fxml/LoginView.fxml", "Piedra Azul - Login", btnCancel);
     }
 
     // ---- Regresar al Admin -----------------------------------------
     @FXML
     public void handleRegresar() {
-        navigateTo("/fxml/AdminView.fxml", "Piedra Azul - Administrador", btnRegresar);
+        NavigationService.getInstance().navigateTo("/fxml/AdminView.fxml", "Piedra Azul - Administrador", btnRegresar);
     }
 
     // ================================================================
@@ -145,51 +165,77 @@ public class RegisterProfessionalController {
         boolean ok = true;
 
         if (txtNumCedula.getText().trim().isEmpty()) {
-            lb_errorID.setText("Campo requerido"); lb_errorID.setVisible(true); ok = false;
+            lb_errorID.setText("Campo requerido");
+            lb_errorID.setVisible(true);
+            ok = false;
         } else {
-            try { Long.parseLong(txtNumCedula.getText().trim()); }
-            catch (NumberFormatException e) {
-                lb_errorID.setText("Solo números"); lb_errorID.setVisible(true); ok = false;
+            try {
+                Long.parseLong(txtNumCedula.getText().trim());
+            } catch (NumberFormatException e) {
+                lb_errorID.setText("Solo números");
+                lb_errorID.setVisible(true);
+                ok = false;
             }
         }
 
         if (txtFirstName.getText().trim().isEmpty()) {
-            lb_errorFirstName.setText("Campo requerido"); lb_errorFirstName.setVisible(true); ok = false;
+            lb_errorFirstName.setText("Campo requerido");
+            lb_errorFirstName.setVisible(true);
+            ok = false;
         } else if (!esNombreValido(txtFirstName.getText().trim())) {
-            lb_errorFirstName.setText("Caracteres inválidos"); lb_errorFirstName.setVisible(true); ok = false;
+            lb_errorFirstName.setText("Caracteres inválidos");
+            lb_errorFirstName.setVisible(true);
+            ok = false;
         }
 
         if (!txtSecondName.getText().trim().isEmpty() && !esNombreValido(txtSecondName.getText().trim())) {
-            lb_errorSecondName.setText("Caracteres inválidos"); lb_errorSecondName.setVisible(true); ok = false;
+            lb_errorSecondName.setText("Caracteres inválidos");
+            lb_errorSecondName.setVisible(true);
+            ok = false;
         }
 
         if (txtFirstLastName.getText().trim().isEmpty()) {
-            lb_errorFirstLastName.setText("Campo requerido"); lb_errorFirstLastName.setVisible(true); ok = false;
+            lb_errorFirstLastName.setText("Campo requerido");
+            lb_errorFirstLastName.setVisible(true);
+            ok = false;
         } else if (!esNombreValido(txtFirstLastName.getText().trim())) {
-            lb_errorFirstLastName.setText("Caracteres inválidos"); lb_errorFirstLastName.setVisible(true); ok = false;
+            lb_errorFirstLastName.setText("Caracteres inválidos");
+            lb_errorFirstLastName.setVisible(true);
+            ok = false;
         }
 
         if (!txtSecondLastName.getText().trim().isEmpty() && !esNombreValido(txtSecondLastName.getText().trim())) {
-            lb_errorSecondLastName.setText("Caracteres inválidos"); lb_errorSecondLastName.setVisible(true); ok = false;
+            lb_errorSecondLastName.setText("Caracteres inválidos");
+            lb_errorSecondLastName.setVisible(true);
+            ok = false;
         }
 
         if (txtPhoneNumber.getText().trim().isEmpty()) {
-            lb_errorPhone.setText("Campo requerido"); lb_errorPhone.setVisible(true); ok = false;
+            lb_errorPhone.setText("Campo requerido");
+            lb_errorPhone.setVisible(true);
+            ok = false;
         } else {
-            try { Double.parseDouble(txtPhoneNumber.getText().trim()); }
-            catch (NumberFormatException e) {
-                lb_errorPhone.setText("Solo números"); lb_errorPhone.setVisible(true); ok = false;
+            try {
+                Double.parseDouble(txtPhoneNumber.getText().trim());
+            } catch (NumberFormatException e) {
+                lb_errorPhone.setText("Solo números");
+                lb_errorPhone.setVisible(true);
+                ok = false;
             }
         }
 
         if (txtPassword.getText().isEmpty()) {
-            lb_errorPassword.setText("Campo requerido"); lb_errorPassword.setVisible(true); ok = false;
+            lb_errorPassword.setText("Campo requerido");
+            lb_errorPassword.setVisible(true);
+            ok = false;
         } else if (!validarPasswordSegura(txtPassword.getText())) {
             lb_errorPassword.setText("Contraseña débil (6 car., mayús., número, especial)");
-            lb_errorPassword.setVisible(true); ok = false;
+            lb_errorPassword.setVisible(true);
+            ok = false;
         } else if (!txtPassword.getText().equals(txtConPassword.getText())) {
             lb_errorPassword.setText("Las contraseñas no coinciden");
-            lb_errorPassword.setVisible(true); ok = false;
+            lb_errorPassword.setVisible(true);
+            ok = false;
         }
 
         if (!ok) {
@@ -221,9 +267,14 @@ public class RegisterProfessionalController {
     }
 
     private void limpiarFormulario() {
-        txtNumCedula.clear(); txtFirstName.clear(); txtSecondName.clear();
-        txtFirstLastName.clear(); txtSecondLastName.clear();
-        txtPhoneNumber.clear(); txtPassword.clear(); txtConPassword.clear();
+        txtNumCedula.clear();
+        txtFirstName.clear();
+        txtSecondName.clear();
+        txtFirstLastName.clear();
+        txtSecondLastName.clear();
+        txtPhoneNumber.clear();
+        txtPassword.clear();
+        txtConPassword.clear();
         txtSecurityAnswer.clear();
         cbxTipoProf.getSelectionModel().selectFirst();
         cbxEspecialidad.getSelectionModel().selectFirst();
@@ -233,18 +284,8 @@ public class RegisterProfessionalController {
     private void showAlert(Alert.AlertType type, String title, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
+        alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
-    }
-
-    private void navigateTo(String fxml, String title, Button sourceBtn) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource(fxml));
-            Stage stage = (Stage) sourceBtn.getScene().getWindow();
-            stage.setTitle(title);
-            stage.setScene(new Scene(root));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

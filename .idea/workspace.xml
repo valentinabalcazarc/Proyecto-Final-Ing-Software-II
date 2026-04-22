@@ -5,15 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9bb12027-78ca-4cf9-804f-dd3607f9e7e8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/controllers/AdminController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/controllers/RegisterProfessionalController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/controllers/RegisterUserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client-app/src/main/resources/fxml/AdminView.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client-app/src/main/resources/fxml/RegisterProfessionalView.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client-app/src/main/resources/fxml/RegisterUserView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client-app/src/main/resources/fxml/MenuPrincipalPaciente.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/controllers/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/controllers/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/controllers/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/controllers/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/controllers/RegisterProfessionalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/controllers/RegisterProfessionalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/dto/PatientDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/dto/PatientDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/dto/ProfessionalDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/dto/ProfessionalDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/dto/RegisterDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/dto/RegisterDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/dto/UpdateUserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/dto/UpdateUserDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/models/Appointment.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/models/Appointment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/AppointmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/AppointmentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/AppointmentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/AppointmentServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/ProfessionalService.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/ProfessionalService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/ProfessionalServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/ProfessionalServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/SessionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/SessionManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,18 +37,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Jesuss2706"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Jesuss2706&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/valentinabalcazarc/Proyecto-Final-Ing-Software-II.git",
-    "accountId": "36109881-1006-4276-8f24-21f442456487"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/valentinabalcazarc/Proyecto-Final-Ing-Software-II.git&quot;,
+    &quot;accountId&quot;: &quot;36109881-1006-4276-8f24-21f442456487&quot;
   }
-}]]></component>
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -59,36 +65,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.App.executor": "Run",
-    "Application.MainLauncher.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.AppointmentServiceApplication.executor": "Run",
-    "Spring Boot.AuthServiceApplication.executor": "Run",
-    "Spring Boot.PeopleServiceApplication.executor": "Run",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/JESUS/Desktop/UNICAUCA/SEMESTRE 6/Proyecto-Final-Ing-Software-II/client-app/src/main/resources/fxml",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Semestre 6/ProyectoFinal_IngS_II/Proyecto-Final-Ing-Software-II/client-app/src/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "settings.sync",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.App.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MainLauncher.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AppointmentServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.AuthServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.PeopleServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Front&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/JESUS/Desktop/UNICAUCA/SEMESTRE 6/Proyecto-Final-Ing-Software-II/client-app/src/main/resources/fxml&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Semestre 6/ProyectoFinal_IngS_II/Proyecto-Final-Ing-Software-II/client-app/src/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.sync&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\JESUS\Desktop\UNICAUCA\SEMESTRE 6\Proyecto-Final-Ing-Software-II\client-app\src\main\resources\fxml" />
@@ -178,19 +184,19 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.MainLauncher" />
       <item itemvalue="Application.App" />
+      <item itemvalue="Application.MainLauncher" />
       <item itemvalue="Spring Boot.AppointmentServiceApplication" />
-      <item itemvalue="Spring Boot.PeopleServiceApplication" />
       <item itemvalue="Spring Boot.AuthServiceApplication" />
+      <item itemvalue="Spring Boot.PeopleServiceApplication" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.MainLauncher" />
-        <item itemvalue="Application.App" />
-        <item itemvalue="Spring Boot.AppointmentServiceApplication" />
         <item itemvalue="Spring Boot.PeopleServiceApplication" />
         <item itemvalue="Spring Boot.AuthServiceApplication" />
+        <item itemvalue="Spring Boot.AppointmentServiceApplication" />
+        <item itemvalue="Application.App" />
       </list>
     </recent_temporary>
   </component>

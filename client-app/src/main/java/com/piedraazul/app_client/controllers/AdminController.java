@@ -1,11 +1,9 @@
 package com.piedraazul.app_client.controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javafx.scene.control.Button;
+import com.piedraazul.app_client.services.NavigationService;
+import com.piedraazul.app_client.services.SessionManager;
 
 public class AdminController {
 
@@ -15,14 +13,11 @@ public class AdminController {
 
     @FXML
     public void handleRegProfessional() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/RegisterProfessionalView.fxml"));
-            Stage stage = (Stage) btnRegProfessional.getScene().getWindow();
-            stage.setTitle("Piedra Azul - Registrar Profesional");
-            stage.setScene(new Scene(root));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        NavigationService.getInstance().navigateTo(
+                "/fxml/RegisterProfessionalView.fxml", 
+                "Piedra Azul - Registrar Profesional", 
+                btnRegProfessional
+        );
     }
 
     @FXML
@@ -31,22 +26,18 @@ public class AdminController {
         javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
                 javafx.scene.control.Alert.AlertType.INFORMATION);
         alert.setTitle("En construcción");
+        alert.setHeaderText(null);
         alert.setContentText("La gestión de horarios aún no está disponible.");
         alert.showAndWait();
     }
 
     @FXML
     public void handleCerrarSesion() {
-        try {
-            // Limpiar sesión activa
-            com.piedraazul.app_client.services.SessionManager.clearSession();
-
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginView.fxml"));
-            Stage stage = (Stage) btnCerrarSesion.getScene().getWindow();
-            stage.setTitle("Piedra Azul - Login");
-            stage.setScene(new Scene(root));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        SessionManager.clearSession();
+        NavigationService.getInstance().navigateTo(
+                "/fxml/LoginView.fxml", 
+                "Piedra Azul - Login", 
+                btnCerrarSesion
+        );
     }
 }

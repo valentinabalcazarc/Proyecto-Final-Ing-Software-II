@@ -1,6 +1,5 @@
 package com.piedraazul.app_client.services;
 
-import com.piedraazul.app_client.dto.ProfessionalDTO;
 import com.piedraazul.app_client.enums.SpecialityProfEnum;
 import com.piedraazul.app_client.models.Professional;
 import org.json.JSONArray;

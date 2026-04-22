@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="600.0" prefWidth="900.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.piedraazul.app_client.controllers.ProfessionalViewAppointmentsController"
+            style="-fx-background-color: linear-gradient(to bottom right, #f1f3f5, #dee2e6);">
+    <children>
+
+        <!-- Header profesional -->
+        <Pane prefHeight="100.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to right, #11998e, #38ef7d); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);">
+            <children>
+                <Label layoutX="40.0" layoutY="30.0" text="VISUALIZACIÓN DE CITAS" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="28.0" />
+                    </font>
+                </Label>
+                <Button fx:id="btnRegresar" layoutX="750.0" layoutY="30.0"
+                        mnemonicParsing="false" onAction="#handleRegresar"
+                        prefHeight="40.0" prefWidth="120.0"
+                        style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-background-radius: 20; -fx-border-color: white; -fx-border-radius: 20; -fx-cursor: hand;"
+                        text="← Regresar">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Button>
+            </children>
+        </Pane>
+
+        <!-- Filtros -->
+        <Pane layoutX="30.0" layoutY="120.0" prefHeight="120.0" prefWidth="840.0" style="-fx-background-color: white; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 8, 0, 0, 0);">
+            <children>
+                <HBox layoutX="20.0" layoutY="20.0" spacing="40.0" alignment="CENTER_LEFT">
+                    <children>
+                        <VBox spacing="8.0">
+                            <children>
+                                <Label text="Profesional:" textFill="#444444">
+                                    <font><Font name="System Bold" size="14.0"/></font>
+                                </Label>
+                                <ComboBox fx:id="cbxProfessional" prefWidth="250.0" promptText="Seleccionar médico..." />
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="8.0">
+                            <children>
+                                <Label text="Fecha:" textFill="#444444">
+                                    <font><Font name="System Bold" size="14.0"/></font>
+                                </Label>
+                                <DatePicker fx:id="dpDate" prefWidth="180.0" promptText="Seleccionar fecha..." />
+                            </children>
+                        </VBox>
+
+                        <HBox spacing="15.0" alignment="BOTTOM_LEFT" style="-fx-padding: 25 0 0 0;">
+                            <children>
+                                <Button fx:id="btnFind" mnemonicParsing="false" onAction="#handleFind"
+                                        prefHeight="35.0" prefWidth="100.0"
+                                        style="-fx-background-color: #11998e; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-weight: bold;"
+                                        text="Buscar" />
+                                <Button fx:id="btnClearFilter" mnemonicParsing="false" onAction="#handleClearFilter"
+                                        prefHeight="35.0" prefWidth="120.0"
+                                        style="-fx-background-color: #f8f9fa; -fx-text-fill: #11998e; -fx-background-radius: 8; -fx-border-color: #11998e; -fx-border-radius: 8; -fx-cursor: hand; -fx-font-weight: bold;"
+                                        text="Borrar Filtro" />
+                            </children>
+                        </HBox>
+                    </children>
+                </HBox>
+            </children>
+        </Pane>
+
+        <!-- Tabla -->
+        <Pane layoutX="30.0" layoutY="260.0" prefHeight="310.0" prefWidth="840.0" style="-fx-background-color: white; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 8, 0, 0, 0);">
+            <children>
+                <TableView fx:id="tblAppointments" layoutX="20.0" layoutY="20.0" prefHeight="270.0" prefWidth="800.0">
+                    <columns>
+                        <TableColumn fx:id="colId" prefWidth="80.0" text="ID Cita" />
+                        <TableColumn fx:id="colDate" prefWidth="110.0" text="Fecha" />
+                        <TableColumn fx:id="colTime" prefWidth="100.0" text="Hora" />
+                        <TableColumn fx:id="colPatient" prefWidth="200.0" text="Paciente" />
+                        <TableColumn fx:id="colStatus" prefWidth="150.0" text="Estado" />
+                        <TableColumn fx:id="colDescription" prefWidth="155.0" text="Descripción" />
+                    </columns>
+                </TableView>
+            </children>
+        </Pane>
+
+    </children>
+</AnchorPane>

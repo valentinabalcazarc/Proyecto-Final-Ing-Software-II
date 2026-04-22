@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="450.0" prefWidth="700.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.piedraazul.app_client.controllers.ProfessionalMainController"
+            style="-fx-background-color: linear-gradient(to bottom right, #f1f3f5, #dee2e6);">
+    <children>
+
+        <!-- Header profesional con gradiente verde/azul -->
+        <Pane prefHeight="130.0" prefWidth="700.0" style="-fx-background-color: linear-gradient(to right, #11998e, #38ef7d); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);">
+            <children>
+                <Label layoutX="40.0" layoutY="40.0" text="MENÚ PRINCIPAL" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="30.0" />
+                    </font>
+                </Label>
+                <Label layoutX="40.0" layoutY="85.0" text="Panel del Profesional de Salud" textFill="#e8f5e9">
+                    <font>
+                        <Font name="System Italic" size="18.0" />
+                    </font>
+                </Label>
+
+                <Button fx:id="btnCerrarSesion" layoutX="530.0" layoutY="45.0"
+                        mnemonicParsing="false" onAction="#handleCerrarSesion"
+                        prefHeight="40.0" prefWidth="140.0"
+                        style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-background-radius: 20; -fx-border-color: white; -fx-border-radius: 20; -fx-cursor: hand;"
+                        text="Cerrar Sesión">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Button>
+            </children>
+        </Pane>
+
+        <!-- Grilla de acciones -->
+        <VBox layoutX="50.0" layoutY="160.0" spacing="25.0" prefWidth="600.0">
+            <children>
+                <Label text="Gestión de Citas y Pacientes" textFill="#2d3436">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Label>
+
+                <HBox spacing="30.0">
+                    <children>
+                        <Button fx:id="btnAddAppointment" mnemonicParsing="false" onAction="#handleAddAppointment"
+                                prefHeight="80.0" prefWidth="285.0"
+                                style="-fx-background-color: white; -fx-text-fill: #11998e; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2); -fx-cursor: hand; -fx-border-color: #11998e; -fx-border-radius: 12; -fx-border-width: 1;"
+                                text="Agendar Cita">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Button>
+
+                        <Button fx:id="btnManageAppointments" mnemonicParsing="false" onAction="#handleManageAppointments"
+                                prefHeight="80.0" prefWidth="285.0"
+                                style="-fx-background-color: white; -fx-text-fill: #11998e; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2); -fx-cursor: hand; -fx-border-color: #11998e; -fx-border-radius: 12; -fx-border-width: 1;"
+                                text="Gestionar Citas">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+
+                <HBox spacing="30.0">
+                    <children>
+                        <Button fx:id="btnViewAppointments" mnemonicParsing="false" onAction="#handleViewAppointments"
+                                prefHeight="80.0" prefWidth="285.0"
+                                style="-fx-background-color: white; -fx-text-fill: #11998e; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2); -fx-cursor: hand; -fx-border-color: #11998e; -fx-border-radius: 12; -fx-border-width: 1;"
+                                text="Ver Mis Citas">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Button>
+
+                        <Button fx:id="btnExportAppointments" mnemonicParsing="false" onAction="#handleExportAppointments"
+                                prefHeight="80.0" prefWidth="285.0"
+                                style="-fx-background-color: white; -fx-text-fill: #11998e; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2); -fx-cursor: hand; -fx-border-color: #11998e; -fx-border-radius: 12; -fx-border-width: 1;"
+                                text="Exportar Datos">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <Label layoutX="260.0" layoutY="410.0" text="Servicios Médicos Piedra Azul © 2026" textFill="#95a5a6">
+            <font>
+                <Font size="12.0" />
+            </font>
+        </Label>
+
+    </children>
+</AnchorPane>

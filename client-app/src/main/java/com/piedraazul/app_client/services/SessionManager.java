@@ -14,6 +14,10 @@ public class SessionManager {
     public static String getToken() { return token; }
     public static LoginResponseDTO getCurrentUser() { return currentUser; }
 
+    public static Long getCurrentUserCodUser() {
+        return (currentUser != null) ? currentUser.getCodUser() : null;
+    }
+
     public static void clearSession() {
         token = null;
         currentUser = null;

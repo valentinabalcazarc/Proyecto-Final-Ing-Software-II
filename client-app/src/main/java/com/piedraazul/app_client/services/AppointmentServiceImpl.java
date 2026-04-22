@@ -21,7 +21,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public boolean registerAppointment(Appointment appointment) {
-        if (appointment == null) return false;
+        if (appointment == null)
+            return false;
         try {
             JSONObject json = new JSONObject();
             json.put("dateApp", appointment.getDate().toString());
@@ -42,6 +43,11 @@ public class AppointmentServiceImpl implements AppointmentService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public List<Appointment> getAllAppointments() {
+        return fetchAppointmentList(BASE_URL);
     }
 
     @Override
@@ -103,8 +109,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                     reports.add(new AppointmentRep(
                             obj.getString("patientName"),
                             obj.getString("doctorName"),
-                            obj.getString("date")
-                    ));
+                            obj.getString("date")));
                 }
             }
         } catch (Exception e) {
@@ -144,9 +149,141 @@ public class AppointmentServiceImpl implements AppointmentService {
         return data;
     }
 
-    // Implementarías los filtros restantes siguiendo el patrón de URL con parámetros:
-    @Override public List<Appointment> getAllAppointments() { return new ArrayList<>(); }
-    @Override public List<Object[]> getGeneretedAppointmentsFiltered(Integer codProf, LocalDate fecha) { return fetchObjectList(BASE_URL + "/generated-filtered?cod=" + codProf + "&date=" + fecha); }
-    @Override public List<Object[]> getGeneretedAppointmentsBySpeciality(SpecialityProfEnum speciality) { return fetchObjectList(BASE_URL + "/generated-speciality?spec=" + speciality.name()); }
-    @Override public List<Object[]> getGeneretedAppointmentsBySpecialityFiltered(Integer codProf, LocalDate fecha, SpecialityProfEnum speciality) { return new ArrayList<>(); }
+    // Implementarías los filtros restantes siguiendo el patrón de URL con
+    // parámetros:
+    @Override
+    public List<Object[]> getGeneretedAppointmentsFiltered(Integer codProf, LocalDate fecha) {
+        return fetchObjectList(BASE_URL + "/generated-filtered?cod=" + codProf + "&date=" + fecha);
+    }
+
+    @Override
+    public List<Object[]> getGeneretedAppointmentsBySpeciality(SpecialityProfEnum speciality) {
+        return fetchObjectList(BASE_URL + "/generated-speciality?spec=" + speciality.name());
+    }
+
+    @Override
+    public List<Object[]> getGeneretedAppointmentsBySpecialityFiltered(Integer codProf, LocalDate fecha,
+            SpecialityProfEnum speciality) {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<Appointment> getAppointmentsByPatient(Integer patientId) {
+        return fetchAppointmentList(BASE_URL + "/patient/" + patientId);
+    }
+
+    @Override
+    public List<Appointment> searchAppointmentsTyped(Integer codProf, LocalDate fecha) {
+        String url;
+        if (codProf != null && fecha != null) {
+            url = BASE_URL + "/professional/" + codProf + "/date/" + fecha;
+        } else if (codProf != null) {
+            url = BASE_URL + "/professional/" + codProf;
+        } else if (fecha != null) {
+            // No direct endpoint for date only, using all for now or could filter
+            url = BASE_URL;
+        } else {
+            url = BASE_URL;
+        }
+        return fetchAppointmentList(url);
+    }
+
+    @Override
+    public List<Appointment> getGeneratedAppointmentsTyped() {
+        return fetchAppointmentList(BASE_URL + "/generated");
+    }
+
+    @Override
+    public List<Appointment> getGeneratedAppointmentsFilteredTyped(Integer codProf, LocalDate fecha) {
+        String url = BASE_URL + "/generated-filtered?cod=" + (codProf != null ? codProf : "")
+                + "&date=" + (fecha != null ? fecha : "");
+        return fetchAppointmentList(url);
+    }
+
+    @Override
+    public boolean saveAppointment(Appointment appointment, Integer patientId) {
+        try {
+            JSONObject json = new JSONObject();
+            json.put("codProf", appointment.getProfessionalId());
+            json.put("codPatient", patientId);
+            json.put("dateApp", appointment.getDate().toString());
+            json.put("timeApp", appointment.getTime().toString());
+            json.put("descApp", appointment.getDescription());
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + SessionManager.getToken())
+                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 201 || response.statusCode() == 200;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteAppointment(Integer appointmentId) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/" + appointmentId))
+                    .header("Authorization", "Bearer " + SessionManager.getToken())
+                    .DELETE()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == 204 || response.statusCode() == 200;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private List<Appointment> fetchAppointmentList(String url) {
+        List<Appointment> data = new ArrayList<>();
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Authorization", "Bearer " + SessionManager.getToken())
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                JSONArray array = new JSONArray(response.body());
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject obj = array.getJSONObject(i);
+                    Appointment app = new Appointment();
+                    app.setId(obj.getInt("codApp"));
+                    app.setPatientId(obj.getInt("idPatient"));
+                    app.setProfessionalId(obj.getInt("codProf"));
+                    app.setDate(LocalDate.parse(obj.getString("dateApp")));
+                    app.setTime(java.time.LocalTime.parse(obj.getString("timeApp")));
+                    if (obj.has("descriptionApp"))
+                        app.setDescription(obj.getString("descriptionApp"));
+                    if (obj.has("statusApp"))
+                        app.setStatus(obj.getString("statusApp"));
+
+                    // Parse refs if present
+                    if (obj.has("patientRef") && !obj.isNull("patientRef")) {
+                        JSONObject pat = obj.getJSONObject("patientRef");
+                        app.setPatientName(pat.getString("namePatient") + " " + pat.getString("lastNamePatient"));
+                    }
+                    if (obj.has("professionalRef") && !obj.isNull("professionalRef")) {
+                        JSONObject prof = obj.getJSONObject("professionalRef");
+                        app.setProfessionalName(prof.getString("nameProf") + " " + prof.getString("lastNameProf"));
+                        app.setSpeciality(prof.getString("specialityProf"));
+                    }
+
+                    data.add(app);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
 }
