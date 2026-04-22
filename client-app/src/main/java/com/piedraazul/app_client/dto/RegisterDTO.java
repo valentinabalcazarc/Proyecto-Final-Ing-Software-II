@@ -1,6 +1,10 @@
 package com.piedraazul.app_client.dto;
+
 import com.piedraazul.app_client.enums.RoleUserEnum;
 
+import lombok.Data;
+
+@Data
 public class RegisterDTO {
     private Long cedUser;
     private String passUser;

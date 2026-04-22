@@ -12,6 +12,10 @@ public class Appointment {
     private LocalDate date;
     private LocalTime time;
     private String description;
+    private String status;
+    private String patientName;
+    private String professionalName;
+    private String speciality;
     //private AppointmentState state;
 
     /*public Appointment() {
@@ -20,14 +24,14 @@ public class Appointment {
 
     public Appointment() { }
 
-    public Appointment(int id, int patientId, int professionalId, LocalDate date, LocalTime time, String description/*, AppointmentState state*/) {
+    public Appointment(int id, int patientId, int professionalId, LocalDate date, LocalTime time, String description, String status) {
         this.id = id;
         this.patientId = patientId;
         this.professionalId = professionalId;
         this.date = date;
         this.time = time;
         this.description = description;
-        //this.state = state;
+        this.status = status;
     }
 
     public int getId() {
@@ -54,6 +58,9 @@ public class Appointment {
         return description;
     }
     
+    public String getStatus() {
+        return status;
+    }
     /*public AppointmentState getState() {
         return state;
     }*/
@@ -82,6 +89,33 @@ public class Appointment {
         this.description = description;
     }
     
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    public String getProfessionalName() {
+        return professionalName;
+    }
+
+    public void setProfessionalName(String professionalName) {
+        this.professionalName = professionalName;
+    }
+
+    public String getSpeciality() {
+        return speciality;
+    }
+
+    public void setSpeciality(String speciality) {
+        this.speciality = speciality;
+    }
     /*public void setState(AppointmentState state) {
         this.state = state;
     }*/

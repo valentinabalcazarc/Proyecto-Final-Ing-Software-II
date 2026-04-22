@@ -27,4 +27,16 @@ public interface AppointmentService {
     List<Object[]> getGeneretedAppointmentsBySpeciality(SpecialityProfEnum speciality);
     
     List<Object[]> getGeneretedAppointmentsBySpecialityFiltered(Integer codProf, LocalDate fecha, SpecialityProfEnum speciality);
+
+    List<Appointment> getAppointmentsByPatient(Integer patientId);
+
+    List<Appointment> searchAppointmentsTyped(Integer codProf, LocalDate fecha);
+
+    List<Appointment> getGeneratedAppointmentsTyped();
+
+    List<Appointment> getGeneratedAppointmentsFilteredTyped(Integer codProf, LocalDate fecha);
+
+    boolean saveAppointment(Appointment appointment, Integer patientId);
+
+    boolean deleteAppointment(Integer appointmentId);
 }

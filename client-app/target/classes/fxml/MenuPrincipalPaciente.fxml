@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="350.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.piedraazul.app_client.controllers.PatientMainController"
+            style="-fx-background-color: linear-gradient(to bottom right, #f8f9fa, #e9ecef);">
+    <children>
+
+        <!-- Header azul con gradiente -->
+        <Pane prefHeight="120.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(to right, #4e54c8, #8f94fb); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);">
+            <children>
+                <Label layoutX="40.0" layoutY="35.0" text="MENÚ PRINCIPAL" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="28.0" />
+                    </font>
+                </Label>
+                <Label layoutX="40.0" layoutY="75.0" text="Panel del Paciente" textFill="#e0e0e0">
+                    <font>
+                        <Font name="System Italic" size="16.0" />
+                    </font>
+                </Label>
+
+                <Button fx:id="btnCerrarSesion" layoutX="440.0" layoutY="40.0"
+                        mnemonicParsing="false" onAction="#handleCerrarSesion"
+                        prefHeight="40.0" prefWidth="130.0"
+                        style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-background-radius: 20; -fx-border-color: white; -fx-border-radius: 20; -fx-cursor: hand;"
+                        text="Cerrar Sesión">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Button>
+            </children>
+        </Pane>
+
+        <!-- Contenedor de acciones -->
+        <Pane layoutX="30.0" layoutY="150.0" prefHeight="170.0" prefWidth="540.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+            <children>
+                <Label layoutX="160.0" layoutY="20.0" text="Servicios Médicos Piedra Azul" textFill="#444444">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                </Label>
+
+                <Button fx:id="btnAddAppointment" layoutX="50.0" layoutY="70.0"
+                        mnemonicParsing="false" onAction="#handleAddAppointment"
+                        prefHeight="60.0" prefWidth="200.0"
+                        style="-fx-background-color: #4e54c8; -fx-text-fill: white; -fx-background-radius: 10; -fx-cursor: hand; -fx-font-weight: bold;"
+                        text="Agendar Cita">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Button>
+
+                <Button fx:id="btnViewAppointments" layoutX="290.0" layoutY="70.0"
+                        mnemonicParsing="false" onAction="#handleViewAppointments"
+                        prefHeight="60.0" prefWidth="200.0"
+                        style="-fx-background-color: #f8f9fa; -fx-text-fill: #4e54c8; -fx-background-radius: 10; -fx-border-color: #4e54c8; -fx-border-radius: 10; -fx-cursor: hand; -fx-font-weight: bold;"
+                        text="Ver Mis Citas">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Button>
+            </children>
+        </Pane>
+
+    </children>
+</AnchorPane>

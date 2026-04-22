@@ -1,6 +1,10 @@
 package com.piedraazul.app_client.dto;
+
 import com.piedraazul.app_client.enums.StatusUserEnum;
 
+import lombok.Data;
+
+@Data
 public class UpdateUserDTO {
     private String passUser;
     private String nameUser;
