@@ -55,7 +55,7 @@ public class PatientViewAppointmentsController {
     @FXML
     public void handleRegresar() {
         NavigationService.getInstance().navigateTo(
-                "/fxml/MenuPrincipalPaciente.fxml", 
+                "/fxml/PatientMainView.fxml",
                 "Piedra Azul - Paciente", 
                 btnRegresar
         );

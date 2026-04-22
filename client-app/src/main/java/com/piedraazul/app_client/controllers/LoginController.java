@@ -50,7 +50,7 @@ public class LoginController {
                 title += "Administración";
                 break;
             case Patient:
-                fxmlPath = "/fxml/MenuPrincipalPaciente.fxml";
+                fxmlPath = "/fxml/PatientMainView.fxml";
                 title += "Paciente";
                 break;
             case Professional:

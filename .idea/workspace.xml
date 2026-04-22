@@ -4,24 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9bb12027-78ca-4cf9-804f-dd3607f9e7e8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client-app/src/main/resources/fxml/MenuPrincipalPaciente.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/controllers/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/controllers/AdminController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/controllers/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/controllers/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/controllers/RegisterProfessionalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/controllers/RegisterProfessionalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/dto/PatientDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/dto/PatientDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/dto/ProfessionalDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/dto/ProfessionalDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/dto/RegisterDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/dto/RegisterDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/dto/UpdateUserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/dto/UpdateUserDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/models/Appointment.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/models/Appointment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/AppointmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/AppointmentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/AppointmentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/AppointmentServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/ProfessionalService.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/ProfessionalService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/ProfessionalServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/ProfessionalServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/SessionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/client-app/src/main/java/com/piedraazul/app_client/services/SessionManager.java" afterDir="false" />
-    </list>
+    <list default="true" id="9bb12027-78ca-4cf9-804f-dd3607f9e7e8" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
