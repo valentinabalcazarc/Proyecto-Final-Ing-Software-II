@@ -1,6 +1,7 @@
 package com.piedraazul.app_client.services;
 
 import com.piedraazul.app_client.enums.SpecialityProfEnum;
+import com.piedraazul.app_client.enums.TypeProfEnum;
 import com.piedraazul.app_client.models.Appointment;
 import com.piedraazul.app_client.models.AppointmentRep;
 import org.json.JSONArray;
@@ -11,6 +12,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,15 +58,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Object[]> searchAppointments(Integer codProf, LocalDate fecha) {
+    public List<Object[]> searchAppointments(Long codProf, LocalDate fecha) {
         String url = String.format("%s/search?codProf=%d&fecha=%s", BASE_URL, codProf, fecha);
         return fetchObjectList(url);
     }
 
-    @Override
-    public List<Object[]> getGeneretedAppointments() {
-        return fetchObjectList(BASE_URL + "/generated");
-    }
+
 
     @Override
     public Appointment getFirstAvailableBySpeciality(SpecialityProfEnum speciality) {
@@ -79,7 +78,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             if (response.statusCode() == 200) {
                 JSONObject obj = new JSONObject(response.body());
                 Appointment app = new Appointment();
-                app.setId(obj.getInt("idAppointment"));
+                app.setId(obj.getLong("idAppointment"));
                 // ... mapear fecha y hora
                 return app;
             }
@@ -149,31 +148,24 @@ public class AppointmentServiceImpl implements AppointmentService {
         return data;
     }
 
-    // Implementarías los filtros restantes siguiendo el patrón de URL con
-    // parámetros:
-    @Override
-    public List<Object[]> getGeneretedAppointmentsFiltered(Integer codProf, LocalDate fecha) {
-        return fetchObjectList(BASE_URL + "/generated-filtered?cod=" + codProf + "&date=" + fecha);
-    }
-
     @Override
     public List<Object[]> getGeneretedAppointmentsBySpeciality(SpecialityProfEnum speciality) {
         return fetchObjectList(BASE_URL + "/generated-speciality?spec=" + speciality.name());
     }
 
     @Override
-    public List<Object[]> getGeneretedAppointmentsBySpecialityFiltered(Integer codProf, LocalDate fecha,
+    public List<Object[]> getGeneretedAppointmentsBySpecialityFiltered(Long codProf, LocalDate fecha,
             SpecialityProfEnum speciality) {
         return new ArrayList<>();
     }
 
     @Override
-    public List<Appointment> getAppointmentsByPatient(Integer patientId) {
+    public List<Appointment> getAppointmentsByPatient(Long patientId) {
         return fetchAppointmentList(BASE_URL + "/patient/" + patientId);
     }
 
     @Override
-    public List<Appointment> searchAppointmentsTyped(Integer codProf, LocalDate fecha) {
+    public List<Appointment> searchAppointmentsTyped(Long codProf, LocalDate fecha) {
         String url;
         if (codProf != null && fecha != null) {
             url = BASE_URL + "/professional/" + codProf + "/date/" + fecha;
@@ -194,21 +186,26 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> getGeneratedAppointmentsFilteredTyped(Integer codProf, LocalDate fecha) {
-        String url = BASE_URL + "/generated-filtered?cod=" + (codProf != null ? codProf : "")
-                + "&date=" + (fecha != null ? fecha : "");
-        return fetchAppointmentList(url);
+    public List<Appointment> getGeneratedAppointmentsFilteredTyped(Long codProf, LocalDate fecha) {
+        LocalDate targetDate = (fecha != null) ? fecha : LocalDate.now();
+
+        StringBuilder url = new StringBuilder(BASE_URL + "/generated?date=" + targetDate);
+        if (codProf != null) url.append("&codProf=").append(codProf);
+
+        return fetchAppointmentList(url.toString());
     }
 
     @Override
-    public boolean saveAppointment(Appointment appointment, Integer patientId) {
+    public boolean saveAppointment(Appointment appointment, Long patientId) {
         try {
             JSONObject json = new JSONObject();
             json.put("codProf", appointment.getProfessionalId());
-            json.put("codPatient", patientId);
+            json.put("codPatient", patientId);          // ← verifica que sea "codPatient"
             json.put("dateApp", appointment.getDate().toString());
             json.put("timeApp", appointment.getTime().toString());
             json.put("descApp", appointment.getDescription());
+
+            System.out.println(">> JSON enviado: " + json.toString()); // 👈 log temporal
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL))
@@ -218,6 +215,9 @@ public class AppointmentServiceImpl implements AppointmentService {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            //System.out.println(">> Status saveAppointment: " + response.statusCode());
+            //System.out.println(">> Body saveAppointment: " + response.body());
+
             return response.statusCode() == 201 || response.statusCode() == 200;
         } catch (Exception e) {
             e.printStackTrace();
@@ -226,7 +226,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public boolean deleteAppointment(Integer appointmentId) {
+    public boolean deleteAppointment(Long appointmentId) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/" + appointmentId))
@@ -252,36 +252,60 @@ public class AppointmentServiceImpl implements AppointmentService {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            //System.out.println(">> Status fetchAppointmentList: " + response.statusCode());
+            //System.out.println(">> Body fetchAppointmentList: " + response.body());
+
             if (response.statusCode() == 200) {
                 JSONArray array = new JSONArray(response.body());
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject obj = array.getJSONObject(i);
                     Appointment app = new Appointment();
-                    app.setId(obj.getInt("codApp"));
-                    app.setPatientId(obj.getInt("idPatient"));
-                    app.setProfessionalId(obj.getInt("codProf"));
-                    app.setDate(LocalDate.parse(obj.getString("dateApp")));
-                    app.setTime(java.time.LocalTime.parse(obj.getString("timeApp")));
-                    if (obj.has("descriptionApp"))
-                        app.setDescription(obj.getString("descriptionApp"));
-                    if (obj.has("statusApp"))
-                        app.setStatus(obj.getString("statusApp"));
 
-                    // Parse refs if present
-                    if (obj.has("patientRef") && !obj.isNull("patientRef")) {
-                        JSONObject pat = obj.getJSONObject("patientRef");
-                        app.setPatientName(pat.getString("namePatient") + " " + pat.getString("lastNamePatient"));
+                    // ID (puede no existir en slots generados)
+                    if (obj.has("codApp") && !obj.isNull("codApp"))
+                        app.setId(obj.getLong("codApp"));
+
+                    // Fecha y hora
+                    if (obj.has("dateApp") && !obj.isNull("dateApp"))
+                        app.setDate(LocalDate.parse(obj.getString("dateApp")));
+                    if (obj.has("timeApp") && !obj.isNull("timeApp"))
+                        app.setTime(LocalTime.parse(obj.getString("timeApp")));
+
+                    // IDs
+                    if (obj.has("codProf") && !obj.isNull("codProf"))
+                        app.setProfessionalId(obj.getLong("codProf"));
+                    if (obj.has("codPatient") && !obj.isNull("codPatient"))
+                        app.setPatientId(obj.getLong("codPatient"));
+
+                    // Nombre del profesional: primero intenta directo (slots generados)
+                    // luego intenta desde el objeto anidado (citas reales)
+                    if (obj.has("professionalName") && !obj.isNull("professionalName")) {
+                        app.setProfessionalName(obj.getString("professionalName"));
+                    } else if (obj.has("professionalRef") && !obj.isNull("professionalRef")) {
+                        JSONObject profJson = obj.getJSONObject("professionalRef");
+                        app.setProfessionalName(
+                                profJson.getString("nameProf") + " " + profJson.getString("lastNameProf")
+                        );
                     }
-                    if (obj.has("professionalRef") && !obj.isNull("professionalRef")) {
-                        JSONObject prof = obj.getJSONObject("professionalRef");
-                        app.setProfessionalName(prof.getString("nameProf") + " " + prof.getString("lastNameProf"));
-                        app.setSpeciality(prof.getString("specialityProf"));
-                    }
+
+                    if (obj.has("specialityProf") && !obj.isNull("specialityProf"))
+                        app.setSpecialityName(obj.getString("specialityProf"));
+                    else if (obj.has("professionalRef") && !obj.isNull("professionalRef"))
+                        app.setSpecialityName(obj.getJSONObject("professionalRef").getString("specialityProf"));
+
+                    if (obj.has("typeProf") && !obj.isNull("typeProf"))
+                        app.setTypeProfName(obj.getString("typeProf"));
+                    else if (obj.has("professionalRef") && !obj.isNull("professionalRef"))
+                        app.setTypeProfName(obj.getJSONObject("professionalRef").getString("typeProf"));
+
+                    if (obj.has("statusApp") && !obj.isNull("statusApp"))
+                        app.setStatus(obj.getString("statusApp"));
 
                     data.add(app);
                 }
             }
         } catch (Exception e) {
+            System.err.println(">> Error al parsear citas: " + e.getMessage());
             e.printStackTrace();
         }
         return data;

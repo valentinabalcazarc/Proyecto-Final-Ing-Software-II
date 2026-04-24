@@ -115,7 +115,7 @@ public class RegisterProfessionalController {
             p.setSecondNameUser(txtSecondName.getText().trim());
             p.setLastNameUser(txtFirstLastName.getText().trim());
             p.setSecondLastNameUser(txtSecondLastName.getText().trim());
-            p.setPhoneProf(Double.parseDouble(txtPhoneNumber.getText().trim()));
+            p.setPhoneProf(Long.parseLong(txtPhoneNumber.getText().trim()));
             p.setStatusUser(StatusUserEnum.Active);
             p.setRoleUser(RoleUserEnum.Professional);
             p.setSecurityQuestion(cbxSecurityQuestion.getValue());

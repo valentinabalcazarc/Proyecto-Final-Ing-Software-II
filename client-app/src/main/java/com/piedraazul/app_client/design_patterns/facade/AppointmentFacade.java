@@ -30,7 +30,7 @@ public class AppointmentFacade {
             // 1. Manage Patient
             Patient existing = ServiceManager.getInstance().getPatientService().findByCed(patient.getIdPatient());
             
-            Integer targetCodPatient;
+            Long targetCodPatient;
             
             if (existing == null) {
                 // Create patient
@@ -48,6 +48,7 @@ public class AppointmentFacade {
             }
 
             // 2. Schedule Appointment
+            //System.out.println(">> targetCodPatient: " + targetCodPatient);
             boolean success = ServiceManager.getInstance().getAppointmentService().saveAppointment(appointment, targetCodPatient);
             
             return success ? 0 : -1;

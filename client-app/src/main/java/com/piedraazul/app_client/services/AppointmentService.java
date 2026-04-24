@@ -16,27 +16,23 @@ public interface AppointmentService {
 
     List<AppointmentRep> getAppointmentForReport();
     
-    List<Object[]> searchAppointments(Integer codProf, LocalDate fecha);
-    
-    List<Object[]> getGeneretedAppointments();
-    
-    List<Object[]> getGeneretedAppointmentsFiltered(Integer codProf, LocalDate fecha);
+    List<Object[]> searchAppointments(Long codProf, LocalDate fecha);
     
     Appointment getFirstAvailableBySpeciality(SpecialityProfEnum speciality);
     
     List<Object[]> getGeneretedAppointmentsBySpeciality(SpecialityProfEnum speciality);
     
-    List<Object[]> getGeneretedAppointmentsBySpecialityFiltered(Integer codProf, LocalDate fecha, SpecialityProfEnum speciality);
+    List<Object[]> getGeneretedAppointmentsBySpecialityFiltered(Long codProf, LocalDate fecha, SpecialityProfEnum speciality);
 
-    List<Appointment> getAppointmentsByPatient(Integer patientId);
+    List<Appointment> getAppointmentsByPatient(Long patientId);
 
-    List<Appointment> searchAppointmentsTyped(Integer codProf, LocalDate fecha);
+    List<Appointment> searchAppointmentsTyped(Long codProf, LocalDate fecha);
 
     List<Appointment> getGeneratedAppointmentsTyped();
 
-    List<Appointment> getGeneratedAppointmentsFilteredTyped(Integer codProf, LocalDate fecha);
+    List<Appointment> getGeneratedAppointmentsFilteredTyped(Long codProf, LocalDate fecha);
 
-    boolean saveAppointment(Appointment appointment, Integer patientId);
+    boolean saveAppointment(Appointment appointment, Long patientId);
 
-    boolean deleteAppointment(Integer appointmentId);
+    boolean deleteAppointment(Long appointmentId);
 }

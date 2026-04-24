@@ -19,10 +19,10 @@ public class ProfessionalExportController {
     @FXML private ComboBox<Professional> cbxProfessional;
     @FXML private DatePicker dpDate;
     @FXML private TableView<Appointment> tblAppointments;
-    @FXML private TableColumn<Appointment, Integer> colId;
+    @FXML private TableColumn<Appointment, Long> colId;
     @FXML private TableColumn<Appointment, LocalDate> colDate;
     @FXML private TableColumn<Appointment, String> colTime;
-    @FXML private TableColumn<Appointment, Integer> colPatientId;
+    @FXML private TableColumn<Appointment, Long> colPatientId;
     @FXML private TableColumn<Appointment, String> colPatientName;
     @FXML private TableColumn<Appointment, String> colProfName;
     @FXML private TableColumn<Appointment, String> colSpeciality;
@@ -66,7 +66,7 @@ public class ProfessionalExportController {
     private void handleFind(ActionEvent event) {
         Professional selectedProf = cbxProfessional.getValue();
         LocalDate selectedDate = dpDate.getValue();
-        Integer profId = (selectedProf != null) ? (int)selectedProf.getCodProf() : null;
+        Long profId = (selectedProf != null) ? selectedProf.getCodProf() : null;
         
         List<Appointment> filtered = ServiceManager.getInstance().getAppointmentService()
                 .searchAppointmentsTyped(profId, selectedDate);

@@ -106,8 +106,10 @@ public class ProfessionalCreateAppStep2Controller {
             patient.setLastNamePatient(txtFirstLastName.getText().trim());
             patient.setSecondLastNamePatient(txtSecondLastName.getText().trim());
             patient.setGenderPatient(cbxGender.getValue());
-            patient.setPhonePatient(Integer.parseInt(txtPhone.getText().trim()));
+            patient.setPhonePatient(Long.parseLong(txtPhone.getText().trim()));
             patient.setDateBirthPatient(dpBirthDate.getValue());
+
+            patient = ServiceManager.getInstance().getPatientService().findByCed(patient.getIdPatient());
 
             appointment.setDescription(txtObservation.getText().trim());
 
