@@ -1,6 +1,8 @@
 package com.piedraazul.app_client.services;
 
 import com.piedraazul.app_client.enums.SpecialityProfEnum;
+import com.piedraazul.app_client.enums.StatusUserEnum;
+import com.piedraazul.app_client.enums.TypeProfEnum;
 import com.piedraazul.app_client.models.Professional;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,6 +30,8 @@ public class ProfessionalServiceImpl implements ProfessionalService {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            //System.out.println(">> Status getAllProfessionals: " + response.statusCode());
+            //System.out.println(">> Body getAllProfessionals: " + response.body());
 
             if (response.statusCode() == 200) {
                 JSONArray jsonArray = new JSONArray(response.body());
@@ -87,17 +91,36 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 
     private Professional mapJsonToProfessional(JSONObject obj) {
         Professional prof = new Professional();
-        // El microservicio devuelve codUser dentro del objeto Professional o UserRef
-        // Ajustamos al nombre de campo que devuelve tu backend
-        if (obj.has("codUser")) {
-            prof.setCodUser(obj.getLong("codUser"));
-        } else if (obj.has("userRef")) {
-            prof.setCodUser(obj.getJSONObject("userRef").getLong("codUser"));
-        }
+        try {
+            if (obj.has("codProf") && !obj.isNull("codProf"))
+                prof.setCodProf(obj.getLong("codProf"));
 
-        prof.setGenProf(obj.getString("genProf"));
-        prof.setSpecialityProf(SpecialityProfEnum.valueOf(obj.getString("specialityProf")));
-        // Agrega los demás campos necesarios para tu vista
+            // Nombre y apellido vienen dentro de userRef
+            if (obj.has("userRef") && !obj.isNull("userRef")) {
+                JSONObject userRef = obj.getJSONObject("userRef");
+                if (userRef.has("codUser")) prof.setCodUser(userRef.getLong("codUser"));
+                if (userRef.has("nameUser")) prof.setNameUser(userRef.getString("nameUser"));
+                if (userRef.has("lastNameUser")) prof.setLastNameUser(userRef.getString("lastNameUser"));
+                if (userRef.has("cedUser")) prof.setCedUser(userRef.getLong("cedUser"));
+            }
+
+            if (obj.has("genProf") && !obj.isNull("genProf"))
+                prof.setGenProf(obj.getString("genProf"));
+            if (obj.has("phoneProf") && !obj.isNull("phoneProf"))
+                prof.setPhoneProf(obj.getLong("phoneProf"));
+            if (obj.has("typeProf") && !obj.isNull("typeProf"))
+                prof.setTypeProf(TypeProfEnum.valueOf(obj.getString("typeProf")));
+            if (obj.has("specialityProf") && !obj.isNull("specialityProf"))
+                prof.setSpecialityProf(SpecialityProfEnum.valueOf(obj.getString("specialityProf")));
+            if (obj.has("attentionInterval") && !obj.isNull("attentionInterval"))
+                prof.setAttentionInterval(obj.getInt("attentionInterval"));
+            if (obj.has("statusProf") && !obj.isNull("statusProf"))
+                prof.setStatusProf(StatusUserEnum.valueOf(obj.getString("statusProf")));
+
+        } catch (Exception e) {
+            System.err.println(">> Error mapeando profesional: " + e.getMessage());
+            e.printStackTrace();
+        }
         return prof;
     }
 }

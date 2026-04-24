@@ -33,6 +33,22 @@ public class AppointmentController {
         return ResponseEntity.ok(appointments);
     }
 
+    @GetMapping("/generated")
+    public ResponseEntity<?> getGeneratedAppointments(
+            @RequestParam(required = false) Long codProf,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+
+        // Si no pasan fecha, usar hoy por defecto
+        LocalDate targetDate = (date != null) ? date : LocalDate.now();
+
+        List<AppointmentDTO> slots = appointmentService.generateAvailableSlots(codProf, targetDate);
+
+        if (slots.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(slots);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         return appointmentService.findById(id)

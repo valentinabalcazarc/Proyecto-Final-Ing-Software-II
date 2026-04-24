@@ -42,7 +42,7 @@ public class PatientViewAppointmentsController {
             Long patientCod = SessionManager.getCurrentUserCodUser();
             if (patientCod != null) {
                 List<Appointment> list = ServiceManager.getInstance().getAppointmentService()
-                        .getAppointmentsByPatient(patientCod.intValue());
+                        .getAppointmentsByPatient(patientCod.longValue());
                 
                 ObservableList<Appointment> data = FXCollections.observableArrayList(list);
                 tblAppointments.setItems(data);

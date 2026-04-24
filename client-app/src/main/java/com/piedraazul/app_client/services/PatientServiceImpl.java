@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,10 +89,30 @@ public class PatientServiceImpl implements PatientService {
 
     private Patient mapJsonToPatient(JSONObject obj) {
         Patient p = new Patient();
-        p.setIdPatient(obj.getLong("idPatient"));
-        p.setNamePatient(obj.getString("namePatient"));
-        p.setLastNamePatient(obj.getString("lastNamePatient"));
-        p.setGenderPatient(obj.getString("genderPatient"));
+        try {
+            if (obj.has("codPatient") && !obj.isNull("codPatient"))
+                p.setCodPatient(obj.getLong("codPatient"));
+            if (obj.has("idPatient") && !obj.isNull("idPatient"))
+                p.setIdPatient(obj.getLong("idPatient"));
+            if (obj.has("namePatient") && !obj.isNull("namePatient"))
+                p.setNamePatient(obj.getString("namePatient"));
+            if (obj.has("secondNamePatient") && !obj.isNull("secondNamePatient"))
+                p.setSecondNamePatient(obj.getString("secondNamePatient"));
+            if (obj.has("lastNamePatient") && !obj.isNull("lastNamePatient"))
+                p.setLastNamePatient(obj.getString("lastNamePatient"));
+            if (obj.has("secondLastNamePatient") && !obj.isNull("secondLastNamePatient"))
+                p.setSecondLastNamePatient(obj.getString("secondLastNamePatient"));
+            if (obj.has("phonePatient") && !obj.isNull("phonePatient"))
+                p.setPhonePatient(obj.getLong("phonePatient")); // Long es más seguro que Int
+            if (obj.has("dateBirthPatient") && !obj.isNull("dateBirthPatient"))
+                p.setDateBirthPatient(LocalDate.parse(obj.getString("dateBirthPatient"))); // JSONObject no tiene getLocalDate()
+            if (obj.has("genderPatient") && !obj.isNull("genderPatient"))
+                p.setGenderPatient(obj.getString("genderPatient"));
+
+        } catch (Exception e) {
+            System.err.println(">> Error mapeando paciente: " + e.getMessage());
+            e.printStackTrace();
+        }
         return p;
     }
 }

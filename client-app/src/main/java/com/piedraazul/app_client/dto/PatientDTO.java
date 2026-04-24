@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class PatientDTO {
+    private Long codPatient;
     private Long idPatient;
     private String namePatient;
     private String secondNamePatient;

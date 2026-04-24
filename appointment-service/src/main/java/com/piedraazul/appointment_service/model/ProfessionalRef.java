@@ -1,5 +1,7 @@
 package com.piedraazul.appointment_service.model;
 
+import com.piedraazul.appointment_service.enums.SpecialityProfEnum;
+import com.piedraazul.appointment_service.enums.TypeProfEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,11 +24,13 @@ public class ProfessionalRef {
     @Column(name = "LASTNAMEPROF")
     private String lastNameProf;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "SPECIALITYPROF")
-    private String specialityProf;
+    private SpecialityProfEnum specialityProf;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "TYPEPROF")
-    private String typeProf;
+    private TypeProfEnum typeProf;
 
     @Column(name = "ATTENTIONINTERVAL")
     private Integer attentionInterval;

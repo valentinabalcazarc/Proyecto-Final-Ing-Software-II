@@ -79,7 +79,7 @@ public class ProfessionalViewAppointmentsController {
         Professional selectedProf = cbxProfessional.getValue();
         LocalDate selectedDate = dpDate.getValue();
 
-        Integer profId = (selectedProf != null) ? (int) selectedProf.getCodProf() : null;
+        Long profId = (selectedProf != null) ? selectedProf.getCodProf() : null;
 
         try {
             // Mapping to the service search logic

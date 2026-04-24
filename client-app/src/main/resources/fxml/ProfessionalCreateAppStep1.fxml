@@ -52,7 +52,7 @@
                      <children>
                         <HBox spacing="10.0">
                            <children>
-                              <Button fx:id="btnFind" mnemonicParsing="false" onAction="#handleFind" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #1a5f7a; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;" text="Buscar" />
+                              <Button fx:id="btnFind" mnemonicParsing="false" onAction="#handleFilter" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #1a5f7a; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;" text="Buscar" />
                               <Button fx:id="btnClearFilter" mnemonicParsing="false" onAction="#handleClearFilter" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #e0e0e0; -fx-text-fill: #555; -fx-background-radius: 5;" text="Limpiar" />
                            </children>
                         </HBox>
@@ -75,7 +75,9 @@
                     <columns>
                       <TableColumn fx:id="colDate" prefWidth="150.0" text="Fecha" />
                       <TableColumn fx:id="colTime" prefWidth="120.0" text="Hora" />
+                       <TableColumn fx:id="colProfID" prefWidth="250.0" text="ID Profesional" />
                         <TableColumn fx:id="colProfName" prefWidth="250.0" text="Nombre Profesional" />
+                        <TableColumn fx:id="colProfType" prefWidth="200.0" text="Tipo Profesional" />
                         <TableColumn fx:id="colSpeciality" prefWidth="200.0" text="Especialidad" />
                     </columns>
                      <columnResizePolicy>

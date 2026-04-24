@@ -1,5 +1,7 @@
 package com.piedraazul.appointment_service.messaging;
 
+import com.piedraazul.appointment_service.enums.SpecialityProfEnum;
+import com.piedraazul.appointment_service.enums.TypeProfEnum;
 import com.piedraazul.appointment_service.model.PatientRef;
 import com.piedraazul.appointment_service.model.ProfessionalRef;
 import com.piedraazul.appointment_service.repository.PatientRefRepository;
@@ -84,8 +86,8 @@ public class PeopleEventListener {
                 ref.setLastNameProf(lastName);
             }
 
-            ref.setSpecialityProf(message.get("specialityProf") != null ? message.get("specialityProf").toString() : "");
-            ref.setTypeProf(message.get("typeProf") != null ? message.get("typeProf").toString() : "");
+            ref.setSpecialityProf(SpecialityProfEnum.valueOf(message.get("specialityProf") != null ? message.get("specialityProf").toString() : ""));
+            ref.setTypeProf(TypeProfEnum.valueOf(message.get("typeProf") != null ? message.get("typeProf").toString() : ""));
             ref.setAttentionInterval(message.get("attentionInterval") != null ? Integer.valueOf(message.get("attentionInterval").toString()) : 0);
 
             if (!professionalRefService.existsById(ref.getCodProf())) {
@@ -109,8 +111,8 @@ public class PeopleEventListener {
                 if (userRef.get("lastNameUser") != null) ref.setLastNameProf(userRef.get("lastNameUser").toString());
             }
 
-            if (message.get("specialityProf") != null) ref.setSpecialityProf(message.get("specialityProf").toString());
-            if (message.get("typeProf") != null) ref.setTypeProf(message.get("typeProf").toString());
+            if (message.get("specialityProf") != null) ref.setSpecialityProf(SpecialityProfEnum.valueOf(message.get("specialityProf").toString()));
+            if (message.get("typeProf") != null) ref.setTypeProf(TypeProfEnum.valueOf(message.get("typeProf").toString()));
             if (message.get("attentionInterval") != null) ref.setAttentionInterval(Integer.valueOf(message.get("attentionInterval").toString()));
 
             professionalRefService.save(ref);

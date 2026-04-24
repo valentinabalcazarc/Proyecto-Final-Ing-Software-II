@@ -1,5 +1,7 @@
 package com.piedraazul.appointment_service.dto;
 
+import com.piedraazul.appointment_service.enums.SpecialityProfEnum;
+import com.piedraazul.appointment_service.enums.TypeProfEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.time.LocalDate;
@@ -16,4 +18,7 @@ public class AppointmentDTO {
     @NotNull
     private LocalTime timeApp;
     private String descApp;
+    private String professionalName;
+    private TypeProfEnum typeProf;
+    private SpecialityProfEnum specialityProf;
 }
