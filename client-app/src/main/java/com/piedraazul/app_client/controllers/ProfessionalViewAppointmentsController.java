@@ -1,5 +1,7 @@
 package com.piedraazul.app_client.controllers;
 
+import com.piedraazul.app_client.services.FestivosService;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -15,44 +17,51 @@ import java.util.List;
 
 public class ProfessionalViewAppointmentsController {
 
-    @FXML
-    private TableView<Appointment> tblAppointments;
-    @FXML
-    private TableColumn<Appointment, Integer> colId;
-    @FXML
-    private TableColumn<Appointment, LocalDate> colDate;
-    @FXML
-    private TableColumn<Appointment, LocalTime> colTime;
-    @FXML
-    private TableColumn<Appointment, Integer> colPatient;
-    @FXML
-    private TableColumn<Appointment, String> colStatus;
-    @FXML
-    private TableColumn<Appointment, String> colDescription;
+    @FXML private TableView<Appointment> tblAppointments;
+    @FXML private TableColumn<Appointment, Integer> colId;
+    @FXML private TableColumn<Appointment, LocalDate> colDate;
+    @FXML private TableColumn<Appointment, LocalTime> colTime;
+    @FXML private TableColumn<Appointment, Integer> colPatientName;
+    @FXML private TableColumn<Appointment, String> colProfessional;
+    @FXML private TableColumn<Appointment, String> colType;
+    @FXML private TableColumn<Appointment, String> colSpeciality;
+    @FXML private TableColumn<Appointment, String> colStatus;
+    @FXML private TableColumn<Appointment, String> colDescription;
 
-    @FXML
-    private ComboBox<Professional> cbxProfessional;
-    @FXML
-    private DatePicker dpDate;
-    @FXML
-    private Button btnFind;
-    @FXML
-    private Button btnClearFilter;
-    @FXML
-    private Button btnRegresar;
+    @FXML private ComboBox<Professional> cbxProfessional;
+    @FXML private DatePicker dpDate;
+    @FXML private Button btnFind;
+    @FXML private Button btnClearFilter;
+    @FXML private Button btnRegresar;
+
+    private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+    private final FestivosService festivosService = new FestivosService();
 
     @FXML
     public void initialize() {
+        setupTable();
+        loadProfessionals();
+        loadAllAppointments();
+        configurarCalendario();
+
+        dpDate.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                loadAllAppointments();
+            }
+        });
+    }
+
+    private void setupTable() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         colTime.setCellValueFactory(new PropertyValueFactory<>("time"));
-        colPatient.setCellValueFactory(new PropertyValueFactory<>("patientId"));
+        colPatientName.setCellValueFactory(new PropertyValueFactory<>("patientName")); // campo en Appointment
+        colProfessional.setCellValueFactory(new PropertyValueFactory<>("professionalName"));
+        colType.setCellValueFactory(new PropertyValueFactory<>("typeProfName"));
+        colSpeciality.setCellValueFactory(new PropertyValueFactory<>("specialityName"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-        // TODO: Handle patient name and status mappings
-
-        loadProfessionals();
-        loadAllAppointments();
+        tblAppointments.setItems(appointmentList);
     }
 
     private void loadProfessionals() {
@@ -104,5 +113,26 @@ public class ProfessionalViewAppointmentsController {
                 "/fxml/ProfessionalMainView.fxml",
                 "Piedra Azul - Profesional",
                 btnRegresar);
+    }
+
+    private void configurarCalendario() {
+        dpDate.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                // Bloquear fines de semana y festivos
+                if (festivosService.esDiaInvalido(date)) {
+                    setDisable(true);
+
+                    if (festivosService.esFestivo(date)) {
+                        setStyle("-fx-background-color: #ffcccc; -fx-text-fill: #cc0000;");
+                        setTooltip(new Tooltip("Día Festivo"));
+                    } else {
+                        setStyle("-fx-background-color: #f0f0f0;");
+                        setTooltip(new Tooltip("Fin de semana"));
+                    }
+                }
+            }
+        });
     }
 }

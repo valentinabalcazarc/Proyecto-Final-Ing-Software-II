@@ -85,6 +85,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    public List<Appointment> findByDateApp(LocalDate dateApp){ return appointmentRepository.findByDateApp(dateApp);}
+
+    @Override
     public Appointment update(Long id, UpdateAppointmentDTO dto) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada con id: " + id));

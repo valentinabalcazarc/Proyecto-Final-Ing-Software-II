@@ -160,8 +160,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> getAppointmentsByPatient(Long patientId) {
-        return fetchAppointmentList(BASE_URL + "/patient/" + patientId);
+    public List<Appointment> getAppointmentsByPatient(Long codPatient) {
+        return fetchAppointmentList(BASE_URL + "/patient/" + codPatient);
     }
 
     @Override
@@ -172,8 +172,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         } else if (codProf != null) {
             url = BASE_URL + "/professional/" + codProf;
         } else if (fecha != null) {
-            // No direct endpoint for date only, using all for now or could filter
-            url = BASE_URL;
+            url = BASE_URL + "/date/" + fecha;
         } else {
             url = BASE_URL;
         }
@@ -271,35 +270,37 @@ public class AppointmentServiceImpl implements AppointmentService {
                     if (obj.has("timeApp") && !obj.isNull("timeApp"))
                         app.setTime(LocalTime.parse(obj.getString("timeApp")));
 
-                    // IDs
-                    if (obj.has("codProf") && !obj.isNull("codProf"))
-                        app.setProfessionalId(obj.getLong("codProf"));
-                    if (obj.has("codPatient") && !obj.isNull("codPatient"))
-                        app.setPatientId(obj.getLong("codPatient"));
-
-                    // Nombre del profesional: primero intenta directo (slots generados)
-                    // luego intenta desde el objeto anidado (citas reales)
-                    if (obj.has("professionalName") && !obj.isNull("professionalName")) {
-                        app.setProfessionalName(obj.getString("professionalName"));
-                    } else if (obj.has("professionalRef") && !obj.isNull("professionalRef")) {
-                        JSONObject profJson = obj.getJSONObject("professionalRef");
-                        app.setProfessionalName(
-                                profJson.getString("nameProf") + " " + profJson.getString("lastNameProf")
+                    // PACIENTE
+                    if (obj.has("patientRef") && !obj.isNull("patientRef")) {
+                        JSONObject patJson = obj.getJSONObject("patientRef");
+                        app.setPatientId(patJson.optLong("codPatient"));
+                        app.setPatientName(
+                                patJson.optString("namePatient", "") + " " + patJson.optString("lastNamePatient", "")
                         );
                     }
 
-                    if (obj.has("specialityProf") && !obj.isNull("specialityProf"))
-                        app.setSpecialityName(obj.getString("specialityProf"));
-                    else if (obj.has("professionalRef") && !obj.isNull("professionalRef"))
-                        app.setSpecialityName(obj.getJSONObject("professionalRef").getString("specialityProf"));
+                    // PROFESIONAL - primero intenta campos planos (slots generados)
+                    if (obj.has("professionalName") && !obj.isNull("professionalName")) {
+                        app.setProfessionalName(obj.getString("professionalName"));
+                        app.setProfessionalId(obj.optLong("codProf"));
+                        app.setSpecialityName(obj.optString("specialityProf", ""));
+                        app.setTypeProfName(obj.optString("typeProf", ""));
+                    // luego intenta objeto anidado (citas reales)
+                    } else if (obj.has("professionalRef") && !obj.isNull("professionalRef")) {
+                        JSONObject profJson = obj.getJSONObject("professionalRef");
+                        app.setProfessionalId(profJson.optLong("codProf"));
+                        app.setProfessionalName(
+                                profJson.optString("nameProf", "") + " " + profJson.optString("lastNameProf", "")
+                        );
+                        app.setSpecialityName(profJson.optString("specialityProf", ""));
+                        app.setTypeProfName(profJson.optString("typeProf", ""));
+                    }
 
-                    if (obj.has("typeProf") && !obj.isNull("typeProf"))
-                        app.setTypeProfName(obj.getString("typeProf"));
-                    else if (obj.has("professionalRef") && !obj.isNull("professionalRef"))
-                        app.setTypeProfName(obj.getJSONObject("professionalRef").getString("typeProf"));
-
+                    // STATUS y DESCRIPCIÓN
                     if (obj.has("statusApp") && !obj.isNull("statusApp"))
                         app.setStatus(obj.getString("statusApp"));
+                    if (obj.has("descApp") && !obj.isNull("descApp"))
+                        app.setDescription(obj.getString("descApp"));
 
                     data.add(app);
                 }

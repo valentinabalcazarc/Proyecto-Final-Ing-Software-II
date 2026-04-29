@@ -45,7 +45,6 @@ public class ProfessionalCreateAppStep1Controller {
         loadAllGeneratedAppointments();
         configurarCalendario();
 
-        // Configuración del DatePicker (Equivalente a logicaCalendario)
         dpDate.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 loadAllGeneratedAppointments();
@@ -149,7 +148,7 @@ public class ProfessionalCreateAppStep1Controller {
                     setStyle("-fx-background-color: #eeeeee;");
                 }
 
-                // 2. Bloquear fines de semana y festivos (usando tu servicio)
+                // 2. Bloquear fines de semana y festivos
                 if (festivosService.esDiaInvalido(date)) {
                     setDisable(true);
 

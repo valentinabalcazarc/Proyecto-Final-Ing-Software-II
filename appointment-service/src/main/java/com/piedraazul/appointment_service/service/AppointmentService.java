@@ -19,4 +19,5 @@ public interface AppointmentService {
     Appointment update(Long id, UpdateAppointmentDTO dto);
     boolean cancel(Long id);
     public List<AppointmentDTO> generateAvailableSlots(Long codProf, LocalDate date);
+    public List<Appointment> findByDateApp(LocalDate dateApp);
 }
