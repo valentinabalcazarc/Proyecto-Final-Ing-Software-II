@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.piedraazul.app_client.controllers.ProfessionalExportSelectionController">
+    <children>
+        <!-- Panel de Encabezado -->
+        <Pane prefHeight="110.0" prefWidth="700.0" style="-fx-background-color: #5947FF;">
+            <children>
+                <Label layoutX="185.0" layoutY="38.0" text="FORMATO DE EXPORTACIÓN" textFill="WHITE">
+                    <font>
+                        <Font name="Cascadia Code Bold" size="24.0" />
+                    </font>
+                </Label>
+            </children>
+        </Pane>
+
+        <!-- ScrollPane para el contenido inferior -->
+        <ScrollPane layoutY="110.0" prefHeight="640.0" prefWidth="700.0" style="-fx-background-color: #FFFFFF;">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="620.0" prefWidth="685.0" style="-fx-background-color: #FFFFFF;">
+                    <children>
+                        <Label layoutX="25.0" layoutY="20.0" text="Escoja el formato en el que requiere exportar los datos de las citas médicas">
+                            <font>
+                                <Font name="Cascadia Code Regular" size="14.0" />
+                            </font>
+                        </Label>
+
+                        <Button fx:id="button_Json" layoutX="140.0" layoutY="70.0" mnemonicParsing="false" onAction="#handleExportJson" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #5947FF;" text="Formato JSON" textFill="WHITE">
+                            <font>
+                                <Font name="Cascadia Code Bold" size="14.0" />
+                            </font>
+                        </Button>
+
+                        <Button fx:id="button_Html" layoutX="360.0" layoutY="70.0" mnemonicParsing="false" onAction="#handleExportHtml" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #5947FF;" text="Formato HTML" textFill="WHITE">
+                            <font>
+                                <Font name="Cascadia Code Bold" size="14.0" />
+                            </font>
+                        </Button>
+
+                        <TextArea fx:id="textArea_Export" layoutX="50.0" layoutY="130.0" prefHeight="420.0" prefWidth="585.0">
+                            <font>
+                                <Font name="Monospaced Regular" size="12.0" />
+                            </font>
+                        </TextArea>
+
+                        <Button fx:id="button_Back" layoutX="25.0" layoutY="570.0" mnemonicParsing="false" onAction="#handleBack" style="-fx-background-color: #E8E8E8;" text="&lt;- Regresar">
+                            <font>
+                                <Font name="Cascadia Code Regular" size="14.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </AnchorPane>
+            </content>
+        </ScrollPane>
+    </children>
+</AnchorPane>

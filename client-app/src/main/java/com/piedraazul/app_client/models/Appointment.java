@@ -20,4 +20,5 @@ public class Appointment {
     private String professionalName;
     private String specialityName;
     private String typeProfName;
+    private String patientName;
 }

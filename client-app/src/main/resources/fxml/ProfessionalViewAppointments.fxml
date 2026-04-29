@@ -88,9 +88,13 @@
                         <TableColumn fx:id="colId" prefWidth="80.0" text="ID Cita" />
                         <TableColumn fx:id="colDate" prefWidth="110.0" text="Fecha" />
                         <TableColumn fx:id="colTime" prefWidth="100.0" text="Hora" />
-                        <TableColumn fx:id="colPatient" prefWidth="200.0" text="Paciente" />
+                        <TableColumn fx:id="colPatientName" text="Paciente" prefWidth="150"/>
+                        <TableColumn fx:id="colProfessional" text="Profesional" prefWidth="150"/>
+                        <TableColumn fx:id="colType" text="Tipo" prefWidth="100"/>
+                        <TableColumn fx:id="colSpeciality" text="Especialidad" prefWidth="120"/>
                         <TableColumn fx:id="colStatus" prefWidth="150.0" text="Estado" />
                         <TableColumn fx:id="colDescription" prefWidth="155.0" text="Descripción" />
+
                     </columns>
                 </TableView>
             </children>

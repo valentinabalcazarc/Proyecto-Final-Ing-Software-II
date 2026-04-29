@@ -12,35 +12,40 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class ProfessionalManageAppointmentsController {
 
-    @FXML
-    private TextField txtCedula;
-    @FXML
-    private TableView<Appointment> tblAppointments;
-    @FXML
-    private TableColumn<Appointment, Integer> colId;
-    @FXML
-    private TableColumn<Appointment, LocalDate> colDate;
-    @FXML
-    private TableColumn<Appointment, String> colTime;
-    @FXML
-    private TableColumn<Appointment, String> colStatus;
-    @FXML
-    private TableColumn<Appointment, String> colDescription;
+    @FXML private TextField txtCedula;
+    @FXML private TableView<Appointment> tblAppointments;
+    @FXML private TableColumn<Appointment, Integer> colId;
+    @FXML private TableColumn<Appointment, LocalDate> colDate;
+    @FXML private TableColumn<Appointment, LocalTime> colTime;
+    @FXML private TableColumn<Appointment, Integer> colPatientName;
+    @FXML private TableColumn<Appointment, String> colProfessional;
+    @FXML private TableColumn<Appointment, String> colType;
+    @FXML private TableColumn<Appointment, String> colSpeciality;
+    @FXML private TableColumn<Appointment, String> colStatus;
+    @FXML private TableColumn<Appointment, String> colDescription;
 
     private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
+        setupTable();
+    }
+
+    private void setupTable() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         colTime.setCellValueFactory(new PropertyValueFactory<>("time"));
+        colPatientName.setCellValueFactory(new PropertyValueFactory<>("patientName")); // campo en Appointment
+        colProfessional.setCellValueFactory(new PropertyValueFactory<>("professionalName"));
+        colType.setCellValueFactory(new PropertyValueFactory<>("typeProfName"));
+        colSpeciality.setCellValueFactory(new PropertyValueFactory<>("specialityName"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-
         tblAppointments.setItems(appointmentList);
     }
 

@@ -96,6 +96,13 @@ public class AppointmentController {
         return ResponseEntity.ok(appointments);
     }
 
+    @GetMapping("/date/{date}")
+    public ResponseEntity<?> findByDate(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        List<Appointment> appointments = appointmentService.findByDateApp(date);
+        if (appointments.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(appointments);
+    }
+
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody AppointmentDTO dto, BindingResult result) {
         if (result.hasErrors()) {
