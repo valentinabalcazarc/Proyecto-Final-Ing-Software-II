@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<?import javafx.scene.layout.Pane?>
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.piedraazul.app_client.controllers.PatientSelectSpecificAppointmentController">
+    <children>
+        <AnchorPane prefHeight="100.0" prefWidth="800.0" style="-fx-background-color: #5947FF;">
+            <children>
+                <VBox alignment="CENTER_LEFT" layoutX="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <Label text="Asistente de Agendamiento" textFill="WHITE">
+                            <font>
+                                <Font name="Cascadia Code Bold" size="18.0" />
+                            </font>
+                        </Label>
+                        <Label text="Programa tu cita ahora" textFill="WHITE">
+                            <font>
+                                <Font name="Cascadia Code" size="14.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="5.0" />
+                            </VBox.margin>
+                        </Label>
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
+        <AnchorPane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: white;">
+            <children>
+                <VBox layoutX="30.0" layoutY="20.0" prefWidth="740.0" spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="20.0">
+                            <children>
+                                <VBox spacing="10.0">
+                                    <children>
+                                        <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                            <children>
+                                                <Label prefWidth="200.0" text="Ingrese el médico/terapista:">
+                                                    <font>
+                                                        <Font name="Cascadia Code" size="13.0" />
+                                                    </font>
+                                                </Label>
+                                                <ComboBox fx:id="cbxProfessional" prefWidth="250.0" />
+                                            </children>
+                                        </HBox>
+                                        <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                            <children>
+                                                <Label prefWidth="200.0" text="Seleccione la fecha:">
+                                                    <font>
+                                                        <Font name="Cascadia Code" size="13.0" />
+                                                    </font>
+                                                </Label>
+                                                <DatePicker fx:id="dpFecha" prefWidth="250.0" />
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                                
+                                <Pane HBox.hgrow="ALWAYS" />
+                                
+                                <Button mnemonicParsing="false" onAction="#handleBuscar" prefHeight="40.0" prefWidth="130.0" style="-fx-background-color: #5947FF;" text="Buscar" textFill="WHITE">
+                                    <font>
+                                        <Font name="Cascadia Code" size="14.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </HBox>
+                        
+                        <Label text="Citas Disponibles">
+                            <font>
+                                <Font name="Cascadia Code Bold" size="14.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        
+                        <TableView fx:id="tblAppointments" prefHeight="200.0" prefWidth="740.0" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colDate" prefWidth="100.0" text="Fecha" />
+                                <TableColumn fx:id="colTime" prefWidth="100.0" text="Hora" />
+                                <TableColumn fx:id="colProfName" prefWidth="200.0" text="Nombre Profesional" />
+                                <TableColumn fx:id="colProfType" prefWidth="150.0" text="Tipo Profesional" />
+                                <TableColumn fx:id="colSpeciality" prefWidth="180.0" text="Especialidad" />
+                            </columns>
+                        </TableView>
+                        
+                        <HBox alignment="CENTER_RIGHT">
+                            <children>
+                                <Button mnemonicParsing="false" onAction="#handleBorrarFiltro" prefHeight="35.0" prefWidth="158.0" style="-fx-background-color: #5947FF;" text="Borrar Filtro" textFill="WHITE">
+                                    <font>
+                                        <Font name="Cascadia Code" size="14.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </HBox>
+                        
+                        <HBox alignment="CENTER" spacing="150.0">
+                            <children>
+                                <Button mnemonicParsing="false" onAction="#handleRegresar" prefHeight="35.0" prefWidth="154.0" style="-fx-background-color: #E8E8E8;" text="&lt;- Regresar">
+                                    <font>
+                                        <Font name="Cascadia Code" size="14.0" />
+                                    </font>
+                                </Button>
+                                <Button mnemonicParsing="false" onAction="#handleConfirmar" prefHeight="35.0" prefWidth="160.0" style="-fx-background-color: #46AF41;" text="Confirmar cita" textFill="WHITE">
+                                    <font>
+                                        <Font name="Cascadia Code" size="14.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="15.0" />
+                            </VBox.margin>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>

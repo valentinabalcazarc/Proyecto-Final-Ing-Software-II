@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
     private final String BASE_URL = "http://localhost:8081/piedraAzul/auth";
 
     @Override
-    public RoleUserEnum authUser(int cedUser, String password) {
+    public RoleUserEnum authUser(Long cedUser, String password) {
         try {
             LoginRequestDTO requestDTO = new LoginRequestDTO((long) cedUser, password);
             String jsonBody = new JSONObject(requestDTO).toString();
@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByCedUser(int cedUser) {
+    public User findByCedUser(Long cedUser) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/user/" + cedUser))

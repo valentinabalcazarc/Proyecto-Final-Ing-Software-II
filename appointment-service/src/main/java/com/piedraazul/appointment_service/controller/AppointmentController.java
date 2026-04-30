@@ -2,6 +2,7 @@ package com.piedraazul.appointment_service.controller;
 
 import com.piedraazul.appointment_service.dto.AppointmentDTO;
 import com.piedraazul.appointment_service.dto.UpdateAppointmentDTO;
+import com.piedraazul.appointment_service.enums.SpecialityProfEnum;
 import com.piedraazul.appointment_service.enums.StatusAppointment;
 import com.piedraazul.appointment_service.model.Appointment;
 import com.piedraazul.appointment_service.service.AppointmentService;
@@ -33,7 +34,7 @@ public class AppointmentController {
         return ResponseEntity.ok(appointments);
     }
 
-    @GetMapping("/generated")
+    /*@GetMapping("/generated")
     public ResponseEntity<?> getGeneratedAppointments(
             @RequestParam(required = false) Long codProf,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
@@ -46,6 +47,19 @@ public class AppointmentController {
         if (slots.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.ok(slots);
+    }*/
+
+    @GetMapping("/generated")
+    public ResponseEntity<?> getGeneratedAppointments(
+            @RequestParam(required = false) Long codProf,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam(required = false) SpecialityProfEnum speciality) {
+
+        LocalDate targetDate = (date != null) ? date : LocalDate.now();
+        List<AppointmentDTO> slots = appointmentService.generateAvailableSlots(codProf, targetDate, speciality);
+
+        if (slots.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(slots);
     }
 
@@ -101,6 +115,29 @@ public class AppointmentController {
         List<Appointment> appointments = appointmentService.findByDateApp(date);
         if (appointments.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(appointments);
+    }
+
+    @GetMapping("/professional/speciality/{specialityProf}")
+    public ResponseEntity<?> findBySpecialityProf(@PathVariable SpecialityProfEnum specialityProf) {
+        List<Appointment> appointments = appointmentService.findBySpecialityProf(specialityProf);
+        if (appointments.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(appointments);
+    }
+
+    @GetMapping("/first-available/{speciality}")
+    public ResponseEntity<?> findFirstAvailable(@PathVariable SpecialityProfEnum speciality) {
+        AppointmentDTO slot = appointmentService.findFirstAvailableBySpeciality(speciality);
+        if (slot == null) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(slot);
+    }
+
+    @GetMapping("/generated/speciality/{speciality}")
+    public ResponseEntity<?> generateBySpeciality(@PathVariable SpecialityProfEnum speciality) {
+        List<AppointmentDTO> slots = appointmentService.generateBySpeciality(speciality);
+        if (slots.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(slots);
     }
 
     @PostMapping
