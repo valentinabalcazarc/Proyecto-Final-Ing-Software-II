@@ -1,5 +1,6 @@
 package com.piedraazul.app_client.controllers;
 
+import com.piedraazul.app_client.models.Patient;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -10,6 +11,7 @@ import com.piedraazul.app_client.services.SessionManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -32,20 +34,25 @@ public class PatientViewAppointmentsController {
         colTime.setCellValueFactory(new PropertyValueFactory<>("time"));
         colProfessional.setCellValueFactory(new PropertyValueFactory<>("professionalName"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-        // TODO: Map professional ID to name and handle status if added to model
         
         loadAppointments();
     }
 
     private void loadAppointments() {
         try {
-            Long patientCod = SessionManager.getCurrentUserCodUser();
-            if (patientCod != null) {
+            Long cedUser = SessionManager.getCurrentUserCodUser();
+            System.out.println("CurrentUserCedUser " + cedUser);
+            if (cedUser == null) return;
+
+            // Buscar codPatient desde el patient-service
+            Patient patient = ServiceManager.getInstance().getPatientService().findByCed(cedUser);
+            if (patient != null) {
                 List<Appointment> list = ServiceManager.getInstance().getAppointmentService()
-                        .getAppointmentsByPatient(patientCod.longValue());
-                
-                ObservableList<Appointment> data = FXCollections.observableArrayList(list);
-                tblAppointments.setItems(data);
+                        .getAppointmentsByPatient(patient.getCodPatient());
+                tblAppointments.setItems(FXCollections.observableArrayList(list));
+
+            }else{
+                System.out.println(">> No se encontró paciente para codUser: " + cedUser);
             }
         } catch (Exception e) {
             e.printStackTrace();

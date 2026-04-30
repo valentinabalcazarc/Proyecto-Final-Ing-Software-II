@@ -13,8 +13,11 @@ public class PatientMainController {
 
     @FXML
     public void handleAddAppointment() {
-        // TODO: Implement navigation to Add Appointment view
-        System.out.println("Navegando a Agendar Cita...");
+        NavigationService.getInstance().navigateTo(
+                "/fxml/PatientInfoView.fxml", 
+                "Piedra Azul - Información del Paciente", 
+                btnAddAppointment
+        );
     }
 
     @FXML

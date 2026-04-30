@@ -2,6 +2,7 @@ package com.piedraazul.appointment_service.service;
 
 import com.piedraazul.appointment_service.dto.AppointmentDTO;
 import com.piedraazul.appointment_service.dto.UpdateAppointmentDTO;
+import com.piedraazul.appointment_service.enums.SpecialityProfEnum;
 import com.piedraazul.appointment_service.enums.StatusAppointment;
 import com.piedraazul.appointment_service.model.Appointment;
 import java.time.LocalDate;
@@ -20,4 +21,8 @@ public interface AppointmentService {
     boolean cancel(Long id);
     public List<AppointmentDTO> generateAvailableSlots(Long codProf, LocalDate date);
     public List<Appointment> findByDateApp(LocalDate dateApp);
+    public List<Appointment> findBySpecialityProf(SpecialityProfEnum specialityProf);
+    public AppointmentDTO findFirstAvailableBySpeciality(SpecialityProfEnum speciality);
+    public List<AppointmentDTO> generateBySpeciality(SpecialityProfEnum speciality);
+    public List<AppointmentDTO> generateAvailableSlots(Long codProf, LocalDate date, SpecialityProfEnum speciality);
 }

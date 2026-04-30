@@ -42,15 +42,7 @@ public class ProfessionalCreateAppStep2Controller {
     @FXML
     public void initialize() {
         cbxGender.setItems(FXCollections.observableArrayList("Male", "Female", "Other"));
-
-        dpBirthDate.valueProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal != null) {
-                int age = Period.between(newVal, LocalDate.now()).getYears();
-                lblAge.setText(age + " años");
-            } else {
-                lblAge.setText("0 años");
-            }
-        });
+        configurarCalendario();
     }
 
     public void setAppointment(Appointment app) {
@@ -58,6 +50,21 @@ public class ProfessionalCreateAppStep2Controller {
         if (app != null) {
             txtAppSummary.setText(app.getDate().toString() + " | " + app.getTime().toString());
         }
+    }
+
+    private void configurarCalendario() {
+        dpBirthDate.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (date == null || empty) return;
+
+                if (date.isAfter(LocalDate.now())) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #eeeeee;");
+                }
+            }
+        });
     }
 
     @FXML
@@ -102,14 +109,17 @@ public class ProfessionalCreateAppStep2Controller {
             Patient patient = new Patient();
             patient.setIdPatient(Long.parseLong(txtCedula.getText().trim()));
             patient.setNamePatient(txtFirstName.getText().trim());
-            patient.setSecondNamePatient(txtSecondName.getText().trim());
             patient.setLastNamePatient(txtFirstLastName.getText().trim());
-            patient.setSecondLastNamePatient(txtSecondLastName.getText().trim());
             patient.setGenderPatient(cbxGender.getValue());
             patient.setPhonePatient(Long.parseLong(txtPhone.getText().trim()));
             patient.setDateBirthPatient(dpBirthDate.getValue());
 
-            patient = ServiceManager.getInstance().getPatientService().findByCed(patient.getIdPatient());
+            if (txtSecondName.getText() != null) {
+                patient.setSecondNamePatient(txtSecondName.getText().trim());
+            }
+            if (txtSecondLastName.getText() != null) {
+                patient.setSecondLastNamePatient(txtSecondLastName.getText().trim());
+            }
 
             appointment.setDescription(txtObservation.getText().trim());
 

@@ -11,18 +11,12 @@ public interface AppointmentService {
     boolean registerAppointment(Appointment appointment);
 
     List<Appointment> getAllAppointments();
-
-    List<Object[]> getAppointmentsForTable();
-
-    List<AppointmentRep> getAppointmentForReport();
-    
-    List<Object[]> searchAppointments(Long codProf, LocalDate fecha);
     
     Appointment getFirstAvailableBySpeciality(SpecialityProfEnum speciality);
-    
-    List<Object[]> getGeneretedAppointmentsBySpeciality(SpecialityProfEnum speciality);
-    
-    List<Object[]> getGeneretedAppointmentsBySpecialityFiltered(Long codProf, LocalDate fecha, SpecialityProfEnum speciality);
+
+    public List<Appointment> getGeneretedAppointmentsBySpeciality(SpecialityProfEnum speciality);
+
+    List<Appointment> getGeneretedAppointmentsBySpecialityFiltered(Long codProf, LocalDate fecha, SpecialityProfEnum speciality);
 
     List<Appointment> getAppointmentsByPatient(Long patientId);
 
@@ -31,6 +25,10 @@ public interface AppointmentService {
     List<Appointment> getGeneratedAppointmentsTyped();
 
     List<Appointment> getGeneratedAppointmentsFilteredTyped(Long codProf, LocalDate fecha);
+
+    List<Appointment> getGeneratedAppointmentsBySpecialityTyped(SpecialityProfEnum speciality);
+
+    List<Appointment> getGeneratedAppointmentsBySpecialityFilteredTyped(Long codProf, LocalDate fecha, SpecialityProfEnum speciality);
 
     boolean saveAppointment(Appointment appointment, Long patientId);
 

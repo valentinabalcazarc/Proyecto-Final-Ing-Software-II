@@ -4,7 +4,10 @@ import com.piedraazul.people_service.dto.PatientDTO;
 import com.piedraazul.people_service.dto.UpdatePatientDTO;
 import com.piedraazul.people_service.messaging.PeopleEventPublisher;
 import com.piedraazul.people_service.model.Patient;
+import com.piedraazul.people_service.model.Professional;
+import com.piedraazul.people_service.model.UserRef;
 import com.piedraazul.people_service.repository.PatientRepository;
+import com.piedraazul.people_service.repository.UserRefRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -15,6 +18,7 @@ import java.util.Optional;
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
+    private final UserRefRepository userRefRepository;
     private final PeopleEventPublisher peopleEventPublisher;
 
     @Override
@@ -22,6 +26,7 @@ public class PatientServiceImpl implements PatientService {
         if (patientRepository.existsByIdPatient(dto.getIdPatient())) {
             throw new RuntimeException("Ya existe un paciente con esa identificación");
         }
+
         Patient patient = new Patient();
         patient.setIdPatient(dto.getIdPatient());
         patient.setNamePatient(dto.getNamePatient());
@@ -31,6 +36,7 @@ public class PatientServiceImpl implements PatientService {
         patient.setPhonePatient(dto.getPhonePatient());
         patient.setDateBirthPatient(dto.getDateBirthPatient());
         patient.setGenderPatient(dto.getGenderPatient());
+
         Patient saved = patientRepository.save(patient);
         peopleEventPublisher.publishPatientRegistered(saved);
         return saved;

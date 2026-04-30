@@ -1,5 +1,6 @@
 package com.piedraazul.appointment_service.repository;
 
+import com.piedraazul.appointment_service.enums.SpecialityProfEnum;
 import com.piedraazul.appointment_service.enums.StatusAppointment;
 import com.piedraazul.appointment_service.model.Appointment;
 import com.piedraazul.appointment_service.model.PatientRef;
@@ -15,4 +16,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findByProfessionalRefAndDateApp(ProfessionalRef professionalRef, LocalDate date);
     List<Appointment> findByDateAppAndStatusAppNot(LocalDate date, StatusAppointment status);
     List<Appointment> findByDateApp(LocalDate dateApp);
+    List<Appointment> findByProfessionalRefSpecialityProf(SpecialityProfEnum specialityProf);
 }

@@ -53,33 +53,35 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Object[]> getAppointmentsForTable() {
-        return fetchObjectList(BASE_URL + "/table");
-    }
-
-    @Override
-    public List<Object[]> searchAppointments(Long codProf, LocalDate fecha) {
-        String url = String.format("%s/search?codProf=%d&fecha=%s", BASE_URL, codProf, fecha);
-        return fetchObjectList(url);
-    }
-
-
-
-    @Override
     public Appointment getFirstAvailableBySpeciality(SpecialityProfEnum speciality) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "/first-available?speciality=" + speciality.name()))
+                    .uri(URI.create(BASE_URL + "/first-available/" + speciality.name()))
                     .header("Authorization", "Bearer " + SessionManager.getToken())
                     .GET()
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(">> firstAvailable status: " + response.statusCode());
+            System.out.println(">> firstAvailable body: " + response.body());
+
             if (response.statusCode() == 200) {
                 JSONObject obj = new JSONObject(response.body());
                 Appointment app = new Appointment();
-                app.setId(obj.getLong("idAppointment"));
-                // ... mapear fecha y hora
+
+                if (obj.has("dateApp") && !obj.isNull("dateApp"))
+                    app.setDate(LocalDate.parse(obj.getString("dateApp")));
+                if (obj.has("timeApp") && !obj.isNull("timeApp"))
+                    app.setTime(LocalTime.parse(obj.getString("timeApp")));
+                if (obj.has("codProf") && !obj.isNull("codProf"))
+                    app.setProfessionalId(obj.getLong("codProf"));
+                if (obj.has("professionalName") && !obj.isNull("professionalName"))
+                    app.setProfessionalName(obj.getString("professionalName"));
+                if (obj.has("specialityProf") && !obj.isNull("specialityProf"))
+                    app.setSpecialityName(obj.getString("specialityProf"));
+                if (obj.has("typeProf") && !obj.isNull("typeProf"))
+                    app.setTypeProfName(obj.getString("typeProf"));
+
                 return app;
             }
         } catch (Exception e) {
@@ -88,39 +90,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         return null;
     }
 
-    // Método para manejar los reportes (AppointmentRep)
-    @Override
-    public List<AppointmentRep> getAppointmentForReport() {
-        List<AppointmentRep> reports = new ArrayList<>();
-        try {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "/report"))
-                    .header("Authorization", "Bearer " + SessionManager.getToken())
-                    .GET()
-                    .build();
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
-                JSONArray array = new JSONArray(response.body());
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject obj = array.getJSONObject(i);
-                    // Aquí mapeas según los atributos de tu clase AppointmentRep
-                    reports.add(new AppointmentRep(
-                            obj.getString("patientName"),
-                            obj.getString("doctorName"),
-                            obj.getString("date")));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return reports;
-    }
-
-    /**
-     * Helper para transformar las respuestas JSON en Object[]
-     * para que tus TableView sigan funcionando igual que antes.
-     */
     private List<Object[]> fetchObjectList(String url) {
         List<Object[]> data = new ArrayList<>();
         try {
@@ -148,16 +118,17 @@ public class AppointmentServiceImpl implements AppointmentService {
         return data;
     }
 
+    /*
     @Override
-    public List<Object[]> getGeneretedAppointmentsBySpeciality(SpecialityProfEnum speciality) {
-        return fetchObjectList(BASE_URL + "/generated-speciality?spec=" + speciality.name());
+    public List<Appointment> getGeneretedAppointmentsBySpeciality(SpecialityProfEnum speciality) {
+        return fetchAppointmentList(BASE_URL + "/generated/speciality/" + speciality.name());
     }
 
     @Override
     public List<Object[]> getGeneretedAppointmentsBySpecialityFiltered(Long codProf, LocalDate fecha,
             SpecialityProfEnum speciality) {
         return new ArrayList<>();
-    }
+    }*/
 
     @Override
     public List<Appointment> getAppointmentsByPatient(Long codPatient) {
@@ -184,13 +155,51 @@ public class AppointmentServiceImpl implements AppointmentService {
         return fetchAppointmentList(BASE_URL + "/generated");
     }
 
-    @Override
+    /*@Override
     public List<Appointment> getGeneratedAppointmentsFilteredTyped(Long codProf, LocalDate fecha) {
         LocalDate targetDate = (fecha != null) ? fecha : LocalDate.now();
 
         StringBuilder url = new StringBuilder(BASE_URL + "/generated?date=" + targetDate);
         if (codProf != null) url.append("&codProf=").append(codProf);
 
+        return fetchAppointmentList(url.toString());
+    }*/
+
+    @Override
+    public List<Appointment> getGeneratedAppointmentsBySpecialityTyped(SpecialityProfEnum speciality) {
+        return fetchAppointmentList(BASE_URL + "/generated-speciality?spec=" + speciality.name());
+    }
+
+    @Override
+    public List<Appointment> getGeneratedAppointmentsBySpecialityFilteredTyped(Long codProf, LocalDate fecha, SpecialityProfEnum speciality) {
+        LocalDate targetDate = (fecha != null) ? fecha : LocalDate.now();
+
+        StringBuilder url = new StringBuilder(BASE_URL + "/generated-speciality?spec=" + speciality.name() + "&date=" + targetDate);
+        if (codProf != null) url.append("&codProf=").append(codProf);
+
+        return fetchAppointmentList(url.toString());
+    }
+
+    @Override
+    public List<Appointment> getGeneretedAppointmentsBySpeciality(SpecialityProfEnum speciality) {
+        return fetchAppointmentList(BASE_URL + "/generated?speciality=" + speciality.name());
+    }
+
+    @Override
+    public List<Appointment> getGeneratedAppointmentsFilteredTyped(Long codProf, LocalDate fecha) {
+        LocalDate targetDate = (fecha != null) ? fecha : LocalDate.now();
+        StringBuilder url = new StringBuilder(BASE_URL + "/generated?date=" + targetDate);
+        if (codProf != null) url.append("&codProf=").append(codProf);
+        return fetchAppointmentList(url.toString());
+    }
+
+    @Override
+    public List<Appointment> getGeneretedAppointmentsBySpecialityFiltered(
+            Long codProf, LocalDate fecha, SpecialityProfEnum speciality) {
+        LocalDate targetDate = (fecha != null) ? fecha : LocalDate.now();
+        StringBuilder url = new StringBuilder(BASE_URL + "/generated?date=" + targetDate);
+        if (codProf != null) url.append("&codProf=").append(codProf);
+        if (speciality != null) url.append("&speciality=").append(speciality.name());
         return fetchAppointmentList(url.toString());
     }
 

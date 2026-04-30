@@ -1,5 +1,7 @@
 package com.piedraazul.app_client.controllers;
 
+import com.piedraazul.app_client.services.SessionManager;
+import com.sun.jdi.LongValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
@@ -23,11 +25,12 @@ public class LoginController {
         }
 
         try {
-            int ced = Integer.parseInt(user);
+            Long ced = Long.parseLong(user);
             RoleUserEnum rol = (RoleUserEnum) ServiceManager.getInstance().getUserService().authUser(ced, pass);
             
             if(rol != null) {
                 System.out.println("Login exitoso: " + rol);
+                SessionManager.setCurrentUserCodUser(ced);
                 redirectToMainView(rol);
             } else {
                 showAlert("Error de autenticación", "Usuario o contraseña incorrectos");

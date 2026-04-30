@@ -11,11 +11,20 @@ public class SessionManager {
         currentUser = response;
     }
 
-    public static String getToken() { return token; }
-    public static LoginResponseDTO getCurrentUser() { return currentUser; }
+    public static String getToken() {
+        return token;
+    }
+
+    public static LoginResponseDTO getCurrentUser() {
+        return currentUser;
+    }
 
     public static Long getCurrentUserCodUser() {
         return (currentUser != null) ? currentUser.getCodUser() : null;
+    }
+
+    public static void setCurrentUserCodUser(Long codUser) {
+        currentUser.setCodUser(codUser);
     }
 
     public static void clearSession() {

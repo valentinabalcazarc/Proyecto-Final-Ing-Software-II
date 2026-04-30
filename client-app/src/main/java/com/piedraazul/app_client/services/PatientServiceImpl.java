@@ -1,6 +1,7 @@
 package com.piedraazul.app_client.services;
 
 import com.piedraazul.app_client.models.Patient;
+import com.piedraazul.app_client.models.Professional;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.net.URI;
@@ -19,14 +20,18 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public boolean regPatient(Patient newPatient) {
         try {
-            // Empaquetamos los datos en el JSON que el PatientDTO del backend espera
             JSONObject json = new JSONObject();
             json.put("idPatient", newPatient.getIdPatient());
             json.put("namePatient", newPatient.getNamePatient());
+            json.put("secondNamePatient", newPatient.getSecondNamePatient()); // Agregado
             json.put("lastNamePatient", newPatient.getLastNamePatient());
+            json.put("secondLastNamePatient", newPatient.getSecondLastNamePatient()); // Agregado
             json.put("genderPatient", newPatient.getGenderPatient());
-            // El backend también permite opcionales como el teléfono o segundo nombre
             json.put("phonePatient", newPatient.getPhonePatient());
+
+            if (newPatient.getDateBirthPatient() != null) {
+                json.put("dateBirthPatient", newPatient.getDateBirthPatient().toString());
+            }
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(API_URL))

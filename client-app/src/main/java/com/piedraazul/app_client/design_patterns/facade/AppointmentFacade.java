@@ -2,6 +2,7 @@ package com.piedraazul.app_client.design_patterns.facade;
 
 import com.piedraazul.app_client.models.Appointment;
 import com.piedraazul.app_client.models.Patient;
+import com.piedraazul.app_client.models.User;
 import com.piedraazul.app_client.services.ServiceManager;
 
 public class AppointmentFacade {
@@ -33,7 +34,7 @@ public class AppointmentFacade {
             Long targetCodPatient;
             
             if (existing == null) {
-                // Create patient
+
                 boolean created = ServiceManager.getInstance().getPatientService().regPatient(patient);
                 if (!created) return -1;
                 
