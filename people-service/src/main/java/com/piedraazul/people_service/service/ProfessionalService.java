@@ -4,6 +4,9 @@ import com.piedraazul.people_service.dto.ProfessionalDTO;
 import com.piedraazul.people_service.dto.UpdateProfessionalDTO;
 import com.piedraazul.people_service.enums.SpecialityProfEnum;
 import com.piedraazul.people_service.model.Professional;
+import com.piedraazul.people_service.model.UnavailableDay;
+import com.piedraazul.people_service.model.UserRef;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -14,4 +17,5 @@ public interface ProfessionalService {
     List<Professional> findBySpeciality(SpecialityProfEnum speciality);
     Professional update(Long id, UpdateProfessionalDTO dto);
     void deactivate(Long id);
+    List<UnavailableDay> findUnavailableDaysByUserRef(Long codUser);
 }

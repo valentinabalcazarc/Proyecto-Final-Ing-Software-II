@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.Duration;
+import java.time.LocalTime;
+
 @Data
 public class ProfessionalDTO {
     @NotNull
@@ -17,6 +20,10 @@ public class ProfessionalDTO {
     private TypeProfEnum typeProf;
     @NotNull
     private SpecialityProfEnum specialityProf;
+    @NotNull
+    private LocalTime arrivalTime;
+    @NotNull
+    private LocalTime departureTime;
     @NotNull
     private Integer attentionInterval;
 }

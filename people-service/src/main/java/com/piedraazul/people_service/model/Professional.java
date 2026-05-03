@@ -8,6 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Duration;
+import java.time.LocalTime;
+import java.util.List;
+
 @Entity
 @Table(name = "PROFESSIONAL")
 @Data
@@ -42,6 +46,15 @@ public class Professional {
     @Column(name = "SPECIALITYPROF", nullable = false)
     private SpecialityProfEnum specialityProf;
 
+    @Column(name = "ARRIVALTIME", nullable = false)
+    private LocalTime arrivalTime;
+
+    @Column(name = "DEPARTURETIME", nullable = false)
+    private LocalTime departureTime;
+
     @Column(name = "ATTENTIONINTERVAL", nullable = false)
     private Integer attentionInterval;
+
+    @OneToMany(mappedBy = "professional", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UnavailableDay> unavailableDays;
 }

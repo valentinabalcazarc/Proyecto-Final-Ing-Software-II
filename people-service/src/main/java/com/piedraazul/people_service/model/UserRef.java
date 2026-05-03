@@ -30,7 +30,4 @@ public class UserRef {
 
     @Column(name = "ROLEUSER")
     private String roleUser;
-
-    @Column(name = "STATUSUSER")
-    private String statusUser;
 }

@@ -6,11 +6,14 @@ import com.piedraazul.people_service.enums.SpecialityProfEnum;
 import com.piedraazul.people_service.enums.StatusProfEnum;
 import com.piedraazul.people_service.messaging.PeopleEventPublisher;
 import com.piedraazul.people_service.model.Professional;
+import com.piedraazul.people_service.model.UnavailableDay;
 import com.piedraazul.people_service.model.UserRef;
 import com.piedraazul.people_service.repository.ProfessionalRepository;
 import com.piedraazul.people_service.repository.UserRefRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,21 +27,31 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 
     @Override
     public Professional register(ProfessionalDTO dto) {
+
         UserRef userRef = userRefRepository.findById(dto.getCodUser())
                 .orElseThrow(() -> new RuntimeException("No existe un usuario con ese código"));
+
         if (professionalRepository.existsByUserRef(userRef)) {
             throw new RuntimeException("Ya existe un profesional con ese usuario");
         }
+
+        if (dto.getArrivalTime().isAfter(dto.getDepartureTime())) {
+            throw new RuntimeException("La hora de llegada no puede ser mayor que la de salida");
+        }
+
         Professional prof = new Professional();
         prof.setUserRef(userRef);
         prof.setGenProf(dto.getGenProf());
         prof.setPhoneProf(dto.getPhoneProf());
         prof.setTypeProf(dto.getTypeProf());
         prof.setSpecialityProf(dto.getSpecialityProf());
+        prof.setArrivalTime(dto.getArrivalTime());
+        prof.setDepartureTime(dto.getDepartureTime());
         prof.setAttentionInterval(dto.getAttentionInterval());
         prof.setStatusProf(StatusProfEnum.Active);
         Professional saved = professionalRepository.save(prof);
         peopleEventPublisher.publishProfessionalRegistered(saved);
+
         return saved;
     }
 
@@ -61,15 +74,41 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 
     @Override
     public Professional update(Long id, UpdateProfessionalDTO dto) {
+
         Professional prof = professionalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Profesional no encontrado"));
-        if (dto.getGenProf() != null) prof.setGenProf(dto.getGenProf());
-        if (dto.getPhoneProf() != null) prof.setPhoneProf(dto.getPhoneProf());
-        if (dto.getTypeProf() != null) prof.setTypeProf(dto.getTypeProf());
-        if (dto.getSpecialityProf() != null) prof.setSpecialityProf(dto.getSpecialityProf());
-        if (dto.getAttentionInterval() != null) prof.setAttentionInterval(dto.getAttentionInterval());
+
+        if (dto.getGenProf() != null) {
+            prof.setGenProf(dto.getGenProf());
+        }
+        if (dto.getPhoneProf() != null) {
+            prof.setPhoneProf(dto.getPhoneProf());
+        }
+        if (dto.getTypeProf() != null) {
+            prof.setTypeProf(dto.getTypeProf());
+        }
+        if (dto.getSpecialityProf() != null) {
+            prof.setSpecialityProf(dto.getSpecialityProf());
+        }
+        if (dto.getArrivalTime() != null) {
+            prof.setArrivalTime(dto.getArrivalTime());
+        }
+        if (dto.getDepartureTime() != null) {
+            prof.setDepartureTime(dto.getDepartureTime());
+        }
+        if (prof.getArrivalTime() != null && prof.getDepartureTime() != null) {
+            if (prof.getArrivalTime().isAfter(prof.getDepartureTime())) {
+                throw new RuntimeException("La hora de llegada no puede ser mayor que la de salida");
+            }
+        }
+
+        if (dto.getAttentionInterval() != null) {
+            prof.setAttentionInterval(dto.getAttentionInterval());
+        }
+
         Professional updated = professionalRepository.save(prof);
         peopleEventPublisher.publishProfessionalUpdated(updated);
+
         return updated;
     }
 
@@ -79,5 +118,12 @@ public class ProfessionalServiceImpl implements ProfessionalService {
                 .orElseThrow(() -> new RuntimeException("Profesional no encontrado"));
         prof.setStatusProf(StatusProfEnum.Inactive);
         professionalRepository.save(prof);
+    }
+
+    @Override
+    public List<UnavailableDay> findUnavailableDaysByUserRef(Long codUser) {
+        UserRef userRef = userRefRepository.findById(codUser)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + codUser));
+        return professionalRepository.findUnavailableDaysByUserRef(userRef);
     }
 }
