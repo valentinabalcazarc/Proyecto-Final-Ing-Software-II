@@ -4,6 +4,7 @@ import com.piedraazul.people_service.dto.ProfessionalDTO;
 import com.piedraazul.people_service.dto.UpdateProfessionalDTO;
 import com.piedraazul.people_service.enums.SpecialityProfEnum;
 import com.piedraazul.people_service.model.Professional;
+import com.piedraazul.people_service.model.UnavailableDay;
 import com.piedraazul.people_service.service.ProfessionalService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,15 @@ public class ProfessionalController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(professionals);
+    }
+
+    @GetMapping("/unvDays/{codUser}")
+    public ResponseEntity<?> findByUnvDays(@PathVariable Long codUser) {
+        List<UnavailableDay> unavailableDays = professionalService.findUnavailableDaysByUserRef(codUser);
+        if (unavailableDays.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(unavailableDays);
     }
 
     @PostMapping

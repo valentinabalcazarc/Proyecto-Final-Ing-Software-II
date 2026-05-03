@@ -12,7 +12,6 @@ public class RabbitMQConfig {
 
     public static final String USER_QUEUE = "user.registered";
     public static final String USER_UPDATED_QUEUE = "user.updated";
-    public static final String USER_DEACTIVATED_QUEUE = "user.deactivated";
 
     @Bean
     public Queue userQueue() {
@@ -22,11 +21,6 @@ public class RabbitMQConfig {
     @Bean
     public Queue userUpdatedQueue() {
         return new Queue(USER_UPDATED_QUEUE, true);
-    }
-
-    @Bean
-    public Queue userDeactivatedQueue() {
-        return new Queue(USER_DEACTIVATED_QUEUE, true);
     }
 
     @Bean

@@ -1,5 +1,7 @@
 package com.piedraazul.appointment_service.messaging;
 
+import com.piedraazul.appointment_service.dto.ProfessionalEventDTO;
+import com.piedraazul.appointment_service.dto.PatientEventDTO;
 import com.piedraazul.appointment_service.enums.SpecialityProfEnum;
 import com.piedraazul.appointment_service.enums.TypeProfEnum;
 import com.piedraazul.appointment_service.model.PatientRef;
@@ -11,7 +13,6 @@ import com.piedraazul.appointment_service.service.ProfessionalRefService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -23,101 +24,76 @@ public class PeopleEventListener {
     private final ProfessionalRefRepository professionalRefRepository;
 
     @RabbitListener(queues = RabbitMQConfig.PATIENT_QUEUE)
-    public void handlePatientRegistered(Map<String, Object> message) {
+    public void handlePatientRegistered(PatientEventDTO dto) {
         try {
+            if (patientRefService.existsById(dto.getCodPatient())) return;
+
             PatientRef ref = new PatientRef();
-            ref.setCodPatient(Long.valueOf(message.get("codPatient").toString()));
-            ref.setIdPatient(Long.valueOf(message.get("idPatient").toString()));
-
-            String name = message.get("namePatient") != null ? message.get("namePatient").toString() : "";
-            String secondName = message.get("secondNamePatient") != null ? message.get("secondNamePatient").toString() : "";
-            ref.setNamePatient((name + " " + secondName).trim());
-
-            String lastName = message.get("lastNamePatient") != null ? message.get("lastNamePatient").toString() : "";
-            String secondLastName = message.get("secondLastNamePatient") != null ? message.get("secondLastNamePatient").toString() : "";
-            ref.setLastNamePatient((lastName + " " + secondLastName).trim());
-
-            ref.setPhonePatient(message.get("phonePatient") != null ? Long.valueOf(message.get("phonePatient").toString()) : null);
-            ref.setGenderPatient(message.get("genderPatient") != null ? message.get("genderPatient").toString() : "");
-
-            if (!patientRefService.existsById(ref.getCodPatient())) {
-                patientRefService.save(ref);
-            }
+            ref.setCodPatient(dto.getCodPatient());
+            ref.setIdPatient(dto.getIdPatient());
+            ref.setNamePatient(buildFullName(dto.getNamePatient(), dto.getSecondNamePatient()));
+            ref.setLastNamePatient(buildFullName(dto.getLastNamePatient(), dto.getSecondLastNamePatient()));
+            ref.setPhonePatient(dto.getPhonePatient());
+            ref.setGenderPatient(dto.getGenderPatient());
+            patientRefService.save(ref);
         } catch (Exception e) {
-            System.err.println("Error procesando paciente: " + e.getMessage());
+            System.err.println("Error registrando patient_ref: " + e.getMessage());
         }
     }
 
     @RabbitListener(queues = RabbitMQConfig.PATIENT_UPDATED_QUEUE)
-    public void handlePatientUpdated(Map<String, Object> message) {
+    public void handlePatientUpdated(PatientEventDTO dto) {
         try {
-            Long codPatient = Long.valueOf(message.get("codPatient").toString());
-            PatientRef ref = patientRefRepository.findById(codPatient).orElse(null);
+            PatientRef ref = patientRefRepository.findById(dto.getCodPatient()).orElse(null);
             if (ref == null) return;
 
-            String name = message.get("namePatient") != null ? message.get("namePatient").toString() : "";
-            String secondName = message.get("secondNamePatient") != null ? message.get("secondNamePatient").toString() : "";
-            ref.setNamePatient((name + " " + secondName).trim());
-
-            String lastName = message.get("lastNamePatient") != null ? message.get("lastNamePatient").toString() : "";
-            String secondLastName = message.get("secondLastNamePatient") != null ? message.get("secondLastNamePatient").toString() : "";
-            ref.setLastNamePatient((lastName + " " + secondLastName).trim());
-
-            if (message.get("phonePatient") != null) ref.setPhonePatient(Long.valueOf(message.get("phonePatient").toString()));
-            if (message.get("genderPatient") != null) ref.setGenderPatient(message.get("genderPatient").toString());
-
+            ref.setNamePatient(buildFullName(dto.getNamePatient(), dto.getSecondNamePatient()));
+            ref.setLastNamePatient(buildFullName(dto.getLastNamePatient(), dto.getSecondLastNamePatient()));
+            if (dto.getPhonePatient() != null) ref.setPhonePatient(dto.getPhonePatient());
+            if (dto.getGenderPatient() != null) ref.setGenderPatient(dto.getGenderPatient());
             patientRefService.save(ref);
         } catch (Exception e) {
-            System.err.println("Error actualizando paciente: " + e.getMessage());
+            System.err.println("Error actualizando patient_ref: " + e.getMessage());
         }
     }
 
     @RabbitListener(queues = RabbitMQConfig.PROFESSIONAL_QUEUE)
-    public void handleProfessionalRegistered(Map<String, Object> message) {
+    public void handleProfessionalRegistered(ProfessionalEventDTO dto) {
         try {
+            if (professionalRefService.existsById(dto.getCodProf())) return;
+
             ProfessionalRef ref = new ProfessionalRef();
-            ref.setCodProf(Long.valueOf(message.get("codProf").toString()));
-
-            Map<String, Object> userRef = (Map<String, Object>) message.get("userRef");
-            if (userRef != null) {
-                String name = userRef.get("nameUser") != null ? userRef.get("nameUser").toString() : "";
-                ref.setNameProf(name);
-                String lastName = userRef.get("lastNameUser") != null ? userRef.get("lastNameUser").toString() : "";
-                ref.setLastNameProf(lastName);
-            }
-
-            ref.setSpecialityProf(SpecialityProfEnum.valueOf(message.get("specialityProf") != null ? message.get("specialityProf").toString() : ""));
-            ref.setTypeProf(TypeProfEnum.valueOf(message.get("typeProf") != null ? message.get("typeProf").toString() : ""));
-            ref.setAttentionInterval(message.get("attentionInterval") != null ? Integer.valueOf(message.get("attentionInterval").toString()) : 0);
-
-            if (!professionalRefService.existsById(ref.getCodProf())) {
-                professionalRefService.save(ref);
-            }
+            ref.setCodProf(dto.getCodProf());
+            ref.setNameProf(dto.getNameProf());
+            ref.setLastNameProf(dto.getLastNameProf());
+            ref.setSpecialityProf(SpecialityProfEnum.valueOf(dto.getSpecialityProf()));
+            ref.setTypeProf(TypeProfEnum.valueOf(dto.getTypeProf()));
+            ref.setAttentionInterval(dto.getAttentionInterval() != null ? dto.getAttentionInterval() : 30);
+            professionalRefService.save(ref);
         } catch (Exception e) {
-            System.err.println("Error procesando profesional: " + e.getMessage());
+            System.err.println("Error registrando professional_ref: " + e.getMessage());
         }
     }
 
     @RabbitListener(queues = RabbitMQConfig.PROFESSIONAL_UPDATED_QUEUE)
-    public void handleProfessionalUpdated(Map<String, Object> message) {
+    public void handleProfessionalUpdated(ProfessionalEventDTO dto) {
         try {
-            Long codProf = Long.valueOf(message.get("codProf").toString());
-            ProfessionalRef ref = professionalRefRepository.findById(codProf).orElse(null);
+            ProfessionalRef ref = professionalRefRepository.findById(dto.getCodProf()).orElse(null);
             if (ref == null) return;
 
-            Map<String, Object> userRef = (Map<String, Object>) message.get("userRef");
-            if (userRef != null) {
-                if (userRef.get("nameUser") != null) ref.setNameProf(userRef.get("nameUser").toString());
-                if (userRef.get("lastNameUser") != null) ref.setLastNameProf(userRef.get("lastNameUser").toString());
-            }
-
-            if (message.get("specialityProf") != null) ref.setSpecialityProf(SpecialityProfEnum.valueOf(message.get("specialityProf").toString()));
-            if (message.get("typeProf") != null) ref.setTypeProf(TypeProfEnum.valueOf(message.get("typeProf").toString()));
-            if (message.get("attentionInterval") != null) ref.setAttentionInterval(Integer.valueOf(message.get("attentionInterval").toString()));
-
+            if (dto.getNameProf() != null) ref.setNameProf(dto.getNameProf());
+            if (dto.getLastNameProf() != null) ref.setLastNameProf(dto.getLastNameProf());
+            if (dto.getSpecialityProf() != null) ref.setSpecialityProf(SpecialityProfEnum.valueOf(dto.getSpecialityProf()));
+            if (dto.getTypeProf() != null) ref.setTypeProf(TypeProfEnum.valueOf(dto.getTypeProf()));
+            if (dto.getAttentionInterval() != null) ref.setAttentionInterval(dto.getAttentionInterval());
             professionalRefService.save(ref);
         } catch (Exception e) {
-            System.err.println("Error actualizando profesional: " + e.getMessage());
+            System.err.println("Error actualizando professional_ref: " + e.getMessage());
         }
+    }
+
+    private String buildFullName(String first, String second) {
+        if (second == null || second.isBlank()) return first != null ? first : "";
+        return (first + " " + second).trim();
     }
 }
