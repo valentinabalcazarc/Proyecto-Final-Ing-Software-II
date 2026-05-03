@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,5 +16,7 @@ public class ProfessionalEventDTO {
     private String lastNameProf;
     private String specialityProf;
     private String typeProf;
+    private LocalTime arrivalTime;
+    private LocalTime departureTime;
     private Integer attentionInterval;
 }
