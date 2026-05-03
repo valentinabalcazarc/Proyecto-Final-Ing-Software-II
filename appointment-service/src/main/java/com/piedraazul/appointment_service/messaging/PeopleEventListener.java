@@ -68,6 +68,8 @@ public class PeopleEventListener {
             ref.setLastNameProf(dto.getLastNameProf());
             ref.setSpecialityProf(SpecialityProfEnum.valueOf(dto.getSpecialityProf()));
             ref.setTypeProf(TypeProfEnum.valueOf(dto.getTypeProf()));
+            ref.setArrivalTime(dto.getArrivalTime());
+            ref.setDepartureTime(dto.getDepartureTime());
             ref.setAttentionInterval(dto.getAttentionInterval() != null ? dto.getAttentionInterval() : 30);
             professionalRefService.save(ref);
         } catch (Exception e) {
@@ -85,6 +87,8 @@ public class PeopleEventListener {
             if (dto.getLastNameProf() != null) ref.setLastNameProf(dto.getLastNameProf());
             if (dto.getSpecialityProf() != null) ref.setSpecialityProf(SpecialityProfEnum.valueOf(dto.getSpecialityProf()));
             if (dto.getTypeProf() != null) ref.setTypeProf(TypeProfEnum.valueOf(dto.getTypeProf()));
+            if (dto.getArrivalTime() != null) ref.setArrivalTime(dto.getArrivalTime());
+            if (dto.getDepartureTime() != null) ref.setDepartureTime(dto.getDepartureTime());
             if (dto.getAttentionInterval() != null) ref.setAttentionInterval(dto.getAttentionInterval());
             professionalRefService.save(ref);
         } catch (Exception e) {

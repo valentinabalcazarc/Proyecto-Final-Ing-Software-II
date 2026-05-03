@@ -15,6 +15,8 @@ public class RabbitMQConfig {
     public static final String PATIENT_UPDATED_QUEUE = "patient.updated";
     public static final String PROFESSIONAL_QUEUE = "professional.registered";
     public static final String PROFESSIONAL_UPDATED_QUEUE = "professional.updated";
+    public static final String UNAVAILABLE_DAY_QUEUE = "unavailableday.created";
+    public static final String UNAVAILABLE_DAY_DELETED_QUEUE = "unavailableday.deleted";
 
     @Bean
     public Queue patientQueue() { return new Queue(PATIENT_QUEUE, true); }
@@ -27,6 +29,12 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue professionalUpdatedQueue() { return new Queue(PROFESSIONAL_UPDATED_QUEUE, true); }
+
+    @Bean
+    public Queue unavailableDayQueue() { return new Queue(UNAVAILABLE_DAY_QUEUE, true); }
+
+    @Bean
+    public Queue unavailableDayDeletedQueue() { return new Queue(UNAVAILABLE_DAY_DELETED_QUEUE, true); }
 
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
