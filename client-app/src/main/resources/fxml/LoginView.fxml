@@ -55,7 +55,7 @@
             <Font name="Cascadia Code Regular" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="btnRegister_Login" layoutX="194.0" layoutY="415.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="206.0" style="-fx-background-color: #6666FF;" text="Registrarse" textFill="WHITE">
+      <Button fx:id="btnRegister_Login" layoutX="194.0" layoutY="415.0" mnemonicParsing="false" onAction="#handleRegister" prefHeight="29.0" prefWidth="206.0" style="-fx-background-color: #6666FF;" text="Registrarse" textFill="WHITE">
          <font>
             <Font name="Cascadia Code Regular" size="16.0" />
          </font>

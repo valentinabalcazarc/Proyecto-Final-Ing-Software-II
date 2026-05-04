@@ -165,9 +165,9 @@ public class RegisterUserController {
         return texto.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+");
     }
 
-    private boolean validarPasswordSegura(String password) {
+    /*private boolean validarPasswordSegura(String password) {
         return password.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-]).{6,}$");
-    }
+    }*/
 
     // ================================================================
     // Utilidades
