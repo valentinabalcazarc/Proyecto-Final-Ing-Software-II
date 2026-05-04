@@ -11,44 +11,42 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    public static final String PATIENT_QUEUE = "patient.registered";
-    public static final String PATIENT_UPDATED_QUEUE = "patient.updated";
-    public static final String PROFESSIONAL_QUEUE = "professional.registered";
-    public static final String PROFESSIONAL_UPDATED_QUEUE = "professional.updated";
-    public static final String UNAVAILABLE_DAY_QUEUE = "unavailableday.created";
+    public static final String PATIENT_QUEUE                 = "patient.registered";
+    public static final String PATIENT_UPDATED_QUEUE         = "patient.updated";
+    public static final String PROFESSIONAL_QUEUE            = "professional.registered";
+    public static final String PROFESSIONAL_UPDATED_QUEUE    = "professional.updated";
+    public static final String UNAVAILABLE_DAY_QUEUE         = "unavailableday.created";
     public static final String UNAVAILABLE_DAY_DELETED_QUEUE = "unavailableday.deleted";
 
-    @Bean
-    public Queue patientQueue() { return new Queue(PATIENT_QUEUE, true); }
+    @Bean public Queue patientQueue()               { return new Queue(PATIENT_QUEUE, true); }
+    @Bean public Queue patientUpdatedQueue()        { return new Queue(PATIENT_UPDATED_QUEUE, true); }
+    @Bean public Queue professionalQueue()          { return new Queue(PROFESSIONAL_QUEUE, true); }
+    @Bean public Queue professionalUpdatedQueue()   { return new Queue(PROFESSIONAL_UPDATED_QUEUE, true); }
+    @Bean public Queue unavailableDayQueue()        { return new Queue(UNAVAILABLE_DAY_QUEUE, true); }
+    @Bean public Queue unavailableDayDeletedQueue() { return new Queue(UNAVAILABLE_DAY_DELETED_QUEUE, true); }
 
     @Bean
-    public Queue patientUpdatedQueue() { return new Queue(PATIENT_UPDATED_QUEUE, true); }
+    public JacksonJsonMessageConverter messageConverter() {
+        JacksonJsonMessageConverter converter = new JacksonJsonMessageConverter();
+        converter.setAlwaysConvertToInferredType(true);
+        return converter;
+    }
 
     @Bean
-    public Queue professionalQueue() { return new Queue(PROFESSIONAL_QUEUE, true); }
-
-    @Bean
-    public Queue professionalUpdatedQueue() { return new Queue(PROFESSIONAL_UPDATED_QUEUE, true); }
-
-    @Bean
-    public Queue unavailableDayQueue() { return new Queue(UNAVAILABLE_DAY_QUEUE, true); }
-
-    @Bean
-    public Queue unavailableDayDeletedQueue() { return new Queue(UNAVAILABLE_DAY_DELETED_QUEUE, true); }
-
-    @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory,
+                                         JacksonJsonMessageConverter messageConverter) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        template.setMessageConverter(new JacksonJsonMessageConverter());
+        template.setMessageConverter(messageConverter);
         return template;
     }
 
     @Bean
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
-            ConnectionFactory connectionFactory) {
+            ConnectionFactory connectionFactory,
+            JacksonJsonMessageConverter messageConverter) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
-        factory.setMessageConverter(new JacksonJsonMessageConverter());
+        factory.setMessageConverter(messageConverter);
         return factory;
     }
 }

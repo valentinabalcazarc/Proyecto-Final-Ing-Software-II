@@ -1,5 +1,6 @@
 package com.piedraazul.people_service.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.piedraazul.people_service.enums.SpecialityProfEnum;
 import com.piedraazul.people_service.enums.StatusProfEnum;
 import com.piedraazul.people_service.enums.TypeProfEnum;
@@ -56,5 +57,6 @@ public class Professional {
     private Integer attentionInterval;
 
     @OneToMany(mappedBy = "professional", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<UnavailableDay> unavailableDays;
 }

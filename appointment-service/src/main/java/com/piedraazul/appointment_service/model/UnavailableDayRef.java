@@ -1,5 +1,6 @@
 package com.piedraazul.appointment_service.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class UnavailableDayRef {
     @Column(name = "COD_UNAVAILABLE")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "CODPROF", nullable = false)
     private ProfessionalRef professionalRef;

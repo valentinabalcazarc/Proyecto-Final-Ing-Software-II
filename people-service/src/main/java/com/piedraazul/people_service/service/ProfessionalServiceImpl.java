@@ -12,12 +12,14 @@ import com.piedraazul.people_service.repository.ProfessionalRepository;
 import com.piedraazul.people_service.repository.UserRefRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ProfessionalServiceImpl implements ProfessionalService {
 

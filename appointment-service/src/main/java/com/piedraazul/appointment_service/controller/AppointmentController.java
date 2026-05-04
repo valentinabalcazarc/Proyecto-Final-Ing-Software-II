@@ -74,11 +74,13 @@ public class AppointmentController {
 
     @GetMapping("/professional/{codProf}")
     public ResponseEntity<?> findByCodProf(@PathVariable Long codProf) {
-        List<Appointment> appointments = appointmentService.findByCodProf(codProf);
-        if (appointments.isEmpty()) {
-            return ResponseEntity.noContent().build();
+        try {
+            List<Appointment> appointments = appointmentService.findByCodProf(codProf);
+            if (appointments.isEmpty()) return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(appointments);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        return ResponseEntity.ok(appointments);
     }
 
     @GetMapping("/patient/{codPatient}")
