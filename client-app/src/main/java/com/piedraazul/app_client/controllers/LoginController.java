@@ -1,8 +1,11 @@
 package com.piedraazul.app_client.controllers;
 
+import com.piedraazul.app_client.services.NavigationService;
 import com.piedraazul.app_client.services.SessionManager;
 import com.sun.jdi.LongValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Alert;
@@ -74,6 +77,13 @@ public class LoginController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void handleRegister(ActionEvent event) {
+        NavigationService.getInstance().navigateTo("/fxml/RegisterUserView.fxml", "Crear Usuario - Paciente",
+                (Button) event.getSource());
+    }
+
 
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
