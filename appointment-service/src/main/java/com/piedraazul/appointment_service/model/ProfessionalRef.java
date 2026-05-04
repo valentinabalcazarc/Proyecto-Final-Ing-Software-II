@@ -1,5 +1,6 @@
 package com.piedraazul.appointment_service.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.piedraazul.appointment_service.enums.SpecialityProfEnum;
 import com.piedraazul.appointment_service.enums.TypeProfEnum;
 import jakarta.persistence.*;
@@ -44,6 +45,7 @@ public class ProfessionalRef {
     @Column(name = "ATTENTIONINTERVAL")
     private Integer attentionInterval;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "professionalRef", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UnavailableDayRef> unavailableDays;
 }

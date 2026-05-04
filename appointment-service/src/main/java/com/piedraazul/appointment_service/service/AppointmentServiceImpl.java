@@ -7,20 +7,22 @@ import com.piedraazul.appointment_service.enums.StatusAppointment;
 import com.piedraazul.appointment_service.model.Appointment;
 import com.piedraazul.appointment_service.model.PatientRef;
 import com.piedraazul.appointment_service.model.ProfessionalRef;
+import com.piedraazul.appointment_service.model.UnavailableDayRef;
 import com.piedraazul.appointment_service.repository.AppointmentRepository;
 import com.piedraazul.appointment_service.repository.PatientRefRepository;
 import com.piedraazul.appointment_service.repository.ProfessionalRefRepository;
+import com.piedraazul.appointment_service.repository.UnavailableDayRefRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalTime; // Agregada
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set; // Agregada
-import java.util.stream.Collectors; // Agregada
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,8 +31,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final ProfessionalRefRepository professionalRefRepository;
     private final PatientRefRepository patientRefRepository;
-
-    private final int HORA_FIN = 18;
+    private final UnavailableDayRefRepository unavailableDayRefRepository;
 
     @Override
     public Appointment create(AppointmentDTO dto) {
@@ -119,36 +120,35 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List<AppointmentDTO> generateAvailableSlots(Long codProf, LocalDate date) {
         List<AppointmentDTO> availableSlots = new ArrayList<>();
 
-        // 1. Obtener profesionales (Usamos el repositorio correcto)
         List<ProfessionalRef> professionals;
         if (codProf != null) {
             professionals = professionalRefRepository.findById(codProf)
                     .map(List::of).orElse(List.of());
         } else {
             professionals = professionalRefRepository.findAll();
-            // Nota: Podrías agregar un estado a ProfessionalRef si quieres filtrar activos
         }
 
-        // 2. Obtener citas ocupadas (No canceladas) para la fecha
         List<Appointment> occupied = appointmentRepository.findByDateAppAndStatusAppNot(date, StatusAppointment.Cancelled);
 
-        // Crear set de llaves "codProf-HH:mm"
         Set<String> busyKeys = occupied.stream()
                 .map(a -> a.getProfessionalRef().getCodProf() + "-" + a.getTimeApp().toString())
                 .collect(Collectors.toSet());
 
-        LocalTime startDay = LocalTime.of(7, 0);
-        LocalTime endDay = LocalTime.of(HORA_FIN, 0);
-
         for (ProfessionalRef prof : professionals) {
-            LocalTime currentTime = startDay;
-            Integer interval = prof.getAttentionInterval();
+            // FIX: usar horario real del profesional
+            LocalTime startDay = prof.getArrivalTime() != null ? prof.getArrivalTime() : LocalTime.of(7, 0);
+            LocalTime endDay   = prof.getDepartureTime() != null ? prof.getDepartureTime() : LocalTime.of(18, 0);
 
-            // Validación de seguridad por si el intervalo es nulo o 0
+            // FIX: respetar días no laborables
+            Set<LocalDate> unavailableDates = unavailableDayRefRepository.findByProfessionalRef(prof)
+                    .stream().map(UnavailableDayRef::getDate).collect(Collectors.toSet());
+            if (unavailableDates.contains(date)) continue;
+
+            Integer interval = prof.getAttentionInterval();
             if (interval == null || interval <= 0) interval = 30;
 
-            while (currentTime.plusMinutes(interval).isBefore(endDay.plusMinutes(1))) {
-                // Si es hoy, evitar horas pasadas
+            LocalTime currentTime = startDay;
+            while (!currentTime.plusMinutes(interval).isAfter(endDay)) {
                 if (date.equals(LocalDate.now()) && !currentTime.isAfter(LocalTime.now())) {
                     currentTime = currentTime.plusMinutes(interval);
                     continue;
@@ -163,7 +163,6 @@ public class AppointmentServiceImpl implements AppointmentService {
                     slot.setProfessionalName(prof.getNameProf() + " " + prof.getLastNameProf());
                     slot.setTypeProf(prof.getTypeProf());
                     slot.setSpecialityProf(prof.getSpecialityProf());
-
                     availableSlots.add(slot);
                 }
                 currentTime = currentTime.plusMinutes(interval);
@@ -202,8 +201,14 @@ public class AppointmentServiceImpl implements AppointmentService {
                 Integer interval = prof.getAttentionInterval();
                 if (interval == null || interval <= 0) interval = 30;
 
-                LocalTime currentTime = LocalTime.of(7, 0);
-                LocalTime endDay = LocalTime.of(HORA_FIN, 0);
+                // FIX: usar horario real del profesional
+                LocalTime currentTime = prof.getArrivalTime() != null ? prof.getArrivalTime() : LocalTime.of(7, 0);
+                LocalTime endDay      = prof.getDepartureTime() != null ? prof.getDepartureTime() : LocalTime.of(18, 0);
+
+                // FIX: respetar días no laborables
+                Set<LocalDate> unavailableDates = unavailableDayRefRepository.findByProfessionalRef(prof)
+                        .stream().map(UnavailableDayRef::getDate).collect(Collectors.toSet());
+                if (unavailableDates.contains(dateSearch)) continue;
 
                 while (!currentTime.plusMinutes(interval).isAfter(endDay)) {
                     // Si es hoy, evitar horas pasadas
@@ -249,15 +254,21 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .map(a -> a.getProfessionalRef().getCodProf() + "-" + a.getTimeApp().toString())
                 .collect(Collectors.toSet());
 
-        LocalTime startDay = LocalTime.of(7, 0);
-        LocalTime endDay = LocalTime.of(HORA_FIN, 0);
-
         for (ProfessionalRef prof : professionals) {
+            // FIX: usar horario real del profesional
+            LocalTime profStart = prof.getArrivalTime() != null ? prof.getArrivalTime() : LocalTime.of(7, 0);
+            LocalTime profEnd   = prof.getDepartureTime() != null ? prof.getDepartureTime() : LocalTime.of(18, 0);
+
+            // FIX: respetar días no laborables
+            Set<LocalDate> unavailableDates = unavailableDayRefRepository.findByProfessionalRef(prof)
+                    .stream().map(UnavailableDayRef::getDate).collect(Collectors.toSet());
+            if (unavailableDates.contains(date)) continue;
+
             Integer interval = prof.getAttentionInterval();
             if (interval == null || interval <= 0) interval = 30;
 
-            LocalTime currentTime = startDay;
-            while (currentTime.plusMinutes(interval).isBefore(endDay.plusMinutes(1))) {
+            LocalTime currentTime = profStart;
+            while (!currentTime.plusMinutes(interval).isAfter(profEnd)) {
                 if (date.equals(LocalDate.now()) && !currentTime.isAfter(now)) {
                     currentTime = currentTime.plusMinutes(interval);
                     continue;
@@ -304,15 +315,21 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .map(a -> a.getProfessionalRef().getCodProf() + "-" + a.getTimeApp().toString())
                 .collect(Collectors.toSet());
 
-        LocalTime startDay = LocalTime.of(7, 0);
-        LocalTime endDay = LocalTime.of(HORA_FIN, 0);
-
         for (ProfessionalRef prof : professionals) {
+            // FIX: usar horario real del profesional
+            LocalTime profStart = prof.getArrivalTime() != null ? prof.getArrivalTime() : LocalTime.of(7, 0);
+            LocalTime profEnd   = prof.getDepartureTime() != null ? prof.getDepartureTime() : LocalTime.of(18, 0);
+
+            // FIX: respetar días no laborables
+            Set<LocalDate> unavailableDates = unavailableDayRefRepository.findByProfessionalRef(prof)
+                    .stream().map(UnavailableDayRef::getDate).collect(Collectors.toSet());
+            if (unavailableDates.contains(targetDate)) continue;
+
             Integer interval = prof.getAttentionInterval();
             if (interval == null || interval <= 0) interval = 30;
 
-            LocalTime currentTime = startDay;
-            while (currentTime.plusMinutes(interval).isBefore(endDay.plusMinutes(1))) {
+            LocalTime currentTime = profStart;
+            while (!currentTime.plusMinutes(interval).isAfter(profEnd)) {
                 if (targetDate.equals(LocalDate.now()) && !currentTime.isAfter(now)) {
                     currentTime = currentTime.plusMinutes(interval);
                     continue;

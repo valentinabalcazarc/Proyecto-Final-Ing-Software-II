@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    public static final String USER_QUEUE = "user.registered";
+    public static final String USER_QUEUE         = "user.registered";
     public static final String USER_UPDATED_QUEUE = "user.updated";
 
     @Bean
@@ -24,9 +24,15 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+    public JacksonJsonMessageConverter messageConverter() {
+        return new JacksonJsonMessageConverter();
+    }
+
+    @Bean
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory,
+                                         JacksonJsonMessageConverter messageConverter) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        template.setMessageConverter(new JacksonJsonMessageConverter());
+        template.setMessageConverter(messageConverter);
         return template;
     }
 }

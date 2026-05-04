@@ -97,8 +97,6 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         user.setStatusUser(StatusUserEnum.Inactive);
-        userRepository.save(user);
-
         User saved = userRepository.save(user);
         userEventPublisher.publishUserDeactivated(saved);
     }

@@ -1,5 +1,6 @@
 package com.piedraazul.people_service.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,6 +18,7 @@ public class UnavailableDay {
 
     @ManyToOne
     @JoinColumn(name = "CODPROF", nullable = false)
+    @JsonIgnore
     private Professional professional;
 
     @Column(name = "DATE", nullable = false)
