@@ -7,5 +7,6 @@ public class LoginResponseDTO {
     private String token;
     private String role;
     private Long codUser;
+    private Long cedUser;
     private String nameUser;
 }

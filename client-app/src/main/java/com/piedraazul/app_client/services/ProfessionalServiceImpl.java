@@ -4,8 +4,11 @@ import com.piedraazul.app_client.enums.SpecialityProfEnum;
 import com.piedraazul.app_client.enums.StatusUserEnum;
 import com.piedraazul.app_client.enums.TypeProfEnum;
 import com.piedraazul.app_client.models.Professional;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.piedraazul.app_client.dto.ProfessionalResponseDTO;
+import com.piedraazul.app_client.mappers.ProfessionalMapper;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -18,26 +21,33 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 
     private final HttpClient client = HttpClient.newHttpClient();
     private final String BASE_URL = "http://localhost:8082/piedraAzul/professionals";
+    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Override
     public List<Professional> getAllProfessionals() {
         List<Professional> professionals = new ArrayList<>();
         try {
+            String token = SessionManager.getToken();
+            System.out.println(">> Token siendo usado: " + token);
+
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL))
-                    .header("Authorization", "Bearer " + SessionManager.getToken())
+                    .header("Authorization", "Bearer " + token)
                     .GET()
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            //System.out.println(">> Status getAllProfessionals: " + response.statusCode());
-            //System.out.println(">> Body getAllProfessionals: " + response.body());
+            System.out.println(">> Status getAllProfessionals: " + response.statusCode());
+            System.out.println(">> Body getAllProfessionals: " + response.body());
 
             if (response.statusCode() == 200) {
-                JSONArray jsonArray = new JSONArray(response.body());
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    professionals.add(mapJsonToProfessional(jsonArray.getJSONObject(i)));
+                List<ProfessionalResponseDTO> dtos = objectMapper.readValue(response.body(),
+                        new TypeReference<List<ProfessionalResponseDTO>>() {
+                        });
+                for (ProfessionalResponseDTO dto : dtos) {
+                    professionals.add(ProfessionalMapper.toModel(dto));
                 }
+                System.out.println(">> Mapeados " + professionals.size() + " profesionales.");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,9 +65,12 @@ public class ProfessionalServiceImpl implements ProfessionalService {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(">> Status findByCod: " + response.statusCode());
+            System.out.println(">> Body findByCod: " + response.body());
 
             if (response.statusCode() == 200) {
-                return mapJsonToProfessional(new JSONObject(response.body()));
+                ProfessionalResponseDTO dto = objectMapper.readValue(response.body(), ProfessionalResponseDTO.class);
+                return ProfessionalMapper.toModel(dto);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,11 +89,15 @@ public class ProfessionalServiceImpl implements ProfessionalService {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(">> Status getAllProfessionalsBySpeciality: " + response.statusCode());
+            System.out.println(">> Body getAllProfessionalsBySpeciality: " + response.body());
 
             if (response.statusCode() == 200) {
-                JSONArray jsonArray = new JSONArray(response.body());
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    professionals.add(mapJsonToProfessional(jsonArray.getJSONObject(i)));
+                List<ProfessionalResponseDTO> dtos = objectMapper.readValue(response.body(),
+                        new TypeReference<List<ProfessionalResponseDTO>>() {
+                        });
+                for (ProfessionalResponseDTO dto : dtos) {
+                    professionals.add(ProfessionalMapper.toModel(dto));
                 }
             }
         } catch (Exception e) {
@@ -89,38 +106,4 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         return professionals;
     }
 
-    private Professional mapJsonToProfessional(JSONObject obj) {
-        Professional prof = new Professional();
-        try {
-            if (obj.has("codProf") && !obj.isNull("codProf"))
-                prof.setCodProf(obj.getLong("codProf"));
-
-            // Nombre y apellido vienen dentro de userRef
-            if (obj.has("userRef") && !obj.isNull("userRef")) {
-                JSONObject userRef = obj.getJSONObject("userRef");
-                if (userRef.has("codUser")) prof.setCodUser(userRef.getLong("codUser"));
-                if (userRef.has("nameUser")) prof.setNameUser(userRef.getString("nameUser"));
-                if (userRef.has("lastNameUser")) prof.setLastNameUser(userRef.getString("lastNameUser"));
-                if (userRef.has("cedUser")) prof.setCedUser(userRef.getLong("cedUser"));
-            }
-
-            if (obj.has("genProf") && !obj.isNull("genProf"))
-                prof.setGenProf(obj.getString("genProf"));
-            if (obj.has("phoneProf") && !obj.isNull("phoneProf"))
-                prof.setPhoneProf(obj.getLong("phoneProf"));
-            if (obj.has("typeProf") && !obj.isNull("typeProf"))
-                prof.setTypeProf(TypeProfEnum.valueOf(obj.getString("typeProf")));
-            if (obj.has("specialityProf") && !obj.isNull("specialityProf"))
-                prof.setSpecialityProf(SpecialityProfEnum.valueOf(obj.getString("specialityProf")));
-            if (obj.has("attentionInterval") && !obj.isNull("attentionInterval"))
-                prof.setAttentionInterval(obj.getInt("attentionInterval"));
-            if (obj.has("statusProf") && !obj.isNull("statusProf"))
-                prof.setStatusProf(StatusUserEnum.valueOf(obj.getString("statusProf")));
-
-        } catch (Exception e) {
-            System.err.println(">> Error mapeando profesional: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return prof;
-    }
 }

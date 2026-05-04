@@ -4,8 +4,10 @@ import com.piedraazul.app_client.dto.LoginRequestDTO;
 import com.piedraazul.app_client.dto.LoginResponseDTO;
 import com.piedraazul.app_client.enums.RoleUserEnum;
 import com.piedraazul.app_client.models.User;
-import org.json.JSONObject;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.piedraazul.app_client.dto.RegisterDTO;
+import com.piedraazul.app_client.mappers.UserMapper;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -15,12 +17,13 @@ public class UserServiceImpl implements UserService {
 
     private final HttpClient client = HttpClient.newHttpClient();
     private final String BASE_URL = "http://localhost:8081/piedraAzul/auth";
+    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Override
     public RoleUserEnum authUser(Long cedUser, String password) {
         try {
             LoginRequestDTO requestDTO = new LoginRequestDTO((long) cedUser, password);
-            String jsonBody = new JSONObject(requestDTO).toString();
+            String jsonBody = objectMapper.writeValueAsString(requestDTO);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/login"))
@@ -33,13 +36,7 @@ public class UserServiceImpl implements UserService {
             System.out.println("Respuesta del servidor: " + response.body());
 
             if (response.statusCode() == 200) {
-                JSONObject resJson = new JSONObject(response.body());
-                LoginResponseDTO loginRes = new LoginResponseDTO();
-                loginRes.setToken(resJson.getString("token"));
-                loginRes.setRole(resJson.getString("role"));
-                loginRes.setNameUser(resJson.getString("nameUser"));
-                loginRes.setCodUser(resJson.getLong("codUser"));
-
+                LoginResponseDTO loginRes = objectMapper.readValue(response.body(), LoginResponseDTO.class);
                 SessionManager.setSession(loginRes);
                 return RoleUserEnum.valueOf(loginRes.getRole());
             }
@@ -52,20 +49,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean regUser(User newUser) {
         try {
-            // Usamos los nombres de campos exactos de tu RegisterUserDTO del backend
-            JSONObject json = new JSONObject();
-            json.put("cedUser", newUser.getCedUser());
-            json.put("passUser", newUser.getPassUser());
-            json.put("nameUser", newUser.getNameUser());
-            json.put("lastNameUser", newUser.getLastNameUser());
-            json.put("roleUser", newUser.getRoleUser().toString());
-            json.put("securityQuestion", newUser.getSecurityQuestion());
-            json.put("securityAnswer", newUser.getSecurityAnswer());
+            RegisterDTO dto = UserMapper.toRegisterDTO(newUser);
+            String jsonBody = objectMapper.writeValueAsString(dto);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/register"))
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -79,14 +69,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean recoverPassword(int cedUser, String answer) {
         try {
-            JSONObject json = new JSONObject();
-            json.put("cedUser", (long) cedUser);
-            json.put("securityAnswer", answer);
+            String jsonBody = "{\"cedUser\":" + cedUser + ",\"securityAnswer\":\"" + answer + "\"}";
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/recover"))
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -101,16 +89,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updatePassword(int cedUser, String newPassword) {
         try {
-            JSONObject json = new JSONObject();
-            json.put("cedUser", (long) cedUser);
-            json.put("newPassword", newPassword);
+            String jsonBody = "{\"cedUser\":" + cedUser + ",\"newPassword\":\"" + newPassword + "\"}";
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/update-password"))
                     .header("Content-Type", "application/json")
                     // Importante: Esta acción suele requerir estar logueado
                     .header("Authorization", "Bearer " + SessionManager.getToken())
-                    .PUT(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .PUT(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -133,12 +119,7 @@ public class UserServiceImpl implements UserService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                JSONObject obj = new JSONObject(response.body());
-                User user = new User();
-                user.setCedUser(obj.getLong("cedUser"));
-                user.setNameUser(obj.getString("nameUser"));
-                user.setLastNameUser(obj.getString("lastNameUser"));
-                user.setRoleUser(RoleUserEnum.valueOf(obj.getString("roleUser")));
+                User user = objectMapper.readValue(response.body(), User.class);
                 return user;
             }
         } catch (Exception e) {

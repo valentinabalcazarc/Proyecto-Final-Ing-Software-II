@@ -2,8 +2,11 @@ package com.piedraazul.app_client.services;
 
 import com.piedraazul.app_client.models.Patient;
 import com.piedraazul.app_client.models.Professional;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.piedraazul.app_client.dto.PatientDTO;
+import com.piedraazul.app_client.mappers.PatientMapper;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -16,28 +19,19 @@ public class PatientServiceImpl implements PatientService {
 
     private final HttpClient client = HttpClient.newHttpClient();
     private final String API_URL = "http://localhost:8082/piedraAzul/patients";
+    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Override
     public boolean regPatient(Patient newPatient) {
         try {
-            JSONObject json = new JSONObject();
-            json.put("idPatient", newPatient.getIdPatient());
-            json.put("namePatient", newPatient.getNamePatient());
-            json.put("secondNamePatient", newPatient.getSecondNamePatient()); // Agregado
-            json.put("lastNamePatient", newPatient.getLastNamePatient());
-            json.put("secondLastNamePatient", newPatient.getSecondLastNamePatient()); // Agregado
-            json.put("genderPatient", newPatient.getGenderPatient());
-            json.put("phonePatient", newPatient.getPhonePatient());
-
-            if (newPatient.getDateBirthPatient() != null) {
-                json.put("dateBirthPatient", newPatient.getDateBirthPatient().toString());
-            }
+            PatientDTO dto = PatientMapper.toDTO(newPatient);
+            String jsonBody = objectMapper.writeValueAsString(dto);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(API_URL))
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer " + SessionManager.getToken())
-                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -61,9 +55,9 @@ public class PatientServiceImpl implements PatientService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                JSONArray jsonArray = new JSONArray(response.body());
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    patients.add(mapJsonToPatient(jsonArray.getJSONObject(i)));
+                List<PatientDTO> dtos = objectMapper.readValue(response.body(), new TypeReference<List<PatientDTO>>() {});
+                for (PatientDTO dto : dtos) {
+                    patients.add(PatientMapper.toModel(dto));
                 }
             }
         } catch (Exception e) {
@@ -84,7 +78,8 @@ public class PatientServiceImpl implements PatientService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                return mapJsonToPatient(new JSONObject(response.body()));
+                PatientDTO dto = objectMapper.readValue(response.body(), PatientDTO.class);
+                return PatientMapper.toModel(dto);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,32 +87,5 @@ public class PatientServiceImpl implements PatientService {
         return null;
     }
 
-    private Patient mapJsonToPatient(JSONObject obj) {
-        Patient p = new Patient();
-        try {
-            if (obj.has("codPatient") && !obj.isNull("codPatient"))
-                p.setCodPatient(obj.getLong("codPatient"));
-            if (obj.has("idPatient") && !obj.isNull("idPatient"))
-                p.setIdPatient(obj.getLong("idPatient"));
-            if (obj.has("namePatient") && !obj.isNull("namePatient"))
-                p.setNamePatient(obj.getString("namePatient"));
-            if (obj.has("secondNamePatient") && !obj.isNull("secondNamePatient"))
-                p.setSecondNamePatient(obj.getString("secondNamePatient"));
-            if (obj.has("lastNamePatient") && !obj.isNull("lastNamePatient"))
-                p.setLastNamePatient(obj.getString("lastNamePatient"));
-            if (obj.has("secondLastNamePatient") && !obj.isNull("secondLastNamePatient"))
-                p.setSecondLastNamePatient(obj.getString("secondLastNamePatient"));
-            if (obj.has("phonePatient") && !obj.isNull("phonePatient"))
-                p.setPhonePatient(obj.getLong("phonePatient")); // Long es más seguro que Int
-            if (obj.has("dateBirthPatient") && !obj.isNull("dateBirthPatient"))
-                p.setDateBirthPatient(LocalDate.parse(obj.getString("dateBirthPatient"))); // JSONObject no tiene getLocalDate()
-            if (obj.has("genderPatient") && !obj.isNull("genderPatient"))
-                p.setGenderPatient(obj.getString("genderPatient"));
 
-        } catch (Exception e) {
-            System.err.println(">> Error mapeando paciente: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return p;
-    }
 }

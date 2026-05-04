@@ -16,7 +16,7 @@ public class Professional extends User {
     private Long phoneProf;
     private StatusUserEnum statusProf;
     private TypeProfEnum typeProf;
-    private SpecialityProfEnum SpecialityProf;
+    private SpecialityProfEnum specialityProf;
     private Integer attentionInterval;
 
     @Override

@@ -16,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import javafx.util.StringConverter;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -41,6 +42,7 @@ public class ProfessionalCreateAppStep1Controller {
     @FXML
     public void initialize() {
         setupTable();
+        setupComboBox();
         loadProfessionals();
         loadAllGeneratedAppointments();
         configurarCalendario();
@@ -64,10 +66,27 @@ public class ProfessionalCreateAppStep1Controller {
         tblAppointments.setItems(appointmentList);
     }
 
+    private void setupComboBox() {
+        cbxProfessional.setConverter(new StringConverter<Professional>() {
+            @Override
+            public String toString(Professional p) {
+                return p == null ? "" : p.getNameUser() + " " + p.getLastNameUser();
+            }
+
+            @Override
+            public Professional fromString(String string) {
+                return null;
+            }
+        });
+    }
     private void loadProfessionals() {
         cbxProfessional.getItems().clear();
         List<Professional> lista = ServiceManager.getInstance().getProfessionalService().getAllProfessionals();
-        cbxProfessional.getItems().addAll(lista);
+        if (lista != null && !lista.isEmpty()) {
+            cbxProfessional.getItems().addAll(lista);
+        } else {
+            System.out.println(">> No se cargaron profesionales o la lista está vacía.");
+        }
     }
 
     private void loadAllGeneratedAppointments() {
