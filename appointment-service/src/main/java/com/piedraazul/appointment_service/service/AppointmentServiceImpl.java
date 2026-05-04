@@ -1,6 +1,7 @@
 package com.piedraazul.appointment_service.service;
 
 import com.piedraazul.appointment_service.dto.AppointmentDTO;
+import com.piedraazul.appointment_service.dto.CreateAppointmentDTO;
 import com.piedraazul.appointment_service.dto.UpdateAppointmentDTO;
 import com.piedraazul.appointment_service.enums.SpecialityProfEnum;
 import com.piedraazul.appointment_service.enums.StatusAppointment;
@@ -34,7 +35,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final UnavailableDayRefRepository unavailableDayRefRepository;
 
     @Override
-    public Appointment create(AppointmentDTO dto) {
+    public Appointment create(CreateAppointmentDTO dto) {
         PatientRef patientRef = patientRefRepository.findById(dto.getCodPatient())
                 .orElseThrow(() -> new RuntimeException("No existe el paciente con código: " + dto.getCodPatient()));
 

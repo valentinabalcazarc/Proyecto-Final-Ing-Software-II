@@ -1,6 +1,7 @@
 package com.piedraazul.appointment_service.controller;
 
 import com.piedraazul.appointment_service.dto.AppointmentDTO;
+import com.piedraazul.appointment_service.dto.CreateAppointmentDTO;
 import com.piedraazul.appointment_service.dto.UpdateAppointmentDTO;
 import com.piedraazul.appointment_service.enums.SpecialityProfEnum;
 import com.piedraazul.appointment_service.enums.StatusAppointment;
@@ -74,13 +75,11 @@ public class AppointmentController {
 
     @GetMapping("/professional/{codProf}")
     public ResponseEntity<?> findByCodProf(@PathVariable Long codProf) {
-        try {
-            List<Appointment> appointments = appointmentService.findByCodProf(codProf);
-            if (appointments.isEmpty()) return ResponseEntity.noContent().build();
-            return ResponseEntity.ok(appointments);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        List<Appointment> appointments = appointmentService.findByCodProf(codProf);
+        if (appointments.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.ok(appointments);
     }
 
     @GetMapping("/patient/{codPatient}")
@@ -143,7 +142,7 @@ public class AppointmentController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody AppointmentDTO dto, BindingResult result) {
+    public ResponseEntity<?> create(@Valid @RequestBody CreateAppointmentDTO dto, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(
                     result.getFieldErrors().stream()
