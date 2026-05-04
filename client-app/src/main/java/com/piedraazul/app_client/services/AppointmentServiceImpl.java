@@ -4,8 +4,12 @@ import com.piedraazul.app_client.enums.SpecialityProfEnum;
 import com.piedraazul.app_client.enums.TypeProfEnum;
 import com.piedraazul.app_client.models.Appointment;
 import com.piedraazul.app_client.models.AppointmentRep;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.piedraazul.app_client.dto.AppointmentDTO;
+import com.piedraazul.app_client.dto.AppointmentResponseDTO;
+import com.piedraazul.app_client.mappers.AppointmentMapper;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -20,23 +24,21 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private final HttpClient client = HttpClient.newHttpClient();
     private final String BASE_URL = "http://localhost:8083/piedraAzul/appointments";
+    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Override
     public boolean registerAppointment(Appointment appointment) {
         if (appointment == null)
             return false;
         try {
-            JSONObject json = new JSONObject();
-            json.put("dateApp", appointment.getDate().toString());
-            json.put("timeApp", appointment.getTime().toString());
-            json.put("codProf", appointment.getProfessionalId());
-            json.put("idPatient", appointment.getPatientId());
+            AppointmentDTO dto = AppointmentMapper.toRequestDTO(appointment, null);
+            String jsonBody = objectMapper.writeValueAsString(dto);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL))
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer " + SessionManager.getToken())
-                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -66,23 +68,8 @@ public class AppointmentServiceImpl implements AppointmentService {
             System.out.println(">> firstAvailable body: " + response.body());
 
             if (response.statusCode() == 200) {
-                JSONObject obj = new JSONObject(response.body());
-                Appointment app = new Appointment();
-
-                if (obj.has("dateApp") && !obj.isNull("dateApp"))
-                    app.setDate(LocalDate.parse(obj.getString("dateApp")));
-                if (obj.has("timeApp") && !obj.isNull("timeApp"))
-                    app.setTime(LocalTime.parse(obj.getString("timeApp")));
-                if (obj.has("codProf") && !obj.isNull("codProf"))
-                    app.setProfessionalId(obj.getLong("codProf"));
-                if (obj.has("professionalName") && !obj.isNull("professionalName"))
-                    app.setProfessionalName(obj.getString("professionalName"));
-                if (obj.has("specialityProf") && !obj.isNull("specialityProf"))
-                    app.setSpecialityName(obj.getString("specialityProf"));
-                if (obj.has("typeProf") && !obj.isNull("typeProf"))
-                    app.setTypeProfName(obj.getString("typeProf"));
-
-                return app;
+                AppointmentResponseDTO dto = objectMapper.readValue(response.body(), AppointmentResponseDTO.class);
+                return AppointmentMapper.toModel(dto);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,15 +89,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                JSONArray array = new JSONArray(response.body());
-                for (int i = 0; i < array.length(); i++) {
-                    JSONArray rowJson = array.getJSONArray(i);
-                    Object[] row = new Object[rowJson.length()];
-                    for (int j = 0; j < rowJson.length(); j++) {
-                        row[j] = rowJson.get(j);
-                    }
-                    data.add(row);
-                }
+                List<Object[]> rows = objectMapper.readValue(response.body(), new TypeReference<List<Object[]>>() {});
+                data.addAll(rows);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -206,20 +186,16 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public boolean saveAppointment(Appointment appointment, Long patientId) {
         try {
-            JSONObject json = new JSONObject();
-            json.put("codProf", appointment.getProfessionalId());
-            json.put("codPatient", patientId);          // ← verifica que sea "codPatient"
-            json.put("dateApp", appointment.getDate().toString());
-            json.put("timeApp", appointment.getTime().toString());
-            json.put("descApp", appointment.getDescription());
+            AppointmentDTO dto = AppointmentMapper.toRequestDTO(appointment, patientId);
+            String jsonBody = objectMapper.writeValueAsString(dto);
 
-            System.out.println(">> JSON enviado: " + json.toString()); // 👈 log temporal
+            System.out.println(">> JSON enviado: " + jsonBody); 
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL))
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer " + SessionManager.getToken())
-                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -264,54 +240,9 @@ public class AppointmentServiceImpl implements AppointmentService {
             //System.out.println(">> Body fetchAppointmentList: " + response.body());
 
             if (response.statusCode() == 200) {
-                JSONArray array = new JSONArray(response.body());
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject obj = array.getJSONObject(i);
-                    Appointment app = new Appointment();
-
-                    // ID (puede no existir en slots generados)
-                    if (obj.has("codApp") && !obj.isNull("codApp"))
-                        app.setId(obj.getLong("codApp"));
-
-                    // Fecha y hora
-                    if (obj.has("dateApp") && !obj.isNull("dateApp"))
-                        app.setDate(LocalDate.parse(obj.getString("dateApp")));
-                    if (obj.has("timeApp") && !obj.isNull("timeApp"))
-                        app.setTime(LocalTime.parse(obj.getString("timeApp")));
-
-                    // PACIENTE
-                    if (obj.has("patientRef") && !obj.isNull("patientRef")) {
-                        JSONObject patJson = obj.getJSONObject("patientRef");
-                        app.setPatientId(patJson.optLong("codPatient"));
-                        app.setPatientName(
-                                patJson.optString("namePatient", "") + " " + patJson.optString("lastNamePatient", "")
-                        );
-                    }
-
-                    // PROFESIONAL - primero intenta campos planos (slots generados)
-                    if (obj.has("professionalName") && !obj.isNull("professionalName")) {
-                        app.setProfessionalName(obj.getString("professionalName"));
-                        app.setProfessionalId(obj.optLong("codProf"));
-                        app.setSpecialityName(obj.optString("specialityProf", ""));
-                        app.setTypeProfName(obj.optString("typeProf", ""));
-                    // luego intenta objeto anidado (citas reales)
-                    } else if (obj.has("professionalRef") && !obj.isNull("professionalRef")) {
-                        JSONObject profJson = obj.getJSONObject("professionalRef");
-                        app.setProfessionalId(profJson.optLong("codProf"));
-                        app.setProfessionalName(
-                                profJson.optString("nameProf", "") + " " + profJson.optString("lastNameProf", "")
-                        );
-                        app.setSpecialityName(profJson.optString("specialityProf", ""));
-                        app.setTypeProfName(profJson.optString("typeProf", ""));
-                    }
-
-                    // STATUS y DESCRIPCIÓN
-                    if (obj.has("statusApp") && !obj.isNull("statusApp"))
-                        app.setStatus(obj.getString("statusApp"));
-                    if (obj.has("descApp") && !obj.isNull("descApp"))
-                        app.setDescription(obj.getString("descApp"));
-
-                    data.add(app);
+                List<AppointmentResponseDTO> dtos = objectMapper.readValue(response.body(), new TypeReference<List<AppointmentResponseDTO>>() {});
+                for (AppointmentResponseDTO dto : dtos) {
+                    data.add(AppointmentMapper.toModel(dto));
                 }
             }
         } catch (Exception e) {
