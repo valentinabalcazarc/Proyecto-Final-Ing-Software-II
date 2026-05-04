@@ -113,16 +113,6 @@ public class ProfessionalExportController {
             return;
         }
 
-        List<String> choices = FXCollections.observableArrayList("JSON", "HTTML");
-        ChoiceDialog<String> dialog = new ChoiceDialog<>("JSON", choices);
-        dialog.setTitle("Exportar Citas");
-        dialog.setHeaderText("Seleccione el formato de exportación");
-        dialog.setContentText("Formato:");
-
-        dialog.showAndWait().ifPresent(format -> {
-            showAlert(Alert.AlertType.INFORMATION, "Exportación", "Iniciando exportación en formato " + format + "...");
-        });
-
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ProfessionalExportSelection.fxml"));
             Parent root = loader.load();
@@ -130,9 +120,12 @@ public class ProfessionalExportController {
             ProfessionalExportSelectionController controller = loader.getController();
             controller.setAppointmentList(appointmentList);
 
-            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            stage.setTitle("Export Selection");
-            stage.setScene(new Scene(root));
+            // Abrir la selección de formato en una NUEVA ventana (Stage)
+            // para que la ventana de exportación de citas permanezca abierta
+            Stage exportSelectionStage = new Stage();
+            exportSelectionStage.setTitle("Formato de Exportación");
+            exportSelectionStage.setScene(new Scene(root));
+            exportSelectionStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
