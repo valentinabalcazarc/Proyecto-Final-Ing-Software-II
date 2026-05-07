@@ -148,6 +148,7 @@ public class ProfessionalCreateAppStep1Controller {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             stage.setTitle("Agendar Cita - Paso 2");
             stage.setScene(new Scene(root));
+            stage.getScene().getStylesheets().add(getClass().getResource("/fxml/stylesheet.css").toExternalForm());
         } catch (IOException e) {
             e.printStackTrace();
         }

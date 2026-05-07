@@ -198,6 +198,7 @@ public class PatientInfoController {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             stage.setTitle("Piedra Azul - Seleccionar Servicio");
             stage.setScene(new Scene(root));
+            stage.getScene().getStylesheets().add(getClass().getResource("/fxml/stylesheet.css").toExternalForm());
         } catch (IOException e) {
             e.printStackTrace();
             mostrarAlerta("Error", "Error inesperado al cargar la siguiente vista.", Alert.AlertType.ERROR);

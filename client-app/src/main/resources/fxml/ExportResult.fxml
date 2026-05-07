@@ -14,7 +14,7 @@
             fx:controller="com.piedraazul.app_client.controllers.ExportResultController">
     <children>
         <!-- Panel de Encabezado -->
-        <Pane prefHeight="110.0" prefWidth="700.0" style="-fx-background-color: #46af41;">
+        <Pane prefHeight="110.0" prefWidth="700.0" styleClass="header--green">
             <children>
                 <Label layoutX="210.0" layoutY="38.0" text="CITAS EXPORTADAS" textFill="WHITE">
                     <font>

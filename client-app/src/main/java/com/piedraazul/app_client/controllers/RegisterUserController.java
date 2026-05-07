@@ -193,7 +193,9 @@ public class RegisterUserController {
             Parent root = FXMLLoader.load(getClass().getResource(fxml));
             Stage stage = (Stage) sourceBtn.getScene().getWindow();
             stage.setTitle(title);
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/fxml/stylesheet.css").toExternalForm());
+            stage.setScene(scene);
         } catch (Exception e) {
             e.printStackTrace();
         }

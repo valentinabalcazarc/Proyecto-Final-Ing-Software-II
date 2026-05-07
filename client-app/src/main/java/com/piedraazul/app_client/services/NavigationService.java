@@ -28,7 +28,9 @@ public class NavigationService {
             Parent root = loader.load();
             Stage stage = (Stage) sourceButton.getScene().getWindow();
             stage.setTitle(title);
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/fxml/stylesheet.css").toExternalForm());
+            stage.setScene(scene);
             stage.centerOnScreen();
         } catch (IOException e) {
             showError("Error de Navegación", "No se pudo cargar la vista: " + fxmlPath);

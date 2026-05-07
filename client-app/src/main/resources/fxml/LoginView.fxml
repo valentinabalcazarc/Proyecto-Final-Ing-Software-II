@@ -11,7 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="486.0" prefWidth="593.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.piedraazul.app_client.controllers.LoginController">
    <children>
-      <Pane prefHeight="137.0" prefWidth="593.0" style="-fx-background-color: #6666FF;">
+      <Pane prefHeight="137.0" prefWidth="593.0" styleClass="header--blue">
          <children>
             <Label layoutX="173.0" layoutY="35.0" prefHeight="44.0" prefWidth="247.0" text="PIEDRA AZUL" textAlignment="CENTER" textFill="WHITE">
                <font>
@@ -40,22 +40,22 @@
             <Font name="Cascadia Code Regular" size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="txtUser_login" layoutX="264.0" layoutY="209.0" prefHeight="25.0" prefWidth="193.0" style="-fx-background-color: #E8E8E8;">
+      <TextField fx:id="txtUser_login" layoutX="264.0" layoutY="209.0" prefHeight="25.0" prefWidth="193.0" styleClass="input--gray">
          <font>
             <Font name="Cascadia Code Regular" size="16.0" />
          </font>
       </TextField>
-      <PasswordField fx:id="txtPass_Login" layoutX="264.0" layoutY="259.0" prefHeight="29.0" prefWidth="193.0" style="-fx-background-color: #E8E8E8;">
+      <PasswordField fx:id="txtPass_Login" layoutX="264.0" layoutY="259.0" prefHeight="29.0" prefWidth="193.0" styleClass="input--gray">
          <font>
             <Font name="Cascadia Code Regular" size="16.0" />
          </font>
       </PasswordField>
-      <Button fx:id="btnInicio_Sesion" layoutX="194.0" layoutY="324.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="1.0" prefWidth="206.0" style="-fx-background-color: #6666FF;" text="Ingresar" textFill="WHITE">
+      <Button fx:id="btnInicio_Sesion" layoutX="194.0" layoutY="324.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="1.0" prefWidth="206.0" styleClass="btn--primary" text="Ingresar">
          <font>
             <Font name="Cascadia Code Regular" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="btnRegister_Login" layoutX="194.0" layoutY="415.0" mnemonicParsing="false" onAction="#handleRegister" prefHeight="29.0" prefWidth="206.0" style="-fx-background-color: #6666FF;" text="Registrarse" textFill="WHITE">
+      <Button fx:id="btnRegister_Login" layoutX="194.0" layoutY="415.0" mnemonicParsing="false" onAction="#handleRegister" prefHeight="29.0" prefWidth="206.0" styleClass="btn--primary" text="Registrarse">
          <font>
             <Font name="Cascadia Code Regular" size="16.0" />
          </font>

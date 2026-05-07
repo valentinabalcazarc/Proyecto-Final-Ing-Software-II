@@ -70,7 +70,9 @@ public class LoginController {
             javafx.scene.Parent root = loader.load();
             javafx.stage.Stage stage = (javafx.stage.Stage) txtUser_login.getScene().getWindow();
             stage.setTitle(title);
-            stage.setScene(new javafx.scene.Scene(root));
+            javafx.scene.Scene scene = new javafx.scene.Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/fxml/stylesheet.css").toExternalForm());
+            stage.setScene(scene);
             stage.centerOnScreen();
         } catch (java.io.IOException e) {
             showAlert("Error de navegación", "No se pudo cargar la vista: " + fxmlPath);

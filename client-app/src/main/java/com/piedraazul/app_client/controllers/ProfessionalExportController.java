@@ -124,7 +124,9 @@ public class ProfessionalExportController {
             // para que la ventana de exportación de citas permanezca abierta
             Stage exportSelectionStage = new Stage();
             exportSelectionStage.setTitle("Formato de Exportación");
-            exportSelectionStage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/fxml/stylesheet.css").toExternalForm());
+            exportSelectionStage.setScene(scene);
             exportSelectionStage.show();
         } catch (IOException e) {
             e.printStackTrace();

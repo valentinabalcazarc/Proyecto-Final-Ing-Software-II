@@ -14,7 +14,7 @@
    <children>
 
       <!-- Header azul -->
-      <Pane prefHeight="100.0" prefWidth="560.0" style="-fx-background-color: #6666FF;">
+      <Pane prefHeight="100.0" prefWidth="560.0" styleClass="header--blue">
          <children>
             <Label layoutX="40.0" layoutY="30.0" prefWidth="480.0" text="INGRESASTE COMO ADMINISTRADOR"
                    textFill="WHITE" textAlignment="CENTER">
@@ -24,17 +24,17 @@
       </Pane>
 
       <!-- Contenido principal -->
-      <Pane layoutY="106.0" prefHeight="170.0" prefWidth="560.0" style="-fx-background-color: WHITE;">
+      <Pane layoutY="106.0" prefHeight="170.0" prefWidth="560.0" styleClass="admin__body">
          <children>
             <!-- Borde panel botones -->
             <Pane layoutX="28.0" layoutY="20.0" prefHeight="80.0" prefWidth="504.0"
-                  style="-fx-border-color: #AAAAAA; -fx-border-width: 1; -fx-border-radius: 4;">
+                  styleClass="admin__actions-panel">
                <children>
                   <Button fx:id="btnRegProfessional" layoutX="25.0" layoutY="17.0"
                           prefHeight="46.0" prefWidth="182.0"
                           text="Registrar profesional"
                           onAction="#handleRegProfessional"
-                          style="-fx-background-color: #6666FF; -fx-text-fill: WHITE; -fx-cursor: hand;">
+                          styleClass="btn--primary">
                      <font><Font name="Cascadia Code Regular" size="13.0"/></font>
                   </Button>
 
@@ -42,7 +42,7 @@
                           prefHeight="46.0" prefWidth="182.0"
                           text="Gestionar horario profesional"
                           onAction="#handleProfessionalSchedule"
-                          style="-fx-background-color: #6666FF; -fx-text-fill: WHITE; -fx-cursor: hand;">
+                          styleClass="btn--primary">
                      <font><Font name="Cascadia Code Regular" size="11.0"/></font>
                   </Button>
                </children>
@@ -53,7 +53,7 @@
                     prefHeight="32.0" prefWidth="160.0"
                     text="CERRAR SESIÓN"
                     onAction="#handleCerrarSesion"
-                    style="-fx-background-color: #6666FF; -fx-text-fill: WHITE; -fx-cursor: hand;">
+                    styleClass="btn--primary">
                <font><Font name="Cascadia Code Regular" size="14.0"/></font>
             </Button>
          </children>

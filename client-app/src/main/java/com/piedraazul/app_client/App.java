@@ -12,6 +12,7 @@ public class App extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/LoginView.fxml"));
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/fxml/stylesheet.css").toExternalForm());
         stage.setTitle("Piedra Azul - Profesional");
         stage.setScene(scene);
         stage.show();
