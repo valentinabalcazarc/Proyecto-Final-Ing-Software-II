@@ -17,11 +17,11 @@
             xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.piedraazul.app_client.controllers.ProfessionalViewAppointmentsController"
-            style="-fx-background-color: linear-gradient(to bottom right, #f1f3f5, #dee2e6);">
+            styleClass="page--gradient-professional">
     <children>
 
         <!-- Header profesional -->
-        <Pane prefHeight="100.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to right, #11998e, #38ef7d); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);">
+        <Pane prefHeight="100.0" prefWidth="900.0" styleClass="header--professional-gradient">
             <children>
                 <Label layoutX="40.0" layoutY="30.0" text="VISUALIZACIÓN DE CITAS" textFill="WHITE">
                     <font>
@@ -31,7 +31,7 @@
                 <Button fx:id="btnRegresar" layoutX="750.0" layoutY="30.0"
                         mnemonicParsing="false" onAction="#handleRegresar"
                         prefHeight="40.0" prefWidth="120.0"
-                        style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-background-radius: 20; -fx-border-color: white; -fx-border-radius: 20; -fx-cursor: hand;"
+                        styleClass="btn--ghost-white"
                         text="← Regresar">
                     <font>
                         <Font name="System Bold" size="13.0" />
@@ -41,7 +41,7 @@
         </Pane>
 
         <!-- Filtros -->
-        <Pane layoutX="30.0" layoutY="120.0" prefHeight="120.0" prefWidth="840.0" style="-fx-background-color: white; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 8, 0, 0, 0);">
+        <Pane layoutX="30.0" layoutY="120.0" prefHeight="120.0" prefWidth="840.0" styleClass="card--rounded">
             <children>
                 <HBox layoutX="20.0" layoutY="20.0" spacing="40.0" alignment="CENTER_LEFT">
                     <children>
@@ -63,15 +63,15 @@
                             </children>
                         </VBox>
 
-                        <HBox spacing="15.0" alignment="BOTTOM_LEFT" style="-fx-padding: 25 0 0 0;">
+                        <HBox spacing="15.0" alignment="BOTTOM_LEFT" styleClass="filter-actions">
                             <children>
                                 <Button fx:id="btnFind" mnemonicParsing="false" onAction="#handleFind"
                                         prefHeight="35.0" prefWidth="100.0"
-                                        style="-fx-background-color: #11998e; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-font-weight: bold;"
+                                        styleClass="btn--teal-rounded"
                                         text="Buscar" />
                                 <Button fx:id="btnClearFilter" mnemonicParsing="false" onAction="#handleClearFilter"
                                         prefHeight="35.0" prefWidth="120.0"
-                                        style="-fx-background-color: #f8f9fa; -fx-text-fill: #11998e; -fx-background-radius: 8; -fx-border-color: #11998e; -fx-border-radius: 8; -fx-cursor: hand; -fx-font-weight: bold;"
+                                        styleClass="btn--outline-teal-rounded"
                                         text="Borrar Filtro" />
                             </children>
                         </HBox>
@@ -81,7 +81,7 @@
         </Pane>
 
         <!-- Tabla -->
-        <Pane layoutX="30.0" layoutY="260.0" prefHeight="310.0" prefWidth="840.0" style="-fx-background-color: white; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 8, 0, 0, 0);">
+        <Pane layoutX="30.0" layoutY="260.0" prefHeight="310.0" prefWidth="840.0" styleClass="card--rounded">
             <children>
                 <TableView fx:id="tblAppointments" layoutX="20.0" layoutY="20.0" prefHeight="270.0" prefWidth="800.0">
                     <columns>

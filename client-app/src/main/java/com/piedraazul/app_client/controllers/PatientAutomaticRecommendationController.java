@@ -111,6 +111,7 @@ public class PatientAutomaticRecommendationController {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             stage.setTitle("Piedra Azul - Citas Específicas");
             stage.setScene(new Scene(root));
+            stage.getScene().getStylesheets().add(getClass().getResource("/fxml/stylesheet.css").toExternalForm());
         } catch (IOException e) {
             e.printStackTrace();
             mostrarAlerta("Error", "No se pudo cargar la vista de citas.", Alert.AlertType.ERROR);
@@ -129,6 +130,7 @@ public class PatientAutomaticRecommendationController {
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             stage.setTitle("Piedra Azul - Seleccionar Servicio");
             stage.setScene(new Scene(root));
+            stage.getScene().getStylesheets().add(getClass().getResource("/fxml/stylesheet.css").toExternalForm());
         } catch (IOException e) {
             e.printStackTrace();
             mostrarAlerta("Error", "No se pudo volver a la vista de servicios.", Alert.AlertType.ERROR);

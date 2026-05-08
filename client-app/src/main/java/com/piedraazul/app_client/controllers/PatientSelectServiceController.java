@@ -32,7 +32,9 @@ public class PatientSelectServiceController {
 
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             stage.setTitle("Piedra Azul - Recomendación Automática");
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/fxml/stylesheet.css").toExternalForm());
+            stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
             mostrarAlerta("Error", "No se pudo cargar la vista de recomendación.");

@@ -115,7 +115,9 @@ public class ProfessionalExportSelectionController {
             // Crear y mostrar la ventana de resultados
             exportResultStage = new Stage();
             exportResultStage.setTitle("Citas Exportadas");
-            exportResultStage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/fxml/stylesheet.css").toExternalForm());
+            exportResultStage.setScene(scene);
             exportResultStage.show();
 
             // Al cerrar la ventana, desuscribir el Observer del EventManager
