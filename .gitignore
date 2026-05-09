@@ -33,3 +33,10 @@ replay_pid*
 /ProyectF-common/target/
 /report-html-plugin/target/
 /report-json-plugin/target/
+
+# target 
+target/
+
+# IntelliJ
+.idea/
+*.iml
