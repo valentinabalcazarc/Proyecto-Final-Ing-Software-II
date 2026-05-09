@@ -57,7 +57,7 @@
 }
 
 .header--patient-gradient {
-    -fx-background-color: linear-gradient(to right, #4e54c8, #8f94fb);
+    -fx-background-color: linear-gradient(to right, #6666FF, #4e54c8);
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 5);
 }
 
@@ -272,7 +272,7 @@
 }
 
 .btn--patient-primary {
-    -fx-background-color: #4e54c8;
+    -fx-background-color: #6666FF;
     -fx-text-fill: white;
     -fx-background-radius: 10;
     -fx-cursor: hand;
@@ -281,9 +281,9 @@
 
 .btn--patient-outline {
     -fx-background-color: #f8f9fa;
-    -fx-text-fill: #4e54c8;
+    -fx-text-fill: #6666FF;
     -fx-background-radius: 10;
-    -fx-border-color: #4e54c8;
+    -fx-border-color: #6666FF;
     -fx-border-radius: 10;
     -fx-cursor: hand;
     -fx-font-weight: bold;
@@ -331,7 +331,7 @@
 .textfield--styled:focused {
     -fx-border-color: #5947ff;
     -fx-background-color: #ffffff;
-    -fx-effect: dropshadow(three-pass-box, rgba(89,71,255,0.18), 6, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(89, 71, 255, 0.18), 6, 0, 0, 0);
 }
 
 .textfield--styled:disabled {
@@ -382,7 +382,7 @@
 .combobox--styled:focused {
     -fx-border-color: #5947ff;
     -fx-background-color: #ffffff;
-    -fx-effect: dropshadow(three-pass-box, rgba(89,71,255,0.18), 6, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(89, 71, 255, 0.18), 6, 0, 0, 0);
 }
 
 .combobox--styled .list-cell {
@@ -397,7 +397,7 @@
     -fx-border-width: 1;
     -fx-border-radius: 7;
     -fx-background-radius: 7;
-    -fx-effect: dropshadow(three-pass-box, rgba(89,71,255,0.15), 8, 0, 0, 3);
+    -fx-effect: dropshadow(three-pass-box, rgba(89, 71, 255, 0.15), 8, 0, 0, 3);
 }
 
 .combobox--styled .combo-box-popup .list-view .list-cell:hover {
@@ -436,7 +436,7 @@
 .datepicker--styled:focused {
     -fx-border-color: #5947ff;
     -fx-background-color: #ffffff;
-    -fx-effect: dropshadow(three-pass-box, rgba(89,71,255,0.18), 6, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(89, 71, 255, 0.18), 6, 0, 0, 0);
 }
 
 .datepicker--styled .text-field {
@@ -459,46 +459,46 @@
     -fx-border-color: #c5c5ff;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
-    -fx-effect: dropshadow(three-pass-box, rgba(89,71,255,0.18), 10, 0, 0, 4);
+    -fx-effect: dropshadow(three-pass-box, rgba(89, 71, 255, 0.18), 10, 0, 0, 4);
 }
 
-.datepicker--styled .date-picker-popup > * > .spinner {
+.datepicker--styled .date-picker-popup>*>.spinner {
     -fx-background-color: #6666ff;
     -fx-background-radius: 10 10 0 0;
 }
 
-.datepicker--styled .date-picker-popup > * > .spinner .label {
+.datepicker--styled .date-picker-popup>*>.spinner .label {
     -fx-text-fill: white;
     -fx-font-weight: bold;
 }
 
-.datepicker--styled .date-picker-popup > * > .spinner .button {
+.datepicker--styled .date-picker-popup>*>.spinner .button {
     -fx-background-color: transparent;
 }
 
-.datepicker--styled .date-picker-popup > * > .spinner .button .left-arrow,
-.datepicker--styled .date-picker-popup > * > .spinner .button .right-arrow {
+.datepicker--styled .date-picker-popup>*>.spinner .button .left-arrow,
+.datepicker--styled .date-picker-popup>*>.spinner .button .right-arrow {
     -fx-background-color: white;
 }
 
-.datepicker--styled .date-picker-popup > * .day-cell > .text {
+.datepicker--styled .date-picker-popup>* .day-cell>.text {
     -fx-fill: #333366;
 }
 
-.datepicker--styled .date-picker-popup > * .day-cell:hover > .text {
+.datepicker--styled .date-picker-popup>* .day-cell:hover>.text {
     -fx-fill: #5947ff;
 }
 
-.datepicker--styled .date-picker-popup > * .selected > .text {
+.datepicker--styled .date-picker-popup>* .selected>.text {
     -fx-fill: white;
 }
 
-.datepicker--styled .date-picker-popup > * .selected {
+.datepicker--styled .date-picker-popup>* .selected {
     -fx-background-color: #6666ff;
     -fx-background-radius: 5;
 }
 
-.datepicker--styled .date-picker-popup > * .today {
+.datepicker--styled .date-picker-popup>* .today {
     -fx-border-color: #6666ff;
     -fx-border-radius: 5;
 }
@@ -574,7 +574,6 @@
     -fx-padding: 5;
 }
 
-
 /* ---------- RegisterView (User & Professional) ---------- */
 
 .register__body {
@@ -590,4 +589,121 @@
 
 .filter-actions {
     -fx-padding: 25 0 0 0;
+}
+
+
+/* ---------- LoginView ---------- */
+
+.login__card {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.12), 16, 0, 0, 4);
+}
+
+.login__title {
+    -fx-text-fill: #3333aa;
+    -fx-alignment: CENTER;
+}
+
+.login__register-hint {
+    -fx-text-fill: #777777;
+    -fx-alignment: CENTER;
+}
+
+
+/* ---------- PatientMainView ---------- */
+
+.patient-main__section-title {
+    -fx-text-fill: #444466;
+}
+
+.patient-main__action-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-effect: dropshadow(three-pass-box, rgba(78, 84, 200, 0.13), 12, 0, 0, 4);
+    -fx-border-color: #e8e8ff;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 14;
+    -fx-cursor: hand;
+}
+
+.patient-main__card-icon {
+    -fx-alignment: CENTER;
+}
+
+.btn--patient-primary:hover {
+    -fx-background-color: #3d43b0;
+}
+
+.btn--patient-outline:hover {
+    -fx-background-color: #ebebff;
+}
+
+
+/* ---------- PatientViewAppointments ---------- */
+
+.appointments__card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-effect: dropshadow(three-pass-box, rgba(102, 102, 255, 0.12), 14, 0, 0, 4);
+    -fx-border-color: #e8e8ff;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 14;
+}
+
+.appointments__section-title {
+    -fx-text-fill: #3333aa;
+}
+
+.appointments__empty-label {
+    -fx-text-fill: #aaaacc;
+}
+
+.appointments__table {
+    -fx-background-color: transparent;
+    -fx-border-color: #e0e0f5;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.appointments__table .column-header-background {
+    -fx-background-color: #6666FF;
+    -fx-background-radius: 8 8 0 0;
+}
+
+.appointments__table .column-header,
+.appointments__table .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.appointments__table .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.appointments__table .table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #f0f0f8 transparent;
+    -fx-border-width: 1;
+}
+
+.appointments__table .table-row-cell:odd {
+    -fx-background-color: #f8f8ff;
+}
+
+.appointments__table .table-row-cell:selected {
+    -fx-background-color: #e0e0ff;
+}
+
+.appointments__table .table-row-cell:hover {
+    -fx-background-color: #ebebff;
+}
+
+.appointments__table .table-cell {
+    -fx-text-fill: #333355;
+    -fx-font-size: 13px;
+    -fx-padding: 6 10 6 10;
 }

@@ -18,23 +18,39 @@ import java.time.Period;
 
 public class PatientInfoController {
 
-    @FXML private TextField txtCedula;
-    @FXML private TextField txtPrimerNombre;
-    @FXML private TextField txtSegundoNombre;
-    @FXML private TextField txtPrimerApellido;
-    @FXML private TextField txtSegundoApellido;
-    @FXML private TextField txtCelular;
-    @FXML private TextField txtEdad;
-    @FXML private ComboBox<String> cbxGenero;
-    @FXML private DatePicker dpFechaNacimiento;
+    @FXML
+    private TextField txtCedula;
+    @FXML
+    private TextField txtPrimerNombre;
+    @FXML
+    private TextField txtSegundoNombre;
+    @FXML
+    private TextField txtPrimerApellido;
+    @FXML
+    private TextField txtSegundoApellido;
+    @FXML
+    private TextField txtCelular;
+    @FXML
+    private TextField txtEdad;
+    @FXML
+    private ComboBox<String> cbxGenero;
+    @FXML
+    private DatePicker dpFechaNacimiento;
 
-    @FXML private Label lblErrorCedula;
-    @FXML private Label lblErrorPrimerNombre;
-    @FXML private Label lblErrorSegundoNombre;
-    @FXML private Label lblErrorPrimerApellido;
-    @FXML private Label lblErrorSegundoApellido;
-    @FXML private Label lblErrorCelular;
-    @FXML private Label lblErrorFecha;
+    @FXML
+    private Label lblErrorCedula;
+    @FXML
+    private Label lblErrorPrimerNombre;
+    @FXML
+    private Label lblErrorSegundoNombre;
+    @FXML
+    private Label lblErrorPrimerApellido;
+    @FXML
+    private Label lblErrorSegundoApellido;
+    @FXML
+    private Label lblErrorCelular;
+    @FXML
+    private Label lblErrorFecha;
 
     private final FestivosService festivosService = new FestivosService();
 
@@ -42,7 +58,7 @@ public class PatientInfoController {
     public void initialize() {
         cbxGenero.getItems().addAll("Male", "Female", "Other");
         cbxGenero.getSelectionModel().selectFirst();
-        
+
         txtEdad.setEditable(false);
         txtEdad.setDisable(true);
         txtEdad.setStyle("-fx-opacity: 1; -fx-text-fill: black; -fx-background-color: #cccccc;");
@@ -67,7 +83,7 @@ public class PatientInfoController {
         configurarValidacionCampo(txtPrimerNombre, lblErrorPrimerNombre, "TEXTO", true);
         configurarValidacionCampo(txtPrimerApellido, lblErrorPrimerApellido, "TEXTO", true);
         configurarValidacionCampo(txtCelular, lblErrorCelular, "NUMERICO", true);
-        
+
         configurarValidacionCampo(txtSegundoNombre, lblErrorSegundoNombre, "TEXTO", false);
         configurarValidacionCampo(txtSegundoApellido, lblErrorSegundoApellido, "TEXTO", false);
 
@@ -111,7 +127,8 @@ public class PatientInfoController {
     }
 
     private int calcularEdad(LocalDate fechaNac) {
-        if (fechaNac == null) return 0;
+        if (fechaNac == null)
+            return 0;
         return Period.between(fechaNac, LocalDate.now()).getYears();
     }
 
@@ -120,7 +137,8 @@ public class PatientInfoController {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
-                if (date == null || empty) return;
+                if (date == null || empty)
+                    return;
 
                 if (date.isAfter(LocalDate.now())) {
                     setDisable(true);
@@ -140,8 +158,9 @@ public class PatientInfoController {
                 txtPrimerNombre.setText(patient.getNamePatient() != null ? patient.getNamePatient() : "");
                 txtSegundoNombre.setText(patient.getSecondNamePatient() != null ? patient.getSecondNamePatient() : "");
                 txtPrimerApellido.setText(patient.getLastNamePatient() != null ? patient.getLastNamePatient() : "");
-                txtSegundoApellido.setText(patient.getSecondLastNamePatient() != null ? patient.getSecondLastNamePatient() : "");
-                
+                txtSegundoApellido
+                        .setText(patient.getSecondLastNamePatient() != null ? patient.getSecondLastNamePatient() : "");
+
                 if (patient.getGenderPatient() != null && !patient.getGenderPatient().isEmpty()) {
                     cbxGenero.setValue(patient.getGenderPatient());
                 }
@@ -151,11 +170,12 @@ public class PatientInfoController {
                 if (patient.getDateBirthPatient() != null) {
                     dpFechaNacimiento.setValue(patient.getDateBirthPatient());
                 }
-                
+
                 ocultarErrores();
 
             } else {
-                mostrarAlerta("Información", "El paciente no fue encontrado. Llene los datos manualmente.", Alert.AlertType.INFORMATION);
+                mostrarAlerta("Información", "El paciente no fue encontrado. Llene los datos manualmente.",
+                        Alert.AlertType.INFORMATION);
             }
         } catch (NumberFormatException e) {
             mostrarAlerta("Error", "Por favor, ingrese un número de cédula válido.", Alert.AlertType.ERROR);
@@ -167,14 +187,15 @@ public class PatientInfoController {
         // Trigger focus lost to validate all fields
         txtCedula.getParent().requestFocus();
 
-        if (lblErrorCedula.isVisible() || lblErrorPrimerNombre.isVisible() || 
-            lblErrorPrimerApellido.isVisible() || lblErrorCelular.isVisible() ||
-            lblErrorSegundoNombre.isVisible() || lblErrorSegundoApellido.isVisible() ||
-            lblErrorFecha.isVisible() || txtCedula.getText().trim().isEmpty() ||
-            txtPrimerNombre.getText().trim().isEmpty() || txtPrimerApellido.getText().trim().isEmpty() ||
-            txtCelular.getText().trim().isEmpty() || dpFechaNacimiento.getValue() == null) {
+        if (lblErrorCedula.isVisible() || lblErrorPrimerNombre.isVisible() ||
+                lblErrorPrimerApellido.isVisible() || lblErrorCelular.isVisible() ||
+                lblErrorSegundoNombre.isVisible() || lblErrorSegundoApellido.isVisible() ||
+                lblErrorFecha.isVisible() || txtCedula.getText().trim().isEmpty() ||
+                txtPrimerNombre.getText().trim().isEmpty() || txtPrimerApellido.getText().trim().isEmpty() ||
+                txtCelular.getText().trim().isEmpty() || dpFechaNacimiento.getValue() == null) {
 
-            mostrarAlerta("Validación", "Por favor, corrija los errores o complete los campos requeridos.", Alert.AlertType.WARNING);
+            mostrarAlerta("Validación", "Por favor, corrija los errores o complete los campos requeridos.",
+                    Alert.AlertType.WARNING);
             return;
         }
 
@@ -203,13 +224,15 @@ public class PatientInfoController {
             e.printStackTrace();
             mostrarAlerta("Error", "Error inesperado al cargar la siguiente vista.", Alert.AlertType.ERROR);
         } catch (NumberFormatException e) {
-            mostrarAlerta("Error", "Por favor, asegúrese de que la cédula y el celular sean números válidos.", Alert.AlertType.ERROR);
+            mostrarAlerta("Error", "Por favor, asegúrese de que la cédula y el celular sean números válidos.",
+                    Alert.AlertType.ERROR);
         }
     }
 
     @FXML
     private void handleRegresar(ActionEvent event) {
-        NavigationService.getInstance().navigateTo("/fxml/PatientMainView.fxml", "Piedra Azul - Menú Principal", (Button) event.getSource());
+        NavigationService.getInstance().navigateTo("/fxml/PatientMainView.fxml", "Piedra Azul - Menú Principal",
+                (Button) event.getSource());
     }
 
     private void mostrarAlerta(String titulo, String contenido, Alert.AlertType tipo) {
