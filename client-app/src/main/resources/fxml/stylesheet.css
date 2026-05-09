@@ -519,10 +519,27 @@
 /* ---------- PatientAutomaticRecommendationView ---------- */
 
 .recommendation__info-card {
-    -fx-background-color: #DDDDDD;
-    -fx-padding: 20;
-    -fx-border-color: #AAAAAA;
-    -fx-border-width: 1;
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-border-color: #6666FF;
+    -fx-border-width: 0 0 0 5;
+    -fx-border-radius: 16;
+    -fx-effect: dropshadow(three-pass-box, rgba(102, 102, 255, 0.14), 14, 0, 0, 4);
+}
+
+.recommendation__detail-label {
+    -fx-text-fill: #9999bb;
+    -fx-font-size: 11px;
+}
+
+.recommendation__detail-value {
+    -fx-text-fill: #333366;
+    -fx-font-size: 15px;
+}
+
+.recommendation__divider {
+    -fx-background-color: #ebebff;
+    -fx-pref-height: 1;
 }
 
 
@@ -590,26 +607,26 @@
     -fx-background-color: #3d8a33;
 }
 
-/*  */
+/* Fisioterapia */
 .service__card--physiotherapy {
     -fx-background-color: white;
     -fx-background-radius: 16;
-    -fx-border-color: #6666FF;
+    -fx-border-color: #9E181B;
     -fx-border-width: 0 0 0 5;
     -fx-border-radius: 16;
-    -fx-effect: dropshadow(three-pass-box, rgba(78, 84, 200, 0.18), 14, 0, 0, 4);
+    -fx-effect: dropshadow(three-pass-box, rgba(158, 24, 27, 0.18), 14, 0, 0, 4);
     -fx-cursor: hand;
 }
 
 .service__card-btn--physiotherapy {
-    -fx-background-color: #6666FF;
+    -fx-background-color: #9E181B;
     -fx-text-fill: white;
     -fx-background-radius: 8;
     -fx-cursor: hand;
 }
 
 .service__card-btn--physiotherapy:hover {
-    -fx-background-color: #4e4ecf;
+    -fx-background-color: #8a161a;
 }
 
 /* ---------- RegisterView (User & Professional) ---------- */
