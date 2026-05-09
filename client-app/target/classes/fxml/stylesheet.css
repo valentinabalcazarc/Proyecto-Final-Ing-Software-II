@@ -1,13 +1,3 @@
-/* ==========================================================================
-   PIEDRA AZUL – Hoja de estilos centralizada
-   Metodología: BEM (Block Element Modifier)
-   ========================================================================== */
-
-
-/* ==========================================================================
-   1. COMPONENTES GLOBALES REUTILIZABLES
-   ========================================================================== */
-
 /* ---------- Páginas / Fondos ---------- */
 
 .page--gray {
@@ -538,40 +528,88 @@
 
 /* ---------- PatientSelectServiceView ---------- */
 
-.service__btn--neutral {
+.service__section-title {
+    -fx-text-fill: #444466;
+}
+
+.service__card-icon {
+    -fx-alignment: CENTER;
+}
+
+.service__card-title {
+    -fx-text-fill: #333355;
+    -fx-alignment: CENTER;
+}
+
+.service__card-desc {
+    -fx-text-fill: #6666aa;
+    -fx-alignment: CENTER;
+}
+
+/* Neutral – */
+.service__card--neutral {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-border-color: #CC9900;
+    -fx-border-width: 0 0 0 5;
+    -fx-border-radius: 16;
+    -fx-effect: dropshadow(three-pass-box, rgba(204, 153, 0, 0.18), 14, 0, 0, 4);
+    -fx-cursor: hand;
+}
+
+.service__card-btn--neutral {
     -fx-background-color: #CC9900;
     -fx-text-fill: white;
+    -fx-background-radius: 8;
     -fx-cursor: hand;
 }
 
-.service__textarea--neutral {
-    -fx-control-inner-background: #F5D473;
-    -fx-background-color: transparent;
-    -fx-padding: 5;
+.service__card-btn--neutral:hover {
+    -fx-background-color: #b38600;
 }
 
-.service__btn--chiropractic {
-    -fx-background-color: #669900;
+/* Quiropractica*/
+.service__card--chiropractic {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-border-color: #52a447;
+    -fx-border-width: 0 0 0 5;
+    -fx-border-radius: 16;
+    -fx-effect: dropshadow(three-pass-box, rgba(82, 164, 71, 0.18), 14, 0, 0, 4);
+    -fx-cursor: hand;
+}
+
+.service__card-btn--chiropractic {
+    -fx-background-color: #52a447;
     -fx-text-fill: white;
+    -fx-background-radius: 8;
     -fx-cursor: hand;
 }
 
-.service__textarea--chiropractic {
-    -fx-control-inner-background: #B0D26C;
-    -fx-background-color: transparent;
-    -fx-padding: 5;
+.service__card-btn--chiropractic:hover {
+    -fx-background-color: #3d8a33;
 }
 
-.service__btn--physiotherapy {
-    -fx-background-color: #993300;
+/*  */
+.service__card--physiotherapy {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-border-color: #6666FF;
+    -fx-border-width: 0 0 0 5;
+    -fx-border-radius: 16;
+    -fx-effect: dropshadow(three-pass-box, rgba(78, 84, 200, 0.18), 14, 0, 0, 4);
+    -fx-cursor: hand;
+}
+
+.service__card-btn--physiotherapy {
+    -fx-background-color: #6666FF;
     -fx-text-fill: white;
+    -fx-background-radius: 8;
     -fx-cursor: hand;
 }
 
-.service__textarea--physiotherapy {
-    -fx-control-inner-background: #E89A73;
-    -fx-background-color: transparent;
-    -fx-padding: 5;
+.service__card-btn--physiotherapy:hover {
+    -fx-background-color: #4e4ecf;
 }
 
 /* ---------- RegisterView (User & Professional) ---------- */
