@@ -28,10 +28,14 @@ public class PatientAutomaticRecommendationController {
     private Appointment appointment;
     private Professional professional;
 
-    @FXML private Label lblFecha;
-    @FXML private Label lblHora;
-    @FXML private Label lblProfesional;
-    @FXML private Button btnConfirmar;
+    @FXML
+    private Label lblFecha;
+    @FXML
+    private Label lblHora;
+    @FXML
+    private Label lblProfesional;
+    @FXML
+    private Button btnConfirmar;
 
     public void setPatientAndSpeciality(Patient patient, SpecialityProfEnum specialityProf) {
         this.patient = patient;
@@ -41,10 +45,12 @@ public class PatientAutomaticRecommendationController {
 
     private void cargarRecomendacion() {
         if (specialityProf != null) {
-            this.appointment = ServiceManager.getInstance().getAppointmentService().getFirstAvailableBySpeciality(specialityProf);
-            
+            this.appointment = ServiceManager.getInstance().getAppointmentService()
+                    .getFirstAvailableBySpeciality(specialityProf);
+
             if (this.appointment != null && this.appointment.getProfessionalId() != null) {
-                this.professional = ServiceManager.getInstance().getProfessionalService().findByCod(this.appointment.getProfessionalId().intValue());
+                this.professional = ServiceManager.getInstance().getProfessionalService()
+                        .findByCod(this.appointment.getProfessionalId().intValue());
             }
 
             if (this.appointment == null || this.professional == null) {
@@ -86,12 +92,11 @@ public class PatientAutomaticRecommendationController {
 
         if (result == 0) {
             mostrarAlerta("Éxito", "¡Cita guardada con éxito!", Alert.AlertType.INFORMATION);
-            
+
             NavigationService.getInstance().navigateTo(
-                    "/fxml/PatientMainView.fxml", 
-                    "Piedra Azul - Menú Principal", 
-                    (Button) event.getSource()
-            );
+                    "/fxml/PatientMainView.fxml",
+                    "Piedra Azul - Menú Principal",
+                    (Button) event.getSource());
         } else if (result == 1) {
             mostrarAlerta("Error", "Error al registrar al nuevo paciente.", Alert.AlertType.ERROR);
         } else {
@@ -102,7 +107,8 @@ public class PatientAutomaticRecommendationController {
     @FXML
     private void handleOtrosHorarios(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PatientSelectSpecificAppointmentView.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fxml/PatientSelectSpecificAppointmentView.fxml"));
             Parent root = loader.load();
 
             PatientSelectSpecificAppointmentController controller = loader.getController();
