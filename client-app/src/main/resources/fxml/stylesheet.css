@@ -695,6 +695,31 @@
 }
 
 
+/* ---------- ProfessionalMainView ---------- */
+
+.professional-main__section-title {
+    -fx-text-fill: #444466;
+}
+
+.professional-main__action-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-effect: dropshadow(three-pass-box, rgba(78, 84, 200, 0.13), 12, 0, 0, 4);
+    -fx-border-color: #e8e8ff;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 14;
+    -fx-cursor: hand;
+}
+
+.professional-main__card-icon {
+    -fx-alignment: CENTER;
+}
+
+.professional-main__footer-label {
+    -fx-text-fill: #aaaacc;
+}
+
+
 /* ---------- PatientViewAppointments ---------- */
 
 .appointments__card {
@@ -781,4 +806,4 @@
 
 .specific-app__field-label {
     -fx-text-fill: #555577;
-}
+}
