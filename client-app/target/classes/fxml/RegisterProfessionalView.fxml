@@ -1,220 +1,218 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="700.0" prefWidth="750.0"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.piedraazul.app_client.controllers.RegisterProfessionalController">
+<VBox prefHeight="560.0" prefWidth="750.0"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.piedraazul.app_client.controllers.RegisterProfessionalController">
    <children>
-
-      <!-- Header azul -->
-      <Pane prefHeight="100.0" prefWidth="750.0" styleClass="header--blue">
+      <AnchorPane prefHeight="100.0" prefWidth="750.0" styleClass="header--blue">
          <children>
-            <Label layoutX="37.0" layoutY="35.0" prefWidth="676.0"
-                   text="Registrar profesional" textFill="WHITE" textAlignment="CENTER">
-               <font><Font name="Cascadia Code Bold" size="24.0"/></font>
-            </Label>
+            <VBox alignment="CENTER"
+                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label text="PIEDRA AZUL" textFill="WHITE">
+                     <font><Font name="Cascadia Code Bold" size="24.0" /></font>
+                  </Label>
+                  <Label text="Registrar profesional" textFill="WHITE">
+                     <font><Font name="Cascadia Code Bold" size="16.0" /></font>
+                  </Label>
+               </children>
+            </VBox>
          </children>
-      </Pane>
+      </AnchorPane>
 
-      <!-- Cuerpo del formulario -->
-      <Pane layoutY="106.0" prefHeight="534.0" prefWidth="750.0" styleClass="register__body">
+      <AnchorPane VBox.vgrow="ALWAYS" prefWidth="750.0" styleClass="page--white">
          <children>
+            <VBox spacing="12.0"
+                  AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="40.0"
+                  AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="14.0">
+               <children>
 
-            <Label layoutX="30.0" layoutY="16.0" text="Ingrese los siguientes datos:">
-               <font><Font name="Cascadia Code Regular" size="16.0"/></font>
-            </Label>
+                  <Label text="Ingrese los siguientes datos:">
+                     <font><Font name="Cascadia Code" size="13.0" /></font>
+                  </Label>
 
-            <!-- Cédula -->
-            <Label layoutX="30.0" layoutY="55.0" text="Número de cédula:">
-               <font><Font name="Cascadia Code Regular" size="14.0"/></font>
-            </Label>
-            <TextField fx:id="txtNumCedula" layoutX="230.0" layoutY="50.0"
-                       prefHeight="28.0" prefWidth="180.0"
-                       styleClass="input--gray">
-               <font><Font name="Cascadia Code Regular" size="13.0"/></font>
-            </TextField>
-            <Label fx:id="lb_errorID" layoutX="420.0" layoutY="55.0"
-                   textFill="RED" visible="false" text="Error">
-               <font><Font size="12.0"/></font>
-            </Label>
+                  <GridPane hgap="10.0" vgap="7.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" minWidth="145.0" prefWidth="145.0" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="120.0" prefWidth="140.0" />
+                        <ColumnConstraints hgrow="NEVER" minWidth="32.0"  prefWidth="32.0"  />
+                        <ColumnConstraints hgrow="NEVER" minWidth="145.0" prefWidth="145.0" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="120.0" prefWidth="140.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
+                        <RowConstraints minHeight="14.0" prefHeight="14.0" vgrow="NEVER" />
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+                        <RowConstraints minHeight="14.0" prefHeight="14.0" vgrow="NEVER" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
+                        <RowConstraints minHeight="14.0" prefHeight="14.0" vgrow="NEVER" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
+                        <RowConstraints minHeight="14.0" prefHeight="14.0" vgrow="NEVER" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
+                     </rowConstraints>
+                     <children>
 
-            <!-- Primer nombre -->
-            <Label layoutX="30.0" layoutY="98.0" text="Primer nombre:">
-               <font><Font name="Cascadia Code Regular" size="14.0"/></font>
-            </Label>
-            <TextField fx:id="txtFirstName" layoutX="230.0" layoutY="93.0"
-                       prefHeight="28.0" prefWidth="180.0"
-                       styleClass="input--gray">
-               <font><Font name="Cascadia Code Regular" size="13.0"/></font>
-            </TextField>
-            <Label fx:id="lb_errorFirstName" layoutX="420.0" layoutY="98.0"
-                   textFill="RED" visible="false" text="Error">
-               <font><Font size="12.0"/></font>
-            </Label>
+                        <!-- F0: Primer nombre | Primer apellido -->
+                        <Label text="Primer nombre:"
+                               GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                           <font><Font name="Cascadia Code" size="12.0" /></font>
+                        </Label>
+                        <TextField fx:id="txtFirstName" maxWidth="Infinity" styleClass="textfield--styled"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Primer apellido:"
+                               GridPane.columnIndex="3" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                           <font><Font name="Cascadia Code" size="12.0" /></font>
+                        </Label>
+                        <TextField fx:id="txtFirstLastName" maxWidth="Infinity" styleClass="textfield--styled"
+                                   GridPane.columnIndex="4" GridPane.rowIndex="0" />
 
-            <!-- Segundo nombre -->
-            <Label layoutX="30.0" layoutY="140.0" text="Segundo nombre:">
-               <font><Font name="Cascadia Code Regular" size="14.0"/></font>
-            </Label>
-            <TextField fx:id="txtSecondName" layoutX="230.0" layoutY="135.0"
-                       prefHeight="28.0" prefWidth="180.0"
-                       styleClass="input--gray">
-               <font><Font name="Cascadia Code Regular" size="13.0"/></font>
-            </TextField>
-            <Label layoutX="420.0" layoutY="140.0" text="(Opcional)" textFill="#A9A9A9">
-               <font><Font size="12.0"/></font>
-            </Label>
-            <Label fx:id="lb_errorSecondName" layoutX="510.0" layoutY="140.0"
-                   textFill="RED" visible="false" text="Error">
-               <font><Font size="12.0"/></font>
-            </Label>
+                        <!-- F1: errores -->
+                        <Label fx:id="lb_errorFirstName" text="Error" textFill="RED" visible="false"
+                               GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="lb_errorFirstLastName" text="Error" textFill="RED" visible="false"
+                               GridPane.columnIndex="4" GridPane.rowIndex="1" />
 
-            <!-- Primer apellido -->
-            <Label layoutX="30.0" layoutY="182.0" text="Primer apellido:">
-               <font><Font name="Cascadia Code Regular" size="14.0"/></font>
-            </Label>
-            <TextField fx:id="txtFirstLastName" layoutX="230.0" layoutY="177.0"
-                       prefHeight="28.0" prefWidth="180.0"
-                       styleClass="input--gray">
-               <font><Font name="Cascadia Code Regular" size="13.0"/></font>
-            </TextField>
-            <Label fx:id="lb_errorFirstLastName" layoutX="420.0" layoutY="182.0"
-                   textFill="RED" visible="false" text="Error">
-               <font><Font size="12.0"/></font>
-            </Label>
+                        <!-- F2: Segundo nombre | Segundo apellido -->
+                        <VBox spacing="1.0" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                           <children>
+                              <Label text="Segundo nombre:"><font><Font name="Cascadia Code" size="12.0" /></font></Label>
+                              <Label text="(Opcional)" textFill="DARKGRAY"><font><Font size="10.0" /></font></Label>
+                           </children>
+                        </VBox>
+                        <TextField fx:id="txtSecondName" maxWidth="Infinity" styleClass="textfield--styled"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                        <VBox spacing="1.0" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                           <children>
+                              <Label text="Segundo apellido:"><font><Font name="Cascadia Code" size="12.0" /></font></Label>
+                              <Label text="(Opcional)" textFill="DARKGRAY"><font><Font size="10.0" /></font></Label>
+                           </children>
+                        </VBox>
+                        <TextField fx:id="txtSecondLastName" maxWidth="Infinity" styleClass="textfield--styled"
+                                   GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
 
-            <!-- Segundo apellido -->
-            <Label layoutX="30.0" layoutY="224.0" text="Segundo apellido:">
-               <font><Font name="Cascadia Code Regular" size="14.0"/></font>
-            </Label>
-            <TextField fx:id="txtSecondLastName" layoutX="230.0" layoutY="219.0"
-                       prefHeight="28.0" prefWidth="180.0"
-                       styleClass="input--gray">
-               <font><Font name="Cascadia Code Regular" size="13.0"/></font>
-            </TextField>
-            <Label layoutX="420.0" layoutY="224.0" text="(Opcional)" textFill="#A9A9A9">
-               <font><Font size="12.0"/></font>
-            </Label>
-            <Label fx:id="lb_errorSecondLastName" layoutX="510.0" layoutY="224.0"
-                   textFill="RED" visible="false" text="Error">
-               <font><Font size="12.0"/></font>
-            </Label>
+                        <!-- F3: errores -->
+                        <Label fx:id="lb_errorSecondName" text="Error" textFill="RED" visible="false"
+                               GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="lb_errorSecondLastName" text="Error" textFill="RED" visible="false"
+                               GridPane.columnIndex="4" GridPane.rowIndex="3" />
 
-            <!-- Teléfono -->
-            <Label layoutX="30.0" layoutY="266.0" text="Teléfono:">
-               <font><Font name="Cascadia Code Regular" size="14.0"/></font>
-            </Label>
-            <TextField fx:id="txtPhoneNumber" layoutX="230.0" layoutY="261.0"
-                       prefHeight="28.0" prefWidth="180.0"
-                       styleClass="input--gray">
-               <font><Font name="Cascadia Code Regular" size="13.0"/></font>
-            </TextField>
-            <Label fx:id="lb_errorPhone" layoutX="420.0" layoutY="266.0"
-                   textFill="RED" visible="false" text="Error">
-               <font><Font size="12.0"/></font>
-            </Label>
+                        <!-- F4: Cédula | Teléfono -->
+                        <Label text="Número de cédula:"
+                               GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                           <font><Font name="Cascadia Code" size="12.0" /></font>
+                        </Label>
+                        <TextField fx:id="txtNumCedula" maxWidth="Infinity" styleClass="textfield--styled"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label text="Teléfono:"
+                               GridPane.columnIndex="3" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                           <font><Font name="Cascadia Code" size="12.0" /></font>
+                        </Label>
+                        <TextField fx:id="txtPhoneNumber" maxWidth="Infinity" styleClass="textfield--styled"
+                                   GridPane.columnIndex="4" GridPane.rowIndex="4" />
 
-            <!-- Contraseña -->
-            <Label layoutX="30.0" layoutY="308.0" text="Contraseña:">
-               <font><Font name="Cascadia Code Regular" size="14.0"/></font>
-            </Label>
-            <PasswordField fx:id="txtPassword" layoutX="230.0" layoutY="303.0"
-                           prefHeight="28.0" prefWidth="180.0"
-                           styleClass="input--gray">
-               <font><Font name="Cascadia Code Regular" size="13.0"/></font>
-            </PasswordField>
-            <Button fx:id="btnEye" layoutX="418.0" layoutY="303.0"
-                    prefHeight="28.0" prefWidth="36.0" text="(-)"
-                    onAction="#handleTogglePassword"
-                    styleClass="btn--eye-toggle"/>
-            <Label fx:id="lb_errorPassword" layoutX="460.0" layoutY="308.0"
-                   textFill="RED" visible="false" text="Error">
-               <font><Font size="12.0"/></font>
-            </Label>
+                        <!-- F5: errores -->
+                        <Label fx:id="lb_errorID" text="Error" textFill="RED" visible="false"
+                               GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label fx:id="lb_errorPhone" text="Error" textFill="RED" visible="false"
+                               GridPane.columnIndex="4" GridPane.rowIndex="5" />
 
-            <!-- Confirmar contraseña -->
-            <Label layoutX="30.0" layoutY="350.0" text="Confirmar contraseña:">
-               <font><Font name="Cascadia Code Regular" size="14.0"/></font>
-            </Label>
-            <PasswordField fx:id="txtConPassword" layoutX="230.0" layoutY="345.0"
-                           prefHeight="28.0" prefWidth="180.0"
-                           styleClass="input--gray">
-               <font><Font name="Cascadia Code Regular" size="13.0"/></font>
-            </PasswordField>
+                        <!-- F6: Contraseña | Confirmar contraseña (ojo en col2) -->
+                        <Label text="Contraseña:"
+                               GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                           <font><Font name="Cascadia Code" size="12.0" /></font>
+                        </Label>
+                        <PasswordField fx:id="txtPassword" maxWidth="Infinity" styleClass="textfield--styled"
+                                       GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Button fx:id="btnEye" prefHeight="26.0" prefWidth="30.0" text="(-)"
+                                onAction="#handleTogglePassword" styleClass="btn--eye-toggle"
+                                GridPane.columnIndex="2" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
+                        <Label text="Confirmar contraseña:"
+                               GridPane.columnIndex="3" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                           <font><Font name="Cascadia Code" size="12.0" /></font>
+                        </Label>
+                        <PasswordField fx:id="txtConPassword" maxWidth="Infinity" styleClass="textfield--styled"
+                                       GridPane.columnIndex="4" GridPane.rowIndex="6" />
 
-            <!-- Tipo de profesional -->
-            <Label layoutX="30.0" layoutY="392.0" text="Tipo de profesional:">
-               <font><Font name="Cascadia Code Regular" size="14.0"/></font>
-            </Label>
-            <ComboBox fx:id="cbxTipoProf" layoutX="230.0" layoutY="387.0"
-                      prefHeight="28.0" prefWidth="180.0"/>
+                        <!-- F7: error contraseña -->
+                        <Label fx:id="lb_errorPassword" text="Error" textFill="RED" visible="false"
+                               GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
-            <!-- Especialidad -->
-            <Label layoutX="30.0" layoutY="434.0" text="Especialidad:">
-               <font><Font name="Cascadia Code Regular" size="14.0"/></font>
-            </Label>
-            <ComboBox fx:id="cbxEspecialidad" layoutX="230.0" layoutY="429.0"
-                      prefHeight="28.0" prefWidth="180.0"/>
+                        <!-- F8: Tipo de profesional | Especialidad -->
+                        <Label text="Tipo de profesional:"
+                               GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+                           <font><Font name="Cascadia Code" size="12.0" /></font>
+                        </Label>
+                        <ComboBox fx:id="cbxTipoProf" maxWidth="Infinity" styleClass="combobox--styled"
+                                  GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+                        <Label text="Especialidad:"
+                               GridPane.columnIndex="3" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+                           <font><Font name="Cascadia Code" size="12.0" /></font>
+                        </Label>
+                        <ComboBox fx:id="cbxEspecialidad" maxWidth="Infinity" styleClass="combobox--styled"
+                                  GridPane.columnIndex="4" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
 
-            <!-- Pregunta de seguridad -->
-            <Label layoutX="30.0" layoutY="476.0" text="Pregunta de seguridad:">
-               <font><Font name="Cascadia Code Regular" size="14.0"/></font>
-            </Label>
-            <ComboBox fx:id="cbxSecurityQuestion" layoutX="230.0" layoutY="471.0"
-                      prefHeight="28.0" prefWidth="340.0"/>
+                        <!-- F9: Pregunta de seguridad (ancho completo) -->
+                        <Label text="Pregunta de seguridad:"
+                               GridPane.columnIndex="0" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                           <font><Font name="Cascadia Code" size="12.0" /></font>
+                        </Label>
+                        <ComboBox fx:id="cbxSecurityQuestion" maxWidth="Infinity" styleClass="combobox--styled"
+                                  GridPane.columnIndex="1" GridPane.rowIndex="9"
+                                  GridPane.columnSpan="4" GridPane.valignment="CENTER" />
 
-            <!-- Respuesta de seguridad -->
-            <Label layoutX="30.0" layoutY="516.0" text="Respuesta:">
-               <font><Font name="Cascadia Code Regular" size="14.0"/></font>
-            </Label>
-            <TextField fx:id="txtSecurityAnswer" layoutX="230.0" layoutY="511.0"
-                       prefHeight="28.0" prefWidth="340.0"
-                       styleClass="input--gray">
-               <font><Font name="Cascadia Code Regular" size="13.0"/></font>
-            </TextField>
+                        <!-- F10: Respuesta (ancho completo) -->
+                        <Label text="Respuesta:"
+                               GridPane.columnIndex="0" GridPane.rowIndex="10" GridPane.valignment="CENTER">
+                           <font><Font name="Cascadia Code" size="12.0" /></font>
+                        </Label>
+                        <TextField fx:id="txtSecurityAnswer" maxWidth="Infinity" styleClass="textfield--styled"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="10" GridPane.columnSpan="4" />
 
+                     </children>
+                  </GridPane>
+
+                  <Pane VBox.vgrow="ALWAYS" />
+
+                  <HBox alignment="CENTER" spacing="60.0">
+                     <children>
+                        <Button fx:id="btnRegresar" prefHeight="34.0" prefWidth="130.0"
+                                text="← Regresar" onAction="#handleRegresar" styleClass="btn--secondary">
+                           <font><Font name="Cascadia Code" size="13.0" /></font>
+                        </Button>
+                        <Button fx:id="btnCancel" prefHeight="34.0" prefWidth="130.0"
+                                text="CANCELAR" onAction="#handleCancel" styleClass="btn--gray">
+                           <font><Font name="Cascadia Code" size="13.0" /></font>
+                        </Button>
+                        <Button fx:id="btnSave" prefHeight="34.0" prefWidth="130.0"
+                                text="GUARDAR" onAction="#handleSave" styleClass="btn--primary">
+                           <font><Font name="Cascadia Code" size="13.0" /></font>
+                        </Button>
+                     </children>
+                     <VBox.margin><Insets top="4.0" /></VBox.margin>
+                  </HBox>
+
+               </children>
+            </VBox>
          </children>
-      </Pane>
-
-      <!-- Panel botones inferiores -->
-      <Pane layoutY="645.0" prefHeight="55.0" prefWidth="750.0"
-            styleClass="register__footer">
-         <children>
-            <Button fx:id="btnRegresar" layoutX="30.0" layoutY="10.0"
-                    prefHeight="35.0" prefWidth="120.0"
-                    text="← Regresar"
-                    onAction="#handleRegresar"
-                    styleClass="btn--gray">
-               <font><Font name="Cascadia Code Regular" size="13.0"/></font>
-            </Button>
-
-            <Button fx:id="btnCancel" layoutX="480.0" layoutY="10.0"
-                    prefHeight="35.0" prefWidth="110.0"
-                    text="CANCELAR"
-                    onAction="#handleCancel"
-                    styleClass="btn--gray">
-               <font><Font name="Cascadia Code Regular" size="13.0"/></font>
-            </Button>
-
-            <Button fx:id="btnSave" layoutX="607.0" layoutY="10.0"
-                    prefHeight="35.0" prefWidth="110.0"
-                    text="GUARDAR"
-                    onAction="#handleSave"
-                    styleClass="btn--primary">
-               <font><Font name="Cascadia Code Regular" size="13.0"/></font>
-            </Button>
-         </children>
-      </Pane>
-
+      </AnchorPane>
    </children>
-</AnchorPane>
+</VBox>
