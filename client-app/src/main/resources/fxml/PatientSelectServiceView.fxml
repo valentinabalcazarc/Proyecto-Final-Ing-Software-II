@@ -1,107 +1,169 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.piedraazul.app_client.controllers.PatientSelectServiceController">
-    <children>
-        <AnchorPane prefHeight="100.0" prefWidth="800.0" styleClass="header--blue">
-            <children>
-                <VBox alignment="CENTER_LEFT" layoutX="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <children>
+<VBox prefHeight="600.0" prefWidth="800.0"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.piedraazul.app_client.controllers.PatientSelectServiceController">
+
+   <stylesheets>
+      <URL value="@stylesheet.css" />
+   </stylesheets>
+
+   <children>
+
+      <!-- ══ HEADER ══ -->
+      <AnchorPane prefHeight="110.0" prefWidth="800.0" styleClass="header--patient-gradient">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="0.0"
+                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+
+                  <!-- Títulos del header -->
+                  <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" spacing="4.0">
+                     <children>
                         <Label text="Asistente de agendamiento" textFill="WHITE">
-                            <font>
-                                <Font name="Segoe UI Bold" size="18.0" />
-                            </font>
+                           <font><Font name="Cascadia Code Bold" size="22.0" /></font>
                         </Label>
-                        <Label text="Programa tu cita ahora" textFill="WHITE">
-                            <font>
-                                <Font name="Segoe UI" size="14.0" />
-                            </font>
-                            <VBox.margin>
-                                <Insets top="5.0" />
-                            </VBox.margin>
+                        <Label text="Selecciona el servicio que necesitas" textFill="#dce0ff">
+                           <font><Font name="Cascadia Code" size="13.0" /></font>
                         </Label>
-                    </children>
-                </VBox>
-            </children>
-        </AnchorPane>
-        <AnchorPane prefHeight="500.0" prefWidth="800.0" styleClass="page--white">
-            <children>
-                <VBox spacing="20.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="20.0">
-                    <children>
-                        <Label text="Selecciona tu servicio:">
-                            <font>
-                                <Font name="Segoe UI Bold" size="14.0" />
-                            </font>
-                        </Label>
-                        
-                        <VBox alignment="CENTER" spacing="15.0">
-                            <children>
-                                <HBox alignment="CENTER" spacing="15.0">
-                                    <children>
-                                        <Button mnemonicParsing="false" onAction="#handleTerapiaNeutral" prefHeight="80.0" prefWidth="230.0" styleClass="service__btn--neutral" text="Terapia neutral">
-                                            <font>
-                                                <Font name="Segoe UI Bold" size="14.0" />
-                                            </font>
-                                        </Button>
-                                        <TextArea editable="false" prefHeight="80.0" prefWidth="350.0" styleClass="service__textarea--neutral" text="Tratamiento que ayuda a aliviar dolores e &#10;inflamaciones mediante pequeñas aplicaciones&#10;que buscan mejorar el funcionamiento del cuerpo&#10;y el sistema nervioso." wrapText="true">
-                                            <font>
-                                                <Font name="Segoe UI" size="12.0" />
-                                            </font>
-                                        </TextArea>
-                                    </children>
-                                </HBox>
-                                
-                                <HBox alignment="CENTER" spacing="15.0">
-                                    <children>
-                                        <Button mnemonicParsing="false" onAction="#handleQuiropractica" prefHeight="80.0" prefWidth="230.0" styleClass="service__btn--chiropractic" text="Quiropractica">
-                                            <font>
-                                                <Font name="Segoe UI Bold" size="14.0" />
-                                            </font>
-                                        </Button>
-                                        <TextArea editable="false" prefHeight="80.0" prefWidth="350.0" styleClass="service__textarea--chiropractic" text="Terapia manual que ayuda a aliviar dolores&#10;de espalda, cuello y articulaciones, &#10;mejorando la postura y el movimiento." wrapText="true">
-                                            <font>
-                                                <Font name="Segoe UI" size="12.0" />
-                                            </font>
-                                        </TextArea>
-                                    </children>
-                                </HBox>
-                                
-                                <HBox alignment="CENTER" spacing="15.0">
-                                    <children>
-                                        <Button mnemonicParsing="false" onAction="#handleFisioterapia" prefHeight="80.0" prefWidth="230.0" styleClass="service__btn--physiotherapy" text="Fisioterapia">
-                                            <font>
-                                                <Font name="Segoe UI Bold" size="14.0" />
-                                            </font>
-                                        </Button>
-                                        <TextArea editable="false" prefHeight="80.0" prefWidth="350.0" styleClass="service__textarea--physiotherapy" text="Tratamiento con ejercicios y movimientos suaves&#10;que ayuda a recuperar fuerza, movilidad y &#10;disminuir el dolor después de una lesión o&#10;molestia." wrapText="true">
-                                            <font>
-                                                <Font name="Segoe UI" size="12.0" />
-                                            </font>
-                                        </TextArea>
-                                    </children>
-                                </HBox>
-                            </children>
+                     </children>
+                     <padding><Insets left="30.0" /></padding>
+                  </VBox>
+
+                  <!-- Ícono decorativo -->
+                  <Label text="🩺" textFill="WHITE">
+                     <font><Font size="36.0" /></font>
+                     <HBox.margin><Insets right="30.0" /></HBox.margin>
+                  </Label>
+
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+
+      <!-- ══ BODY ══ -->
+      <AnchorPane VBox.vgrow="ALWAYS" prefWidth="800.0" styleClass="page--gradient-light">
+         <children>
+            <VBox spacing="28.0"
+                  AnchorPane.bottomAnchor="30.0"
+                  AnchorPane.leftAnchor="40.0"
+                  AnchorPane.rightAnchor="40.0"
+                  AnchorPane.topAnchor="30.0">
+               <children>
+
+                  <!-- Subtítulo de sección -->
+                  <Label text="Programa tu cita ahora" styleClass="service__section-title">
+                     <font><Font name="Cascadia Code Bold" size="15.0" /></font>
+                  </Label>
+
+                  <!-- ═══ Tarjetas de servicio ═══ -->
+                  <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
+                     <children>
+
+                        <!-- Tarjeta: Terapia Neutral -->
+                        <VBox styleClass="service__card--neutral"
+                              alignment="CENTER" spacing="12.0"
+                              prefWidth="220.0" maxWidth="Infinity"
+                              HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label text="⚡" styleClass="service__card-icon">
+                                 <font><Font size="36.0" /></font>
+                              </Label>
+                              <Label text="Terapia Neutral" styleClass="service__card-title" wrapText="true" maxWidth="Infinity">
+                                 <font><Font name="Cascadia Code Bold" size="14.0" /></font>
+                              </Label>
+                              <Label text="Alivia dolores e inflamaciones mediante pequeñas aplicaciones que mejoran el funcionamiento del cuerpo y el sistema nervioso."
+                                     styleClass="service__card-desc" wrapText="true" maxWidth="Infinity">
+                                 <font><Font name="Segoe UI" size="12.0" /></font>
+                              </Label>
+                              <Button mnemonicParsing="false" onAction="#handleTerapiaNeutral"
+                                      prefHeight="36.0" maxWidth="Infinity"
+                                      styleClass="service__card-btn--neutral"
+                                      text="Seleccionar">
+                                 <font><Font name="Cascadia Code Bold" size="12.0" /></font>
+                              </Button>
+                           </children>
+                           <padding><Insets top="22.0" right="18.0" bottom="22.0" left="18.0" /></padding>
                         </VBox>
-                        
-                        <Button mnemonicParsing="false" onAction="#handleRegresar" prefHeight="35.0" prefWidth="150.0" styleClass="btn--secondary" text="&lt;- Regresar">
-                            <font>
-                                <Font name="Cascadia Code" size="14.0" />
-                            </font>
-                            <VBox.margin>
-                                <Insets top="30.0" />
-                            </VBox.margin>
-                        </Button>
-                    </children>
-                </VBox>
-            </children>
-        </AnchorPane>
-    </children>
+
+                        <!-- Tarjeta: Quiropráctica -->
+                        <VBox styleClass="service__card--chiropractic"
+                              alignment="CENTER" spacing="12.0"
+                              prefWidth="220.0" maxWidth="Infinity"
+                              HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label text="🦴" styleClass="service__card-icon">
+                                 <font><Font size="36.0" /></font>
+                              </Label>
+                              <Label text="Quiropráctica" styleClass="service__card-title" wrapText="true" maxWidth="Infinity">
+                                 <font><Font name="Cascadia Code Bold" size="14.0" /></font>
+                              </Label>
+                              <Label text="Terapia manual que alivia dolores de espalda, cuello y articulaciones, mejorando la postura y el movimiento."
+                                     styleClass="service__card-desc" wrapText="true" maxWidth="Infinity">
+                                 <font><Font name="Segoe UI" size="12.0" /></font>
+                              </Label>
+                              <Button mnemonicParsing="false" onAction="#handleQuiropractica"
+                                      prefHeight="36.0" maxWidth="Infinity"
+                                      styleClass="service__card-btn--chiropractic"
+                                      text="Seleccionar">
+                                 <font><Font name="Cascadia Code Bold" size="12.0" /></font>
+                              </Button>
+                           </children>
+                           <padding><Insets top="22.0" right="18.0" bottom="22.0" left="18.0" /></padding>
+                        </VBox>
+
+                        <!-- Tarjeta: Fisioterapia -->
+                        <VBox styleClass="service__card--physiotherapy"
+                              alignment="CENTER" spacing="12.0"
+                              prefWidth="220.0" maxWidth="Infinity"
+                              HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label text="🏃" styleClass="service__card-icon">
+                                 <font><Font size="36.0" /></font>
+                              </Label>
+                              <Label text="Fisioterapia" styleClass="service__card-title" wrapText="true" maxWidth="Infinity">
+                                 <font><Font name="Cascadia Code Bold" size="14.0" /></font>
+                              </Label>
+                              <Label text="Ejercicios y movimientos suaves que ayudan a recuperar fuerza, movilidad y disminuir el dolor después de una lesión o molestia."
+                                     styleClass="service__card-desc" wrapText="true" maxWidth="Infinity">
+                                 <font><Font name="Segoe UI" size="12.0" /></font>
+                              </Label>
+                              <Button mnemonicParsing="false" onAction="#handleFisioterapia"
+                                      prefHeight="36.0" maxWidth="Infinity"
+                                      styleClass="service__card-btn--physiotherapy"
+                                      text="Seleccionar">
+                                 <font><Font name="Cascadia Code Bold" size="12.0" /></font>
+                              </Button>
+                           </children>
+                           <padding><Insets top="22.0" right="18.0" bottom="22.0" left="18.0" /></padding>
+                        </VBox>
+
+                     </children>
+                  </HBox>
+
+                  <!-- Botón Regresar -->
+                  <Button mnemonicParsing="false" onAction="#handleRegresar"
+                          prefHeight="36.0" prefWidth="150.0"
+                          styleClass="btn--patient-outline"
+                          text="← Regresar">
+                     <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                  </Button>
+
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+
+   </children>
 </VBox>
