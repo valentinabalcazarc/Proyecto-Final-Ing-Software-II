@@ -94,7 +94,7 @@
                         <VBox styleClass="patient-main__action-card" alignment="CENTER" spacing="12.0"
                               prefWidth="200.0" prefHeight="140.0">
                            <children>
-                              <Label text="🗒️" styleClass="patient-main__card-icon">
+                              <Label text="🗓✔" styleClass="patient-main__card-icon">
                                  <font><Font size="32.0" /></font>
                               </Label>
                               <Button fx:id="btnViewAppointments"
