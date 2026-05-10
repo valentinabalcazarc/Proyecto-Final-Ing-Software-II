@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -16,175 +17,492 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="900.0" styleClass="page--gray" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.piedraazul.app_client.controllers.ProfessionalCreateAppStep2Controller">
+<AnchorPane prefHeight="760.0"
+            prefWidth="930.0"
+            styleClass="page--gray"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.piedraazul.app_client.controllers.ProfessionalCreateAppStep2Controller">
+
    <children>
-      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+
+      <ScrollPane fitToWidth="true"
+                  hbarPolicy="NEVER"
+                  vbarPolicy="AS_NEEDED"
                   style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;"
-                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  AnchorPane.bottomAnchor="0.0"
+                  AnchorPane.leftAnchor="0.0"
+                  AnchorPane.rightAnchor="0.0"
+                  AnchorPane.topAnchor="0.0">
+
          <content>
-            <VBox spacing="20.0" fillWidth="true">
+
+            <VBox spacing="12.0" fillWidth="true">
+
                <padding>
-                  <Insets bottom="30.0" left="50.0" right="50.0" top="30.0" />
+                  <Insets bottom="15.0"
+                          left="40.0"
+                          right="40.0"
+                          top="15.0" />
                </padding>
+
                <children>
-                  <!-- Header con degradado azul institucional -->
-                  <VBox alignment="CENTER" spacing="5.0" styleClass="header--patient-gradient">
+
+                  <!-- Header -->
+                  <VBox alignment="CENTER"
+                        spacing="3.0"
+                        styleClass="header--patient-gradient">
+
                      <children>
+
                         <Label text="AGENDAR CITA" textFill="WHITE">
                            <font>
-                              <Font name="System Bold" size="28.0" />
+                              <Font name="System Bold" size="24.0" />
                            </font>
                         </Label>
+
                         <Label text="Información del paciente" textFill="#d0d0ff">
                            <font>
-                              <Font size="16.0" />
+                              <Font size="14.0" />
                            </font>
                         </Label>
+
                      </children>
+
                      <padding>
-                        <Insets bottom="20.0" top="20.0" />
+                        <Insets bottom="12.0" top="12.0" />
                      </padding>
+
                   </VBox>
 
-                  <!-- Tarjeta de búsqueda por cédula -->
-                  <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="card--search">
+                  <!-- Buscar paciente -->
+                  <HBox alignment="CENTER_LEFT"
+                        spacing="10.0"
+                        styleClass="card--search">
+
                      <children>
-                        <Label text="Ingrese la cédula del paciente:" styleClass="specific-app__field-label">
+
+                        <Label text="Ingrese la cédula del paciente:"
+                               styleClass="specific-app__field-label">
+
                            <font>
-                              <Font name="System Bold" size="14.0" />
+                              <Font name="System Bold" size="13.0" />
                            </font>
+
                         </Label>
-                        <TextField fx:id="txtCedula" prefHeight="38.0" prefWidth="250.0" promptText="Número de identificación" styleClass="textfield--styled" />
-                        <Button fx:id="btnFind" mnemonicParsing="false" onAction="#handleFindPatient" prefHeight="38.0" prefWidth="100.0" styleClass="btn--patient-primary" text="Buscar" />
+
+                        <TextField fx:id="txtCedula"
+                                   prefHeight="34.0"
+                                   prefWidth="230.0"
+                                   promptText="Número de identificación"
+                                   styleClass="textfield--styled" />
+
+                        <Button fx:id="btnFind"
+                                mnemonicParsing="false"
+                                onAction="#handleFindPatient"
+                                prefHeight="34.0"
+                                prefWidth="90.0"
+                                styleClass="btn--patient-primary"
+                                text="Buscar" />
+
                      </children>
+
                   </HBox>
 
-                  <!-- Formulario de datos del paciente -->
-                  <GridPane hgap="20.0" styleClass="card--form" vgap="15.0">
+                  <!-- Formulario -->
+                  <GridPane hgap="15.0"
+                            vgap="8.0"
+                            styleClass="card--form">
+
                      <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+
+                        <ColumnConstraints hgrow="SOMETIMES"
+                                           minWidth="10.0"
+                                           prefWidth="100.0" />
+
+                        <ColumnConstraints hgrow="SOMETIMES"
+                                           minWidth="10.0"
+                                           prefWidth="100.0" />
+
                      </columnConstraints>
+
                      <rowConstraints>
-                        <RowConstraints minHeight="60.0" prefHeight="-1.0" vgrow="NEVER" />
-                        <RowConstraints minHeight="60.0" prefHeight="-1.0" vgrow="NEVER" />
-                        <RowConstraints minHeight="60.0" prefHeight="-1.0" vgrow="NEVER" />
-                        <RowConstraints minHeight="60.0" prefHeight="-1.0" vgrow="NEVER" />
-                        <RowConstraints minHeight="60.0" prefHeight="-1.0" vgrow="NEVER" />
+
+                        <RowConstraints minHeight="50.0" />
+                        <RowConstraints minHeight="50.0" />
+                        <RowConstraints minHeight="50.0" />
+                        <RowConstraints minHeight="60.0" />
+                        <RowConstraints minHeight="50.0" />
+
                      </rowConstraints>
+
                      <children>
-                        <!-- Fila 0: Primer nombre / Segundo nombre -->
-                        <VBox spacing="6.0">
+
+                        <!-- Primer nombre -->
+                        <VBox spacing="4.0">
+
                            <children>
-                              <Label text="Primer nombre *" styleClass="specific-app__field-label">
-                                 <font><Font name="System Bold" size="12.0" /></font>
+
+                              <Label text="Primer nombre *"
+                                     styleClass="specific-app__field-label">
+
+                                 <font>
+                                    <Font name="System Bold" size="11.0" />
+                                 </font>
+
                               </Label>
-                              <TextField fx:id="txtFirstName" prefHeight="38.0" styleClass="textfield--styled" />
+
+                              <TextField fx:id="txtFirstName"
+                                         prefHeight="34.0"
+                                         styleClass="textfield--styled" />
+
                            </children>
-                        </VBox>
-                        <VBox spacing="6.0" GridPane.columnIndex="1">
-                           <children>
-                              <Label text="Segundo nombre" styleClass="specific-app__field-label">
-                                 <font><Font name="System Bold" size="12.0" /></font>
-                              </Label>
-                              <TextField fx:id="txtSecondName" prefHeight="38.0" styleClass="textfield--styled" />
-                           </children>
+
                         </VBox>
 
-                        <!-- Fila 1: Primer apellido / Segundo apellido -->
-                        <VBox spacing="6.0" GridPane.rowIndex="1">
+                        <!-- Segundo nombre -->
+                        <VBox spacing="4.0"
+                              GridPane.columnIndex="1">
+
                            <children>
-                              <Label text="Primer apellido *" styleClass="specific-app__field-label">
-                                 <font><Font name="System Bold" size="12.0" /></font>
+
+                              <Label text="Segundo nombre"
+                                     styleClass="specific-app__field-label">
+
+                                 <font>
+                                    <Font name="System Bold" size="11.0" />
+                                 </font>
+
                               </Label>
-                              <TextField fx:id="txtFirstLastName" prefHeight="38.0" styleClass="textfield--styled" />
+
+                              <TextField fx:id="txtSecondName"
+                                         prefHeight="34.0"
+                                         styleClass="textfield--styled" />
+
                            </children>
-                        </VBox>
-                        <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <children>
-                              <Label text="Segundo apellido" styleClass="specific-app__field-label">
-                                 <font><Font name="System Bold" size="12.0" /></font>
-                              </Label>
-                              <TextField fx:id="txtSecondLastName" prefHeight="38.0" styleClass="textfield--styled" />
-                           </children>
+
                         </VBox>
 
-                        <!-- Fila 2: Género / Celular -->
-                        <VBox spacing="6.0" GridPane.rowIndex="2">
+                        <!-- Primer apellido -->
+                        <VBox spacing="4.0"
+                              GridPane.rowIndex="1">
+
                            <children>
-                              <Label text="Género" styleClass="specific-app__field-label">
-                                 <font><Font name="System Bold" size="12.0" /></font>
+
+                              <Label text="Primer apellido *"
+                                     styleClass="specific-app__field-label">
+
+                                 <font>
+                                    <Font name="System Bold" size="11.0" />
+                                 </font>
+
                               </Label>
-                              <ComboBox fx:id="cbxGender" prefHeight="38.0" prefWidth="350.0" styleClass="combobox--styled" />
+
+                              <TextField fx:id="txtFirstLastName"
+                                         prefHeight="34.0"
+                                         styleClass="textfield--styled" />
+
                            </children>
-                        </VBox>
-                        <VBox spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                           <children>
-                              <Label text="Celular *" styleClass="specific-app__field-label">
-                                 <font><Font name="System Bold" size="12.0" /></font>
-                              </Label>
-                              <TextField fx:id="txtPhone" prefHeight="38.0" styleClass="textfield--styled" />
-                           </children>
+
                         </VBox>
 
-                        <!-- Fila 3: Fecha de nacimiento / Edad -->
-                        <VBox spacing="6.0" GridPane.rowIndex="3">
+                        <!-- Segundo apellido -->
+                        <VBox spacing="4.0"
+                              GridPane.columnIndex="1"
+                              GridPane.rowIndex="1">
+
                            <children>
-                              <Label text="Fecha de nacimiento *" styleClass="specific-app__field-label">
-                                 <font><Font name="System Bold" size="12.0" /></font>
+
+                              <Label text="Segundo apellido"
+                                     styleClass="specific-app__field-label">
+
+                                 <font>
+                                    <Font name="System Bold" size="11.0" />
+                                 </font>
+
                               </Label>
-                              <DatePicker fx:id="dpBirthDate" prefHeight="38.0" prefWidth="350.0" styleClass="datepicker--styled" />
+
+                              <TextField fx:id="txtSecondLastName"
+                                         prefHeight="34.0"
+                                         styleClass="textfield--styled" />
+
                            </children>
+
                         </VBox>
-                        <VBox alignment="CENTER_LEFT" spacing="6.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+
+                        <!-- Género -->
+                        <VBox spacing="4.0"
+                              GridPane.rowIndex="2">
+
                            <children>
-                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+
+                              <Label text="Género"
+                                     styleClass="specific-app__field-label">
+
+                                 <font>
+                                    <Font name="System Bold" size="11.0" />
+                                 </font>
+
+                              </Label>
+
+                              <ComboBox fx:id="cbxGender"
+                                        prefHeight="34.0"
+                                        prefWidth="320.0"
+                                        styleClass="combobox--styled" />
+
+                           </children>
+
+                        </VBox>
+
+                        <!-- Celular -->
+                        <VBox spacing="4.0"
+                              GridPane.columnIndex="1"
+                              GridPane.rowIndex="2">
+
+                           <children>
+
+                              <Label text="Celular *"
+                                     styleClass="specific-app__field-label">
+
+                                 <font>
+                                    <Font name="System Bold" size="11.0" />
+                                 </font>
+
+                              </Label>
+
+                              <TextField fx:id="txtPhone"
+                                         prefHeight="34.0"
+                                         styleClass="textfield--styled" />
+
+                           </children>
+
+                        </VBox>
+
+                        <!-- Fecha nacimiento -->
+                        <VBox spacing="4.0"
+                              GridPane.rowIndex="3">
+
+                           <children>
+
+                              <Label text="Fecha de nacimiento *"
+                                     styleClass="specific-app__field-label">
+
+                                 <font>
+                                    <Font name="System Bold" size="11.0" />
+                                 </font>
+
+                              </Label>
+
+                              <DatePicker fx:id="dpBirthDate"
+                                          prefHeight="34.0"
+                                          prefWidth="320.0"
+                                          styleClass="datepicker--styled" />
+
+                           </children>
+
+                        </VBox>
+
+                        <!-- Edad + Checkboxes -->
+                        <VBox alignment="CENTER_LEFT"
+                              spacing="8.0"
+                              GridPane.columnIndex="1"
+                              GridPane.rowIndex="3">
+
+                           <children>
+
+                              <!-- Edad -->
+                              <HBox alignment="CENTER_LEFT"
+                                    spacing="8.0">
+
                                  <children>
-                                    <Label text="Edad:" styleClass="specific-app__field-label">
-                                       <font><Font name="System Bold" size="14.0" /></font>
+
+                                    <Label text="Edad:"
+                                           styleClass="specific-app__field-label">
+
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+
                                     </Label>
-                                    <Label fx:id="lblAge" text="0 años" styleClass="appointments__section-title">
-                                       <font><Font size="14.0" /></font>
+
+                                    <Label fx:id="lblAge"
+                                           text="0 años"
+                                           styleClass="appointments__section-title">
+
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+
                                     </Label>
+
                                  </children>
+
                               </HBox>
+
+                              <!-- Checkboxes -->
+                              <HBox alignment="CENTER_LEFT"
+                                    spacing="18.0">
+
+                                 <children>
+
+                                    <!-- Urgente -->
+                                    <HBox alignment="CENTER_LEFT"
+                                          spacing="5.0">
+
+                                       <children>
+
+                                          <CheckBox fx:id="chkUrgente" />
+
+                                          <Label text="Urgente"
+                                                 styleClass="specific-app__field-label">
+
+                                             <font>
+                                                <Font size="11.0" />
+                                             </font>
+
+                                          </Label>
+
+                                       </children>
+
+                                    </HBox>
+
+                                    <!-- Prioritaria -->
+                                    <HBox alignment="CENTER_LEFT"
+                                          spacing="5.0">
+
+                                       <children>
+
+                                          <CheckBox fx:id="chkPrioritaria" />
+
+                                          <Label text="Prioritaria"
+                                                 styleClass="specific-app__field-label">
+
+                                             <font>
+                                                <Font size="11.0" />
+                                             </font>
+
+                                          </Label>
+
+                                       </children>
+
+                                    </HBox>
+
+                                    <!-- Cita Control -->
+                                    <HBox alignment="CENTER_LEFT"
+                                          spacing="5.0">
+
+                                       <children>
+
+                                          <CheckBox fx:id="chkCitaControl" />
+
+                                          <Label text="Cita de Control"
+                                                 styleClass="specific-app__field-label">
+
+                                             <font>
+                                                <Font size="11.0" />
+                                             </font>
+
+                                          </Label>
+
+                                       </children>
+
+                                    </HBox>
+
+                                 </children>
+
+                              </HBox>
+
                            </children>
+
                         </VBox>
 
-                        <!-- Fila 4: Fecha y hora de la cita -->
-                        <VBox spacing="6.0" GridPane.rowIndex="4">
+                        <!-- Fecha y hora -->
+                        <VBox spacing="4.0"
+                              GridPane.rowIndex="4">
+
                            <children>
-                              <Label text="Fecha y hora de la cita" styleClass="specific-app__field-label">
-                                 <font><Font name="System Bold" size="12.0" /></font>
+
+                              <Label text="Fecha y hora de la cita"
+                                     styleClass="specific-app__field-label">
+
+                                 <font>
+                                    <Font name="System Bold" size="11.0" />
+                                 </font>
+
                               </Label>
-                              <TextField fx:id="txtAppSummary" editable="false" prefHeight="38.0" styleClass="textfield--styled" />
+
+                              <TextField fx:id="txtAppSummary"
+                                         editable="false"
+                                         prefHeight="34.0"
+                                         styleClass="textfield--styled" />
+
                            </children>
+
                         </VBox>
+
                      </children>
+
                   </GridPane>
 
                   <!-- Observación -->
-                  <VBox spacing="8.0">
+                  <VBox spacing="5.0">
+
                      <children>
-                        <Label text="Observación:" styleClass="specific-app__field-label">
-                           <font><Font name="System Bold" size="12.0" /></font>
+
+                        <Label text="Observación:"
+                               styleClass="specific-app__field-label">
+
+                           <font>
+                              <Font name="System Bold" size="11.0" />
+                           </font>
+
                         </Label>
-                        <TextArea fx:id="txtObservation" prefHeight="100.0" promptText="Ingrese notas adicionales aquí..." styleClass="textarea--rounded" />
+
+                        <TextArea fx:id="txtObservation"
+                                  prefHeight="80.0"
+                                  promptText="Ingrese notas adicionales aquí..."
+                                  styleClass="textarea--rounded" />
+
                      </children>
+
                   </VBox>
 
-                  <!-- Barra de navegación inferior -->
-                  <HBox alignment="CENTER" spacing="20.0">
+                  <!-- Botones -->
+                  <HBox alignment="CENTER"
+                        spacing="20.0">
+
                      <children>
-                        <Button fx:id="btnReturn" mnemonicParsing="false" onAction="#handleReturn" prefHeight="45.0" prefWidth="180.0" styleClass="btn--patient-outline" text="&lt;- Regresar" />
+
+                        <Button fx:id="btnReturn"
+                                mnemonicParsing="false"
+                                onAction="#handleReturn"
+                                prefHeight="40.0"
+                                prefWidth="170.0"
+                                styleClass="btn--patient-outline"
+                                text="&lt;- Regresar" />
+
                         <AnchorPane HBox.hgrow="ALWAYS" />
-                        <Button fx:id="btnSave" mnemonicParsing="false" onAction="#handleSave" prefHeight="45.0" prefWidth="180.0" styleClass="btn--success-shadow" text="Guardar cita" />
+
+                        <Button fx:id="btnSave"
+                                mnemonicParsing="false"
+                                onAction="#handleSave"
+                                prefHeight="40.0"
+                                prefWidth="170.0"
+                                styleClass="btn--success-shadow"
+                                text="Guardar cita" />
+
                      </children>
+
                   </HBox>
+
                </children>
+
             </VBox>
+
          </content>
+
       </ScrollPane>
+
    </children>
+
 </AnchorPane>

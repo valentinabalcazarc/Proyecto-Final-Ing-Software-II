@@ -1,5 +1,9 @@
 package com.piedraazul.app_client.controllers;
 
+import com.piedraazul.app_client.design_patterns.builder.AppointmentBuilder;
+import com.piedraazul.app_client.design_patterns.builder.AppointmentDirector;
+import com.piedraazul.app_client.design_patterns.decorator.descApp.AppointmentTag;
+import com.piedraazul.app_client.design_patterns.decorator.descApp.DescriptionTagDecorator;
 import com.piedraazul.app_client.design_patterns.facade.AppointmentFacade;
 import com.piedraazul.app_client.models.Appointment;
 import com.piedraazul.app_client.models.Patient;
@@ -14,28 +18,23 @@ import java.time.Period;
 
 public class ProfessionalCreateAppStep2Controller {
 
-    @FXML
-    private TextField txtCedula;
-    @FXML
-    private TextField txtFirstName;
-    @FXML
-    private TextField txtSecondName;
-    @FXML
-    private TextField txtFirstLastName;
-    @FXML
-    private TextField txtSecondLastName;
-    @FXML
-    private ComboBox<String> cbxGender;
-    @FXML
-    private TextField txtPhone;
-    @FXML
-    private DatePicker dpBirthDate;
-    @FXML
-    private Label lblAge;
-    @FXML
-    private TextField txtAppSummary;
-    @FXML
-    private TextArea txtObservation;
+    // ── Campos del paciente ───────────────────────────────────────
+    @FXML private TextField txtCedula;
+    @FXML private TextField txtFirstName;
+    @FXML private TextField txtSecondName;
+    @FXML private TextField txtFirstLastName;
+    @FXML private TextField txtSecondLastName;
+    @FXML private ComboBox<String> cbxGender;
+    @FXML private TextField txtPhone;
+    @FXML private DatePicker dpBirthDate;
+    @FXML private Label lblAge;
+    @FXML private TextField txtAppSummary;
+    @FXML private TextArea txtObservation;
+
+    // ── Checkboxes de tipo de cita (patrón Decorador) ────────────
+    @FXML private CheckBox chkUrgente;
+    @FXML private CheckBox chkPrioritaria;
+    @FXML private CheckBox chkCitaControl;
 
     private Appointment appointment;
 
@@ -43,6 +42,7 @@ public class ProfessionalCreateAppStep2Controller {
     public void initialize() {
         cbxGender.setItems(FXCollections.observableArrayList("Male", "Female", "Other"));
         configurarCalendario();
+        configurarCheckboxes();
     }
 
     public void setAppointment(Appointment app) {
@@ -52,26 +52,65 @@ public class ProfessionalCreateAppStep2Controller {
         }
     }
 
+    // ── Configuración del calendario ─────────────────────────────
+
     private void configurarCalendario() {
         dpBirthDate.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
                 if (date == null || empty) return;
-
                 if (date.isAfter(LocalDate.now())) {
                     setDisable(true);
                     setStyle("-fx-background-color: #eeeeee;");
                 }
             }
         });
+
+        dpBirthDate.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                int years = Period.between(newVal, LocalDate.now()).getYears();
+                lblAge.setText(years + " años");
+            }
+        });
     }
+
+    private void configurarCheckboxes() {
+        chkUrgente.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal) {
+                chkPrioritaria.setSelected(false);
+                chkCitaControl.setSelected(false);
+            }
+        });
+
+        chkPrioritaria.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal) {
+                chkUrgente.setSelected(false);
+                chkCitaControl.setSelected(false);
+            }
+        });
+
+        chkCitaControl.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal) {
+                chkUrgente.setSelected(false);
+                chkPrioritaria.setSelected(false);
+            }
+        });
+    }
+
+    private AppointmentTag resolverTag() {
+        if (chkUrgente.isSelected())      return AppointmentTag.URGENTE;
+        if (chkPrioritaria.isSelected())  return AppointmentTag.PRIORITARIA;
+        if (chkCitaControl.isSelected())  return AppointmentTag.CITA_CONTROL;
+        return AppointmentTag.NINGUNA;
+    }
+
+    // ── Handlers FXML ─────────────────────────────────────────────
 
     @FXML
     private void handleFindPatient(ActionEvent event) {
         String cedula = txtCedula.getText().trim();
-        if (cedula.isEmpty())
-            return;
+        if (cedula.isEmpty()) return;
 
         try {
             Long ced = Long.parseLong(cedula);
@@ -96,14 +135,13 @@ public class ProfessionalCreateAppStep2Controller {
 
     @FXML
     private void handleReturn(ActionEvent event) {
-        NavigationService.getInstance().navigateTo("/fxml/ProfessionalCreateAppStep1.fxml", "Agendar Cita - Paso 1",
-                (Button) event.getSource());
+        NavigationService.getInstance().navigateTo("/fxml/ProfessionalCreateAppStep1.fxml",
+                "Agendar Cita - Paso 1", (Button) event.getSource());
     }
 
     @FXML
     private void handleSave(ActionEvent event) {
-        if (!validateFields())
-            return;
+        if (!validateFields()) return;
 
         try {
             Patient patient = new Patient();
@@ -114,14 +152,27 @@ public class ProfessionalCreateAppStep2Controller {
             patient.setPhonePatient(Long.parseLong(txtPhone.getText().trim()));
             patient.setDateBirthPatient(dpBirthDate.getValue());
 
-            if (txtSecondName.getText() != null) {
+            if (txtSecondName.getText() != null)
                 patient.setSecondNamePatient(txtSecondName.getText().trim());
-            }
-            if (txtSecondLastName.getText() != null) {
+            if (txtSecondLastName.getText() != null)
                 patient.setSecondLastNamePatient(txtSecondLastName.getText().trim());
-            }
 
+            // Patrón Decorador: calcula el tag de tipo de cita
+            DescriptionTagDecorator decorator =
+                    new DescriptionTagDecorator(resolverTag());
+
+            // Aplicar el decorador sobre la descripción antes de construir
             appointment.setDescription(txtObservation.getText().trim());
+            decorator.apply(appointment);
+            String descDecored = appointment.getDescription();
+
+            // ── Patrón Builder + Director: construye la cita final ───────────────
+            AppointmentDirector director = new AppointmentDirector(new AppointmentBuilder());
+            appointment = director.buildManualAppointment(
+                    appointment,
+                    null,   // patientId lo resuelve la Facade internamente
+                    txtFirstName.getText().trim() + " " + txtFirstLastName.getText().trim(),
+                    descDecored);
 
             int result = AppointmentFacade.getInstance().scheduleAppointment(patient, appointment);
 
@@ -138,11 +189,14 @@ public class ProfessionalCreateAppStep2Controller {
         }
     }
 
+    // ── Utilidades ────────────────────────────────────────────────
+
     private boolean validateFields() {
         if (txtCedula.getText().trim().isEmpty() || txtFirstName.getText().trim().isEmpty() ||
                 txtFirstLastName.getText().trim().isEmpty() || txtPhone.getText().trim().isEmpty() ||
                 dpBirthDate.getValue() == null) {
-            showAlert(Alert.AlertType.WARNING, "Validación", "Por favor, complete todos los campos obligatorios (*).");
+            showAlert(Alert.AlertType.WARNING, "Validación",
+                    "Por favor, complete todos los campos obligatorios (*).");
             return false;
         }
         return true;

@@ -1,5 +1,7 @@
 package com.piedraazul.app_client.controllers;
 
+import com.piedraazul.app_client.design_patterns.builder.AppointmentBuilder;
+import com.piedraazul.app_client.design_patterns.builder.AppointmentDirector;
 import com.piedraazul.app_client.design_patterns.facade.AppointmentFacade;
 import com.piedraazul.app_client.enums.SpecialityProfEnum;
 import com.piedraazul.app_client.models.Appointment;
@@ -82,11 +84,15 @@ public class PatientAutomaticRecommendationController {
             return;
         }
 
-        Appointment appToSchedule = new Appointment();
-        appToSchedule.setDate(this.appointment.getDate());
-        appToSchedule.setTime(this.appointment.getTime());
-        appToSchedule.setProfessionalId(this.professional.getCodProf());
-        appToSchedule.setDescription("[cita autónoma]");
+        // ── Patrón Builder + Director: cita autónoma con receta predefinida ──
+        AppointmentDirector director = new AppointmentDirector(new AppointmentBuilder());
+        Appointment slotRef = new AppointmentBuilder()
+                .setProfessionalId(this.professional.getCodProf())
+                .setDate(this.appointment.getDate())
+                .setTime(this.appointment.getTime())
+                .build();
+        Appointment appToSchedule = director.buildAutonomousAppointment(
+                slotRef, this.patient.getCodPatient());
 
         int result = AppointmentFacade.getInstance().scheduleAppointment(this.patient, appToSchedule);
 

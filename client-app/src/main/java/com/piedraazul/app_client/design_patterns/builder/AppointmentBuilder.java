@@ -6,92 +6,171 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
- * Builder pattern for Appointment.
- * Separates the construction of a complex Appointment object from its model.
+ * Constructor Concreto del patrón Builder.
  *
- * Usage:
- *   Appointment app = new AppointmentBuilder(codProf, date, time)
- *           .patientId(123L)
- *           .description("Consulta general")
- *           .professionalName("Dr. García")
- *           .build();
+ * <p>Implementa {@link IAppointmentBuilder} para construir objetos
+ * {@link Appointment} paso a paso. Cada llamada a un método {@code set...()}
+ * acumula un dato en el estado interno del builder; la llamada final a
+ * {@link #build()} valida los campos obligatorios y produce el objeto.</p>
+ *
+ * <p>Uso directo (sin Director):</p>
+ * <pre>
+ *   Appointment cita = new AppointmentBuilder()
+ *       .setProfessionalId(prof.getCodProf())
+ *       .setDate(slot.getDate())
+ *       .setTime(slot.getTime())
+ *       .setDescription("Revisión mensual")
+ *       .build();
+ * </pre>
+ *
+ * <p>Uso con Director (configuraciones predefinidas):</p>
+ * <pre>
+ *   AppointmentBuilder builder = new AppointmentBuilder();
+ *   AppointmentDirector director = new AppointmentDirector(builder);
+ *   Appointment cita = director.buildAutonomousAppointment(slot, patientId);
+ * </pre>
  */
-public class AppointmentBuilder {
+public class AppointmentBuilder implements IAppointmentBuilder {
 
-    // Campos obligatorios
-    private final Long professionalId;
-    private final LocalDate date;
-    private final LocalTime time;
+    // ── Estado interno ───────────────────────────────────────────────────────
 
-    // Campos opcionales
-    private Long id;
+    private Long professionalId;
+    private LocalDate date;
+    private LocalTime time;
+
     private Long patientId;
-    private String status;
     private String description;
+    private String status;
+
+    // Campos auxiliares para la vista (tablas, labels, etc.)
     private String professionalName;
     private String specialityName;
     private String typeProfName;
     private String patientName;
 
-    public AppointmentBuilder(Long professionalId, LocalDate date, LocalTime time) {
-        this.professionalId = professionalId;
-        this.date = date;
-        this.time = time;
+    // ── Constructor ──────────────────────────────────────────────────────────
+
+    public AppointmentBuilder() {
+        reset();
     }
 
-    public AppointmentBuilder id(Long id) {
-        this.id = id;
+    // ── IAppointmentBuilder ──────────────────────────────────────────────────
+
+    @Override
+    public IAppointmentBuilder reset() {
+        this.professionalId   = null;
+        this.date             = null;
+        this.time             = null;
+        this.patientId        = null;
+        this.description      = null;
+        this.status           = null;
+        this.professionalName = null;
+        this.specialityName   = null;
+        this.typeProfName     = null;
+        this.patientName      = null;
         return this;
     }
 
-    public AppointmentBuilder patientId(Long patientId) {
+    @Override
+    public IAppointmentBuilder setProfessionalId(Long professionalId) {
+        this.professionalId = professionalId;
+        return this;
+    }
+
+    @Override
+    public IAppointmentBuilder setDate(LocalDate date) {
+        this.date = date;
+        return this;
+    }
+
+    @Override
+    public IAppointmentBuilder setTime(LocalTime time) {
+        this.time = time;
+        return this;
+    }
+
+    @Override
+    public IAppointmentBuilder setProfessionalName(String name) {
+        this.professionalName = name;
+        return this;
+    }
+
+    @Override
+    public IAppointmentBuilder setSpecialityName(String speciality) {
+        this.specialityName = speciality;
+        return this;
+    }
+
+    @Override
+    public IAppointmentBuilder setTypeProfName(String type) {
+        this.typeProfName = type;
+        return this;
+    }
+
+    @Override
+    public IAppointmentBuilder setPatientId(Long patientId) {
         this.patientId = patientId;
         return this;
     }
 
-    public AppointmentBuilder status(String status) {
-        this.status = status;
+    @Override
+    public IAppointmentBuilder setPatientName(String name) {
+        this.patientName = name;
         return this;
     }
 
-    public AppointmentBuilder description(String description) {
+    @Override
+    public IAppointmentBuilder setDescription(String description) {
         this.description = description;
         return this;
     }
 
-    public AppointmentBuilder professionalName(String professionalName) {
-        this.professionalName = professionalName;
+    @Override
+    public IAppointmentBuilder setStatus(String status) {
+        this.status = status;
         return this;
     }
 
-    public AppointmentBuilder specialityName(String specialityName) {
-        this.specialityName = specialityName;
-        return this;
-    }
+    // ── build() ──────────────────────────────────────────────────────────────
 
-    public AppointmentBuilder typeProfName(String typeProfName) {
-        this.typeProfName = typeProfName;
-        return this;
-    }
-
-    public AppointmentBuilder patientName(String patientName) {
-        this.patientName = patientName;
-        return this;
-    }
-
+    /**
+     * Construye el {@link Appointment}.
+     * Valida que los tres campos obligatorios estén presentes antes de crear
+     * el objeto; de lo contrario lanza {@link IllegalStateException}.
+     *
+     * <p>Tras llamar a {@code build()}, el builder se reinicia automáticamente
+     * para poder ser reutilizado por el Director en construcciones sucesivas.</p>
+     */
+    @Override
     public Appointment build() {
-        Appointment a = new Appointment();
-        a.setProfessionalId(professionalId);
-        a.setDate(date);
-        a.setTime(time);
-        a.setId(id);
-        a.setPatientId(patientId);
-        a.setStatus(status);
-        a.setDescription(description);
-        a.setProfessionalName(professionalName);
-        a.setSpecialityName(specialityName);
-        a.setTypeProfName(typeProfName);
-        a.setPatientName(patientName);
-        return a;
+        if (professionalId == null) {
+            throw new IllegalStateException(
+                    "[AppointmentBuilder] El ID del profesional es obligatorio.");
+        }
+        if (date == null) {
+            throw new IllegalStateException(
+                    "[AppointmentBuilder] La fecha es obligatoria.");
+        }
+        if (time == null) {
+            throw new IllegalStateException(
+                    "[AppointmentBuilder] La hora es obligatoria.");
+        }
+
+        Appointment appointment = new Appointment();
+        appointment.setProfessionalId(professionalId);
+        appointment.setDate(date);
+        appointment.setTime(time);
+        appointment.setPatientId(patientId);
+        appointment.setDescription(description);
+        appointment.setStatus(status);
+        appointment.setProfessionalName(professionalName);
+        appointment.setSpecialityName(specialityName);
+        appointment.setTypeProfName(typeProfName);
+        appointment.setPatientName(patientName);
+
+        // Reset automático para reutilización del builder
+        reset();
+
+        return appointment;
     }
 }

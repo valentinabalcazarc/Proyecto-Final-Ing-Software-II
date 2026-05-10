@@ -1,6 +1,9 @@
 package com.piedraazul.app_client.controllers;
 
-import com.piedraazul.app_client.design_patterns.observer.ExportEventListener;
+import com.piedraazul.app_client.design_patterns.decorator.export.AppointmentFormatter;
+import com.piedraazul.app_client.design_patterns.decorator.export.BaseAppointmentFormatter;
+import com.piedraazul.app_client.design_patterns.decorator.export.StatusHighlightDecorator;
+import com.piedraazul.app_client.design_patterns.decorator.export.TimestampDecorator;
 import com.piedraazul.app_client.design_patterns.observer.ExportEventManager;
 import com.piedraazul.app_client.models.Appointment;
 import com.piedraazul.app_client.services.NavigationService;
@@ -23,6 +26,11 @@ import java.util.logging.Logger;
  *
  * Contiene una referencia ExportEventManager que gestiona los suscriptores
  * y los notifica cuando el usuario selecciona un formato de exportación.
+ *
+ * Utiliza el patrón Decorador para enriquecer el contenido exportado:
+ *   BaseAppointmentFormatter  → contenido base (JSON o HTML)
+ *   + TimestampDecorator      → agrega fecha/hora de exportación
+ *   + StatusHighlightDecorator → resalta citas según su estado
  */
 public class ProfessionalExportSelectionController {
 
@@ -74,18 +82,29 @@ public class ProfessionalExportSelectionController {
     }
 
     /**
-     * Genera el reporte de citas en el formato indicado y notifica
-     * a los suscriptores (Observers) del evento "export".
+     * Genera el reporte de citas en el formato indicado usando el
+     * patrón Decorador, y notifica a los suscriptores (Observers).
      *
-     * Si la ventana de resultados no existe o fue cerrada, la crea,
-     * obtiene el controlador (Observer concreto) y lo suscribe al
-     * EventManager. Luego notifica a todos los suscriptores.
+     * La cadena de decoradores es:
+     *   BaseAppointmentFormatter
+     *     → TimestampDecorator       (agrega fecha/hora de exportación)
+     *     → StatusHighlightDecorator (resalta citas según su estado)
+     *
+     * Si la ventana de resultados no existe o fue cerrada, la crea y
+     * suscribe el Observer antes de notificar.
      *
      * @param format el formato de exportación ("JSON" o "HTML")
      */
     private void generateReport(String format) {
-        // Generar el contenido exportado según el formato
-        String exportedContent = generateExportContent(format);
+        // ── Patrón Decorador ──────────────────────────────────────────
+        // Se construye la cadena de decoradores de adentro hacia afuera:
+        // primero el componente base, luego se envuelve con cada decorador.
+        AppointmentFormatter formatter = new BaseAppointmentFormatter();
+        formatter = new TimestampDecorator(formatter);
+        formatter = new StatusHighlightDecorator(formatter);
+
+        String exportedContent = formatter.format(appointmentList, format);
+        // ─────────────────────────────────────────────────────────────
 
         // Si la ventana de resultado no existe o fue cerrada, crearla y suscribir el Observer
         if (exportResultStage == null || !exportResultStage.isShowing()) {
@@ -131,84 +150,6 @@ public class ProfessionalExportSelectionController {
             Logger.getLogger(ProfessionalExportSelectionController.class.getName())
                     .log(Level.SEVERE, "Error al abrir ventana de resultados de exportación", e);
         }
-    }
-
-    /**
-     * Genera el contenido de exportación de las citas según el formato solicitado.
-     */
-    private String generateExportContent(String format) {
-        StringBuilder sb = new StringBuilder();
-
-        if ("JSON".equalsIgnoreCase(format)) {
-            sb.append("[\n");
-            for (int i = 0; i < appointmentList.size(); i++) {
-                Appointment app = appointmentList.get(i);
-                sb.append("  {\n");
-                sb.append("    \"id\": ").append(app.getId()).append(",\n");
-                sb.append("    \"paciente\": \"").append(nullSafe(app.getPatientName())).append("\",\n");
-                sb.append("    \"profesional\": \"").append(nullSafe(app.getProfessionalName())).append("\",\n");
-                sb.append("    \"especialidad\": \"").append(nullSafe(app.getSpecialityName())).append("\",\n");
-                sb.append("    \"tipo\": \"").append(nullSafe(app.getTypeProfName())).append("\",\n");
-                sb.append("    \"fecha\": \"").append(app.getDate()).append("\",\n");
-                sb.append("    \"hora\": \"").append(app.getTime()).append("\",\n");
-                sb.append("    \"estado\": \"").append(nullSafe(app.getStatus())).append("\",\n");
-                sb.append("    \"descripcion\": \"").append(nullSafe(app.getDescription())).append("\"\n");
-                sb.append("  }");
-                if (i < appointmentList.size() - 1) {
-                    sb.append(",");
-                }
-                sb.append("\n");
-            }
-            sb.append("]");
-        } else if ("HTML".equalsIgnoreCase(format)) {
-            sb.append("<!DOCTYPE html>\n");
-            sb.append("<html lang=\"es\">\n");
-            sb.append("<head>\n");
-            sb.append("  <meta charset=\"UTF-8\">\n");
-            sb.append("  <title>Citas Exportadas</title>\n");
-            sb.append("  <style>\n");
-            sb.append("    body { font-family: Arial, sans-serif; margin: 20px; }\n");
-            sb.append("    h1 { color: #5947FF; }\n");
-            sb.append("    table { border-collapse: collapse; width: 100%; }\n");
-            sb.append("    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }\n");
-            sb.append("    th { background-color: #5947FF; color: white; }\n");
-            sb.append("    tr:nth-child(even) { background-color: #f2f2f2; }\n");
-            sb.append("  </style>\n");
-            sb.append("</head>\n");
-            sb.append("<body>\n");
-            sb.append("  <h1>Reporte de Citas Médicas</h1>\n");
-            sb.append("  <table>\n");
-            sb.append("    <tr>\n");
-            sb.append("      <th>ID</th><th>Paciente</th><th>Profesional</th>");
-            sb.append("<th>Especialidad</th><th>Tipo</th><th>Fecha</th>");
-            sb.append("<th>Hora</th><th>Estado</th><th>Descripción</th>\n");
-            sb.append("    </tr>\n");
-            for (Appointment app : appointmentList) {
-                sb.append("    <tr>\n");
-                sb.append("      <td>").append(app.getId()).append("</td>");
-                sb.append("<td>").append(nullSafe(app.getPatientName())).append("</td>");
-                sb.append("<td>").append(nullSafe(app.getProfessionalName())).append("</td>");
-                sb.append("<td>").append(nullSafe(app.getSpecialityName())).append("</td>");
-                sb.append("<td>").append(nullSafe(app.getTypeProfName())).append("</td>");
-                sb.append("<td>").append(app.getDate()).append("</td>");
-                sb.append("<td>").append(app.getTime()).append("</td>");
-                sb.append("<td>").append(nullSafe(app.getStatus())).append("</td>");
-                sb.append("<td>").append(nullSafe(app.getDescription())).append("</td>\n");
-                sb.append("    </tr>\n");
-            }
-            sb.append("  </table>\n");
-            sb.append("</body>\n");
-            sb.append("</html>");
-        }
-
-        return sb.toString();
-    }
-
-    /**
-     * Retorna una cadena vacía si el valor es null, o el valor mismo si no lo es.
-     */
-    private String nullSafe(String value) {
-        return value != null ? value : "";
     }
 
     @FXML
