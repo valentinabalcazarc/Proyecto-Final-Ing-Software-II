@@ -42,7 +42,7 @@
                   </VBox>
 
                   <!-- Ícono decorativo -->
-                  <Label text="🩺" textFill="WHITE">
+                  <Label text="💞" textFill="WHITE">
                      <font><Font size="36.0" /></font>
                      <HBox.margin><Insets right="30.0" /></HBox.margin>
                   </Label>
@@ -103,7 +103,7 @@
                               prefWidth="220.0" maxWidth="Infinity"
                               HBox.hgrow="ALWAYS">
                            <children>
-                              <Label text="🦴" styleClass="service__card-icon">
+                              <Label text="⚖" styleClass="service__card-icon">
                                  <font><Font size="36.0" /></font>
                               </Label>
                               <Label text="Quiropráctica" styleClass="service__card-title" wrapText="true" maxWidth="Infinity">
