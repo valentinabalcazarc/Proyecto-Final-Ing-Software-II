@@ -505,14 +505,71 @@
 
 /* ---------- AdminView ---------- */
 
-.admin__body {
-    -fx-background-color: white;
+.admin__page {
+    -fx-background-color: #f4f6ff;
 }
 
-.admin__actions-panel {
-    -fx-border-color: #AAAAAA;
-    -fx-border-width: 1;
-    -fx-border-radius: 4;
+.admin__header {
+    -fx-background-color: linear-gradient(to right, #6666FF, #5947FF);
+    -fx-effect: dropshadow(three-pass-box, rgba(89, 71, 255, 0.3), 12, 0, 0, 6);
+}
+
+.admin__header-title {
+    -fx-text-fill: white;
+    -fx-alignment: CENTER;
+}
+
+.admin__header-subtitle {
+    -fx-text-fill: rgba(255, 255, 255, 0.82);
+    -fx-alignment: CENTER;
+}
+
+.admin__body {
+    -fx-background-color: #f4f6ff;
+}
+
+.admin__actions-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-effect: dropshadow(three-pass-box, rgba(102, 102, 255, 0.13), 14, 0, 0, 4);
+    -fx-border-color: #e8e8ff;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 14;
+}
+
+.admin__card-title {
+    -fx-text-fill: #5947ff;
+}
+
+.admin__btn-action {
+    -fx-background-color: linear-gradient(to right, #6666FF, #5947FF);
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(89, 71, 255, 0.25), 6, 0, 0, 3);
+}
+
+.admin__btn-action:hover {
+    -fx-background-color: linear-gradient(to right, #5555ee, #4836ee);
+    -fx-effect: dropshadow(three-pass-box, rgba(89, 71, 255, 0.40), 8, 0, 0, 4);
+}
+
+.admin__btn-logout {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e74c3c;
+    -fx-border-color: #e74c3c;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-border-width: 1.5;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.admin__btn-logout:hover {
+    -fx-background-color: #fef0ee;
+    -fx-border-color: #c0392b;
+    -fx-text-fill: #c0392b;
 }
 
 
