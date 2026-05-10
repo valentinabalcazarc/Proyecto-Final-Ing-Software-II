@@ -187,6 +187,38 @@
                         <TextField fx:id="txtSecurityAnswer" maxWidth="Infinity" styleClass="textfield--styled"
                                    GridPane.columnIndex="1" GridPane.rowIndex="10" GridPane.columnSpan="4" />
 
+                        <!-- F11: Género -->
+                        <Label text="Género:"
+                               GridPane.columnIndex="0" GridPane.rowIndex="11" GridPane.valignment="CENTER">
+                           <font><Font name="Cascadia Code" size="12.0" /></font>
+                        </Label>
+                        <ComboBox fx:id="cbxGenero" maxWidth="Infinity" styleClass="combobox--styled"
+                                  GridPane.columnIndex="1" GridPane.rowIndex="11" GridPane.valignment="CENTER" />
+
+                        <!-- F12: Horario de atención -->
+                        <Label text="Hora llegada:"
+                               GridPane.columnIndex="0" GridPane.rowIndex="12" GridPane.valignment="CENTER">
+                           <font><Font name="Cascadia Code" size="12.0" /></font>
+                        </Label>
+                        <TextField fx:id="txtArrivalTime" promptText="HH:mm" maxWidth="Infinity" styleClass="textfield--styled"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                        <Label text="Hora salida:"
+                               GridPane.columnIndex="3" GridPane.rowIndex="12" GridPane.valignment="CENTER">
+                           <font><Font name="Cascadia Code" size="12.0" /></font>
+                        </Label>
+                        <TextField fx:id="txtDepartureTime" promptText="HH:mm" maxWidth="Infinity" styleClass="textfield--styled"
+                                   GridPane.columnIndex="4" GridPane.rowIndex="12" />
+
+                        <!-- F13: Intervalo de atención -->
+                        <Label text="Intervalo (min):"
+                               GridPane.columnIndex="0" GridPane.rowIndex="13" GridPane.valignment="CENTER">
+                           <font><Font name="Cascadia Code" size="12.0" /></font>
+                        </Label>
+                        <TextField fx:id="txtAttentionInterval" promptText="Ej: 30" maxWidth="Infinity" styleClass="textfield--styled"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                        <Label fx:id="lb_errorSchedule" text="Error" textFill="RED" visible="false"
+                               GridPane.columnIndex="3" GridPane.rowIndex="13" GridPane.columnSpan="2" />
+
                      </children>
                   </GridPane>
 

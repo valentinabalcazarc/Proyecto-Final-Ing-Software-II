@@ -82,9 +82,9 @@ public class RegisterUserController {
             u.setSecurityQuestion(cbx_SecurityQuestion.getValue());
             u.setSecurityAnswer(tF_SecurityQuestion.getText().trim());
 
-            boolean ok = ServiceManager.getInstance().getUserService().regUser(u);
+            var registrado = ServiceManager.getInstance().getUserService().regUser(u);
 
-            if (ok) {
+            if (registrado != null) {
                 showAlert(Alert.AlertType.INFORMATION, "Éxito", "Registro exitoso.");
                 navigateTo("/fxml/LoginView.fxml", "Piedra Azul - Login", btn_Save);
             } else {

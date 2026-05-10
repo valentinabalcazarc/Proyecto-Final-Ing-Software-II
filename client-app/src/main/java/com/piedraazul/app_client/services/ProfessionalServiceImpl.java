@@ -10,6 +10,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.piedraazul.app_client.dto.ProfessionalResponseDTO;
 import com.piedraazul.app_client.mappers.ProfessionalMapper;
 
+import com.piedraazul.app_client.dto.ProfessionalDTO;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -76,6 +77,61 @@ public class ProfessionalServiceImpl implements ProfessionalService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean register(Professional professional) {
+        int maxIntentos = 5;
+        long esperaMs = 600;
+
+        for (int intento = 1; intento <= maxIntentos; intento++) {
+            try {
+                ProfessionalDTO dto = new ProfessionalDTO();
+                dto.setCodUser(professional.getCodUser());
+                dto.setGenProf(professional.getGenProf());
+                dto.setPhoneProf(professional.getPhoneProf() != null ? professional.getPhoneProf().toString() : null);
+                dto.setTypeProf(professional.getTypeProf());
+                dto.setSpecialityProf(professional.getSpecialityProf());
+                dto.setArrivalTime(professional.getArrivalTime());
+                dto.setDepartureTime(professional.getDepartureTime());
+                dto.setAttentionInterval(professional.getAttentionInterval());
+
+                String jsonBody = objectMapper.writeValueAsString(dto);
+                System.out.println(">> Intento " + intento + " - Registrando profesional: " + jsonBody);
+
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(BASE_URL))
+                        .header("Content-Type", "application/json")
+                        .header("Authorization", "Bearer " + SessionManager.getToken())
+                        .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                        .build();
+
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                System.out.println(">> Status register profesional: " + response.statusCode());
+                System.out.println(">> Body register profesional: " + response.body());
+
+                if (response.statusCode() == 201 || response.statusCode() == 200) {
+                    return true;
+                }
+
+                // Si el UserRef aún no existe (RabbitMQ pendiente), esperar y reintentar
+                if (response.statusCode() == 409 && response.body().contains("No existe un usuario")) {
+                    System.out.println(">> UserRef aún no propagado, esperando " + esperaMs + "ms...");
+                    Thread.sleep(esperaMs);
+                    esperaMs *= 2; // backoff exponencial
+                } else {
+                    // Otro error — no reintentar
+                    return false;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        System.err.println(">> No se pudo registrar el profesional tras " + maxIntentos + " intentos.");
+        return false;
     }
 
     @Override

@@ -10,4 +10,6 @@ public interface ProfessionalService {
     Professional findByCod(int codProf);
 
     List<Professional> getAllProfessionalsBySpeciality(SpecialityProfEnum speciality);
+
+    boolean register(Professional professional);
 }

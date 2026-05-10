@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean regUser(User newUser) {
+    public User regUser(User newUser) {
         try {
             RegisterDTO dto = UserMapper.toRegisterDTO(newUser);
             String jsonBody = objectMapper.writeValueAsString(dto);
@@ -59,11 +59,16 @@ public class UserServiceImpl implements UserService {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.statusCode() == 201 || response.statusCode() == 200;
+            System.out.println(">> Status regUser: " + response.statusCode());
+            System.out.println(">> Body regUser: " + response.body());
+
+            if (response.statusCode() == 201 || response.statusCode() == 200) {
+                return objectMapper.readValue(response.body(), User.class);
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return null;
     }
 
     @Override
