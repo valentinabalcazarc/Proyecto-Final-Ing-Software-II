@@ -5,6 +5,10 @@ import com.piedraazul.app_client.enums.SpecialityProfEnum;
 import com.piedraazul.app_client.models.Appointment;
 import com.piedraazul.app_client.models.Patient;
 import com.piedraazul.app_client.models.Professional;
+import com.piedraazul.app_client.design_patterns.strategy.AppointmentSearchContext;
+import com.piedraazul.app_client.design_patterns.strategy.SearchBySpecialityStrategy;
+import com.piedraazul.app_client.design_patterns.strategy.SearchBySpecialityFilteredStrategy;
+import com.piedraazul.app_client.design_patterns.strategy.SearchParams;
 import com.piedraazul.app_client.services.FestivosService;
 import com.piedraazul.app_client.services.NavigationService;
 import com.piedraazul.app_client.services.ServiceManager;
@@ -40,12 +44,28 @@ public class PatientSelectSpecificAppointmentController {
     @FXML private TableColumn<Appointment, String> colSpeciality;
 
     private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+    private final AppointmentSearchContext searchContext = new AppointmentSearchContext();
     private final FestivosService festivosService = new FestivosService();
 
     @FXML
     public void initialize() {
         setupTable();
         configurarCalendario();
+
+        // Listener del DatePicker: respeta el profesional seleccionado
+        dpFecha.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                applyFilter();
+            } else {
+                if (cbxProfessional.getValue() == null) {
+                    // Sin fecha ni profesional → recargar todos los slots de la especialidad
+                    loadAppointments();
+                } else {
+                    // Hay profesional pero se borró la fecha → filtrar solo por profesional
+                    applyFilter();
+                }
+            }
+        });
     }
 
     public void setPatientAndSpeciality(Patient patient, SpecialityProfEnum specialityProf) {
@@ -57,12 +77,12 @@ public class PatientSelectSpecificAppointmentController {
 
     private void setupTable() {
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
-        
+
         colTime.setCellValueFactory(cellData -> {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
             return new SimpleStringProperty(cellData.getValue().getTime().format(formatter));
         });
-        
+
         colProfName.setCellValueFactory(new PropertyValueFactory<>("professionalName"));
         colProfType.setCellValueFactory(new PropertyValueFactory<>("typeProfName"));
         colSpeciality.setCellValueFactory(new PropertyValueFactory<>("specialityName"));
@@ -72,15 +92,108 @@ public class PatientSelectSpecificAppointmentController {
 
     private void loadProfessionals() {
         cbxProfessional.getItems().clear();
-        List<Professional> lista = ServiceManager.getInstance().getProfessionalService().getAllProfessionalsBySpeciality(specialityProf);
+        List<Professional> lista = ServiceManager.getInstance()
+                .getProfessionalService()
+                .getAllProfessionalsBySpeciality(specialityProf);
         cbxProfessional.getItems().addAll(lista);
     }
 
     private void loadAppointments() {
-        List<Appointment> lista = ServiceManager.getInstance()
-                .getAppointmentService()
-                .getGeneretedAppointmentsBySpeciality(specialityProf);
+        // ── Patrón Strategy: carga inicial — slots generados por especialidad ──
+        // Endpoint: GET /generated/speciality/{speciality}
+        searchContext.setStrategy(new SearchBySpecialityStrategy());
+        SearchParams params = new SearchParams.Builder()
+                .speciality(specialityProf)
+                .build();
+        List<Appointment> lista = searchContext.executeSearch(params);
         appointmentList.setAll(lista);
+    }
+
+    /**
+     * Lógica central de filtrado reutilizada por el botón "Buscar"
+     * y el listener del DatePicker.
+     */
+    private void applyFilter() {
+        Long codProf = null;
+        if (cbxProfessional.getValue() != null) {
+            codProf = cbxProfessional.getValue().getCodProf();
+        }
+
+        LocalDate fecha = dpFecha.getValue();
+
+        // Si no hay ningún criterio adicional, mostrar todos los slots de la especialidad
+        if (codProf == null && fecha == null) {
+            loadAppointments();
+            return;
+        }
+
+        // ── Patrón Strategy: slots generados por especialidad + profesional + fecha ──
+        // Endpoint: GET /generated?spec={speciality}[&date={date}][&codProf={codProf}]
+        searchContext.setStrategy(new SearchBySpecialityFilteredStrategy());
+        SearchParams params = new SearchParams.Builder()
+                .speciality(specialityProf)
+                .professionalId(codProf)
+                .date(fecha)
+                .build();
+        List<Appointment> resultados = searchContext.executeSearch(params);
+        appointmentList.setAll(resultados);
+    }
+
+    @FXML
+    private void handleBuscar(ActionEvent event) {
+        applyFilter();
+    }
+
+    @FXML
+    private void handleBorrarFiltro(ActionEvent event) {
+        cbxProfessional.setValue(null);
+        dpFecha.setValue(null);
+        loadAppointments();
+    }
+
+    @FXML
+    private void handleConfirmar(ActionEvent event) {
+        Appointment selected = tblAppointments.getSelectionModel().getSelectedItem();
+
+        if (selected == null) {
+            mostrarAlerta("Atención", "Por favor, seleccione una fila de la tabla.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        selected.setDescription("[cita autónoma]");
+        int result = AppointmentFacade.getInstance().scheduleAppointment(this.patient, selected);
+
+        if (result == 0) {
+            mostrarAlerta("Éxito", "¡Cita guardada con éxito!", Alert.AlertType.INFORMATION);
+            NavigationService.getInstance().navigateTo(
+                    "/fxml/PatientMainView.fxml",
+                    "Piedra Azul - Menú Principal",
+                    (Button) event.getSource()
+            );
+        } else if (result == 1) {
+            mostrarAlerta("Error", "Error crítico: No se pudo registrar al nuevo paciente.", Alert.AlertType.ERROR);
+        } else {
+            mostrarAlerta("Error", "El horario ya no está disponible o hubo un fallo al guardar.", Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    private void handleRegresar(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PatientAutomaticRecommendationView.fxml"));
+            Parent root = loader.load();
+
+            PatientAutomaticRecommendationController controller = loader.getController();
+            controller.setPatientAndSpeciality(patient, specialityProf);
+
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            stage.setTitle("Piedra Azul - Recomendación Automática");
+            stage.setScene(new Scene(root));
+            stage.getScene().getStylesheets().add(getClass().getResource("/fxml/stylesheet.css").toExternalForm());
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "No se pudo volver a la vista anterior.", Alert.AlertType.ERROR);
+        }
     }
 
     private void configurarCalendario() {
@@ -107,73 +220,6 @@ public class PatientSelectSpecificAppointmentController {
                 }
             }
         });
-    }
-
-    @FXML
-    private void handleBuscar(ActionEvent event) {
-        Long codProf = null;
-        if (cbxProfessional.getValue() != null) {
-            codProf = cbxProfessional.getValue().getCodProf();
-        }
-
-        LocalDate fecha = dpFecha.getValue();
-
-        List<Appointment> resultados = ServiceManager.getInstance()
-                .getAppointmentService()
-                .getGeneretedAppointmentsBySpecialityFiltered(codProf, fecha, specialityProf);
-
-        appointmentList.setAll(resultados);
-    }
-
-    @FXML
-    private void handleBorrarFiltro(ActionEvent event) {
-        cbxProfessional.setValue(null);
-        dpFecha.setValue(null);
-        loadAppointments();
-    }
-
-    @FXML
-    private void handleConfirmar(ActionEvent event) {
-        Appointment selected = tblAppointments.getSelectionModel().getSelectedItem();
-        selected.setDescription("[cita autónoma]");
-        if (selected != null) {
-            int result = AppointmentFacade.getInstance().scheduleAppointment(this.patient, selected);
-
-            if (result == 0) {
-                mostrarAlerta("Éxito", "¡Cita guardada con éxito!", Alert.AlertType.INFORMATION);
-                
-                NavigationService.getInstance().navigateTo(
-                        "/fxml/PatientMainView.fxml", 
-                        "Piedra Azul - Menú Principal", 
-                        (Button) event.getSource()
-                );
-            } else if (result == 1) {
-                mostrarAlerta("Error", "Error crítico: No se pudo registrar al nuevo paciente.", Alert.AlertType.ERROR);
-            } else {
-                mostrarAlerta("Error", "Error: El horario ya no está disponible o hubo un fallo al guardar.", Alert.AlertType.ERROR);
-            }
-        } else {
-            mostrarAlerta("Atención", "Por favor, seleccione una fila de la tabla.", Alert.AlertType.WARNING);
-        }
-    }
-
-    @FXML
-    private void handleRegresar(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PatientAutomaticRecommendationView.fxml"));
-            Parent root = loader.load();
-
-            PatientAutomaticRecommendationController controller = loader.getController();
-            controller.setPatientAndSpeciality(patient, specialityProf);
-
-            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            stage.setTitle("Piedra Azul - Recomendación Automática");
-            stage.setScene(new Scene(root));
-            stage.getScene().getStylesheets().add(getClass().getResource("/fxml/stylesheet.css").toExternalForm());
-        } catch (IOException e) {
-            e.printStackTrace();
-            mostrarAlerta("Error", "No se pudo volver a la vista anterior.", Alert.AlertType.ERROR);
-        }
     }
 
     private void mostrarAlerta(String titulo, String contenido, Alert.AlertType tipo) {

@@ -17,8 +17,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import javafx.util.StringConverter;
+
+import com.piedraazul.app_client.design_patterns.strategy.AppointmentSearchContext;
+import com.piedraazul.app_client.design_patterns.strategy.SearchAllGeneratedStrategy;
+import com.piedraazul.app_client.design_patterns.strategy.SearchGeneratedByProfAndDateStrategy;
+import com.piedraazul.app_client.design_patterns.strategy.SearchParams;
 import java.io.IOException;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 import javafx.scene.control.DateCell;
@@ -37,6 +41,7 @@ public class ProfessionalCreateAppStep1Controller {
     @FXML private TableColumn<Appointment, String> colProfType;
 
     private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+    private final AppointmentSearchContext searchContext = new AppointmentSearchContext();
     private final FestivosService festivosService = new FestivosService();
 
     @FXML
@@ -47,12 +52,21 @@ public class ProfessionalCreateAppStep1Controller {
         loadAllGeneratedAppointments();
         configurarCalendario();
 
+        // ── Listener del DatePicker: respeta filtros activos ────────────
         dpDate.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                loadAllGeneratedAppointments();
+                // Hay fecha seleccionada → aplicar filtro (con o sin profesional)
+                applyFilter();
+            } else {
+                // Se limpió la fecha → si tampoco hay profesional, recargar todo
+                if (cbxProfessional.getValue() == null) {
+                    loadAllGeneratedAppointments();
+                } else {
+                    // Hay profesional pero sin fecha → filtrar solo por profesional
+                    applyFilter();
+                }
             }
         });
-
     }
 
     private void setupTable() {
@@ -79,6 +93,7 @@ public class ProfessionalCreateAppStep1Controller {
             }
         });
     }
+
     private void loadProfessionals() {
         cbxProfessional.getItems().clear();
         List<Professional> lista = ServiceManager.getInstance().getProfessionalService().getAllProfessionals();
@@ -90,15 +105,18 @@ public class ProfessionalCreateAppStep1Controller {
     }
 
     private void loadAllGeneratedAppointments() {
-        List<Appointment> lista = ServiceManager.getInstance()
-                .getAppointmentService()
-                .getGeneratedAppointmentsTyped();
-
+        // ── Patrón Strategy: todos los slots generados sin filtro ────────
+        searchContext.setStrategy(new SearchAllGeneratedStrategy());
+        List<Appointment> lista = searchContext.executeSearch(
+                new SearchParams.Builder().build());
         appointmentList.setAll(lista);
     }
 
-    @FXML
-    private void handleFilter(ActionEvent event) {
+    /**
+     * Lógica central de filtrado reutilizada tanto por el botón "Filtrar"
+     * como por el listener del DatePicker.
+     */
+    private void applyFilter() {
         Long codProf = null;
         if (cbxProfessional.getValue() != null) {
             codProf = cbxProfessional.getValue().getCodProf();
@@ -106,12 +124,25 @@ public class ProfessionalCreateAppStep1Controller {
 
         LocalDate fecha = dpDate.getValue();
 
-        // Llamada filtrada al microservicio de citas
-        List<Appointment> resultados = ServiceManager.getInstance()
-                .getAppointmentService()
-                .getGeneratedAppointmentsFilteredTyped(codProf, fecha);
+        // Si no hay ningún criterio activo, mostrar todos los slots generados
+        if (codProf == null && fecha == null) {
+            loadAllGeneratedAppointments();
+            return;
+        }
 
+        // ── Patrón Strategy: slots GENERADOS filtrados por profesional y/o fecha ──
+        searchContext.setStrategy(new SearchGeneratedByProfAndDateStrategy());
+        SearchParams params = new SearchParams.Builder()
+                .professionalId(codProf)
+                .date(fecha)
+                .build();
+        List<Appointment> resultados = searchContext.executeSearch(params);
         appointmentList.setAll(resultados);
+    }
+
+    @FXML
+    private void handleFilter(ActionEvent event) {
+        applyFilter();
     }
 
     @FXML

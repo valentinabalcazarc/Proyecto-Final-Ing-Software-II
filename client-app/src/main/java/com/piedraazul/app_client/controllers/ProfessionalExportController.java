@@ -3,6 +3,9 @@ package com.piedraazul.app_client.controllers;
 import com.piedraazul.app_client.models.Appointment;
 import com.piedraazul.app_client.models.Professional;
 import com.piedraazul.app_client.services.FestivosService;
+import com.piedraazul.app_client.design_patterns.strategy.AppointmentSearchContext;
+import com.piedraazul.app_client.design_patterns.strategy.SearchByProfAndDateStrategy;
+import com.piedraazul.app_client.design_patterns.strategy.SearchParams;
 import com.piedraazul.app_client.services.NavigationService;
 import com.piedraazul.app_client.services.ServiceManager;
 import javafx.collections.FXCollections;
@@ -36,8 +39,8 @@ public class ProfessionalExportController {
     @FXML private TableColumn<Appointment, String> colStatus;
     @FXML private TableColumn<Appointment, String> colDescription;
 
-
     private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+    private final AppointmentSearchContext searchContext = new AppointmentSearchContext();
     private final FestivosService festivosService = new FestivosService();
 
     @FXML
@@ -47,9 +50,16 @@ public class ProfessionalExportController {
         loadAllAppointments();
         configurarCalendario();
 
+        // Listener del DatePicker: respeta filtros activos
         dpDate.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                loadAllAppointments();
+                applyFilter();
+            } else {
+                if (cbxProfessional.getValue() == null) {
+                    loadAllAppointments();
+                } else {
+                    applyFilter();
+                }
             }
         });
     }
@@ -58,7 +68,7 @@ public class ProfessionalExportController {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         colTime.setCellValueFactory(new PropertyValueFactory<>("time"));
-        colPatientName.setCellValueFactory(new PropertyValueFactory<>("patientName")); // campo en Appointment
+        colPatientName.setCellValueFactory(new PropertyValueFactory<>("patientName"));
         colProfessional.setCellValueFactory(new PropertyValueFactory<>("professionalName"));
         colType.setCellValueFactory(new PropertyValueFactory<>("typeProfName"));
         colSpeciality.setCellValueFactory(new PropertyValueFactory<>("specialityName"));
@@ -74,24 +84,46 @@ public class ProfessionalExportController {
 
     private void loadAllAppointments() {
         try {
-            // Assuming getAppointmentsForTable logic
-            List<Appointment> list = ServiceManager.getInstance().getAppointmentService().getAllAppointments();
-            tblAppointments.setItems(FXCollections.observableArrayList(list));
+            // ── Patrón Strategy: carga inicial — citas AGENDADAS reales, sin filtro ──
+            // Pasa ambos parámetros null → SearchByProfAndDateStrategy llama a
+            // searchAppointmentsTyped(null, null) → endpoint GET /appointments (todas)
+            searchContext.setStrategy(new SearchByProfAndDateStrategy());
+            List<Appointment> list = searchContext.executeSearch(
+                    new SearchParams.Builder().build());
             appointmentList.setAll(list);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    @FXML
-    private void handleFind(ActionEvent event) {
+    /**
+     * Lógica central de filtrado reutilizada por el botón "Buscar"
+     * y el listener del DatePicker.
+     */
+    private void applyFilter() {
         Professional selectedProf = cbxProfessional.getValue();
         LocalDate selectedDate = dpDate.getValue();
         Long profId = (selectedProf != null) ? selectedProf.getCodProf() : null;
-        
-        List<Appointment> filtered = ServiceManager.getInstance().getAppointmentService()
-                .searchAppointmentsTyped(profId, selectedDate);
+
+        // Si no hay ningún criterio activo, recargar todas las citas agendadas
+        if (profId == null && selectedDate == null) {
+            loadAllAppointments();
+            return;
+        }
+
+        // ── Patrón Strategy: citas AGENDADAS filtradas por profesional y/o fecha ──
+        searchContext.setStrategy(new SearchByProfAndDateStrategy());
+        SearchParams params = new SearchParams.Builder()
+                .professionalId(profId)
+                .date(selectedDate)
+                .build();
+        List<Appointment> filtered = searchContext.executeSearch(params);
         appointmentList.setAll(filtered);
+    }
+
+    @FXML
+    private void handleFind(ActionEvent event) {
+        applyFilter();
     }
 
     @FXML
@@ -120,8 +152,6 @@ public class ProfessionalExportController {
             ProfessionalExportSelectionController controller = loader.getController();
             controller.setAppointmentList(appointmentList);
 
-            // Abrir la selección de formato en una NUEVA ventana (Stage)
-            // para que la ventana de exportación de citas permanezca abierta
             Stage exportSelectionStage = new Stage();
             exportSelectionStage.setTitle("Formato de Exportación");
             Scene scene = new Scene(root);
@@ -146,10 +176,8 @@ public class ProfessionalExportController {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
-                // Bloquear fines de semana y festivos
                 if (festivosService.esDiaInvalido(date)) {
                     setDisable(true);
-
                     if (festivosService.esFestivo(date)) {
                         setStyle("-fx-background-color: #ffcccc; -fx-text-fill: #cc0000;");
                         setTooltip(new Tooltip("Día Festivo"));

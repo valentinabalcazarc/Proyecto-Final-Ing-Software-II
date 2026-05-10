@@ -2,6 +2,9 @@ package com.piedraazul.app_client.controllers;
 
 import com.piedraazul.app_client.models.Appointment;
 import com.piedraazul.app_client.models.Patient;
+import com.piedraazul.app_client.design_patterns.strategy.AppointmentSearchContext;
+import com.piedraazul.app_client.design_patterns.strategy.SearchByPatientStrategy;
+import com.piedraazul.app_client.design_patterns.strategy.SearchParams;
 import com.piedraazul.app_client.services.NavigationService;
 import com.piedraazul.app_client.services.ServiceManager;
 import javafx.collections.FXCollections;
@@ -30,6 +33,7 @@ public class ProfessionalManageAppointmentsController {
     @FXML private TableColumn<Appointment, String> colDescription;
 
     private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+    private final AppointmentSearchContext searchContext = new AppointmentSearchContext();
 
     @FXML
     public void initialize() {
@@ -60,8 +64,12 @@ public class ProfessionalManageAppointmentsController {
             Patient patient = ServiceManager.getInstance().getPatientService().findByCed(ced);
 
             if (patient != null) {
-                List<Appointment> appointments = ServiceManager.getInstance().getAppointmentService()
-                        .getAppointmentsByPatient(patient.getCodPatient());
+                // ── Patrón Strategy: citas reales del paciente ───────────
+                searchContext.setStrategy(new SearchByPatientStrategy());
+                SearchParams params = new SearchParams.Builder()
+                        .patientId(patient.getCodPatient())
+                        .build();
+                List<Appointment> appointments = searchContext.executeSearch(params);
                 appointmentList.setAll(appointments);
             } else {
                 showAlert(Alert.AlertType.WARNING, "No encontrado", "No se encontró el paciente con esa cédula.");

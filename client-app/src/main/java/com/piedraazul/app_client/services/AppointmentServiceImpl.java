@@ -77,7 +77,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         return null;
     }
 
-
     private List<Object[]> fetchObjectList(String url) {
         List<Object[]> data = new ArrayList<>();
         try {
@@ -97,18 +96,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
         return data;
     }
-
-    /*
-    @Override
-    public List<Appointment> getGeneretedAppointmentsBySpeciality(SpecialityProfEnum speciality) {
-        return fetchAppointmentList(BASE_URL + "/generated/speciality/" + speciality.name());
-    }
-
-    @Override
-    public List<Object[]> getGeneretedAppointmentsBySpecialityFiltered(Long codProf, LocalDate fecha,
-            SpecialityProfEnum speciality) {
-        return new ArrayList<>();
-    }*/
 
     @Override
     public List<Appointment> getAppointmentsByPatient(Long codPatient) {
@@ -132,54 +119,63 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<Appointment> getGeneratedAppointmentsTyped() {
+        // GET /generated  (sin params → backend usa LocalDate.now() por defecto)
         return fetchAppointmentList(BASE_URL + "/generated");
     }
 
-    /*@Override
+    @Override
     public List<Appointment> getGeneratedAppointmentsFilteredTyped(Long codProf, LocalDate fecha) {
-        LocalDate targetDate = (fecha != null) ? fecha : LocalDate.now();
-
-        StringBuilder url = new StringBuilder(BASE_URL + "/generated?date=" + targetDate);
-        if (codProf != null) url.append("&codProf=").append(codProf);
-
+        // GET /generated[?date=X][&codProf=Y]
+        // Si fecha es null NO se envía el param → el backend decide el default
+        StringBuilder url = new StringBuilder(BASE_URL + "/generated");
+        String sep = "?";
+        if (fecha != null) {
+            url.append(sep).append("date=").append(fecha);
+            sep = "&";
+        }
+        if (codProf != null) {
+            url.append(sep).append("codProf=").append(codProf);
+        }
         return fetchAppointmentList(url.toString());
-    }*/
+    }
 
     @Override
     public List<Appointment> getGeneratedAppointmentsBySpecialityTyped(SpecialityProfEnum speciality) {
-        return fetchAppointmentList(BASE_URL + "/generated-speciality?spec=" + speciality.name());
+        // GET /generated/speciality/{speciality}  ← endpoint correcto del backend
+        return fetchAppointmentList(BASE_URL + "/generated/speciality/" + speciality.name());
     }
 
     @Override
     public List<Appointment> getGeneratedAppointmentsBySpecialityFilteredTyped(Long codProf, LocalDate fecha, SpecialityProfEnum speciality) {
-        LocalDate targetDate = (fecha != null) ? fecha : LocalDate.now();
-
-        StringBuilder url = new StringBuilder(BASE_URL + "/generated-speciality?spec=" + speciality.name() + "&date=" + targetDate);
-        if (codProf != null) url.append("&codProf=").append(codProf);
-
+        // GET /generated?speciality=X[&date=Y][&codProf=Z]
+        // Si fecha es null NO se fuerza LocalDate.now() → muestra todos los slots futuros
+        StringBuilder url = new StringBuilder(BASE_URL + "/generated?speciality=" + speciality.name());
+        if (fecha != null) {
+            url.append("&date=").append(fecha);
+        }
+        if (codProf != null) {
+            url.append("&codProf=").append(codProf);
+        }
         return fetchAppointmentList(url.toString());
     }
 
     @Override
     public List<Appointment> getGeneretedAppointmentsBySpeciality(SpecialityProfEnum speciality) {
-        return fetchAppointmentList(BASE_URL + "/generated?speciality=" + speciality.name());
-    }
-
-    @Override
-    public List<Appointment> getGeneratedAppointmentsFilteredTyped(Long codProf, LocalDate fecha) {
-        LocalDate targetDate = (fecha != null) ? fecha : LocalDate.now();
-        StringBuilder url = new StringBuilder(BASE_URL + "/generated?date=" + targetDate);
-        if (codProf != null) url.append("&codProf=").append(codProf);
-        return fetchAppointmentList(url.toString());
+        // GET /generated/speciality/{speciality}
+        return fetchAppointmentList(BASE_URL + "/generated/speciality/" + speciality.name());
     }
 
     @Override
     public List<Appointment> getGeneretedAppointmentsBySpecialityFiltered(
             Long codProf, LocalDate fecha, SpecialityProfEnum speciality) {
-        LocalDate targetDate = (fecha != null) ? fecha : LocalDate.now();
-        StringBuilder url = new StringBuilder(BASE_URL + "/generated?date=" + targetDate);
-        if (codProf != null) url.append("&codProf=").append(codProf);
-        if (speciality != null) url.append("&speciality=").append(speciality.name());
+        // GET /generated?speciality=X[&date=Y][&codProf=Z]
+        StringBuilder url = new StringBuilder(BASE_URL + "/generated?speciality=" + speciality.name());
+        if (fecha != null) {
+            url.append("&date=").append(fecha);
+        }
+        if (codProf != null) {
+            url.append("&codProf=").append(codProf);
+        }
         return fetchAppointmentList(url.toString());
     }
 
@@ -189,7 +185,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             AppointmentDTO dto = AppointmentMapper.toRequestDTO(appointment, patientId);
             String jsonBody = objectMapper.writeValueAsString(dto);
 
-            System.out.println(">> JSON enviado: " + jsonBody); 
+            System.out.println(">> JSON enviado: " + jsonBody);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL))
@@ -199,8 +195,6 @@ public class AppointmentServiceImpl implements AppointmentService {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            //System.out.println(">> Status saveAppointment: " + response.statusCode());
-            //System.out.println(">> Body saveAppointment: " + response.body());
 
             return response.statusCode() == 201 || response.statusCode() == 200;
         } catch (Exception e) {
@@ -236,8 +230,6 @@ public class AppointmentServiceImpl implements AppointmentService {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            //System.out.println(">> Status fetchAppointmentList: " + response.statusCode());
-            //System.out.println(">> Body fetchAppointmentList: " + response.body());
 
             if (response.statusCode() == 200) {
                 List<AppointmentResponseDTO> dtos = objectMapper.readValue(response.body(), new TypeReference<List<AppointmentResponseDTO>>() {});
