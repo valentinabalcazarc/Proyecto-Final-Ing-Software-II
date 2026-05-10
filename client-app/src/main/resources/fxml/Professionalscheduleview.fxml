@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="520.0" prefWidth="760.0"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.piedraazul.app_client.controllers.ProfessionalScheduleController">
+    <children>
+
+        <!-- Header azul -->
+        <Pane prefHeight="100.0" prefWidth="760.0" styleClass="header--blue">
+            <children>
+                <Label layoutX="40.0" layoutY="28.0" prefWidth="680.0"
+                       text="HORARIOS DE PROFESIONALES"
+                       textFill="WHITE" textAlignment="CENTER">
+                    <font><Font name="Cascadia Code Bold" size="20.0"/></font>
+                </Label>
+                <Label layoutX="40.0" layoutY="60.0" prefWidth="680.0"
+                       text="Listado de profesionales registrados y sus horarios de atención"
+                       textFill="WHITE" textAlignment="CENTER">
+                    <font><Font name="Cascadia Code Regular" size="12.0"/></font>
+                </Label>
+            </children>
+        </Pane>
+
+        <!-- Contenido principal -->
+        <Pane layoutY="106.0" prefHeight="414.0" prefWidth="760.0" styleClass="page--gray">
+            <children>
+
+                <!-- Tabla de profesionales -->
+                <TableView fx:id="tableSchedules"
+                           layoutX="28.0" layoutY="20.0"
+                           prefHeight="330.0" prefWidth="704.0"
+                           styleClass="appointments__table">
+                    <columns>
+                        <TableColumn fx:id="colName" text="Nombre" prefWidth="160.0">
+                            <cellValueFactory><PropertyValueFactory property="fullName"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="colSpeciality" text="Especialidad" prefWidth="140.0">
+                            <cellValueFactory><PropertyValueFactory property="specialityProf"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="colType" text="Tipo" prefWidth="100.0">
+                            <cellValueFactory><PropertyValueFactory property="typeProf"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="colArrival" text="Hora Entrada" prefWidth="110.0">
+                            <cellValueFactory><PropertyValueFactory property="arrivalTime"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="colDeparture" text="Hora Salida" prefWidth="110.0">
+                            <cellValueFactory><PropertyValueFactory property="departureTime"/></cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="colInterval" text="Intervalo (min)" prefWidth="84.0">
+                            <cellValueFactory><PropertyValueFactory property="attentionInterval"/></cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+
+                <!-- Botón volver -->
+                <Button fx:id="btnBack"
+                        layoutX="290.0" layoutY="368.0"
+                        prefHeight="32.0" prefWidth="180.0"
+                        text="← Volver al panel admin"
+                        onAction="#handleBack"
+                        styleClass="btn--secondary">
+                    <font><Font name="Cascadia Code Regular" size="12.0"/></font>
+                </Button>
+
+            </children>
+        </Pane>
+
+    </children>
+</AnchorPane>
