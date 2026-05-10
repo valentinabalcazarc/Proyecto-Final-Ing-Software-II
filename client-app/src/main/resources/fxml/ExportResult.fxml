@@ -4,49 +4,81 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="650.0" prefWidth="700.0"
+            styleClass="page--gradient-light"
             xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.piedraazul.app_client.controllers.ExportResultController">
     <children>
-        <!-- Panel de Encabezado -->
-        <Pane prefHeight="110.0" prefWidth="700.0" styleClass="header--green">
-            <children>
-                <Label layoutX="210.0" layoutY="38.0" text="CITAS EXPORTADAS" textFill="WHITE">
-                    <font>
-                        <Font name="Cascadia Code Bold" size="24.0" />
-                    </font>
-                </Label>
-            </children>
-        </Pane>
 
-        <!-- Contenido principal -->
-        <VBox layoutY="110.0" spacing="15.0"
-              AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0"
-              AnchorPane.topAnchor="125.0" AnchorPane.bottomAnchor="20.0">
-            <padding>
-                <Insets top="10.0" />
-            </padding>
+        <VBox spacing="0.0"
+              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <!-- Etiqueta de formato actual -->
-                <Label fx:id="label_Format" text="Formato: -" textFill="#555555">
-                    <font>
-                        <Font name="Cascadia Code Bold" size="16.0" />
-                    </font>
-                </Label>
 
-                <!-- Área de texto con el resultado exportado -->
-                <TextArea fx:id="textArea_ExportResult" editable="false"
-                          wrapText="true" VBox.vgrow="ALWAYS">
-                    <font>
-                        <Font name="Monospaced Regular" size="12.0" />
-                    </font>
-                </TextArea>
+                <!-- ══ HEADER ══ -->
+                <AnchorPane prefHeight="100.0" styleClass="header--patient-gradient">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="0.0"
+                              AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" spacing="4.0">
+                                    <children>
+                                        <Label text="RESULTADO DE EXPORTACIÓN" textFill="WHITE">
+                                            <font><Font name="System Bold" size="24.0" /></font>
+                                        </Label>
+                                        <Label text="Previsualización del contenido generado" textFill="#dce0ff">
+                                            <font><Font size="12.0" /></font>
+                                        </Label>
+                                    </children>
+                                    <padding><Insets left="30.0" /></padding>
+                                </VBox>
+                                <Label text="📋" textFill="WHITE">
+                                    <font><Font size="36.0" /></font>
+                                    <HBox.margin><Insets right="30.0" /></HBox.margin>
+                                </Label>
+                            </children>
+                        </HBox>
+                    </children>
+                </AnchorPane>
+
+                <!-- ══ CONTENIDO ══ -->
+                <VBox spacing="16.0" VBox.vgrow="ALWAYS">
+                    <padding><Insets top="24.0" right="28.0" bottom="24.0" left="28.0" /></padding>
+                    <children>
+
+                        <!-- Tarjeta de formato -->
+                        <HBox alignment="CENTER_LEFT" spacing="12.0">
+                            <children>
+                                <Label text="📄" >
+                                    <font><Font size="16.0" /></font>
+                                </Label>
+                                <Label fx:id="label_Format" text="Formato: -"
+                                       styleClass="export-result__format-badge">
+                                    <font><Font name="System Bold" size="13.0" /></font>
+                                </Label>
+                            </children>
+                        </HBox>
+
+                        <!-- Área de texto con el resultado exportado -->
+                        <TextArea fx:id="textArea_ExportResult" editable="false"
+                                  wrapText="true" VBox.vgrow="ALWAYS"
+                                  styleClass="export-result__textarea">
+                            <font>
+                                <Font name="Monospaced Regular" size="12.0" />
+                            </font>
+                        </TextArea>
+
+                    </children>
+                </VBox>
+
             </children>
         </VBox>
+
     </children>
 </AnchorPane>
