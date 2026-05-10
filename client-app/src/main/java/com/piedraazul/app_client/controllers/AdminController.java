@@ -22,13 +22,11 @@ public class AdminController {
 
     @FXML
     public void handleProfessionalSchedule() {
-        // TODO: implementar vista de gestión de horario
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                javafx.scene.control.Alert.AlertType.INFORMATION);
-        alert.setTitle("En construcción");
-        alert.setHeaderText(null);
-        alert.setContentText("La gestión de horarios aún no está disponible.");
-        alert.showAndWait();
+        NavigationService.getInstance().navigateTo(
+                "/fxml/ProfessionalScheduleView.fxml",
+                "Piedra Azul - Horarios de Profesionales",
+                btnProfessionalSchedule
+        );
     }
 
     @FXML

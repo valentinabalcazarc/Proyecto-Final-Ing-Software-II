@@ -19,6 +19,10 @@ public class Professional extends User {
     private LocalTime arrivalTime;
     private LocalTime departureTime;
 
+    public String getFullName() {
+        return getNameUser() + " " + getLastNameUser();
+    }
+
     @Override
     public String toString() {
         return getNameUser() + " " + getLastNameUser();

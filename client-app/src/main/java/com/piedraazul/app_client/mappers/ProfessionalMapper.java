@@ -22,7 +22,7 @@ public class ProfessionalMapper {
         if (responseDto == null) return null;
         Professional model = new Professional();
         model.setCodProf(responseDto.getCodProf());
-        
+
         if (responseDto.getUserRef() != null) {
             model.setCodUser(responseDto.getUserRef().getCodUser());
             model.setCedUser(responseDto.getUserRef().getCedUser());
@@ -36,7 +36,9 @@ public class ProfessionalMapper {
         model.setSpecialityProf(responseDto.getSpecialityProf());
         model.setAttentionInterval(responseDto.getAttentionInterval());
         model.setStatusProf(responseDto.getStatusProf());
-        
+        model.setArrivalTime(responseDto.getArrivalTime());  
+        model.setDepartureTime(responseDto.getDepartureTime());
+
         return model;
     }
 }
