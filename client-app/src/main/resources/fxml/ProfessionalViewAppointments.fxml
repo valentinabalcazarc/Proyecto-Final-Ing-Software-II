@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -7,98 +8,186 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="600.0" prefWidth="900.0"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.piedraazul.app_client.controllers.ProfessionalViewAppointmentsController"
-            styleClass="page--gradient-professional">
-    <children>
+<VBox prefHeight="600.0" prefWidth="900.0"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.piedraazul.app_client.controllers.ProfessionalViewAppointmentsController">
+   <children>
 
-        <!-- Header profesional -->
-        <Pane prefHeight="100.0" prefWidth="900.0" styleClass="header--professional-gradient">
-            <children>
-                <Label layoutX="40.0" layoutY="30.0" text="VISUALIZACIÓN DE CITAS" textFill="WHITE">
-                    <font>
-                        <Font name="System Bold" size="28.0" />
-                    </font>
-                </Label>
-                <Button fx:id="btnRegresar" layoutX="750.0" layoutY="30.0"
-                        mnemonicParsing="false" onAction="#handleRegresar"
-                        prefHeight="40.0" prefWidth="120.0"
-                        styleClass="btn--ghost-white"
-                        text="← Regresar">
-                    <font>
-                        <Font name="System Bold" size="13.0" />
-                    </font>
-                </Button>
-            </children>
-        </Pane>
+      <!-- ══ HEADER ══ -->
+      <AnchorPane prefHeight="100.0" prefWidth="900.0" styleClass="header--patient-gradient">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="0.0"
+                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
 
-        <!-- Filtros -->
-        <Pane layoutX="30.0" layoutY="120.0" prefHeight="120.0" prefWidth="840.0" styleClass="card--rounded">
-            <children>
-                <HBox layoutX="20.0" layoutY="20.0" spacing="40.0" alignment="CENTER_LEFT">
-                    <children>
-                        <VBox spacing="8.0">
-                            <children>
-                                <Label text="Profesional:" textFill="#444444">
-                                    <font><Font name="System Bold" size="14.0"/></font>
-                                </Label>
-                                <ComboBox fx:id="cbxProfessional" prefWidth="250.0" promptText="Seleccionar médico..." />
-                            </children>
-                        </VBox>
+                  <!-- Títulos del header (lado izquierdo) -->
+                  <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" spacing="4.0">
+                     <children>
+                        <Label text="VISUALIZACIÓN DE CITAS" textFill="WHITE">
+                           <font><Font name="Cascadia Code Bold" size="26.0" /></font>
+                        </Label>
+                        <Label text="Panel del Profesional de Salud" textFill="#dce0ff">
+                           <font><Font name="Cascadia Code" size="13.0" /></font>
+                        </Label>
+                     </children>
+                     <padding><Insets left="30.0" /></padding>
+                  </VBox>
 
-                        <VBox spacing="8.0">
-                            <children>
-                                <Label text="Fecha:" textFill="#444444">
-                                    <font><Font name="System Bold" size="14.0"/></font>
-                                </Label>
-                                <DatePicker fx:id="dpDate" prefWidth="180.0" promptText="Seleccionar fecha..." />
-                            </children>
-                        </VBox>
+                  <!-- Botón Regresar (lado derecho) -->
+                  <Button fx:id="btnRegresar"
+                          mnemonicParsing="false"
+                          onAction="#handleRegresar"
+                          prefHeight="36.0" prefWidth="130.0"
+                          styleClass="btn--ghost-white"
+                          text="← Regresar">
+                     <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                     <HBox.margin><Insets right="25.0" /></HBox.margin>
+                  </Button>
 
-                        <HBox spacing="15.0" alignment="BOTTOM_LEFT" styleClass="filter-actions">
-                            <children>
-                                <Button fx:id="btnFind" mnemonicParsing="false" onAction="#handleFind"
-                                        prefHeight="35.0" prefWidth="100.0"
-                                        styleClass="btn--teal-rounded"
-                                        text="Buscar" />
-                                <Button fx:id="btnClearFilter" mnemonicParsing="false" onAction="#handleClearFilter"
-                                        prefHeight="35.0" prefWidth="120.0"
-                                        styleClass="btn--outline-teal-rounded"
-                                        text="Borrar Filtro" />
-                            </children>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+
+      <!-- ══ BODY ══ -->
+      <AnchorPane VBox.vgrow="ALWAYS" prefWidth="900.0" styleClass="page--gradient-light">
+         <children>
+            <VBox spacing="16.0"
+                  AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="30.0"
+                  AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="24.0">
+               <children>
+
+                  <!-- ── Tarjeta de Filtros ── -->
+                  <VBox styleClass="prof-view-app__filter-card" spacing="14.0">
+                     <children>
+
+                        <!-- Título de sección -->
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <Label text="🔍  Filtrar Citas"
+                                     styleClass="prof-view-app__filter-title">
+                                 <font><Font name="Cascadia Code Bold" size="14.0" /></font>
+                              </Label>
+                           </children>
                         </HBox>
-                    </children>
-                </HBox>
-            </children>
-        </Pane>
 
-        <!-- Tabla -->
-        <Pane layoutX="30.0" layoutY="260.0" prefHeight="310.0" prefWidth="840.0" styleClass="card--rounded">
-            <children>
-                <TableView fx:id="tblAppointments" layoutX="20.0" layoutY="20.0" prefHeight="270.0" prefWidth="800.0">
-                    <columns>
-                        <TableColumn fx:id="colId" prefWidth="80.0" text="ID Cita" />
-                        <TableColumn fx:id="colDate" prefWidth="110.0" text="Fecha" />
-                        <TableColumn fx:id="colTime" prefWidth="100.0" text="Hora" />
-                        <TableColumn fx:id="colPatientName" text="Paciente" prefWidth="150"/>
-                        <TableColumn fx:id="colProfessional" text="Profesional" prefWidth="150"/>
-                        <TableColumn fx:id="colType" text="Tipo" prefWidth="100"/>
-                        <TableColumn fx:id="colSpeciality" text="Especialidad" prefWidth="120"/>
-                        <TableColumn fx:id="colStatus" prefWidth="150.0" text="Estado" />
-                        <TableColumn fx:id="colDescription" prefWidth="155.0" text="Descripción" />
+                        <!-- Fila de controles -->
+                        <HBox spacing="24.0" alignment="CENTER_LEFT">
+                           <children>
 
-                    </columns>
-                </TableView>
-            </children>
-        </Pane>
+                              <!-- Profesional -->
+                              <VBox spacing="6.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="Profesional:" styleClass="prof-view-app__field-label">
+                                       <font><Font name="Cascadia Code Bold" size="12.0"/></font>
+                                    </Label>
+                                    <ComboBox fx:id="cbxProfessional"
+                                              maxWidth="Infinity"
+                                              promptText="Seleccionar médico..."
+                                              styleClass="combobox--styled" />
+                                 </children>
+                              </VBox>
 
-    </children>
-</AnchorPane>
+                              <!-- Fecha -->
+                              <VBox spacing="6.0">
+                                 <children>
+                                    <Label text="Fecha:" styleClass="prof-view-app__field-label">
+                                       <font><Font name="Cascadia Code Bold" size="12.0"/></font>
+                                    </Label>
+                                    <DatePicker fx:id="dpDate"
+                                                prefWidth="200.0"
+                                                promptText="Seleccionar fecha..."
+                                                styleClass="datepicker--styled" />
+                                 </children>
+                              </VBox>
+
+                              <!-- Botones -->
+                              <VBox spacing="6.0" alignment="BOTTOM_LEFT">
+                                 <children>
+                                    <Label text=" ">
+                                       <font><Font size="12.0"/></font>
+                                    </Label>
+                                    <HBox spacing="12.0" alignment="CENTER_LEFT">
+                                       <children>
+                                          <Button fx:id="btnFind"
+                                                  mnemonicParsing="false"
+                                                  onAction="#handleFind"
+                                                  prefHeight="35.0" prefWidth="110.0"
+                                                  styleClass="btn--patient-primary"
+                                                  text="🔍  Buscar">
+                                             <font><Font name="Cascadia Code Bold" size="12.0" /></font>
+                                          </Button>
+                                          <Button fx:id="btnClearFilter"
+                                                  mnemonicParsing="false"
+                                                  onAction="#handleClearFilter"
+                                                  prefHeight="35.0" prefWidth="130.0"
+                                                  styleClass="btn--patient-outline"
+                                                  text="✕  Borrar Filtro">
+                                             <font><Font name="Cascadia Code Bold" size="12.0" /></font>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+
+                           </children>
+                        </HBox>
+
+                     </children>
+                     <padding><Insets top="18.0" right="20.0" bottom="18.0" left="20.0" /></padding>
+                  </VBox>
+
+                  <!-- ── Tarjeta de Tabla ── -->
+                  <VBox styleClass="appointments__card" spacing="14.0" VBox.vgrow="ALWAYS">
+                     <children>
+
+                        <!-- Encabezado de sección -->
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <Label text="📋  Citas Registradas"
+                                     styleClass="appointments__section-title">
+                                 <font><Font name="Cascadia Code Bold" size="14.0" /></font>
+                              </Label>
+                           </children>
+                        </HBox>
+
+                        <!-- Tabla de citas -->
+                        <TableView fx:id="tblAppointments"
+                                   VBox.vgrow="ALWAYS"
+                                   maxWidth="Infinity"
+                                   styleClass="appointments__table">
+                           <columns>
+                              <TableColumn fx:id="colId"           prefWidth="75.0"  text="ID Cita" />
+                              <TableColumn fx:id="colDate"         prefWidth="110.0" text="Fecha" />
+                              <TableColumn fx:id="colTime"         prefWidth="95.0"  text="Hora" />
+                              <TableColumn fx:id="colPatientName"  prefWidth="150.0" text="Paciente" />
+                              <TableColumn fx:id="colProfessional" prefWidth="150.0" text="Profesional" />
+                              <TableColumn fx:id="colType"         prefWidth="95.0"  text="Tipo" />
+                              <TableColumn fx:id="colSpeciality"   prefWidth="115.0" text="Especialidad" />
+                              <TableColumn fx:id="colStatus"       prefWidth="110.0" text="Estado" />
+                              <TableColumn fx:id="colDescription"  prefWidth="140.0" text="Descripción" />
+                           </columns>
+                           <placeholder>
+                              <Label text="No hay citas para mostrar." styleClass="appointments__empty-label">
+                                 <font><Font name="Cascadia Code" size="13.0" /></font>
+                              </Label>
+                           </placeholder>
+                        </TableView>
+
+                     </children>
+                     <padding><Insets top="20.0" right="20.0" bottom="20.0" left="20.0" /></padding>
+                  </VBox>
+
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+
+   </children>
+</VBox>
