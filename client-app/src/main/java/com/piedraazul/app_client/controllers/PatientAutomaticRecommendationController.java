@@ -50,12 +50,9 @@ public class PatientAutomaticRecommendationController {
             this.appointment = ServiceManager.getInstance().getAppointmentService()
                     .getFirstAvailableBySpeciality(specialityProf);
 
-            if (this.appointment != null && this.appointment.getProfessionalId() != null) {
-                this.professional = ServiceManager.getInstance().getProfessionalService()
-                        .findByCod(this.appointment.getProfessionalId().intValue());
-            }
-
-            if (this.appointment == null || this.professional == null) {
+            if (this.appointment == null
+                    || this.appointment.getProfessionalId() == null
+                    || this.appointment.getProfessionalName() == null) {
                 lblFecha.setText("No hay citas disponibles próximamente.");
                 lblHora.setText("");
                 lblProfesional.setText("");
@@ -72,14 +69,14 @@ public class PatientAutomaticRecommendationController {
 
             lblFecha.setText("📅 " + fechaFormateada);
             lblHora.setText("🕒 " + horaFormateada);
-            lblProfesional.setText("👤 " + professional.getNameUser() + " " + professional.getLastNameUser());
+            lblProfesional.setText("👤 " + appointment.getProfessionalName());
             btnConfirmar.setDisable(false);
         }
     }
 
     @FXML
     private void handleConfirmar(ActionEvent event) {
-        if (this.appointment == null || this.professional == null || this.patient == null) {
+        if (this.appointment == null || this.appointment.getProfessionalId() == null || this.patient == null) {
             mostrarAlerta("Error", "Faltan datos para agendar la cita.", Alert.AlertType.ERROR);
             return;
         }
@@ -87,7 +84,7 @@ public class PatientAutomaticRecommendationController {
         // ── Patrón Builder + Director: cita autónoma con receta predefinida ──
         AppointmentDirector director = new AppointmentDirector(new AppointmentBuilder());
         Appointment slotRef = new AppointmentBuilder()
-                .setProfessionalId(this.professional.getCodProf())
+                .setProfessionalId(this.appointment.getProfessionalId())
                 .setDate(this.appointment.getDate())
                 .setTime(this.appointment.getTime())
                 .build();
