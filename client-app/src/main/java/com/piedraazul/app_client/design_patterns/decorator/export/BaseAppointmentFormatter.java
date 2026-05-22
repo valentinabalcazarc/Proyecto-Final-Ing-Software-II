@@ -8,7 +8,7 @@ import java.util.List;
  * Implementación base concreta del patrón Decorador (GoF).
  *
  * Genera el contenido de exportación de las citas en el formato
- * solicitado (JSON o HTML), sin ningún comportamiento adicional.
+ * solicitado (JSON, HTML o CSV), sin ningún comportamiento adicional.
  *
  * Es el "componente concreto" que los decoradores envuelven para
  * agregarle funcionalidad extra sin modificar esta clase.
@@ -21,11 +21,43 @@ public class BaseAppointmentFormatter implements AppointmentFormatter {
             return buildJson(appointments);
         } else if ("HTML".equalsIgnoreCase(format)) {
             return buildHtml(appointments);
+        } else if ("CSV".equalsIgnoreCase(format)) {
+            return buildCsv(appointments);
         }
         return "";
     }
 
     // Métodos privados de construcción
+
+    private String buildCsv(List<Appointment> appointments) {
+        StringBuilder sb = new StringBuilder();
+        // Cabecera
+        sb.append("ID,Paciente,Profesional,Especialidad,Tipo,Fecha,Hora,Estado,Descripción\n");
+        for (Appointment app : appointments) {
+            sb.append(app.getId()).append(",");
+            sb.append(escapeCsv(nullSafe(app.getPatientName()))).append(",");
+            sb.append(escapeCsv(nullSafe(app.getProfessionalName()))).append(",");
+            sb.append(escapeCsv(nullSafe(app.getSpecialityName()))).append(",");
+            sb.append(escapeCsv(nullSafe(app.getTypeProfName()))).append(",");
+            sb.append(app.getDate()).append(",");
+            sb.append(app.getTime()).append(",");
+            sb.append(escapeCsv(nullSafe(app.getStatus()))).append(",");
+            sb.append(escapeCsv(nullSafe(app.getDescription()))).append("\n");
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Escapa un valor para CSV: si contiene comas, comillas dobles o saltos
+     * de línea, lo envuelve entre comillas dobles y duplica las comillas internas.
+     */
+    private String escapeCsv(String value) {
+        if (value.contains(",") || value.contains("\"") || value.contains("\n")) {
+            return "\"" + value.replace("\"", "\"\"") + "\"";
+        }
+        return value;
+    }
+
     private String buildJson(List<Appointment> appointments) {
         StringBuilder sb = new StringBuilder();
         sb.append("[\n");

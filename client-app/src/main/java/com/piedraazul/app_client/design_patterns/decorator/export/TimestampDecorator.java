@@ -33,6 +33,8 @@ public class TimestampDecorator extends AppointmentFormatterDecorator {
             return addTimestampToJson(base, timestamp);
         } else if ("HTML".equalsIgnoreCase(format)) {
             return addTimestampToHtml(base, timestamp);
+        } else if ("CSV".equalsIgnoreCase(format)) {
+            return addTimestampToCsv(base, timestamp);
         }
         return base;
     }
@@ -57,5 +59,13 @@ public class TimestampDecorator extends AppointmentFormatterDecorator {
                 "<h1>Reporte de Citas Médicas</h1>",
                 "<h1>Reporte de Citas Médicas</h1>\n  " + timestampTag
         );
+    }
+
+    /**
+     * CSV: agrega una línea de comentario con la fecha/hora de exportación
+     * antes de la cabecera del CSV.
+     */
+    private String addTimestampToCsv(String base, String timestamp) {
+        return "# Exportado el: " + timestamp + "\n" + base;
     }
 }

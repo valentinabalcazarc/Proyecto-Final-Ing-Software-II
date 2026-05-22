@@ -41,6 +41,9 @@ public class ProfessionalExportSelectionController {
     private Button button_Html;
 
     @FXML
+    private Button button_Csv;
+
+    @FXML
     private Button button_Back;
 
     private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
@@ -81,6 +84,11 @@ public class ProfessionalExportSelectionController {
         generateReport("HTML");
     }
 
+    @FXML
+    private void handleExportCsv() {
+        generateReport("CSV");
+    }
+
     /**
      * Genera el reporte de citas en el formato indicado usando el
      * patrón Decorador, y notifica a los suscriptores (Observers).
@@ -93,7 +101,7 @@ public class ProfessionalExportSelectionController {
      * Si la ventana de resultados no existe o fue cerrada, la crea y
      * suscribe el Observer antes de notificar.
      *
-     * @param format el formato de exportación ("JSON" o "HTML")
+     * @param format el formato de exportación ("JSON", "HTML" o "CSV")
      */
     private void generateReport(String format) {
         // ── Patrón Decorador ──────────────────────────────────────────
