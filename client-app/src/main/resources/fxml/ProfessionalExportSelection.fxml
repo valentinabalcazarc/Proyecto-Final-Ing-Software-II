@@ -103,6 +103,29 @@
                                             <font><Font name="System Bold" size="12.0" /></font>
                                             <VBox.margin><Insets top="4.0" /></VBox.margin>
                                         </Button>
+                                </children>
+                                </VBox>
+
+                                <!-- Card CSV -->
+                                <VBox alignment="CENTER" spacing="10.0" prefWidth="270.0" prefHeight="130.0"
+                                      styleClass="prof-view-app__filter-card">
+                                    <padding><Insets top="20.0" right="20.0" bottom="20.0" left="20.0" /></padding>
+                                    <children>
+                                        <Label text="📊" textFill="#6666FF">
+                                            <font><Font name="System Bold" size="32.0" /></font>
+                                        </Label>
+                                        <Label text="Formato CSV" styleClass="prof-view-app__filter-title">
+                                            <font><Font name="System Bold" size="14.0" /></font>
+                                        </Label>
+                                        <Label text="Hoja de cálculo separada por comas" styleClass="prof-view-app__field-label">
+                                            <font><Font size="11.0" /></font>
+                                        </Label>
+                                        <Button fx:id="button_Csv" mnemonicParsing="false" onAction="#handleExportCsv"
+                                                prefHeight="36.0" prefWidth="180.0"
+                                                styleClass="btn--patient-primary" text="📥  Exportar CSV">
+                                            <font><Font name="System Bold" size="12.0" /></font>
+                                            <VBox.margin><Insets top="4.0" /></VBox.margin>
+                                        </Button>
                                     </children>
                                 </VBox>
 

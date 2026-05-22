@@ -33,6 +33,8 @@ public class StatusHighlightDecorator extends AppointmentFormatterDecorator {
             return highlightJson(base, appointments);
         } else if ("HTML".equalsIgnoreCase(format)) {
             return highlightHtml(base, appointments);
+        } else if ("CSV".equalsIgnoreCase(format)) {
+            return highlightCsv(base, appointments);
         }
         return base;
     }
@@ -101,6 +103,56 @@ public class StatusHighlightDecorator extends AppointmentFormatterDecorator {
                 + "    <span style=\"background:#fff9e5; padding:2px 8px; border-radius:4px;\">Reagendada</span>&nbsp;\n"
                 + "    <span style=\"background:#ffe5e5; padding:2px 8px; border-radius:4px;\">Cancelada</span>\n"
                 + "  </div>\n";
+    }
+
+    /**
+     * CSV: agrega una columna "Alerta" al final de cada fila según el estado.
+     */
+    private String highlightCsv(String base, List<Appointment> appointments) {
+        String[] lines = base.split("\n");
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < lines.length; i++) {
+            String line = lines[i];
+
+            // Detectar y modificar la línea de cabecera (contiene "ID,Paciente")
+            if (line.startsWith("ID,") || line.startsWith("# ")) {
+                if (line.startsWith("ID,")) {
+                    sb.append(line).append(",Alerta").append("\n");
+                } else {
+                    sb.append(line).append("\n");
+                }
+                continue;
+            }
+
+            // Línea de datos: buscar la cita correspondiente por índice
+            if (!line.trim().isEmpty()) {
+                // Encontrar el índice de la cita en la lista de líneas de datos
+                int dataIndex = getDataLineIndex(lines, i);
+                if (dataIndex >= 0 && dataIndex < appointments.size()) {
+                    String alerta = resolveJsonAlert(appointments.get(dataIndex).getStatus());
+                    // Remover el salto de línea final si existe y agregar la columna
+                    sb.append(line).append(",").append(alerta).append("\n");
+                } else {
+                    sb.append(line).append("\n");
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Calcula el índice de una línea de datos (excluyendo cabecera y comentarios).
+     */
+    private int getDataLineIndex(String[] lines, int currentIndex) {
+        int dataIndex = -1;
+        for (int i = 0; i <= currentIndex; i++) {
+            String l = lines[i];
+            if (!l.startsWith("#") && !l.startsWith("ID,") && !l.trim().isEmpty()) {
+                dataIndex++;
+            }
+        }
+        return dataIndex;
     }
 
     private String nullSafe(String value) {
