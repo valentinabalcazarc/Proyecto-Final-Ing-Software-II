@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -61,7 +62,7 @@
                            </font>
                         </Label>
 
-                        <Label text="Información del paciente" textFill="#d0d0ff">
+                        <Label text="Paso 2 — Información del paciente" textFill="#d0d0ff">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -109,6 +110,16 @@
 
                   </HBox>
 
+                  <!-- Título de sección: Datos del paciente -->
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label text="📋  Datos del paciente"
+                               styleClass="form-section-title" />
+                        <Label text="Los campos marcados con * son obligatorios"
+                               styleClass="form-section-subtitle" />
+                     </children>
+                  </VBox>
+
                   <!-- Formulario -->
                   <GridPane hgap="15.0"
                             vgap="8.0"
@@ -154,6 +165,8 @@
 
                               <TextField fx:id="txtFirstName"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Ej: Juan"
                                          styleClass="textfield--styled" />
 
                            </children>
@@ -166,17 +179,22 @@
 
                            <children>
 
-                              <Label text="Segundo nombre"
-                                     styleClass="specific-app__field-label">
-
-                                 <font>
-                                    <Font name="System Bold" size="11.0" />
-                                 </font>
-
-                              </Label>
+                              <HBox spacing="5.0" alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label text="Segundo nombre"
+                                           styleClass="specific-app__field-label">
+                                       <font>
+                                          <Font name="System Bold" size="11.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="(opcional)" styleClass="form-optional-tag" />
+                                 </children>
+                              </HBox>
 
                               <TextField fx:id="txtSecondName"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Ej: Carlos"
                                          styleClass="textfield--styled" />
 
                            </children>
@@ -200,6 +218,8 @@
 
                               <TextField fx:id="txtFirstLastName"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Ej: Pérez"
                                          styleClass="textfield--styled" />
 
                            </children>
@@ -213,17 +233,22 @@
 
                            <children>
 
-                              <Label text="Segundo apellido"
-                                     styleClass="specific-app__field-label">
-
-                                 <font>
-                                    <Font name="System Bold" size="11.0" />
-                                 </font>
-
-                              </Label>
+                              <HBox spacing="5.0" alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label text="Segundo apellido"
+                                           styleClass="specific-app__field-label">
+                                       <font>
+                                          <Font name="System Bold" size="11.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="(opcional)" styleClass="form-optional-tag" />
+                                 </children>
+                              </HBox>
 
                               <TextField fx:id="txtSecondLastName"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Ej: García"
                                          styleClass="textfield--styled" />
 
                            </children>
@@ -247,7 +272,8 @@
 
                               <ComboBox fx:id="cbxGender"
                                         prefHeight="34.0"
-                                        prefWidth="320.0"
+                                        maxWidth="Infinity"
+                                        promptText="Seleccione género"
                                         styleClass="combobox--styled" />
 
                            </children>
@@ -272,6 +298,8 @@
 
                               <TextField fx:id="txtPhone"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Ej: 3001234567"
                                          styleClass="textfield--styled" />
 
                            </children>
@@ -295,7 +323,8 @@
 
                               <DatePicker fx:id="dpBirthDate"
                                           prefHeight="34.0"
-                                          prefWidth="320.0"
+                                          maxWidth="Infinity"
+                                          promptText="Seleccione fecha"
                                           styleClass="datepicker--styled" />
 
                            </children>
@@ -339,7 +368,14 @@
 
                               </HBox>
 
-                              <!-- Checkboxes -->
+                              <!-- Checkboxes: Tipo de cita -->
+                              <Label text="Tipo de cita:"
+                                     styleClass="specific-app__field-label">
+                                 <font>
+                                    <Font name="System Bold" size="11.0" />
+                                 </font>
+                              </Label>
+
                               <HBox alignment="CENTER_LEFT"
                                     spacing="18.0">
 
@@ -416,13 +452,14 @@
 
                         </VBox>
 
-                        <!-- Fecha y hora -->
+                        <!-- Fecha y hora de la cita -->
                         <VBox spacing="4.0"
-                              GridPane.rowIndex="4">
+                              GridPane.rowIndex="4"
+                              GridPane.columnSpan="2">
 
                            <children>
 
-                              <Label text="Fecha y hora de la cita"
+                              <Label text="📅  Fecha y hora de la cita"
                                      styleClass="specific-app__field-label">
 
                                  <font>
@@ -434,7 +471,12 @@
                               <TextField fx:id="txtAppSummary"
                                          editable="false"
                                          prefHeight="34.0"
-                                         styleClass="textfield--styled" />
+                                         maxWidth="Infinity"
+                                         promptText="Se completará automáticamente"
+                                         styleClass="textfield--styled,textfield--readonly" />
+
+                              <Label text="Este campo se completa con la información del paso anterior"
+                                     styleClass="form-field-hint" />
 
                            </children>
 
@@ -444,8 +486,18 @@
 
                   </GridPane>
 
+                  <!-- Título sección: Observación -->
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label text="📝  Observaciones"
+                               styleClass="form-section-title" />
+                        <Label text="Agregue notas relevantes sobre la cita"
+                               styleClass="form-section-subtitle" />
+                     </children>
+                  </VBox>
+
                   <!-- Observación -->
-                  <VBox spacing="5.0">
+                  <VBox spacing="5.0" styleClass="card--form">
 
                      <children>
 
@@ -459,9 +511,9 @@
                         </Label>
 
                         <TextArea fx:id="txtObservation"
-                                  prefHeight="80.0"
-                                  promptText="Ingrese notas adicionales aquí..."
-                                  styleClass="textarea--rounded" />
+                                  prefHeight="100.0"
+                                  promptText="Ingrese notas adicionales aquí... (motivo de consulta, síntomas, etc.)"
+                                  styleClass="textarea--styled" />
 
                      </children>
 
@@ -479,7 +531,7 @@
                                 prefHeight="40.0"
                                 prefWidth="170.0"
                                 styleClass="btn--patient-outline"
-                                text="&lt;- Regresar" />
+                                text="← Regresar" />
 
                         <AnchorPane HBox.hgrow="ALWAYS" />
 

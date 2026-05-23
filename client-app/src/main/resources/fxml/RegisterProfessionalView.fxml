@@ -7,10 +7,12 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -73,6 +75,16 @@
 
                   </VBox>
 
+                  <!-- Título sección: Datos personales -->
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label text="👤  Datos personales"
+                               styleClass="form-section-title" />
+                        <Label text="Los campos marcados con * son obligatorios"
+                               styleClass="form-section-subtitle" />
+                     </children>
+                  </VBox>
+
                   <!-- Formulario: Datos personales -->
                   <GridPane hgap="15.0"
                             vgap="8.0"
@@ -117,12 +129,12 @@
 
                               <TextField fx:id="txtFirstName"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Ej: Juan"
                                          styleClass="textfield--styled" />
 
-                              <Label fx:id="lb_errorFirstName" text="Error" textFill="RED"
-                                     visible="false">
-                                 <font><Font size="10.0" /></font>
-                              </Label>
+                              <Label fx:id="lb_errorFirstName" text="" styleClass="form-error-label"
+                                     visible="false" />
 
                            </children>
 
@@ -143,12 +155,12 @@
 
                               <TextField fx:id="txtFirstLastName"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Ej: Pérez"
                                          styleClass="textfield--styled" />
 
-                              <Label fx:id="lb_errorFirstLastName" text="Error" textFill="RED"
-                                     visible="false">
-                                 <font><Font size="10.0" /></font>
-                              </Label>
+                              <Label fx:id="lb_errorFirstLastName" text="" styleClass="form-error-label"
+                                     visible="false" />
 
                            </children>
 
@@ -160,21 +172,26 @@
 
                            <children>
 
-                              <Label text="Segundo nombre"
-                                     styleClass="specific-app__field-label">
-                                 <font>
-                                    <Font name="System Bold" size="11.0" />
-                                 </font>
-                              </Label>
+                              <HBox spacing="5.0" alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label text="Segundo nombre"
+                                           styleClass="specific-app__field-label">
+                                       <font>
+                                          <Font name="System Bold" size="11.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="(opcional)" styleClass="form-optional-tag" />
+                                 </children>
+                              </HBox>
 
                               <TextField fx:id="txtSecondName"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Ej: Carlos"
                                          styleClass="textfield--styled" />
 
-                              <Label fx:id="lb_errorSecondName" text="Error" textFill="RED"
-                                     visible="false">
-                                 <font><Font size="10.0" /></font>
-                              </Label>
+                              <Label fx:id="lb_errorSecondName" text="" styleClass="form-error-label"
+                                     visible="false" />
 
                            </children>
 
@@ -187,21 +204,26 @@
 
                            <children>
 
-                              <Label text="Segundo apellido"
-                                     styleClass="specific-app__field-label">
-                                 <font>
-                                    <Font name="System Bold" size="11.0" />
-                                 </font>
-                              </Label>
+                              <HBox spacing="5.0" alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label text="Segundo apellido"
+                                           styleClass="specific-app__field-label">
+                                       <font>
+                                          <Font name="System Bold" size="11.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="(opcional)" styleClass="form-optional-tag" />
+                                 </children>
+                              </HBox>
 
                               <TextField fx:id="txtSecondLastName"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Ej: García"
                                          styleClass="textfield--styled" />
 
-                              <Label fx:id="lb_errorSecondLastName" text="Error" textFill="RED"
-                                     visible="false">
-                                 <font><Font size="10.0" /></font>
-                              </Label>
+                              <Label fx:id="lb_errorSecondLastName" text="" styleClass="form-error-label"
+                                     visible="false" />
 
                            </children>
 
@@ -222,12 +244,12 @@
 
                               <TextField fx:id="txtNumCedula"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Ej: 1234567890"
                                          styleClass="textfield--styled" />
 
-                              <Label fx:id="lb_errorID" text="Error" textFill="RED"
-                                     visible="false">
-                                 <font><Font size="10.0" /></font>
-                              </Label>
+                              <Label fx:id="lb_errorID" text="" styleClass="form-error-label"
+                                     visible="false" />
 
                            </children>
 
@@ -249,12 +271,12 @@
 
                               <TextField fx:id="txtPhoneNumber"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Ej: 3001234567"
                                          styleClass="textfield--styled" />
 
-                              <Label fx:id="lb_errorPhone" text="Error" textFill="RED"
-                                     visible="false">
-                                 <font><Font size="10.0" /></font>
-                              </Label>
+                              <Label fx:id="lb_errorPhone" text="" styleClass="form-error-label"
+                                     visible="false" />
 
                            </children>
 
@@ -277,19 +299,25 @@
                                  <children>
                                     <PasswordField fx:id="txtPassword"
                                                    prefHeight="34.0"
+                                                   promptText="Mínimo 6 caracteres"
                                                    styleClass="textfield--styled"
                                                    HBox.hgrow="ALWAYS" />
 
                                     <Button fx:id="btnEye" prefHeight="30.0" prefWidth="30.0"
                                             text="(-)" onAction="#handleTogglePassword"
-                                            styleClass="btn--eye-toggle" />
+                                            styleClass="btn--eye-toggle">
+                                       <tooltip>
+                                          <Tooltip text="Mostrar/ocultar contraseña" />
+                                       </tooltip>
+                                    </Button>
                                  </children>
                               </HBox>
 
-                              <Label fx:id="lb_errorPassword" text="Error" textFill="RED"
-                                     visible="false">
-                                 <font><Font size="10.0" /></font>
-                              </Label>
+                              <Label text="Requiere mayúscula, número y carácter especial"
+                                     styleClass="form-field-hint" />
+
+                              <Label fx:id="lb_errorPassword" text="" styleClass="form-error-label"
+                                     visible="false" />
 
                            </children>
 
@@ -311,6 +339,8 @@
 
                               <PasswordField fx:id="txtConPassword"
                                              prefHeight="34.0"
+                                             maxWidth="Infinity"
+                                             promptText="Repita su contraseña"
                                              styleClass="textfield--styled" />
 
                            </children>
@@ -332,7 +362,8 @@
 
                               <ComboBox fx:id="cbxTipoProf"
                                         prefHeight="34.0"
-                                        prefWidth="320.0"
+                                        maxWidth="Infinity"
+                                        promptText="Seleccione tipo"
                                         styleClass="combobox--styled" />
 
                            </children>
@@ -355,7 +386,8 @@
 
                               <ComboBox fx:id="cbxEspecialidad"
                                         prefHeight="34.0"
-                                        prefWidth="320.0"
+                                        maxWidth="Infinity"
+                                        promptText="Seleccione especialidad"
                                         styleClass="combobox--styled" />
 
                            </children>
@@ -377,7 +409,8 @@
 
                               <ComboBox fx:id="cbxGenero"
                                         prefHeight="34.0"
-                                        prefWidth="320.0"
+                                        maxWidth="Infinity"
+                                        promptText="Seleccione género"
                                         styleClass="combobox--styled" />
 
                            </children>
@@ -387,6 +420,16 @@
                      </children>
 
                   </GridPane>
+
+                  <!-- Título sección: Seguridad y horarios -->
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label text="🔒  Seguridad y horarios"
+                               styleClass="form-section-title" />
+                        <Label text="Configure la pregunta de seguridad y los horarios de atención"
+                               styleClass="form-section-subtitle" />
+                     </children>
+                  </VBox>
 
                   <!-- Seguridad y horarios -->
                   <GridPane hgap="15.0"
@@ -432,6 +475,7 @@
                               <ComboBox fx:id="cbxSecurityQuestion"
                                         prefHeight="34.0"
                                         maxWidth="Infinity"
+                                        promptText="Seleccione una pregunta"
                                         styleClass="combobox--styled" />
 
                            </children>
@@ -454,6 +498,8 @@
 
                               <TextField fx:id="txtSecurityAnswer"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Escriba su respuesta"
                                          styleClass="textfield--styled" />
 
                            </children>
@@ -475,8 +521,12 @@
 
                               <TextField fx:id="txtArrivalTime"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
                                          promptText="HH:mm"
                                          styleClass="textfield--styled" />
+
+                              <Label text="Formato 24h, ej: 08:00"
+                                     styleClass="form-field-hint" />
 
                            </children>
 
@@ -498,8 +548,12 @@
 
                               <TextField fx:id="txtDepartureTime"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
                                          promptText="HH:mm"
                                          styleClass="textfield--styled" />
+
+                              <Label text="Formato 24h, ej: 17:00"
+                                     styleClass="form-field-hint" />
 
                            </children>
 
@@ -520,8 +574,12 @@
 
                               <TextField fx:id="txtAttentionInterval"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
                                          promptText="Ej: 30"
                                          styleClass="textfield--styled" />
+
+                              <Label text="Tiempo en minutos entre citas"
+                                     styleClass="form-field-hint" />
 
                            </children>
 
@@ -534,10 +592,8 @@
                               GridPane.rowIndex="3">
 
                            <children>
-                              <Label fx:id="lb_errorSchedule" text="Error" textFill="RED"
-                                     visible="false">
-                                 <font><Font size="10.0" /></font>
-                              </Label>
+                              <Label fx:id="lb_errorSchedule" text="" styleClass="form-error-label"
+                                     visible="false" />
                            </children>
 
                         </VBox>
