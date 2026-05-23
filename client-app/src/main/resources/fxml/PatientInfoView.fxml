@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -107,9 +108,17 @@
                   </HBox>
 
                   <!-- Error cédula -->
-                  <Label fx:id="lblErrorCedula" text="Error" textFill="RED" visible="false">
-                     <font><Font size="11.0" /></font>
-                  </Label>
+                  <Label fx:id="lblErrorCedula" text="" styleClass="form-error-label" visible="false" />
+
+                  <!-- Título de sección: Datos personales -->
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label text="📋  Datos personales del paciente"
+                               styleClass="form-section-title" />
+                        <Label text="Los campos marcados con * son obligatorios"
+                               styleClass="form-section-subtitle" />
+                     </children>
+                  </VBox>
 
                   <!-- Formulario -->
                   <GridPane hgap="15.0"
@@ -155,12 +164,12 @@
 
                               <TextField fx:id="txtPrimerNombre"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Ej: Juan"
                                          styleClass="textfield--styled" />
 
-                              <Label fx:id="lblErrorPrimerNombre" text="Error" textFill="RED"
-                                     visible="false">
-                                 <font><Font size="10.0" /></font>
-                              </Label>
+                              <Label fx:id="lblErrorPrimerNombre" text="" styleClass="form-error-label"
+                                     visible="false" />
 
                            </children>
 
@@ -172,23 +181,26 @@
 
                            <children>
 
-                              <Label text="Segundo nombre"
-                                     styleClass="specific-app__field-label">
-
-                                 <font>
-                                    <Font name="System Bold" size="11.0" />
-                                 </font>
-
-                              </Label>
+                              <HBox spacing="5.0" alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label text="Segundo nombre"
+                                           styleClass="specific-app__field-label">
+                                       <font>
+                                          <Font name="System Bold" size="11.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="(opcional)" styleClass="form-optional-tag" />
+                                 </children>
+                              </HBox>
 
                               <TextField fx:id="txtSegundoNombre"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Ej: Carlos"
                                          styleClass="textfield--styled" />
 
-                              <Label fx:id="lblErrorSegundoNombre" text="Error" textFill="RED"
-                                     visible="false">
-                                 <font><Font size="10.0" /></font>
-                              </Label>
+                              <Label fx:id="lblErrorSegundoNombre" text="" styleClass="form-error-label"
+                                     visible="false" />
 
                            </children>
 
@@ -211,12 +223,12 @@
 
                               <TextField fx:id="txtPrimerApellido"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Ej: Pérez"
                                          styleClass="textfield--styled" />
 
-                              <Label fx:id="lblErrorPrimerApellido" text="Error" textFill="RED"
-                                     visible="false">
-                                 <font><Font size="10.0" /></font>
-                              </Label>
+                              <Label fx:id="lblErrorPrimerApellido" text="" styleClass="form-error-label"
+                                     visible="false" />
 
                            </children>
 
@@ -229,23 +241,26 @@
 
                            <children>
 
-                              <Label text="Segundo apellido"
-                                     styleClass="specific-app__field-label">
-
-                                 <font>
-                                    <Font name="System Bold" size="11.0" />
-                                 </font>
-
-                              </Label>
+                              <HBox spacing="5.0" alignment="CENTER_LEFT">
+                                 <children>
+                                    <Label text="Segundo apellido"
+                                           styleClass="specific-app__field-label">
+                                       <font>
+                                          <Font name="System Bold" size="11.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="(opcional)" styleClass="form-optional-tag" />
+                                 </children>
+                              </HBox>
 
                               <TextField fx:id="txtSegundoApellido"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Ej: García"
                                          styleClass="textfield--styled" />
 
-                              <Label fx:id="lblErrorSegundoApellido" text="Error" textFill="RED"
-                                     visible="false">
-                                 <font><Font size="10.0" /></font>
-                              </Label>
+                              <Label fx:id="lblErrorSegundoApellido" text="" styleClass="form-error-label"
+                                     visible="false" />
 
                            </children>
 
@@ -268,7 +283,8 @@
 
                               <ComboBox fx:id="cbxGenero"
                                         prefHeight="34.0"
-                                        prefWidth="320.0"
+                                        maxWidth="Infinity"
+                                        promptText="Seleccione género"
                                         styleClass="combobox--styled" />
 
                            </children>
@@ -293,12 +309,12 @@
 
                               <TextField fx:id="txtCelular"
                                          prefHeight="34.0"
+                                         maxWidth="Infinity"
+                                         promptText="Ej: 3001234567"
                                          styleClass="textfield--styled" />
 
-                              <Label fx:id="lblErrorCelular" text="Error" textFill="RED"
-                                     visible="false">
-                                 <font><Font size="10.0" /></font>
-                              </Label>
+                              <Label fx:id="lblErrorCelular" text="" styleClass="form-error-label"
+                                     visible="false" />
 
                            </children>
 
@@ -321,13 +337,12 @@
 
                               <DatePicker fx:id="dpFechaNacimiento"
                                           prefHeight="34.0"
-                                          prefWidth="320.0"
+                                          maxWidth="Infinity"
+                                          promptText="Seleccione fecha"
                                           styleClass="datepicker--styled" />
 
-                              <Label fx:id="lblErrorFecha" text="Error" textFill="RED"
-                                     visible="false">
-                                 <font><Font size="10.0" /></font>
-                              </Label>
+                              <Label fx:id="lblErrorFecha" text="" styleClass="form-error-label"
+                                     visible="false" />
 
                            </children>
 
@@ -341,24 +356,30 @@
 
                            <children>
 
+                              <Label text="Edad calculada"
+                                     styleClass="specific-app__field-label">
+                                 <font>
+                                    <Font name="System Bold" size="11.0" />
+                                 </font>
+                              </Label>
+
                               <HBox alignment="CENTER_LEFT"
                                     spacing="8.0">
 
                                  <children>
 
-                                    <Label text="Edad:"
-                                           styleClass="specific-app__field-label">
-
-                                       <font>
-                                          <Font name="System Bold" size="13.0" />
-                                       </font>
-
-                                    </Label>
-
                                     <TextField fx:id="txtEdad"
                                                prefHeight="34.0"
-                                               prefWidth="120.0"
-                                               styleClass="textfield--styled" />
+                                               prefWidth="100.0"
+                                               promptText="—"
+                                               styleClass="textfield--styled,form-age-badge" />
+
+                                    <Label text="años"
+                                           styleClass="specific-app__field-label">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
 
                                  </children>
 
@@ -383,7 +404,7 @@
                                 prefHeight="40.0"
                                 prefWidth="170.0"
                                 styleClass="btn--patient-outline"
-                                text="&lt;- Regresar" />
+                                text="← Regresar" />
 
                         <AnchorPane HBox.hgrow="ALWAYS" />
 
@@ -392,7 +413,7 @@
                                 prefHeight="40.0"
                                 prefWidth="170.0"
                                 styleClass="btn--success-shadow"
-                                text="Continuar" />
+                                text="Continuar →" />
 
                      </children>
 
