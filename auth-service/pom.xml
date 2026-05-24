@@ -109,7 +109,6 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- ══ TEST ══════════════════════════════════════════════════════ -->
 
 		<!-- JUnit 5 + Mockito + AssertJ -->
 		<dependency>

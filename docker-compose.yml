@@ -85,7 +85,6 @@ services:
     networks:
       - piedraazul-net
     healthcheck:
-      # CORRECCIÓN: la ruta real es /piedraAzul/actuator/health por el context-path
       test: ["CMD-SHELL", "wget --spider -q http://localhost:8081/piedraAzul/actuator/health || exit 1"]
       interval: 15s
       timeout: 10s
