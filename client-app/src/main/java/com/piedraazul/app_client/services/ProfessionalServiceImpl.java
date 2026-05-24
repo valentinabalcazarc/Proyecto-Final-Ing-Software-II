@@ -21,7 +21,7 @@ import java.util.List;
 public class ProfessionalServiceImpl implements ProfessionalService {
 
     private final HttpClient client = HttpClient.newHttpClient();
-    private final String BASE_URL = "http://localhost:8082/piedraAzul/professionals";
+    private final String BASE_URL = "http://localhost:8080/piedraAzul/professionals";
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Override

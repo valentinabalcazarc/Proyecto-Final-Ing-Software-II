@@ -67,7 +67,7 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
         String userId = claims.getSubject();
         String userRole = claims.get("role", String.class);
 
-        System.out.println("===== JWT DEBUG =====");
+        System.out.println("===== JWT =====");
         System.out.println("User ID: " + userId);
         System.out.println("Role: " + userRole);
         System.out.println("=====================");
@@ -76,12 +76,6 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
             return respondWith(exchange, HttpStatus.FORBIDDEN);
         }
 
-        // =====================================================
-        // FIX: Usar ServerHttpRequestDecorator para evitar
-        // UnsupportedOperationException con ReadOnlyHttpHeaders
-        // Spring Security hace los headers read-only antes de
-        // que el Gateway Filter Chain corra.
-        // =====================================================
         final String finalUserId = userId;
         final String finalUserRole = userRole;
 

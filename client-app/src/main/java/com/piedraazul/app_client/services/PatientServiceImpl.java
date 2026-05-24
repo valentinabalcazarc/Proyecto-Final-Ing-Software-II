@@ -18,7 +18,7 @@ import java.util.List;
 public class PatientServiceImpl implements PatientService {
 
     private final HttpClient client = HttpClient.newHttpClient();
-    private final String API_URL = "http://localhost:8082/piedraAzul/patients";
+    private final String API_URL = "http://localhost:8080/piedraAzul/patients";
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Override
