@@ -1,0 +1,23 @@
+# Ignorar artefactos de compilación locales (el build se hace dentro del contenedor)
+target/
+*.class
+*.jar
+*.war
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+*.iws
+
+# Git
+.git/
+.gitignore
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
