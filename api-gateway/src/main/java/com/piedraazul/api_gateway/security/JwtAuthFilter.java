@@ -35,7 +35,8 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
             "/piedraAzul/auth/users", List.of("Admin"),
             "/piedraAzul/professionals", List.of("Admin", "Professional"),
             "/piedraAzul/patients", List.of("Admin", "Professional", "Patient"),
-            "/piedraAzul/appointments", List.of("Admin", "Professional", "Patient")
+            "/piedraAzul/appointments", List.of("Admin", "Professional", "Patient"),
+            "/piedraAzul/professionals/speciality/", List.of("Patient")
     );
 
     @Override

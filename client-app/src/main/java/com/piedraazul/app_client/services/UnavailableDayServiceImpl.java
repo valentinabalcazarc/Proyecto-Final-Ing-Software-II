@@ -1,5 +1,6 @@
 package com.piedraazul.app_client.services;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.piedraazul.app_client.dto.UnavailableDayDTO;
@@ -8,6 +9,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UnavailableDayServiceImpl implements UnavailableDayService {
 
@@ -33,6 +36,55 @@ public class UnavailableDayServiceImpl implements UnavailableDayService {
             System.out.println(">> Body create UnavailableDay: " + response.body());
 
             return response.statusCode() == 201 || response.statusCode() == 200;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public List<UnavailableDayDTO> getByProfessional(Long codProf) {
+        List<UnavailableDayDTO> result = new ArrayList<>();
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/professional/" + codProf))
+                    .header("Authorization", "Bearer " + SessionManager.getToken())
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(">> Status getByProfessional: " + response.statusCode());
+            System.out.println(">> Body getByProfessional: " + response.body());
+
+            // 200 = hay días, 204 = lista vacía (ambos son casos normales)
+            if (response.statusCode() == 200) {
+                // El backend devuelve UnavailableDay con campos: id, date, reason
+                // Los mapeamos a nuestro DTO
+                List<UnavailableDayDTO> parsed = objectMapper.readValue(
+                        response.body(),
+                        new TypeReference<List<UnavailableDayDTO>>() {}
+                );
+                result.addAll(parsed);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/" + id))
+                    .header("Authorization", "Bearer " + SessionManager.getToken())
+                    .DELETE()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(">> Status delete UnavailableDay id=" + id + ": " + response.statusCode());
+
+            return response.statusCode() == 204 || response.statusCode() == 200;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

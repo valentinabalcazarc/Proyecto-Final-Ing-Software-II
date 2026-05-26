@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 @Data
 public class UnavailableDayDTO {
+    private Long id;
     private Long codProf;
     private LocalDate date;
     private String reason;
