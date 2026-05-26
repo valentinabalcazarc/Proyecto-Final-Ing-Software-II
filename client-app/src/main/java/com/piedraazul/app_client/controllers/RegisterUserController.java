@@ -1,5 +1,6 @@
 package com.piedraazul.app_client.controllers;
 
+import com.piedraazul.app_client.models.Patient;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,9 @@ import com.piedraazul.app_client.enums.StatusUserEnum;
 import com.piedraazul.app_client.models.User;
 import com.piedraazul.app_client.services.ServiceManager;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 public class RegisterUserController {
 
     // --- Campos del formulario ---
@@ -24,7 +28,10 @@ public class RegisterUserController {
     @FXML private PasswordField pF_password;
     @FXML private PasswordField pF_password2;
     @FXML private TextField     tF_SecurityQuestion;
-
+    @FXML private TextField txtCelular;
+    @FXML private TextField txtEdad;
+    @FXML private ComboBox<String> cbxGenero;
+    @FXML private DatePicker dpFechaNacimiento;
     @FXML private ComboBox<String> cbx_SecurityQuestion;
 
     // --- Etiquetas de error ---
@@ -34,6 +41,8 @@ public class RegisterUserController {
     @FXML private Label lb_errorFirstLastName;
     @FXML private Label lb_errorSecondLastName;
     @FXML private Label lb_errorPassword;
+    @FXML private Label lblErrorCelular;
+    @FXML private Label lblErrorFecha;
 
     @FXML private Button jb_Eye;
     @FXML private Button btn_Save;
@@ -51,7 +60,26 @@ public class RegisterUserController {
                 "¿Cuál es el nombre del lugar donde naciste?"));
         cbx_SecurityQuestion.getSelectionModel().selectFirst();
 
+        cbxGenero.getItems().addAll("Male", "Female", "Other");
+        cbxGenero.getSelectionModel().selectFirst();
+
+        txtEdad.setEditable(false);
+        txtEdad.setDisable(true);
+        txtEdad.setStyle("-fx-opacity: 1; -fx-text-fill: black; -fx-background-color: #cccccc;");
+
+        dpFechaNacimiento.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                lblErrorFecha.setVisible(false);
+                txtEdad.setText(String.valueOf(calcularEdad(newValue)));
+            } else {
+                lblErrorFecha.setVisible(true);
+                lblErrorFecha.setText("Campo requerido");
+                txtEdad.setText("");
+            }
+        });
+
         ocultarErrores();
+        configurarCalendario();
     }
 
     // ---- Mostrar/ocultar contraseña --------------------------------
@@ -82,13 +110,30 @@ public class RegisterUserController {
             u.setSecurityQuestion(cbx_SecurityQuestion.getValue());
             u.setSecurityAnswer(tF_SecurityQuestion.getText().trim());
 
-            var registrado = ServiceManager.getInstance().getUserService().regUser(u);
+            Patient patient = new Patient();
+            patient.setIdPatient(Long.parseLong(tF_userID.getText().trim()));
+            patient.setNamePatient(tF_userFirstName.getText().trim());
+            patient.setSecondNamePatient(tF_userSecondName.getText().trim());
+            patient.setLastNamePatient(tF_userFirstLastName.getText().trim());
+            patient.setSecondLastNamePatient(tF_userSecondLastName.getText().trim());
+            patient.setPhonePatient(Long.parseLong(txtCelular.getText().trim()));
+            patient.setDateBirthPatient(dpFechaNacimiento.getValue());
+            patient.setGenderPatient(cbxGenero.getValue());
 
-            if (registrado != null) {
-                showAlert(Alert.AlertType.INFORMATION, "Éxito", "Registro exitoso.");
-                navigateTo("/fxml/LoginView.fxml", "Piedra Azul - Login", btn_Save);
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Error", "Error al registrar. Intenta de nuevo.");
+            var regUser = ServiceManager.getInstance().getUserService().regUser(u);
+
+            if (regUser != null) {
+                ServiceManager.getInstance().getUserService()
+                        .authUser(u.getCedUser(), pF_password.getText());
+
+                var regPat = ServiceManager.getInstance().getPatientService().regPatient(patient);
+
+                if (regPat) {
+                    showAlert(Alert.AlertType.INFORMATION, "Éxito", "Registro exitoso.");
+                    navigateTo("/fxml/LoginView.fxml", "Piedra Azul - Login", btn_Save);
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Error", "Error al registrar paciente.");
+                }
             }
 
         } catch (Exception e) {
@@ -144,6 +189,15 @@ public class RegisterUserController {
             lb_errorSecondLastName.setText("Caracteres inválidos"); lb_errorSecondLastName.setVisible(true); ok = false;
         }
 
+        if (txtCelular.getText().trim().isEmpty()) {
+            lblErrorCelular.setText("Campo requerido"); lblErrorCelular.setVisible(true); ok = false;
+        } else {
+            try { Integer.parseInt(txtCelular.getText().trim()); }
+            catch (NumberFormatException e) {
+                lblErrorCelular.setText("Solo números"); lblErrorCelular.setVisible(true); ok = false;
+            }
+        }
+
         if (pF_password.getText().isEmpty()) {
             lb_errorPassword.setText("Campo requerido"); lb_errorPassword.setVisible(true); ok = false;
         } else if (!validarPasswordSegura(pF_password.getText())) {
@@ -154,11 +208,35 @@ public class RegisterUserController {
             lb_errorPassword.setVisible(true); ok = false;
         }
 
+
         if (!ok) {
             showAlert(Alert.AlertType.WARNING, "Campos incompletos",
                     "Por favor corrige los errores marcados.");
         }
         return ok;
+    }
+
+
+    private int calcularEdad(LocalDate fechaNac) {
+        if (fechaNac == null)
+            return 0;
+        return Period.between(fechaNac, LocalDate.now()).getYears();
+    }
+
+    private void configurarCalendario() {
+        dpFechaNacimiento.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (date == null || empty)
+                    return;
+
+                if (date.isAfter(LocalDate.now())) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #eeeeee;");
+                }
+            }
+        });
     }
 
     private boolean esNombreValido(String texto) {
@@ -179,6 +257,8 @@ public class RegisterUserController {
         lb_errorFirstLastName.setVisible(false);
         lb_errorSecondLastName.setVisible(false);
         lb_errorPassword.setVisible(false);
+        lblErrorCelular.setVisible(false);
+        lblErrorFecha.setVisible(false);
     }
 
     private void showAlert(Alert.AlertType type, String title, String content) {
