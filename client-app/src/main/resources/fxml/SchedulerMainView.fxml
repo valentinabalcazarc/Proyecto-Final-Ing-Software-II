@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="460.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.piedraazul.app_client.controllers.SchedulerMainController">
+   <children>
+
+      <!-- ══ HEADER ══ -->
+      <AnchorPane prefHeight="110.0" prefWidth="680.0" styleClass="header--patient-gradient">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+
+                  <!-- Títulos del header (lado izquierdo) -->
+                  <VBox alignment="CENTER_LEFT" spacing="4.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="MENÚ PRINCIPAL" textFill="WHITE">
+                           <font><Font name="Cascadia Code Bold" size="26.0" /></font>
+                        </Label>
+                        <Label text="Panel del Agendador" textFill="#dce0ff">
+                           <font><Font name="Cascadia Code" size="14.0" /></font>
+                        </Label>
+                     </children>
+                     <padding><Insets left="30.0" /></padding>
+                  </VBox>
+
+                  <!-- Botón Cerrar Sesión (lado derecho) -->
+                  <Button fx:id="btnCerrarSesion" mnemonicParsing="false" onAction="#handleCerrarSesion" prefHeight="36.0" prefWidth="140.0" styleClass="btn--ghost-white" text="Cerrar Sesión">
+                     <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                     <HBox.margin><Insets right="25.0" /></HBox.margin>
+                  </Button>
+
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+
+      <!-- ══ BODY ══ -->
+      <AnchorPane prefWidth="680.0" styleClass="page--gradient-professional" VBox.vgrow="ALWAYS">
+         <children>
+            <VBox alignment="CENTER" spacing="22.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+
+                  <!-- Subtítulo de sección -->
+                  <Label styleClass="patient-main__section-title" text="Gestión de Citas y Pacientes">
+                     <font><Font name="Cascadia Code Bold" size="15.0" /></font>
+                  </Label>
+
+                  <!-- Fila 1 de tarjetas -->
+                  <HBox alignment="CENTER" spacing="28.0">
+                     <children>
+
+                        <!-- Tarjeta: Agendar Cita -->
+                        <VBox alignment="CENTER" prefHeight="140.0" prefWidth="200.0" spacing="12.0" styleClass="professional-main__action-card">
+                           <children>
+                              <Label styleClass="professional-main__card-icon" text="📅">
+                                 <font><Font size="32.0" /></font>
+                              </Label>
+                              <Button fx:id="btnAddAppointment" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleAddAppointment" prefHeight="38.0" styleClass="btn--patient-primary" text="Agendar Cita">
+                                 <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                              </Button>
+                           </children>
+                           <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
+                        </VBox>
+
+                        <!-- Tarjeta: Gestionar Citas -->
+                        <VBox alignment="CENTER" prefHeight="140.0" prefWidth="200.0" spacing="12.0" styleClass="professional-main__action-card">
+                           <children>
+                              <Label styleClass="professional-main__card-icon" text="📂">
+                                 <font><Font size="32.0" /></font>
+                              </Label>
+                              <Button fx:id="btnManageAppointments" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleManageAppointments" prefHeight="38.0" styleClass="btn--patient-outline" text="Gestionar Citas">
+                                 <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                              </Button>
+                           </children>
+                           <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
+                        </VBox>
+
+                     </children>
+                  </HBox>
+
+                  <!-- Fila 2 de tarjetas -->
+                  <HBox alignment="CENTER" spacing="28.0">
+                     <children>
+
+                        <!-- Tarjeta: Ver Mis Citas -->
+                        <VBox alignment="CENTER" prefHeight="140.0" prefWidth="200.0" spacing="12.0" styleClass="professional-main__action-card">
+                           <children>
+                              <Label styleClass="professional-main__card-icon" text="🗓✔">
+                                 <font><Font size="32.0" /></font>
+                              </Label>
+                              <Button fx:id="btnViewAppointments" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleViewAppointments" prefHeight="38.0" styleClass="btn--patient-primary" text="Ver Citas">
+                                 <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                              </Button>
+                           </children>
+                           <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
+                        </VBox>
+
+                        <!-- Tarjeta: Exportar Datos -->
+                        <VBox alignment="CENTER" prefHeight="140.0" prefWidth="200.0" spacing="12.0" styleClass="professional-main__action-card">
+                           <children>
+                              <Label styleClass="professional-main__card-icon" text="📤">
+                                 <font><Font size="32.0" /></font>
+                              </Label>
+                              <Button fx:id="btnExportAppointments" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleExportAppointments" prefHeight="38.0" styleClass="btn--patient-outline" text="Exportar Datos">
+                                 <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                              </Button>
+                           </children>
+                           <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
+                        </VBox>
+
+                     </children>
+                  </HBox>
+
+                  <!-- Footer -->
+                  <Label styleClass="appointments__empty-label" text="Servicios Médicos Piedra Azul © 2026">
+                     <font><Font size="11.0" /></font>
+                  </Label>
+
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+
+   </children>
+</VBox>
