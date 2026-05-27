@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="800.0"
+<VBox prefHeight="650.0" prefWidth="900.0"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.piedraazul.app_client.controllers.PatientSelectServiceController">
@@ -21,7 +21,7 @@
    <children>
 
       <!-- ══ HEADER ══ -->
-      <AnchorPane prefHeight="110.0" prefWidth="800.0" styleClass="header--patient-gradient">
+      <AnchorPane prefHeight="110.0" prefWidth="900.0" styleClass="header--patient-gradient">
          <children>
             <HBox alignment="CENTER_LEFT" spacing="0.0"
                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
@@ -53,13 +53,13 @@
       </AnchorPane>
 
       <!-- ══ BODY ══ -->
-      <AnchorPane VBox.vgrow="ALWAYS" prefWidth="800.0" styleClass="page--gradient-light">
+      <AnchorPane VBox.vgrow="ALWAYS" prefWidth="900.0" styleClass="page--gradient-light">
          <children>
-            <VBox spacing="28.0"
-                  AnchorPane.bottomAnchor="30.0"
+            <VBox spacing="20.0"
+                  AnchorPane.bottomAnchor="24.0"
                   AnchorPane.leftAnchor="40.0"
                   AnchorPane.rightAnchor="40.0"
-                  AnchorPane.topAnchor="30.0">
+                  AnchorPane.topAnchor="24.0">
                <children>
 
                   <!-- Subtítulo de sección -->
@@ -67,12 +67,45 @@
                      <font><Font name="Cascadia Code Bold" size="15.0" /></font>
                   </Label>
 
-                  <!-- ═══ Tarjetas de servicio ═══ -->
+                  <!-- ═══ Mensaje de restricción (oculto por defecto) ═══ -->
+                  <Label fx:id="lblRestriccion" visible="false" managed="false"
+                         text="⚠ Como es tu primera vez, solo puedes agendar una Consulta General. Después podrás acceder a las especialidades."
+                         wrapText="true" maxWidth="Infinity"
+                         styleClass="service__restriction-banner">
+                     <font><Font name="Segoe UI" size="13.0" /></font>
+                  </Label>
+
+                  <!-- ═══ Tarjeta: Consulta General (siempre habilitada) ═══ -->
+                  <VBox styleClass="service__card--general"
+                        alignment="CENTER" spacing="10.0"
+                        maxWidth="Infinity">
+                     <children>
+                        <Label text="🩺" styleClass="service__card-icon">
+                           <font><Font size="36.0" /></font>
+                        </Label>
+                        <Label text="Consulta General" styleClass="service__card-title" wrapText="true" maxWidth="Infinity">
+                           <font><Font name="Cascadia Code Bold" size="14.0" /></font>
+                        </Label>
+                        <Label text="Valoración médica inicial para evaluar tu estado de salud y definir el tratamiento más adecuado. Requerida para pacientes nuevos."
+                               styleClass="service__card-desc" wrapText="true" maxWidth="Infinity">
+                           <font><Font name="Segoe UI" size="12.0" /></font>
+                        </Label>
+                        <Button mnemonicParsing="false" onAction="#handleConsultaGeneral"
+                                prefHeight="36.0" maxWidth="Infinity"
+                                styleClass="service__card-btn--general"
+                                text="Seleccionar">
+                           <font><Font name="Cascadia Code Bold" size="12.0" /></font>
+                        </Button>
+                     </children>
+                     <padding><Insets top="18.0" right="18.0" bottom="18.0" left="18.0" /></padding>
+                  </VBox>
+
+                  <!-- ═══ Tarjetas de especialidad ═══ -->
                   <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
                      <children>
 
                         <!-- Tarjeta: Terapia Neutral -->
-                        <VBox styleClass="service__card--neutral"
+                        <VBox fx:id="cardTerapiaNeutral" styleClass="service__card--neutral"
                               alignment="CENTER" spacing="12.0"
                               prefWidth="220.0" maxWidth="Infinity"
                               HBox.hgrow="ALWAYS">
@@ -87,7 +120,7 @@
                                      styleClass="service__card-desc" wrapText="true" maxWidth="Infinity">
                                  <font><Font name="Segoe UI" size="12.0" /></font>
                               </Label>
-                              <Button mnemonicParsing="false" onAction="#handleTerapiaNeutral"
+                              <Button fx:id="btnTerapiaNeutral" mnemonicParsing="false" onAction="#handleTerapiaNeutral"
                                       prefHeight="36.0" maxWidth="Infinity"
                                       styleClass="service__card-btn--neutral"
                                       text="Seleccionar">
@@ -98,7 +131,7 @@
                         </VBox>
 
                         <!-- Tarjeta: Quiropráctica -->
-                        <VBox styleClass="service__card--chiropractic"
+                        <VBox fx:id="cardQuiropractica" styleClass="service__card--chiropractic"
                               alignment="CENTER" spacing="12.0"
                               prefWidth="220.0" maxWidth="Infinity"
                               HBox.hgrow="ALWAYS">
@@ -113,7 +146,7 @@
                                      styleClass="service__card-desc" wrapText="true" maxWidth="Infinity">
                                  <font><Font name="Segoe UI" size="12.0" /></font>
                               </Label>
-                              <Button mnemonicParsing="false" onAction="#handleQuiropractica"
+                              <Button fx:id="btnQuiropractica" mnemonicParsing="false" onAction="#handleQuiropractica"
                                       prefHeight="36.0" maxWidth="Infinity"
                                       styleClass="service__card-btn--chiropractic"
                                       text="Seleccionar">
@@ -124,7 +157,7 @@
                         </VBox>
 
                         <!-- Tarjeta: Fisioterapia -->
-                        <VBox styleClass="service__card--physiotherapy"
+                        <VBox fx:id="cardFisioterapia" styleClass="service__card--physiotherapy"
                               alignment="CENTER" spacing="12.0"
                               prefWidth="220.0" maxWidth="Infinity"
                               HBox.hgrow="ALWAYS">
@@ -139,7 +172,7 @@
                                      styleClass="service__card-desc" wrapText="true" maxWidth="Infinity">
                                  <font><Font name="Segoe UI" size="12.0" /></font>
                               </Label>
-                              <Button mnemonicParsing="false" onAction="#handleFisioterapia"
+                              <Button fx:id="btnFisioterapia" mnemonicParsing="false" onAction="#handleFisioterapia"
                                       prefHeight="36.0" maxWidth="Infinity"
                                       styleClass="service__card-btn--physiotherapy"
                                       text="Seleccionar">
