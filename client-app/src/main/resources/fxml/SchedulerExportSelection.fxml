@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="420.0" prefWidth="700.0" styleClass="page--gradient-light" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.piedraazul.app_client.controllers.SchedulerExportSelectionController">
+    <children>
+        <VBox spacing="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+
+                <!-- ══ HEADER ══ -->
+                <AnchorPane prefHeight="100.0" styleClass="header--patient-gradient">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <VBox alignment="CENTER_LEFT" spacing="4.0" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="FORMATO DE EXPORTACIÓN" textFill="WHITE">
+                                            <font><Font name="System Bold" size="24.0" /></font>
+                                        </Label>
+                                        <Label text="Seleccione el formato para descargar las citas médicas" textFill="#dce0ff">
+                                            <font><Font size="12.0" /></font>
+                                        </Label>
+                                    </children>
+                                    <padding><Insets left="30.0" /></padding>
+                                </VBox>
+                                <Label text="📄" textFill="WHITE">
+                                    <font><Font size="36.0" /></font>
+                                    <HBox.margin><Insets right="30.0" /></HBox.margin>
+                                </Label>
+                            </children>
+                        </HBox>
+                    </children>
+                </AnchorPane>
+
+                <!-- ══ CONTENIDO ══ -->
+                <VBox spacing="24.0" VBox.vgrow="ALWAYS">
+                    <padding><Insets bottom="0.0" left="32.0" right="32.0" top="28.0" /></padding>
+                    <children>
+
+                        <!-- Instrucción -->
+                        <Label styleClass="appointments__section-title" text="Escoja el formato en el que requiere exportar los datos de las citas médicas">
+                            <font><Font name="System Bold" size="13.0" /></font>
+                        </Label>
+
+                        <!-- Cards de formato -->
+                        <HBox alignment="CENTER" spacing="28.0">
+                            <children>
+
+                                <!-- Card JSON -->
+                                <VBox alignment="CENTER" prefHeight="130.0" prefWidth="270.0" spacing="10.0" styleClass="prof-view-app__filter-card">
+                                    <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
+                                    <children>
+                                        <Label text="{ }" textFill="#6666FF">
+                                            <font><Font name="System Bold" size="32.0" /></font>
+                                        </Label>
+                                        <Label styleClass="prof-view-app__filter-title" text="Formato JSON">
+                                            <font><Font name="System Bold" size="14.0" /></font>
+                                        </Label>
+                                        <Label styleClass="prof-view-app__field-label" text="Datos estructurados en JSON">
+                                            <font><Font size="11.0" /></font>
+                                        </Label>
+                                        <Button fx:id="button_Json" mnemonicParsing="false" onAction="#handleExportJson" prefHeight="36.0" prefWidth="180.0" styleClass="btn--patient-primary" text="📥  Exportar JSON">
+                                            <font><Font name="System Bold" size="12.0" /></font>
+                                            <VBox.margin><Insets top="4.0" /></VBox.margin>
+                                        </Button>
+                                    </children>
+                                </VBox>
+
+                                <!-- Card HTML -->
+                                <VBox alignment="CENTER" prefHeight="130.0" prefWidth="270.0" spacing="10.0" styleClass="prof-view-app__filter-card">
+                                    <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
+                                    <children>
+                                        <Label text="&lt;/&gt;" textFill="#6666FF">
+                                            <font><Font name="System Bold" size="32.0" /></font>
+                                        </Label>
+                                        <Label styleClass="prof-view-app__filter-title" text="Formato HTML">
+                                            <font><Font name="System Bold" size="14.0" /></font>
+                                        </Label>
+                                        <Label styleClass="prof-view-app__field-label" text="Reporte visual listo para imprimir">
+                                            <font><Font size="11.0" /></font>
+                                        </Label>
+                                        <Button fx:id="button_Html" mnemonicParsing="false" onAction="#handleExportHtml" prefHeight="36.0" prefWidth="180.0" styleClass="btn--patient-primary" text="📥  Exportar HTML">
+                                            <font><Font name="System Bold" size="12.0" /></font>
+                                            <VBox.margin><Insets top="4.0" /></VBox.margin>
+                                        </Button>
+                                </children>
+                                </VBox>
+
+                                <!-- Card CSV -->
+                                <VBox alignment="CENTER" prefHeight="130.0" prefWidth="270.0" spacing="10.0" styleClass="prof-view-app__filter-card">
+                                    <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
+                                    <children>
+                                        <Label text="📊" textFill="#6666FF">
+                                            <font><Font name="System Bold" size="32.0" /></font>
+                                        </Label>
+                                        <Label styleClass="prof-view-app__filter-title" text="Formato CSV">
+                                            <font><Font name="System Bold" size="14.0" /></font>
+                                        </Label>
+                                        <Label styleClass="prof-view-app__field-label" text="Hoja de cálculo separada por comas">
+                                            <font><Font size="11.0" /></font>
+                                        </Label>
+                                        <Button fx:id="button_Csv" mnemonicParsing="false" onAction="#handleExportCsv" prefHeight="36.0" prefWidth="180.0" styleClass="btn--patient-primary" text="📥  Exportar CSV">
+                                            <font><Font name="System Bold" size="12.0" /></font>
+                                            <VBox.margin><Insets top="4.0" /></VBox.margin>
+                                        </Button>
+                                    </children>
+                                </VBox>
+
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <!-- ══ FOOTER ══ -->
+                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                    <padding><Insets bottom="20.0" left="32.0" right="32.0" top="16.0" /></padding>
+                    <children>
+                        <Button fx:id="button_Back" mnemonicParsing="false" onAction="#handleBack" prefHeight="38.0" prefWidth="160.0" styleClass="btn--patient-outline" text="← Regresar">
+                            <font><Font name="System Bold" size="13.0" /></font>
+                        </Button>
+                    </children>
+                </HBox>
+
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
