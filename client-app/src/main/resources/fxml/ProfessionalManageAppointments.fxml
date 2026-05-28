@@ -2,23 +2,26 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="820.0"
+<VBox prefHeight="650.0" prefWidth="900.0"
       xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.piedraazul.app_client.controllers.ProfessionalManageAppointmentsController">
    <children>
 
       <!-- ══ HEADER ══ -->
-      <AnchorPane prefHeight="100.0" prefWidth="820.0" styleClass="header--patient-gradient">
+      <AnchorPane prefHeight="100.0" prefWidth="900.0" styleClass="header--patient-gradient">
          <children>
             <HBox alignment="CENTER_LEFT" spacing="0.0"
                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
@@ -53,7 +56,7 @@
       </AnchorPane>
 
       <!-- ══ BODY ══ -->
-      <AnchorPane VBox.vgrow="ALWAYS" prefWidth="820.0" styleClass="page--gradient-light">
+      <AnchorPane VBox.vgrow="ALWAYS" prefWidth="900.0" styleClass="page--gradient-light">
          <children>
             <VBox spacing="16.0"
                   AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="30.0"
@@ -107,15 +110,15 @@
                                    maxWidth="Infinity"
                                    styleClass="appointments__table">
                            <columns>
-                              <TableColumn fx:id="colId"           prefWidth="80.0"  text="ID Cita" />
-                              <TableColumn fx:id="colDate"         prefWidth="110.0" text="Fecha" />
-                              <TableColumn fx:id="colTime"         prefWidth="100.0" text="Hora" />
-                              <TableColumn fx:id="colPatientName"  prefWidth="150.0" text="Paciente" />
-                              <TableColumn fx:id="colProfessional" prefWidth="150.0" text="Profesional" />
-                              <TableColumn fx:id="colType"         prefWidth="100.0" text="Tipo" />
-                              <TableColumn fx:id="colSpeciality"   prefWidth="120.0" text="Especialidad" />
-                              <TableColumn fx:id="colStatus"       prefWidth="130.0" text="Estado" />
-                              <TableColumn fx:id="colDescription"  prefWidth="155.0" text="Descripción" />
+                              <TableColumn fx:id="colId"           prefWidth="70.0"  text="ID Cita" />
+                              <TableColumn fx:id="colDate"         prefWidth="100.0" text="Fecha" />
+                              <TableColumn fx:id="colTime"         prefWidth="80.0"  text="Hora" />
+                              <TableColumn fx:id="colPatientName"  prefWidth="130.0" text="Paciente" />
+                              <TableColumn fx:id="colProfessional" prefWidth="130.0" text="Profesional" />
+                              <TableColumn fx:id="colType"         prefWidth="90.0"  text="Tipo" />
+                              <TableColumn fx:id="colSpeciality"   prefWidth="100.0" text="Especialidad" />
+                              <TableColumn fx:id="colStatus"       prefWidth="110.0" text="Estado" />
+                              <TableColumn fx:id="colDescription"  prefWidth="140.0" text="Descripción" />
                            </columns>
                            <placeholder>
                               <Label text="No se encontraron citas para este paciente."
@@ -129,22 +132,41 @@
                      <padding><Insets top="20.0" right="20.0" bottom="20.0" left="20.0" /></padding>
                   </VBox>
 
-                  <!-- ── Botones de acción ── -->
-                  <HBox alignment="CENTER_RIGHT" spacing="14.0">
+                  <!-- ── Sección Cambiar Estado ── -->
+                  <HBox alignment="CENTER_LEFT" spacing="14.0" styleClass="appointments__card">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#handleCancel"
-                                prefHeight="38.0" prefWidth="160.0"
-                                styleClass="btn--danger-rounded"
-                                text="Cancelar Cita">
+                        <Label text="📝  Cambiar estado:" styleClass="appointments__section-title">
                            <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                        </Label>
+                        <ComboBox fx:id="cbxNewStatus"
+                                  prefHeight="36.0" prefWidth="200.0"
+                                  styleClass="combobox--styled"
+                                  promptText="Seleccione estado" />
+                        <Button mnemonicParsing="false" onAction="#handleChangeStatus"
+                                prefHeight="38.0" prefWidth="190.0"
+                                styleClass="btn--patient-primary"
+                                text="Cambiar Estado">
+                           <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                        </Button>
+
+                        <!-- Spacer -->
+                        <Region HBox.hgrow="ALWAYS" />
+
+                        <!-- Botones secundarios -->
+                        <Button mnemonicParsing="false" onAction="#handleCancel"
+                                prefHeight="38.0" prefWidth="150.0"
+                                styleClass="btn--danger-rounded"
+                                text="Eliminar Cita">
+                           <font><Font name="Cascadia Code Bold" size="12.0" /></font>
                         </Button>
                         <Button mnemonicParsing="false" onAction="#handleReschedule"
-                                prefHeight="38.0" prefWidth="160.0"
-                                styleClass="btn--patient-primary"
+                                prefHeight="38.0" prefWidth="140.0"
+                                styleClass="btn--warning-rounded"
                                 text="Reagendar">
-                           <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                           <font><Font name="Cascadia Code Bold" size="12.0" /></font>
                         </Button>
                      </children>
+                     <padding><Insets top="14.0" right="20.0" bottom="14.0" left="20.0" /></padding>
                   </HBox>
 
                </children>
