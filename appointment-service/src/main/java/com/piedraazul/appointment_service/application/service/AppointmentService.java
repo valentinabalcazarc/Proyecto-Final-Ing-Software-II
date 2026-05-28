@@ -43,6 +43,14 @@ public class AppointmentService implements AppointmentServicePort {
         ProfessionalRef professionalRef = professionalRefRepository.findById(dto.getCodProf())
                 .orElseThrow(() -> new RuntimeException("No existe el profesional con código: " + dto.getCodProf()));
 
+        // Validar que el paciente no tenga una cita en estado "Scheduled" (Agendada)
+        boolean hasScheduledAppointment = appointmentRepository.findByPatientRef(patientRef)
+                .stream()
+                .anyMatch(a -> a.getStatusApp() == StatusAppointment.Scheduled);
+        if (hasScheduledAppointment) {
+            throw new RuntimeException("El paciente ya tiene una cita agendada. No puede agendar otra hasta que la cita actual sea completada o cancelada.");
+        }
+
         Appointment appointment = new Appointment(
                 professionalRef,
                 patientRef,
