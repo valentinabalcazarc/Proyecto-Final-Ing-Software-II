@@ -181,6 +181,35 @@ public class AppointmentController {
         }
     }
 
+    @PutMapping("/{id}/status")
+    public ResponseEntity<?> updateStatus(@PathVariable Long id, @RequestBody java.util.Map<String, String> body) {
+        try {
+            String newStatusStr = body.get("statusApp");
+            if (newStatusStr == null) {
+                return ResponseEntity.badRequest().body("Falta el campo 'statusApp'");
+            }
+
+            StatusAppointment mappedStatus;
+            if ("ATENDIDA".equalsIgnoreCase(newStatusStr)) {
+                mappedStatus = StatusAppointment.Completed;
+            } else if ("CANCELADA".equalsIgnoreCase(newStatusStr)) {
+                mappedStatus = StatusAppointment.Cancelled;
+            } else if ("AGENDADA".equalsIgnoreCase(newStatusStr)) {
+                mappedStatus = StatusAppointment.Scheduled;
+            } else {
+                return ResponseEntity.badRequest().body("Estado no válido: " + newStatusStr);
+            }
+
+            UpdateAppointmentDTO updateDto = new UpdateAppointmentDTO();
+            updateDto.setStatusApp(mappedStatus);
+
+            Appointment updated = appointmentService.update(id, updateDto);
+            return ResponseEntity.ok(updated);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> cancel(@PathVariable Long id) {
         boolean cancelled = appointmentService.cancel(id);
