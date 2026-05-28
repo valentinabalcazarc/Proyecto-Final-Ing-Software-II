@@ -1,5 +1,6 @@
 package com.piedraazul.app_client.services;
 
+import com.piedraazul.app_client.dto.UpdateProfessionalDTO;
 import com.piedraazul.app_client.enums.SpecialityProfEnum;
 import com.piedraazul.app_client.enums.StatusUserEnum;
 import com.piedraazul.app_client.enums.TypeProfEnum;
@@ -21,7 +22,7 @@ import java.util.List;
 public class ProfessionalServiceImpl implements ProfessionalService {
 
     private final HttpClient client = HttpClient.newHttpClient();
-    private final String BASE_URL = "http://localhost:8082/piedraAzul/professionals";
+    private final String BASE_URL = "http://localhost:8080/piedraAzul/professionals";
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Override
@@ -114,13 +115,11 @@ public class ProfessionalServiceImpl implements ProfessionalService {
                     return true;
                 }
 
-                // Si el UserRef aún no existe (RabbitMQ pendiente), esperar y reintentar
                 if (response.statusCode() == 409 && response.body().contains("No existe un usuario")) {
                     System.out.println(">> UserRef aún no propagado, esperando " + esperaMs + "ms...");
                     Thread.sleep(esperaMs);
-                    esperaMs *= 2; // backoff exponencial
+                    esperaMs *= 2;
                 } else {
-                    // Otro error — no reintentar
                     return false;
                 }
 
@@ -162,4 +161,27 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         return professionals;
     }
 
+    @Override
+    public boolean updateSchedule(Long codProf, UpdateProfessionalDTO dto) {
+        try {
+            String jsonBody = objectMapper.writeValueAsString(dto);
+            System.out.println(">> Actualizando horario profesional codProf=" + codProf + ": " + jsonBody);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/" + codProf))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + SessionManager.getToken())
+                    .PUT(HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(">> Status updateSchedule: " + response.statusCode());
+            System.out.println(">> Body updateSchedule: " + response.body());
+
+            return response.statusCode() == 200;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

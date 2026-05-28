@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="600.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.piedraazul.app_client.controllers.SchedulerManageAppointmentsController">
+   <children>
+
+      <!-- ══ HEADER ══ -->
+      <AnchorPane prefHeight="100.0" prefWidth="820.0" styleClass="header--patient-gradient">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+
+                  <!-- Títulos -->
+                  <VBox alignment="CENTER_LEFT" spacing="4.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="GESTIONAR CITA" textFill="WHITE">
+                           <font><Font name="Cascadia Code Bold" size="24.0" /></font>
+                        </Label>
+                        <Label text="Panel del Profesional" textFill="#dce0ff">
+                           <font><Font name="Cascadia Code" size="13.0" /></font>
+                        </Label>
+                     </children>
+                     <padding><Insets left="30.0" /></padding>
+                  </VBox>
+
+                  <!-- Botón Regresar -->
+                  <Button mnemonicParsing="false" onAction="#handleReturn" prefHeight="36.0" prefWidth="140.0" styleClass="btn--ghost-white" text="← Regresar">
+                     <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                     <HBox.margin><Insets right="25.0" /></HBox.margin>
+                  </Button>
+
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+
+      <!-- ══ BODY ══ -->
+      <AnchorPane prefWidth="820.0" styleClass="page--gradient-light" VBox.vgrow="ALWAYS">
+         <children>
+            <VBox spacing="16.0" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="24.0">
+               <children>
+
+                  <!-- ── Tarjeta de búsqueda ── -->
+                  <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="appointments__card">
+                     <children>
+                        <Label styleClass="appointments__section-title" text="🔍  Cédula del paciente:">
+                           <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                        </Label>
+                        <TextField fx:id="txtCedula" prefHeight="36.0" prefWidth="240.0" promptText="Ingrese identificación" styleClass="textfield--styled" HBox.hgrow="NEVER" />
+                        <Button mnemonicParsing="false" onAction="#handleFind" prefHeight="36.0" prefWidth="110.0" styleClass="btn--patient-primary" text="Buscar">
+                           <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                        </Button>
+                     </children>
+                     <padding><Insets bottom="14.0" left="20.0" right="20.0" top="14.0" /></padding>
+                  </HBox>
+
+                  <!-- ── Tarjeta de tabla ── -->
+                  <VBox spacing="14.0" styleClass="appointments__card" VBox.vgrow="ALWAYS">
+                     <children>
+
+                        <!-- Encabezado de sección -->
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <Label styleClass="appointments__section-title" text="📋  Citas del Paciente">
+                                 <font><Font name="Cascadia Code Bold" size="14.0" /></font>
+                              </Label>
+                           </children>
+                        </HBox>
+
+                        <!-- Instrucción -->
+                        <Label styleClass="appointments__empty-label" text="Seleccione la cita que desea modificar:">
+                           <font><Font name="Cascadia Code" size="12.0" /></font>
+                        </Label>
+
+                        <!-- Tabla de citas -->
+                        <TableView fx:id="tblAppointments" maxWidth="Infinity" styleClass="appointments__table" VBox.vgrow="ALWAYS">
+                           <columns>
+                              <TableColumn fx:id="colId" prefWidth="80.0" text="ID Cita" />
+                              <TableColumn fx:id="colDate" prefWidth="110.0" text="Fecha" />
+                              <TableColumn fx:id="colTime" prefWidth="100.0" text="Hora" />
+                              <TableColumn fx:id="colPatientName" prefWidth="150.0" text="Paciente" />
+                              <TableColumn fx:id="colProfessional" prefWidth="150.0" text="Profesional" />
+                              <TableColumn fx:id="colType" prefWidth="100.0" text="Tipo" />
+                              <TableColumn fx:id="colSpeciality" prefWidth="120.0" text="Especialidad" />
+                              <TableColumn fx:id="colStatus" prefWidth="130.0" text="Estado" />
+                              <TableColumn fx:id="colDescription" prefWidth="155.0" text="Descripción" />
+                           </columns>
+                           <placeholder>
+                              <Label styleClass="appointments__empty-label" text="No se encontraron citas para este paciente.">
+                                 <font><Font name="Cascadia Code" size="13.0" /></font>
+                              </Label>
+                           </placeholder>
+                        </TableView>
+
+                     </children>
+                     <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
+                  </VBox>
+
+                  <!-- ── Botones de acción ── -->
+                  <HBox alignment="CENTER_RIGHT" spacing="14.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#handleCancel" prefHeight="38.0" prefWidth="160.0" styleClass="btn--danger-rounded" text="Cancelar Cita">
+                           <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#handleReschedule" prefHeight="38.0" prefWidth="160.0" styleClass="btn--patient-primary" text="Reagendar">
+                           <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                        </Button>
+                     </children>
+                  </HBox>
+
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+
+   </children>
+</VBox>

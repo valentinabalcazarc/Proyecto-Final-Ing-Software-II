@@ -16,7 +16,7 @@ import java.net.http.HttpResponse;
 public class UserServiceImpl implements UserService {
 
     private final HttpClient client = HttpClient.newHttpClient();
-    private final String BASE_URL = "http://localhost:8081/piedraAzul/auth";
+    private final String BASE_URL = "http://localhost:8080/piedraAzul/auth";
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Override

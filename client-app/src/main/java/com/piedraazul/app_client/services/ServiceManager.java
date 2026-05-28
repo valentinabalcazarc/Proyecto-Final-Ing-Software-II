@@ -7,14 +7,14 @@ public class ServiceManager {
     private final AppointmentService appointmentService;
     private final ProfessionalService professionalService;
     private final PatientService patientService;
+    private final UnavailableDayService unavailableDayService;
 
     private ServiceManager() {
-        // Ahora solo inicializas los servicios.
-        // Cada servicio sabrá a qué puerto conectarse.
         this.userService = new UserServiceImpl();
         this.appointmentService = new AppointmentServiceImpl();
         this.professionalService = new ProfessionalServiceImpl();
         this.patientService = new PatientServiceImpl();
+        this.unavailableDayService = new UnavailableDayServiceImpl();
     }
 
     public static ServiceManager getInstance() {
@@ -26,6 +26,7 @@ public class ServiceManager {
 
     public UserService getUserService() { return userService; }
     public AppointmentService getAppointmentService() { return appointmentService; }
-    public ProfessionalService getProfessionalService() { return professionalService;}
-    public PatientService getPatientService() { return patientService;}
+    public ProfessionalService getProfessionalService() { return professionalService; }
+    public PatientService getPatientService() { return patientService; }
+    public UnavailableDayService getUnavailableDayService() { return unavailableDayService; }
 }

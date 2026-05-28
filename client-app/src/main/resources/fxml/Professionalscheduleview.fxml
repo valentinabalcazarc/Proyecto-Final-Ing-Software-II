@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
@@ -25,7 +26,7 @@
                     <font><Font name="Cascadia Code Bold" size="20.0"/></font>
                 </Label>
                 <Label layoutX="40.0" layoutY="60.0" prefWidth="680.0"
-                       text="Listado de profesionales registrados y sus horarios de atención"
+                       text="Selecciona un profesional y edita su horario de atención"
                        textFill="WHITE" textAlignment="CENTER">
                     <font><Font name="Cascadia Code Regular" size="12.0"/></font>
                 </Label>
@@ -39,7 +40,7 @@
                 <!-- Tabla de profesionales -->
                 <TableView fx:id="tableSchedules"
                            layoutX="28.0" layoutY="20.0"
-                           prefHeight="330.0" prefWidth="704.0"
+                           prefHeight="310.0" prefWidth="704.0"
                            styleClass="appointments__table">
                     <columns>
                         <TableColumn fx:id="colName" text="Nombre" prefWidth="160.0">
@@ -63,15 +64,30 @@
                     </columns>
                 </TableView>
 
-                <!-- Botón volver -->
-                <Button fx:id="btnBack"
-                        layoutX="290.0" layoutY="368.0"
-                        prefHeight="32.0" prefWidth="180.0"
-                        text="← Volver al panel admin"
-                        onAction="#handleBack"
-                        styleClass="btn--secondary">
-                    <font><Font name="Cascadia Code Regular" size="12.0"/></font>
-                </Button>
+                <!-- Botones inferiores -->
+                <HBox layoutX="28.0" layoutY="346.0" spacing="12.0">
+                    <Button fx:id="btnBack"
+                            prefHeight="32.0" prefWidth="200.0"
+                            text="← Volver al panel admin"
+                            onAction="#handleBack"
+                            styleClass="btn--secondary">
+                        <font><Font name="Cascadia Code Regular" size="12.0"/></font>
+                    </Button>
+                    <Button fx:id="btnEdit"
+                            prefHeight="32.0" prefWidth="200.0"
+                            text="✏ Editar horario"
+                            onAction="#handleEdit"
+                            styleClass="btn--primary"
+                            disable="true">
+                        <font><Font name="Cascadia Code Regular" size="12.0"/></font>
+                    </Button>
+                </HBox>
+
+                <!-- Hint de selección -->
+                <Label fx:id="lblHint"
+                       layoutX="28.0" layoutY="388.0"
+                       text="↑ Selecciona un profesional de la tabla para habilitar el botón Editar"
+                       style="-fx-text-fill: #999999; -fx-font-size: 11px;"/>
 
             </children>
         </Pane>

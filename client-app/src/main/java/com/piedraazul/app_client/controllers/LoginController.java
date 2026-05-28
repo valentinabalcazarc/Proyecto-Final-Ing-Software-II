@@ -63,6 +63,10 @@ public class LoginController {
                 fxmlPath = "/fxml/ProfessionalMainView.fxml";
                 title += "Profesional";
                 break;
+            case Scheduler:
+                fxmlPath = "/fxml/SchedulerMainView.fxml";
+                title += "Agendador";
+                break;
         }
 
         try {

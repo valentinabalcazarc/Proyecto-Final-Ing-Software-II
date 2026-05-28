@@ -23,7 +23,7 @@ import java.util.List;
 public class AppointmentServiceImpl implements AppointmentService {
 
     private final HttpClient client = HttpClient.newHttpClient();
-    private final String BASE_URL = "http://localhost:8083/piedraAzul/appointments";
+    private final String BASE_URL = "http://localhost:8080/piedraAzul/appointments";
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Override

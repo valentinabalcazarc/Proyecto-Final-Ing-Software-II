@@ -22,18 +22,23 @@ public class UnavailableDayRefPersistenceAdapter implements UnavailableDayRefRep
 
     @Override
     public List<UnavailableDayRef> findByProfessionalRef(ProfessionalRef professionalRef) {
-        return unavailableDayRefJpaRepository.findByProfessionalRef(professionalRefMapper.toEntity(professionalRef))
-                .stream().map(unavailableDayRefMapper::toDomain).collect(Collectors.toList());
+        return unavailableDayRefJpaRepository
+                .findByProfessionalRefId(professionalRef.getCodProf())
+                .stream()
+                .map(unavailableDayRefMapper::toDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
     public UnavailableDayRef save(UnavailableDayRef day) {
-        return unavailableDayRefMapper.toDomain(unavailableDayRefJpaRepository.save(unavailableDayRefMapper.toEntity(day)));
+        return unavailableDayRefMapper.toDomain(
+                unavailableDayRefJpaRepository.save(unavailableDayRefMapper.toEntity(day)));
     }
 
     @Override
     public void deleteAllByProfessionalRef(ProfessionalRef professionalRef) {
-        unavailableDayRefJpaRepository.deleteAllByProfessionalRef(professionalRefMapper.toEntity(professionalRef));
+        unavailableDayRefJpaRepository.deleteAllByProfessionalRef(
+                professionalRefMapper.toEntity(professionalRef));
     }
 
     @Override

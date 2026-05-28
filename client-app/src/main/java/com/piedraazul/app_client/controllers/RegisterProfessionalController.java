@@ -1,8 +1,12 @@
 package com.piedraazul.app_client.controllers;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import com.piedraazul.app_client.dto.UnavailableDayDTO;
 import com.piedraazul.app_client.enums.RoleUserEnum;
 import com.piedraazul.app_client.enums.SpecialityProfEnum;
 import com.piedraazul.app_client.enums.StatusUserEnum;
@@ -11,13 +15,14 @@ import com.piedraazul.app_client.models.Professional;
 import com.piedraazul.app_client.services.NavigationService;
 import com.piedraazul.app_client.services.ServiceManager;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class RegisterProfessionalController {
 
-    // --- Campos del formulario ---
+    // --- Campos del formulario principal ---
     @FXML private TextField txtNumCedula;
     @FXML private TextField txtFirstName;
     @FXML private TextField txtSecondName;
@@ -51,6 +56,16 @@ public class RegisterProfessionalController {
     @FXML private Button btnCancel;
     @FXML private Button btnRegresar;
 
+    // --- Sección días no laborables ---
+    @FXML private DatePicker dpUnavailableDate;
+    @FXML private TextField txtUnavailableReason;
+    @FXML private TableView<UnavailableDayRow> tableUnavailableDays;
+    @FXML private TableColumn<UnavailableDayRow, String> colDate;
+    @FXML private TableColumn<UnavailableDayRow, String> colReason;
+    @FXML private TableColumn<UnavailableDayRow, Void> colDelete;
+
+    private final ObservableList<UnavailableDayRow> unavailableDays = FXCollections.observableArrayList();
+
     private boolean mostrarPassword = false;
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
@@ -62,7 +77,7 @@ public class RegisterProfessionalController {
         cbxTipoProf.getSelectionModel().selectFirst();
 
         cbxEspecialidad.setItems(FXCollections.observableArrayList(
-                "Terapia neural", "Quiropraxia", "Fisioterapia"));
+                "Terapia neural", "Quiropraxia", "Fisioterapia", "Medicina general"));
         cbxEspecialidad.getSelectionModel().selectFirst();
 
         cbxSecurityQuestion.setItems(FXCollections.observableArrayList(
@@ -74,7 +89,55 @@ public class RegisterProfessionalController {
         cbxGenero.setItems(FXCollections.observableArrayList("Masculino", "Femenino", "Otro"));
         cbxGenero.getSelectionModel().selectFirst();
 
+        // Configurar tabla días no laborables
+        colDate.setCellValueFactory(data -> data.getValue().dateStrProperty());
+        colReason.setCellValueFactory(data -> data.getValue().reasonProperty());
+
+        colDelete.setCellFactory(col -> new TableCell<>() {
+            private final Button btn = new Button("✕");
+            {
+                btn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; " +
+                        "-fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 2 8 2 8;");
+                btn.setOnAction(e -> {
+                    UnavailableDayRow row = getTableView().getItems().get(getIndex());
+                    unavailableDays.remove(row);
+                });
+            }
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : btn);
+            }
+        });
+
+        tableUnavailableDays.setItems(unavailableDays);
+        tableUnavailableDays.setPlaceholder(new Label("Aún no se han agregado días no laborables"));
+
         ocultarErrores();
+    }
+
+    // ---- Agregar día no laborable ----------------------------------
+    @FXML
+    public void handleAddUnavailableDay() {
+        LocalDate date = dpUnavailableDate.getValue();
+        if (date == null) {
+            showAlert(Alert.AlertType.WARNING, "Fecha requerida", "Selecciona una fecha para el día no laborable.");
+            return;
+        }
+        if (date.isBefore(LocalDate.now())) {
+            showAlert(Alert.AlertType.WARNING, "Fecha inválida", "La fecha no puede ser anterior a hoy.");
+            return;
+        }
+        boolean duplicado = unavailableDays.stream()
+                .anyMatch(r -> r.getDate().equals(date));
+        if (duplicado) {
+            showAlert(Alert.AlertType.WARNING, "Fecha duplicada", "Esa fecha ya está en la lista.");
+            return;
+        }
+        String reason = txtUnavailableReason.getText().trim();
+        unavailableDays.add(new UnavailableDayRow(date, reason));
+        dpUnavailableDate.setValue(null);
+        txtUnavailableReason.clear();
     }
 
     // ---- Mostrar/ocultar contraseña --------------------------------
@@ -91,7 +154,7 @@ public class RegisterProfessionalController {
         if (!validarCampos()) return;
 
         try {
-            // 1) Construir el objeto Professional con todos los datos
+            // 1) Construir objeto Professional
             Professional p = new Professional();
             p.setCedUser((long) Integer.parseInt(txtNumCedula.getText().trim()));
             p.setPassUser(txtPassword.getText());
@@ -114,12 +177,13 @@ public class RegisterProfessionalController {
                 case "Terapeuta" -> p.setTypeProf(TypeProfEnum.Therapist);
             }
             switch (cbxEspecialidad.getValue()) {
-                case "Terapia neural" -> p.setSpecialityProf(SpecialityProfEnum.Neural_Therapy);
-                case "Quiropraxia"    -> p.setSpecialityProf(SpecialityProfEnum.Chiropractor);
-                case "Fisioterapia"   -> p.setSpecialityProf(SpecialityProfEnum.Physiotherapy);
+                case "Terapia neural"    -> p.setSpecialityProf(SpecialityProfEnum.Neural_Therapy);
+                case "Quiropraxia"       -> p.setSpecialityProf(SpecialityProfEnum.Chiropractor);
+                case "Fisioterapia"      -> p.setSpecialityProf(SpecialityProfEnum.Physiotherapy);
+                case "Medicina general"  -> p.setSpecialityProf(SpecialityProfEnum.General);
             }
 
-            // 2) Registrar en auth-service (tabla user) — retorna el usuario con su codUser
+            // 2) Registrar en auth-service
             var userRegistrado = ServiceManager.getInstance().getUserService().regUser(p);
             if (userRegistrado == null) {
                 showAlert(Alert.AlertType.ERROR, "Error", "No se pudo registrar el usuario. Verifique los datos.");
@@ -127,13 +191,41 @@ public class RegisterProfessionalController {
             }
             p.setCodUser(userRegistrado.getCodUser());
 
-            // 3) Registrar en people-service (tabla professional)
+            // 3) Registrar en people-service
             boolean profOk = ServiceManager.getInstance().getProfessionalService().register(p);
             if (!profOk) {
                 showAlert(Alert.AlertType.WARNING, "Atención",
                         "El usuario fue creado pero no se pudo registrar el perfil profesional. " +
                                 "Contacte al administrador.");
                 return;
+            }
+
+            // 4) Registrar días no laborables (si se agregaron)
+            if (!unavailableDays.isEmpty()) {
+                Professional profRegistrado = ServiceManager.getInstance()
+                        .getProfessionalService().findByCod(p.getCodUser().intValue());
+
+                if (profRegistrado == null || profRegistrado.getCodProf() == null) {
+                    showAlert(Alert.AlertType.WARNING, "Atención",
+                            "Profesional registrado, pero no se pudieron guardar los días no laborables. " +
+                                    "Puede agregarlos después desde su perfil.");
+                } else {
+                    int fallidos = 0;
+                    for (UnavailableDayRow row : unavailableDays) {
+                        UnavailableDayDTO dto = new UnavailableDayDTO();
+                        dto.setCodProf(profRegistrado.getCodProf());
+                        dto.setDate(row.getDate());
+                        dto.setReason(row.getReason().isEmpty() ? null : row.getReason());
+                        boolean ok = ServiceManager.getInstance().getUnavailableDayService().create(dto);
+                        if (!ok) fallidos++;
+                    }
+                    if (fallidos > 0) {
+                        showAlert(Alert.AlertType.WARNING, "Atención",
+                                "Profesional registrado, pero " + fallidos + " día(s) no laborable(s) no se pudieron guardar.");
+                        limpiarFormulario();
+                        return;
+                    }
+                }
             }
 
             showAlert(Alert.AlertType.INFORMATION, "Éxito", "Profesional registrado correctamente.");
@@ -205,7 +297,6 @@ public class RegisterProfessionalController {
             lb_errorPassword.setText("Las contraseñas no coinciden"); lb_errorPassword.setVisible(true); ok = false;
         }
 
-        // Validar horario
         try {
             LocalTime arrival   = LocalTime.parse(txtArrivalTime.getText().trim(), TIME_FORMATTER);
             LocalTime departure = LocalTime.parse(txtDepartureTime.getText().trim(), TIME_FORMATTER);
@@ -217,7 +308,6 @@ public class RegisterProfessionalController {
             lb_errorSchedule.setText("Formato HH:mm requerido"); lb_errorSchedule.setVisible(true); ok = false;
         }
 
-        // Validar intervalo
         try {
             int interval = Integer.parseInt(txtAttentionInterval.getText().trim());
             if (interval <= 0) throw new NumberFormatException();
@@ -262,6 +352,9 @@ public class RegisterProfessionalController {
         cbxEspecialidad.getSelectionModel().selectFirst();
         cbxSecurityQuestion.getSelectionModel().selectFirst();
         cbxGenero.getSelectionModel().selectFirst();
+        unavailableDays.clear();
+        dpUnavailableDate.setValue(null);
+        txtUnavailableReason.clear();
     }
 
     private void showAlert(Alert.AlertType type, String title, String content) {
@@ -270,5 +363,26 @@ public class RegisterProfessionalController {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    // ================================================================
+    // Clase interna para filas de la tabla
+    // ================================================================
+    public static class UnavailableDayRow {
+        private final LocalDate date;
+        private final SimpleStringProperty dateStr;
+        private final SimpleStringProperty reason;
+
+        public UnavailableDayRow(LocalDate date, String reason) {
+            this.date = date;
+            this.dateStr = new SimpleStringProperty(date.toString());
+            this.reason = new SimpleStringProperty(reason != null ? reason : "");
+        }
+
+        public LocalDate getDate() { return date; }
+        public String getDateStr() { return dateStr.get(); }
+        public SimpleStringProperty dateStrProperty() { return dateStr; }
+        public String getReason() { return reason.get(); }
+        public SimpleStringProperty reasonProperty() { return reason; }
     }
 }
