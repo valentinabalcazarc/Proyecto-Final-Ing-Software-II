@@ -33,4 +33,6 @@ public interface AppointmentService {
     boolean saveAppointment(Appointment appointment, Long patientId);
 
     boolean deleteAppointment(Long appointmentId);
+
+    boolean updateAppointmentStatus(Long appointmentId, String newStatus);
 }

@@ -32,12 +32,15 @@ public class ProfessionalManageAppointmentsController {
     @FXML private TableColumn<Appointment, String> colStatus;
     @FXML private TableColumn<Appointment, String> colDescription;
 
+    @FXML private ComboBox<String> cbxNewStatus;
+
     private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
     private final AppointmentSearchContext searchContext = new AppointmentSearchContext();
 
     @FXML
     public void initialize() {
         setupTable();
+        setupStatusComboBox();
     }
 
     private void setupTable() {
@@ -51,6 +54,13 @@ public class ProfessionalManageAppointmentsController {
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         tblAppointments.setItems(appointmentList);
+    }
+
+    private void setupStatusComboBox() {
+        cbxNewStatus.setItems(FXCollections.observableArrayList(
+                "ATENDIDA", "CANCELADA"
+        ));
+        cbxNewStatus.setPromptText("Seleccione estado");
     }
 
     @FXML
@@ -77,6 +87,50 @@ public class ProfessionalManageAppointmentsController {
             }
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Cédula inválida.");
+        }
+    }
+
+    @FXML
+    private void handleChangeStatus(ActionEvent event) {
+        Appointment selected = tblAppointments.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert(Alert.AlertType.WARNING, "Selección requerida", "Por favor, seleccione una cita.");
+            return;
+        }
+
+        String newStatus = cbxNewStatus.getValue();
+        if (newStatus == null || newStatus.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Estado requerido", "Por favor, seleccione el nuevo estado para la cita.");
+            return;
+        }
+
+        // Verificar que la cita no tenga ya el mismo estado
+        if (newStatus.equalsIgnoreCase(selected.getStatus())) {
+            showAlert(Alert.AlertType.INFORMATION, "Sin cambios", "La cita ya se encuentra en estado \"" + newStatus + "\".");
+            return;
+        }
+
+        String mensaje = newStatus.equals("ATENDIDA")
+                ? "¿Está seguro de marcar esta cita como ATENDIDA?"
+                : "¿Está seguro de marcar esta cita como CANCELADA?";
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, mensaje,
+                ButtonType.YES, ButtonType.NO);
+        confirm.setTitle("Confirmar cambio de estado");
+        confirm.setHeaderText("Cambiar estado de cita #" + selected.getId());
+        confirm.showAndWait();
+
+        if (confirm.getResult() == ButtonType.YES) {
+            boolean success = ServiceManager.getInstance().getAppointmentService()
+                    .updateAppointmentStatus(selected.getId(), newStatus);
+            if (success) {
+                showAlert(Alert.AlertType.INFORMATION, "Éxito",
+                        "La cita fue actualizada a estado \"" + newStatus + "\" correctamente.");
+                handleFind(null); // Refrescar la tabla
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Error",
+                        "No se pudo actualizar el estado de la cita. Verifique la conexión con el servidor.");
+            }
         }
     }
 
