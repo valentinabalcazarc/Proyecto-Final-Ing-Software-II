@@ -220,6 +220,28 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
     }
 
+    @Override
+    public boolean updateAppointmentStatus(Long appointmentId, String newStatus) {
+        try {
+            String jsonBody = "{\"statusApp\":\"" + newStatus + "\"}";
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/" + appointmentId + "/status"))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + SessionManager.getToken())
+                    .PUT(HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(">> updateStatus status: " + response.statusCode());
+            System.out.println(">> updateStatus body: " + response.body());
+            return response.statusCode() == 200 || response.statusCode() == 204;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private List<Appointment> fetchAppointmentList(String url) {
         List<Appointment> data = new ArrayList<>();
         try {
