@@ -265,4 +265,30 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
         return data;
     }
+
+    @Override
+    public byte[] exportFile(List<Long> ids, String format) {
+        try {
+            String jsonBody = objectMapper.writeValueAsString(ids);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/export?format=" + format.toLowerCase()))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + SessionManager.getToken())
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                    .build();
+
+            HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+
+            if (response.statusCode() == 200) {
+                return response.body();
+            } else {
+                System.err.println(">> Error en exportación: HTTP " + response.statusCode());
+            }
+        } catch (Exception e) {
+            System.err.println(">> Error al exportar archivo: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
