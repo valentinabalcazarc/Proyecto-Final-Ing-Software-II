@@ -686,6 +686,40 @@
     -fx-background-color: #8a161a;
 }
 
+/* Consulta General */
+.service__card--general {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-border-color: #6666FF;
+    -fx-border-width: 0 0 0 5;
+    -fx-border-radius: 16;
+    -fx-effect: dropshadow(three-pass-box, rgba(102, 102, 255, 0.18), 14, 0, 0, 4);
+    -fx-cursor: hand;
+}
+
+.service__card-btn--general {
+    -fx-background-color: #6666FF;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.service__card-btn--general:hover {
+    -fx-background-color: #5555ee;
+}
+
+/* Banner de restricción para pacientes sin citas */
+.service__restriction-banner {
+    -fx-background-color: #fff8e1;
+    -fx-border-color: #ffb300;
+    -fx-border-width: 0 0 0 4;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-text-fill: #7a5900;
+    -fx-padding: 10 16 10 16;
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 179, 0, 0.15), 8, 0, 0, 2);
+}
+
 /* ---------- RegisterView (User & Professional) ---------- */
 
 .register__body {

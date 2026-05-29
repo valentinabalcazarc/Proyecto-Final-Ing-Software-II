@@ -43,4 +43,6 @@ public interface AppointmentService {
      * @return arreglo de bytes con el contenido del archivo, o null si hay error
      */
     byte[] exportFile(java.util.List<Long> ids, String format);
+
+    boolean updateAppointmentStatus(Long appointmentId, String newStatus);
 }
