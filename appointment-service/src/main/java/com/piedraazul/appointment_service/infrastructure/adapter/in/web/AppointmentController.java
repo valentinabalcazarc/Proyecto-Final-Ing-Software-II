@@ -3,6 +3,7 @@ package com.piedraazul.appointment_service.infrastructure.adapter.in.web;
 import com.piedraazul.appointment_service.application.dto.AppointmentDTO;
 import com.piedraazul.appointment_service.application.dto.CreateAppointmentDTO;
 import com.piedraazul.appointment_service.application.dto.UpdateAppointmentDTO;
+import com.piedraazul.appointment_service.application.service.AppointmentExportService;
 import com.piedraazul.appointment_service.enums.SpecialityProfEnum;
 import com.piedraazul.appointment_service.enums.StatusAppointment;
 import com.piedraazul.appointment_service.domain.model.Appointment;
@@ -10,7 +11,9 @@ import com.piedraazul.appointment_service.domain.port.in.AppointmentServicePort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("appointments")
@@ -25,6 +29,7 @@ import java.util.List;
 public class AppointmentController {
 
     private final AppointmentServicePort appointmentService;
+    private final AppointmentExportService appointmentExportService;
 
     @GetMapping
     public ResponseEntity<?> findAll() {
@@ -139,6 +144,36 @@ public class AppointmentController {
         List<AppointmentDTO> slots = appointmentService.generateBySpeciality(speciality);
         if (slots.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(slots);
+    }
+
+    @PostMapping("/export")
+    public ResponseEntity<?> exportAppointments(
+            @RequestParam String format,
+            @RequestBody List<Long> ids) {
+        try {
+            // Obtener solo las citas cuyos IDs fueron enviados por el cliente
+            List<Appointment> appointments = ids.stream()
+                    .map(id -> appointmentService.findById(id).orElse(null))
+                    .filter(app -> app != null)
+                    .collect(Collectors.toList());
+
+            if (appointments.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+
+            byte[] fileContent = appointmentExportService.exportAppointments(appointments, format);
+            String contentType = appointmentExportService.getContentType(format);
+            String extension = appointmentExportService.getFileExtension(format);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION,
+                            "attachment; filename=\"citas_export" + extension + "\"")
+                    .body(fileContent);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping

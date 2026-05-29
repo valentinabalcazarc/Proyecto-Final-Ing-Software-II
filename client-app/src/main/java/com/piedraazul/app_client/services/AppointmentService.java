@@ -33,4 +33,14 @@ public interface AppointmentService {
     boolean saveAppointment(Appointment appointment, Long patientId);
 
     boolean deleteAppointment(Long appointmentId);
+
+    /**
+     * Exporta las citas indicadas por sus IDs al formato especificado.
+     * Delega al endpoint POST /appointments/export del backend.
+     *
+     * @param ids    lista de IDs de las citas a exportar
+     * @param format formato de exportación ("json", "html" o "csv")
+     * @return arreglo de bytes con el contenido del archivo, o null si hay error
+     */
+    byte[] exportFile(java.util.List<Long> ids, String format);
 }

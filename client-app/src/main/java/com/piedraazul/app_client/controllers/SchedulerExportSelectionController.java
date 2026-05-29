@@ -1,36 +1,36 @@
 package com.piedraazul.app_client.controllers;
 
-import com.piedraazul.app_client.design_patterns.decorator.export.AppointmentFormatter;
-import com.piedraazul.app_client.design_patterns.decorator.export.BaseAppointmentFormatter;
-import com.piedraazul.app_client.design_patterns.decorator.export.StatusHighlightDecorator;
-import com.piedraazul.app_client.design_patterns.decorator.export.TimestampDecorator;
-import com.piedraazul.app_client.design_patterns.observer.ExportEventManager;
 import com.piedraazul.app_client.models.Appointment;
 import com.piedraazul.app_client.services.NavigationService;
+import com.piedraazul.app_client.services.ServiceManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
- * Controlador de la pantalla de selección de formato de exportación.
- * Actúa como Notificador concreto (Subject) del patrón Observer.
+ * Controlador de la pantalla de selección de formato de exportación
+ * para el rol Agendador.
  *
- * Contiene una referencia ExportEventManager que gestiona los suscriptores
- * y los notifica cuando el usuario selecciona un formato de exportación.
+ * Utiliza el patrón Strategy implementado en el backend para generar
+ * el archivo de exportación en el formato seleccionado (JSON, HTML, CSV).
  *
- * Utiliza el patrón Decorador para enriquecer el contenido exportado:
- *   BaseAppointmentFormatter  → contenido base (JSON o HTML)
- *   + TimestampDecorator      → agrega fecha/hora de exportación
- *   + StatusHighlightDecorator → resalta citas según su estado
+ * Al presionar un botón de formato:
+ *   1. Envía los IDs de las citas visibles al endpoint POST /appointments/export
+ *   2. Recibe los bytes del archivo generado por el backend
+ *   3. Abre un FileChooser para que el usuario seleccione dónde guardar
+ *   4. Escribe el archivo al disco
  */
 public class SchedulerExportSelectionController {
 
@@ -48,23 +48,6 @@ public class SchedulerExportSelectionController {
 
     private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
 
-    /**
-     * EventManager del patrón Observer.
-     * Gestiona la suscripción y notificación del evento "export".
-     */
-    public ExportEventManager events = new ExportEventManager("export");
-
-    /**
-     * Referencia a la ventana (Stage) de resultados de exportación.
-     * Se mantiene para verificar si ya está abierta y evitar duplicados.
-     */
-    private Stage exportResultStage;
-
-    /**
-     * Referencia al controlador de resultados (Observer concreto).
-     */
-    private ExportResultController exportResultController;
-
     @FXML
     public void initialize() {
 
@@ -76,100 +59,83 @@ public class SchedulerExportSelectionController {
 
     @FXML
     private void handleExportJson() {
-        generateReport("JSON");
+        generateReport("json");
     }
 
     @FXML
     private void handleExportHtml() {
-        generateReport("HTML");
+        generateReport("html");
     }
 
     @FXML
     private void handleExportCsv() {
-        generateReport("CSV");
+        generateReport("csv");
     }
 
     /**
-     * Genera el reporte de citas en el formato indicado usando el
-     * patrón Decorador, y notifica a los suscriptores (Observers).
+     * Genera el reporte de citas delegando al endpoint del backend
+     * y descarga el archivo al disco del usuario.
      *
-     * La cadena de decoradores es:
-     *   BaseAppointmentFormatter
-     *     → TimestampDecorator       (agrega fecha/hora de exportación)
-     *     → StatusHighlightDecorator (resalta citas según su estado)
+     * Envía solo los IDs de las citas actualmente visibles en pantalla
+     * para exportar exactamente lo que el usuario ve.
      *
-     * Si la ventana de resultados no existe o fue cerrada, la crea y
-     * suscribe el Observer antes de notificar.
-     *
-     * @param format el formato de exportación ("JSON", "HTML" o "CSV")
+     * @param format el formato de exportación ("json", "html" o "csv")
      */
     private void generateReport(String format) {
-        // ── Patrón Decorador ──────────────────────────────────────────
-        // Se construye la cadena de decoradores de adentro hacia afuera:
-        // primero el componente base, luego se envuelve con cada decorador.
-        AppointmentFormatter formatter = new BaseAppointmentFormatter();
-        formatter = new TimestampDecorator(formatter);
-        formatter = new StatusHighlightDecorator(formatter);
+        // Recolectar los IDs de las citas visibles
+        List<Long> ids = appointmentList.stream()
+                .map(Appointment::getId)
+                .collect(Collectors.toList());
 
-        String exportedContent = formatter.format(appointmentList, format);
-        // ─────────────────────────────────────────────────────────────
+        // Llamar al backend para generar el archivo
+        byte[] fileContent = ServiceManager.getInstance()
+                .getAppointmentService()
+                .exportFile(ids, format);
 
-        // Si la ventana de resultado no existe o fue cerrada, crearla y suscribir el Observer
-        if (exportResultStage == null || !exportResultStage.isShowing()) {
-            openExportResultWindow();
+        if (fileContent == null) {
+            showAlert(Alert.AlertType.ERROR, "Error de Exportación",
+                    "No se pudo generar el archivo. Verifica la conexión con el servidor.");
+            return;
         }
 
-        // Notificar a todos los suscriptores (Observer) con el evento "export"
-        events.notifyListeners("export", format, exportedContent);
-    }
+        // Abrir FileChooser para que el usuario seleccione dónde guardar
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Guardar archivo de exportación");
+        fileChooser.setInitialFileName("citas_export." + format.toLowerCase());
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter(
+                        format.toUpperCase() + " files", "*." + format.toLowerCase()));
 
-    /**
-     * Abre la ventana de resultados de exportación (ExportResult.fxml)
-     * en un nuevo Stage. Obtiene el controlador y lo suscribe como
-     * Observer al ExportEventManager.
-     */
-    private void openExportResultWindow() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ExportResult.fxml"));
-            Parent root = loader.load();
+        Stage stage = (Stage) button_Json.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(stage);
 
-            // Obtener el controlador que implementa ExportEventListener (Observer concreto)
-            exportResultController = loader.getController();
-
-            // Suscribir el Observer al evento "export" del EventManager
-            events.subscribe("export", exportResultController);
-
-            // Crear y mostrar la ventana de resultados
-            exportResultStage = new Stage();
-            exportResultStage.setTitle("Citas Exportadas");
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/fxml/stylesheet.css").toExternalForm());
-            exportResultStage.setScene(scene);
-            exportResultStage.show();
-
-            // Al cerrar la ventana, desuscribir el Observer del EventManager
-            exportResultStage.setOnCloseRequest(event -> {
-                events.unsubscribe("export", exportResultController);
-                exportResultController = null;
-                exportResultStage = null;
-            });
-
-        } catch (IOException e) {
-            Logger.getLogger(SchedulerExportSelectionController.class.getName())
-                    .log(Level.SEVERE, "Error al abrir ventana de resultados de exportación", e);
+        if (file != null) {
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                fos.write(fileContent);
+                showAlert(Alert.AlertType.INFORMATION, "Exportación Exitosa",
+                        "El archivo se guardó correctamente en:\n" + file.getAbsolutePath());
+            } catch (IOException e) {
+                Logger.getLogger(SchedulerExportSelectionController.class.getName())
+                        .log(Level.SEVERE, "Error al guardar archivo de exportación", e);
+                showAlert(Alert.AlertType.ERROR, "Error al Guardar",
+                        "No se pudo guardar el archivo: " + e.getMessage());
+            }
         }
     }
 
     @FXML
     private void handleBack() {
-        // Cerrar la ventana de resultados si está abierta
-        if (exportResultStage != null && exportResultStage.isShowing()) {
-            exportResultStage.close();
-        }
-
         NavigationService.getInstance().navigateTo(
                 "/fxml/SchedulerExport.fxml",
                 "Exportar Citas",
                 button_Back);
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }
