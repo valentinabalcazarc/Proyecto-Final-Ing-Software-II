@@ -31,7 +31,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class ProfessionalSelectSpecificAppointmentController {
+public class PatientRescheduleSelectSpecificAppointmentController {
 
     private Patient patient;
     private SpecialityProfEnum specialityProf;
@@ -187,7 +187,7 @@ public class ProfessionalSelectSpecificAppointmentController {
                 if (result == 0) {
                     showAlert(Alert.AlertType.INFORMATION, "Éxito", "¡Cita reagendada con éxito!");
                     NavigationService.getInstance().navigateTo(
-                            "/fxml/ProfessionalMainView.fxml",
+                            "/fxml/PatientMainView.fxml",
                             "Piedra Azul - Menú Principal",
                             (Button) event.getSource());
                 } else if (result == 1) {
@@ -205,10 +205,10 @@ public class ProfessionalSelectSpecificAppointmentController {
     @FXML
     private void handleRegresar(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ProfessionalAutomaticRecommendationView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PatientRescheduleAutomaticRecommendationView.fxml"));
             Parent root = loader.load();
 
-            ProfessionalAutomaticRecommendationController controller = loader.getController();
+            PatientRescheduleAutomaticRecommendationController controller = loader.getController();
             controller.setPatientAndSpeciality(patient, specialityProf,prevAppointment);
 
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();

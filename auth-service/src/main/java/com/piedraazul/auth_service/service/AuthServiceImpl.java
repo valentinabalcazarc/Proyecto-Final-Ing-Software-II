@@ -105,4 +105,7 @@ public class AuthServiceImpl implements AuthService {
     public boolean existsByCedula(Long cedUser) {
         return userRepository.existsByCedUser(cedUser);
     }
+
+    @Override
+    public Optional<User> findByCodigoUser(Long codUser){ return userRepository.findByCodUser(codUser); }
 }

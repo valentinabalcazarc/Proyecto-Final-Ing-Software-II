@@ -1,20 +1,27 @@
 package com.piedraazul.app_client.controllers;
 
 import com.piedraazul.app_client.design_patterns.strategy.SearchByProfAndDateStrategy;
+import com.piedraazul.app_client.enums.SpecialityProfEnum;
 import com.piedraazul.app_client.models.Appointment;
 import com.piedraazul.app_client.models.Patient;
 import com.piedraazul.app_client.design_patterns.strategy.AppointmentSearchContext;
 import com.piedraazul.app_client.design_patterns.strategy.SearchByPatientStrategy;
 import com.piedraazul.app_client.design_patterns.strategy.SearchParams;
+import com.piedraazul.app_client.models.Professional;
 import com.piedraazul.app_client.services.NavigationService;
 import com.piedraazul.app_client.services.ServiceManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -99,33 +106,29 @@ public class SchedulerManageAppointmentsController {
     }
 
     @FXML
-    private void handleCancel(ActionEvent event) {
+    public void handleCancel() {
         Appointment selected = tblAppointments.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            showAlert(Alert.AlertType.WARNING, "Selección requerida", "Por favor, seleccione una cita.");
-            return;
-        }
+        if (selected == null) return;
 
         if (selected.getStatus().equals("Cancelled") || selected.getStatus().equals("Completed")) {
-            showAlert(Alert.AlertType.ERROR, "Error", "No se puede cancelar una cita cancelada o completeda.");
+            showAlert(Alert.AlertType.ERROR, "Error", "No se puede cancelar una cita completeda o cancelada.");
         }else{
-            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "¿Está seguro de que desea cancelar esta cita?",
-                    ButtonType.YES, ButtonType.NO);
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "¿Desea cancelar la cita?", ButtonType.YES, ButtonType.NO);
             confirm.showAndWait();
             if (confirm.getResult() == ButtonType.YES) {
                 boolean success = ServiceManager.getInstance().getAppointmentService().deleteAppointment(selected.getId());
                 if (success) {
-                    showAlert(Alert.AlertType.INFORMATION, "Éxito", "Cita cancelada correctamente.");
-                    handleFind(null); // Refresh table
+                    new Alert(Alert.AlertType.INFORMATION, "Cita cancelada.").showAndWait();
+                    loadAllAppointments();
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Error", "No se pudo cancelar la cita.");
+                    new Alert(Alert.AlertType.ERROR, "No se pudo cancelar.").showAndWait();
                 }
             }
         }
     }
 
     @FXML
-    private void handleReschedule(ActionEvent event) {
+    public void handleReschedule(ActionEvent event) {
         Appointment selected = tblAppointments.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert(Alert.AlertType.WARNING, "Selección requerida", "Por favor, seleccione una cita.");
@@ -133,10 +136,29 @@ public class SchedulerManageAppointmentsController {
         }
 
         if (selected.getStatus().equals("Cancelled") || selected.getStatus().equals("Completed")) {
-            showAlert(Alert.AlertType.ERROR, "Error", "No se puede reagendar una cita cancelada o completeda.");
+            showAlert(Alert.AlertType.ERROR, "Error", "No se puede reagendar una cita completeda o cancelada.");
         }else{
-            NavigationService.getInstance().navigateTo("/fxml/SchedulerCreateAppStep1.fxml",
-                    "Reagendar Cita - Selección de Nueva Fecha", (Button) event.getSource());
+            System.out.println("PatientId: " + selected.getPatientId());
+            Patient patient = ServiceManager.getInstance().getPatientService().findByCod(selected.getPatientId());
+            Professional prof = ServiceManager.getInstance().getProfessionalService().findByCodProf(selected.getProfessionalId());
+            SpecialityProfEnum specialityProf = prof.getSpecialityProf();
+
+            try {
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/fxml/SchedulerAutomaticRecommendationView.fxml"));
+                Parent root = loader.load();
+
+                SchedulerAutomaticRecommendationController controller = loader.getController();
+                controller.setPatientAndSpeciality(patient, specialityProf,selected);
+
+                Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                stage.setTitle("Piedra Azul - Citas Más Cercana");
+                stage.setScene(new Scene(root));
+                stage.getScene().getStylesheets().add(getClass().getResource("/fxml/stylesheet.css").toExternalForm());
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "Error", "No se pudo cargar la vista de citas es.");
+            }
         }
     }
 

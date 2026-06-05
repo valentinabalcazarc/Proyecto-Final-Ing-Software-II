@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.piedraazul.app_client.controllers.PatientRescheduleAutomaticRecommendationController">
+
+   <stylesheets>
+      <URL value="@stylesheet.css" />
+   </stylesheets>
+
+   <children>
+
+      <!-- ══ HEADER ══ -->
+      <AnchorPane prefHeight="110.0" prefWidth="800.0" styleClass="header--patient-gradient">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+
+                  <!-- Títulos del header -->
+                  <VBox alignment="CENTER_LEFT" spacing="4.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="Regendamiento de Citas" textFill="WHITE">
+                           <font><Font name="Cascadia Code Bold" size="22.0" /></font>
+                        </Label>
+                        <Label text="Revisa y confirma la cita" textFill="#dce0ff">
+                           <font><Font name="Cascadia Code" size="13.0" /></font>
+                        </Label>
+                     </children>
+                     <padding><Insets left="30.0" /></padding>
+                  </VBox>
+
+                  <!-- Ícono decorativo -->
+                  <Label text="📅" textFill="WHITE">
+                     <font><Font size="36.0" /></font>
+                     <HBox.margin><Insets right="30.0" /></HBox.margin>
+                  </Label>
+
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+
+      <!-- ══ BODY ══ -->
+      <AnchorPane prefWidth="800.0" styleClass="page--gradient-light" VBox.vgrow="ALWAYS">
+         <children>
+            <VBox spacing="24.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="30.0">
+               <children>
+
+                  <!-- Subtítulo de sección -->
+                  <Label styleClass="service__section-title" text="La cita más cercana disponible es:">
+                     <font><Font name="Cascadia Code Bold" size="15.0" /></font>
+                  </Label>
+
+                  <!-- ═══ Tarjeta de información de la cita ═══ -->
+                  <VBox spacing="18.0" styleClass="recommendation__info-card">
+                     <children>
+
+                        <!-- Fila: Fecha -->
+                        <HBox alignment="CENTER_LEFT" spacing="12.0">
+                           <children>
+                              <Label text="📆">
+                                 <font><Font size="20.0" /></font>
+                              </Label>
+                              <VBox spacing="2.0">
+                                 <children>
+                                    <Label styleClass="recommendation__detail-label" text="Fecha">
+                                       <font><Font name="Cascadia Code Bold" size="11.0" /></font>
+                                    </Label>
+                                    <Label fx:id="lblFecha" styleClass="recommendation__detail-value" text="Cargando...">
+                                       <font><Font name="Cascadia Code" size="15.0" /></font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+
+                        <!-- Separador visual -->
+                        <Region maxWidth="Infinity" prefHeight="1.0" styleClass="recommendation__divider" />
+
+                        <!-- Fila: Hora -->
+                        <HBox alignment="CENTER_LEFT" spacing="12.0">
+                           <children>
+                              <Label text="🕐">
+                                 <font><Font size="20.0" /></font>
+                              </Label>
+                              <VBox spacing="2.0">
+                                 <children>
+                                    <Label styleClass="recommendation__detail-label" text="Hora">
+                                       <font><Font name="Cascadia Code Bold" size="11.0" /></font>
+                                    </Label>
+                                    <Label fx:id="lblHora" styleClass="recommendation__detail-value" text="Cargando...">
+                                       <font><Font name="Cascadia Code" size="15.0" /></font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+
+                        <!-- Separador visual -->
+                        <Region maxWidth="Infinity" prefHeight="1.0" styleClass="recommendation__divider" />
+
+                        <!-- Fila: Profesional -->
+                        <HBox alignment="CENTER_LEFT" spacing="12.0">
+                           <children>
+                              <Label text="👨‍⚕️">
+                                 <font><Font size="20.0" /></font>
+                              </Label>
+                              <VBox spacing="2.0">
+                                 <children>
+                                    <Label styleClass="recommendation__detail-label" text="Profesional">
+                                       <font><Font name="Cascadia Code Bold" size="11.0" /></font>
+                                    </Label>
+                                    <Label fx:id="lblProfesional" styleClass="recommendation__detail-value" text="Cargando...">
+                                       <font><Font name="Cascadia Code" size="15.0" /></font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+
+                     </children>
+                     <padding><Insets bottom="22.0" left="28.0" right="28.0" top="22.0" /></padding>
+                  </VBox>
+
+                  <!-- Botón "Ver otros horarios" -->
+                  <Button mnemonicParsing="false" onAction="#handleOtrosHorarios" prefHeight="38.0" prefWidth="260.0" styleClass="btn--patient-outline" text="🔍  Ver otros horarios disponibles">
+                     <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                  </Button>
+
+                  <!-- Espaciador -->
+                  <Region VBox.vgrow="ALWAYS" />
+
+                  <!-- ═══ Footer: botones de acción ═══ -->
+                  <HBox alignment="CENTER_LEFT" spacing="16.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#handleRegresar" prefHeight="38.0" prefWidth="150.0" styleClass="btn--patient-outline" text="← Regresar">
+                           <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                        </Button>
+
+                        <!-- Espaciador entre botones -->
+                        <Region HBox.hgrow="ALWAYS" />
+
+                        <Button fx:id="btnConfirmar" mnemonicParsing="false" onAction="#handleConfirmar" prefHeight="38.0" prefWidth="170.0" styleClass="btn--patient-primary" text="✔  Confirmar cita">
+                           <font><Font name="Cascadia Code Bold" size="13.0" /></font>
+                        </Button>
+                     </children>
+                  </HBox>
+
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+
+   </children>
+</VBox>

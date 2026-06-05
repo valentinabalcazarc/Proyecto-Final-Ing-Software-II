@@ -58,10 +58,33 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     }
 
     @Override
-    public Professional findByCod(Long codProf) {
+    public Professional findByCodUser(Long codProf) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/user/" + codProf))
+                    .header("Authorization", "Bearer " + SessionManager.getToken())
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(">> Status findByCod prof: " + response.statusCode());
+            System.out.println(">> Body findByCod prof: " + response.body());
+
+            if (response.statusCode() == 200) {
+                ProfessionalResponseDTO dto = objectMapper.readValue(response.body(), ProfessionalResponseDTO.class);
+                return ProfessionalMapper.toModel(dto);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Professional findByCodProf(Long codProf) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/" + codProf))
                     .header("Authorization", "Bearer " + SessionManager.getToken())
                     .GET()
                     .build();

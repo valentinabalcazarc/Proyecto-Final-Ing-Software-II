@@ -13,4 +13,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByCedUser(Long cedUser);
     List<User> findByRoleUser(RoleUserEnum role);
     boolean existsByCedUser(Long cedUser);
+    Optional<User> findByCodUser(Long codUser);
 }

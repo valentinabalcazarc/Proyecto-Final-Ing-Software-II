@@ -15,6 +15,7 @@ public interface ProfessionalRepository extends JpaRepository<Professional, Long
     Optional<Professional> findByUserRef(UserRef userRef);
     List<Professional> findBySpecialityProf(SpecialityProfEnum speciality);
     boolean existsByUserRef(UserRef userRef);
+    Optional<Professional> findByCodProf(Long codProf);
 
     @Query("SELECT u FROM UnavailableDay u WHERE u.professional.userRef = :userRef")
     List<UnavailableDay> findUnavailableDaysByUserRef(@Param("userRef") UserRef userRef);

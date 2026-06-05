@@ -56,7 +56,6 @@ public class ProfessionalCreateAppStep2Controller {
         }
     }
 
-    // ── Configuración del calendario ─────────────────────────────
 
     private void configurarCalendario() {
         dpBirthDate.setDayCellFactory(picker -> new DateCell() {
@@ -194,8 +193,6 @@ public class ProfessionalCreateAppStep2Controller {
         }
     }
 
-    // ── Utilidades ────────────────────────────────────────────────
-
     private boolean validateFields() {
         if (txtCedula.getText().trim().isEmpty() || txtFirstName.getText().trim().isEmpty() ||
                 txtFirstLastName.getText().trim().isEmpty() || txtPhone.getText().trim().isEmpty() ||
@@ -217,7 +214,10 @@ public class ProfessionalCreateAppStep2Controller {
 
     private void verificarCitasPrevias() {
         if (patient == null || patient.getCodPatient() == null) {
-            btnSave.setDisable(false);
+            btnSave.setDisable(true);
+            showAlert(Alert.AlertType.WARNING,
+                    "Primera cita",
+                    "Este paciente no tiene citas previas. Su primera cita debe ser de Consulta General.");
             return;
         }
 
@@ -229,14 +229,27 @@ public class ProfessionalCreateAppStep2Controller {
             boolean tieneCitaAgendada = citas != null && citas.stream()
                     .anyMatch(a -> "Scheduled".equalsIgnoreCase(a.getStatus()));
 
+            boolean tieneCitasPrevias = citas != null && !citas.isEmpty();
+
             if (tieneCitaAgendada) {
                 btnSave.setDisable(true);
                 showAlert(Alert.AlertType.WARNING,
                         "Cita ya agendada",
-                        "Este paciente ya tiene una cita en estado Agendada. No es posible agendar otra hasta que sea atendida o cancelada.");
-            } else {
-                btnSave.setDisable(false);
+                        "Este paciente ya tiene una cita en estado Agendada. " +
+                                "No es posible agendar otra hasta que sea atendida o cancelada.");
+                return;
             }
+
+            if (!tieneCitasPrevias) {
+                btnSave.setDisable(true);
+                showAlert(Alert.AlertType.WARNING,
+                        "Primera cita",
+                        "Este paciente no tiene citas previas. Su primera cita debe ser de Consulta General.");
+                return;
+            }
+
+            btnSave.setDisable(false);
+
         } catch (Exception e) {
             System.err.println(">> Error al verificar citas del paciente: " + e.getMessage());
             btnSave.setDisable(false);

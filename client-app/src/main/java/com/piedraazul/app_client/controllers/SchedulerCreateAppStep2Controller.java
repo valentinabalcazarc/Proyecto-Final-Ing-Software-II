@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 public class SchedulerCreateAppStep2Controller{
 
@@ -30,6 +31,7 @@ public class SchedulerCreateAppStep2Controller{
     @FXML private Label lblAge;
     @FXML private TextField txtAppSummary;
     @FXML private TextArea txtObservation;
+    @FXML private Button btnSave;
 
     // ── Checkboxes de tipo de cita (patrón Decorador) ────────────
     @FXML private CheckBox chkUrgente;
@@ -37,6 +39,8 @@ public class SchedulerCreateAppStep2Controller{
     @FXML private CheckBox chkCitaControl;
 
     private Appointment appointment;
+    private Patient patient;
+    private boolean hasAppointments = false;
 
     @FXML
     public void initialize() {
@@ -114,7 +118,7 @@ public class SchedulerCreateAppStep2Controller{
 
         try {
             Long ced = Long.parseLong(cedula);
-            Patient patient = ServiceManager.getInstance().getPatientService().findByCed(ced);
+            patient = ServiceManager.getInstance().getPatientService().findByCed(ced);
 
             if (patient != null) {
                 txtFirstName.setText(patient.getNamePatient());
@@ -124,6 +128,7 @@ public class SchedulerCreateAppStep2Controller{
                 cbxGender.setValue(patient.getGenderPatient());
                 txtPhone.setText(String.valueOf(patient.getPhonePatient()));
                 dpBirthDate.setValue(patient.getDateBirthPatient());
+                verificarCitasPrevias();
             } else {
                 showAlert(Alert.AlertType.INFORMATION, "Paciente no encontrado",
                         "El paciente no existe. Por favor, complete los datos manualmente.");
@@ -200,6 +205,50 @@ public class SchedulerCreateAppStep2Controller{
             return false;
         }
         return true;
+    }
+
+    private void verificarCitasPrevias() {
+        if (patient == null || patient.getCodPatient() == null) {
+            btnSave.setDisable(true);
+            showAlert(Alert.AlertType.WARNING,
+                    "Primera cita",
+                    "Este paciente no tiene citas previas. Su primera cita debe ser de Consulta General.");
+            return;
+        }
+
+        try {
+            List<Appointment> citas = ServiceManager.getInstance()
+                    .getAppointmentService()
+                    .getAppointmentsByPatient(patient.getCodPatient());
+
+            boolean tieneCitaAgendada = citas != null && citas.stream()
+                    .anyMatch(a -> "Scheduled".equalsIgnoreCase(a.getStatus()));
+
+            boolean tieneCitasPrevias = citas != null && !citas.isEmpty();
+
+            if (tieneCitaAgendada) {
+                btnSave.setDisable(true);
+                showAlert(Alert.AlertType.WARNING,
+                        "Cita ya agendada",
+                        "Este paciente ya tiene una cita en estado Agendada. " +
+                                "No es posible agendar otra hasta que sea atendida o cancelada.");
+                return;
+            }
+
+            if (!tieneCitasPrevias) {
+                btnSave.setDisable(true);
+                showAlert(Alert.AlertType.WARNING,
+                        "Primera cita",
+                        "Este paciente no tiene citas previas. Su primera cita debe ser de Consulta General.");
+                return;
+            }
+
+            btnSave.setDisable(false);
+
+        } catch (Exception e) {
+            System.err.println(">> Error al verificar citas del paciente: " + e.getMessage());
+            btnSave.setDisable(false);
+        }
     }
 
     private void showAlert(Alert.AlertType type, String title, String content) {

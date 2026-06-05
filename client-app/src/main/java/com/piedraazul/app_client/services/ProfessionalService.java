@@ -8,7 +8,9 @@ import com.piedraazul.app_client.models.Professional;
 public interface ProfessionalService {
     List<Professional> getAllProfessionals();
 
-    Professional findByCod(Long codProf);
+    Professional findByCodUser(Long codProf);
+
+    Professional findByCodProf(Long codProf);
 
     List<Professional> getAllProfessionalsBySpeciality(SpecialityProfEnum speciality);
 
