@@ -51,7 +51,7 @@ public class ProfessionalManageAppointmentsController {
         try {
             prof = ServiceManager.getInstance()
                     .getProfessionalService()
-                    .findByCod(codUser);
+                    .findByCodUser(codUser);
             codProfSesion = prof.getCodProf();
         } catch (Exception e) {
             e.printStackTrace();
@@ -235,7 +235,7 @@ public class ProfessionalManageAppointmentsController {
             Parent root = loader.load();
 
             ProfessionalAutomaticRecommendationController controller = loader.getController();
-            controller.setPatientAndSpeciality(patient, specialityProf);
+            controller.setPatientAndSpeciality(patient, specialityProf,selected);
 
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             stage.setTitle("Piedra Azul - Citas Específicas");

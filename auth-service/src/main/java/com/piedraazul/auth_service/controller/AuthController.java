@@ -107,4 +107,13 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @GetMapping("/users/cod/{codigo}")
+    public ResponseEntity<?> findByCodigo(@PathVariable Long codigo) {
+        return authService.findByCodigoUser(codigo)
+                .map(ResponseEntity::ok)
+                .<ResponseEntity<?>>map(r -> r)
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No se encontró el usuario con codigo: " + codigo));
+    }
 }

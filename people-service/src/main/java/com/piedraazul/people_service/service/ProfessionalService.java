@@ -18,4 +18,5 @@ public interface ProfessionalService {
     Professional update(Long id, UpdateProfessionalDTO dto);
     void deactivate(Long id);
     List<UnavailableDay> findUnavailableDaysByUserRef(Long codUser);
+    Optional<Professional> findByCodProf(Long codProf);
 }

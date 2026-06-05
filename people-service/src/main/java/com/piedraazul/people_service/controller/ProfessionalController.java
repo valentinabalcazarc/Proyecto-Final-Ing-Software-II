@@ -107,4 +107,13 @@ public class ProfessionalController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @GetMapping("/{codigo}")
+    public ResponseEntity<?> findByCodigo(@PathVariable Long codigo) {
+        return professionalService.findByCodProf(codigo)
+                .map(ResponseEntity::ok)
+                .<ResponseEntity<?>>map(r -> r)
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No se encontró el profesional con codigo: " + codigo));
+    }
 }

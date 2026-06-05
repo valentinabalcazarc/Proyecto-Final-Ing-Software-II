@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public class ProfessionalAutomaticRecommendationController {
+public class SchedulerAutomaticRecommendationController {
 
     private Patient patient;
     private SpecialityProfEnum specialityProf;
@@ -106,7 +106,7 @@ public class ProfessionalAutomaticRecommendationController {
                 if (result == 0) {
                     showAlert(Alert.AlertType.INFORMATION, "Éxito", "¡Cita reagendada con éxito!");
                     NavigationService.getInstance().navigateTo(
-                            "/fxml/ProfessionalMainView.fxml",
+                            "/fxml/SchedulerMainView.fxml",
                             "Piedra Azul - Menú Principal",
                             (Button) event.getSource());
                 } else if (result == 1) {
@@ -125,10 +125,10 @@ public class ProfessionalAutomaticRecommendationController {
     private void handleOtrosHorarios(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/fxml/ProfessionalSelectSpecificAppointmentView.fxml"));
+                    getClass().getResource("/fxml/SchedulerSelectSpecificAppointmentView.fxml"));
             Parent root = loader.load();
 
-            ProfessionalSelectSpecificAppointmentController controller = loader.getController();
+            SchedulerSelectSpecificAppointmentController controller = loader.getController();
             controller.setPatientAndSpeciality(patient, specialityProf,prevAppointment);
 
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -143,7 +143,7 @@ public class ProfessionalAutomaticRecommendationController {
 
     @FXML
     private void handleRegresar(ActionEvent event) {
-        NavigationService.getInstance().navigateTo("/fxml/ProfessionalManageAppointments.fxml", "Gestionar Citas",
+        NavigationService.getInstance().navigateTo("/fxml/SchedulerManageAppointments.fxml", "Gestionar Citas",
                 (Button) event.getSource());
     }
 

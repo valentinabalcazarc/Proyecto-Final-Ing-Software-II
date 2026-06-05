@@ -202,8 +202,12 @@
                                     <PasswordField fx:id="txtPassword" prefHeight="34.0"
                                                    promptText="Mínimo 6 caracteres"
                                                    styleClass="textfield--styled" HBox.hgrow="ALWAYS" />
+                                    <TextField fx:id="txtShowPassword" prefHeight="34.0"
+                                               promptText="Mínimo 6 caracteres"
+                                               styleClass="textfield--styled" HBox.hgrow="ALWAYS"
+                                               visible="false" managed="false" />
                                     <Button fx:id="btnEye" prefHeight="30.0" prefWidth="30.0"
-                                            text="(-)" onAction="#handleTogglePassword"
+                                            text="👁" onAction="#handleTogglePassword"
                                             styleClass="btn--eye-toggle">
                                        <tooltip><Tooltip text="Mostrar/ocultar contraseña" /></tooltip>
                                     </Button>
@@ -223,6 +227,9 @@
                               </Label>
                               <PasswordField fx:id="txtConPassword" prefHeight="34.0" maxWidth="Infinity"
                                              promptText="Repita su contraseña" styleClass="textfield--styled" />
+                              <TextField fx:id="txtShowConPassword" prefHeight="34.0" maxWidth="Infinity"
+                                         promptText="Repita su contraseña" styleClass="textfield--styled"
+                                         visible="false" managed="false" />
                            </children>
                         </VBox>
 

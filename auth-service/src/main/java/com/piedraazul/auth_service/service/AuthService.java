@@ -18,4 +18,5 @@ public interface AuthService {
     User update(Long id, UpdateUserDTO dto);
     void deactivate(Long id);
     boolean existsByCedula(Long cedUser);
+    Optional<User> findByCodigoUser(Long codUser);
 }

@@ -14,4 +14,6 @@ public interface UserService {
     boolean updatePassword(int cedUser, String newPassword);
 
     User findByCedUser(Long cedUser);
+
+    User findByCodUser(Long codUser);
 }

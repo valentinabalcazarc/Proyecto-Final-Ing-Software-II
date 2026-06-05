@@ -128,4 +128,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + codUser));
         return professionalRepository.findUnavailableDaysByUserRef(userRef);
     }
+
+    @Override
+    public Optional<Professional> findByCodProf(Long codProf){ return professionalRepository.findByCodProf(codProf); }
 }

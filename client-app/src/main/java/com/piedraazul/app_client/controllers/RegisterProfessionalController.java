@@ -31,6 +31,8 @@ public class RegisterProfessionalController {
     @FXML private TextField txtPhoneNumber;
     @FXML private PasswordField txtPassword;
     @FXML private PasswordField txtConPassword;
+    @FXML private TextField     txtShowPassword;    // TextField visible cuando ojo activo (campo 1)
+    @FXML private TextField     txtShowConPassword; // TextField visible cuando ojo activo (campo 2)
     @FXML private TextField txtSecurityAnswer;
     @FXML private TextField txtArrivalTime;
     @FXML private TextField txtDepartureTime;
@@ -114,6 +116,183 @@ public class RegisterProfessionalController {
         tableUnavailableDays.setPlaceholder(new Label("Aún no se han agregado días no laborables"));
 
         ocultarErrores();
+
+        // ── Sincronizar PasswordField ↔ TextField visible ────────────
+        txtShowPassword.setVisible(false);
+        txtShowPassword.setManaged(false);
+        txtShowConPassword.setVisible(false);
+        txtShowConPassword.setManaged(false);
+
+        txtPassword.textProperty().addListener((obs, o, n) -> {
+            if (!txtShowPassword.isFocused()) txtShowPassword.setText(n);
+        });
+        txtShowPassword.textProperty().addListener((obs, o, n) -> {
+            if (!txtPassword.isFocused()) txtPassword.setText(n);
+        });
+        txtConPassword.textProperty().addListener((obs, o, n) -> {
+            if (!txtShowConPassword.isFocused()) txtShowConPassword.setText(n);
+        });
+        txtShowConPassword.textProperty().addListener((obs, o, n) -> {
+            if (!txtConPassword.isFocused()) txtConPassword.setText(n);
+        });
+
+        // ── Validación en tiempo real al perder el foco ──────────────
+
+        txtNumCedula.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) validarCedula();
+        });
+
+        txtFirstName.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) validarPrimerNombre();
+        });
+
+        txtSecondName.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) validarSegundoNombre();
+        });
+
+        txtFirstLastName.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) validarPrimerApellido();
+        });
+
+        txtSecondLastName.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) validarSegundoApellido();
+        });
+
+        txtPhoneNumber.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) validarTelefono();
+        });
+
+        txtPassword.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) validarPassword();
+        });
+
+        txtConPassword.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) validarPassword();
+        });
+
+        txtArrivalTime.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) validarHorario();
+        });
+
+        txtDepartureTime.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) validarHorario();
+        });
+
+        txtAttentionInterval.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) validarIntervalo();
+        });
+    }
+
+    // ── Métodos de validación individual ────────────────────────────
+
+    private boolean validarCedula() {
+        String val = txtNumCedula.getText().trim();
+        if (val.isEmpty()) {
+            lb_errorID.setText("Campo requerido"); lb_errorID.setVisible(true); return false;
+        }
+        try { Long.parseLong(val); }
+        catch (NumberFormatException e) {
+            lb_errorID.setText("Solo números"); lb_errorID.setVisible(true); return false;
+        }
+        txtNumCedula.setText(val);
+        lb_errorID.setVisible(false); return true;
+    }
+
+    private boolean validarPrimerNombre() {
+        String val = txtFirstName.getText().trim();
+        if (val.isEmpty()) {
+            lb_errorFirstName.setText("Campo requerido"); lb_errorFirstName.setVisible(true); return false;
+        }
+        if (!esNombreValido(val)) {
+            lb_errorFirstName.setText("Caracteres inválidos"); lb_errorFirstName.setVisible(true); return false;
+        }
+        txtFirstName.setText(normalizarNombre(val));
+        lb_errorFirstName.setVisible(false); return true;
+    }
+
+    private boolean validarSegundoNombre() {
+        String val = txtSecondName.getText().trim();
+        if (val.isEmpty()) { lb_errorSecondName.setVisible(false); return true; }
+        if (!esNombreValido(val)) {
+            lb_errorSecondName.setText("Caracteres inválidos"); lb_errorSecondName.setVisible(true); return false;
+        }
+        txtSecondName.setText(normalizarNombre(val));
+        lb_errorSecondName.setVisible(false); return true;
+    }
+
+    private boolean validarPrimerApellido() {
+        String val = txtFirstLastName.getText().trim();
+        if (val.isEmpty()) {
+            lb_errorFirstLastName.setText("Campo requerido"); lb_errorFirstLastName.setVisible(true); return false;
+        }
+        if (!esNombreValido(val)) {
+            lb_errorFirstLastName.setText("Caracteres inválidos"); lb_errorFirstLastName.setVisible(true); return false;
+        }
+        txtFirstLastName.setText(normalizarNombre(val));
+        lb_errorFirstLastName.setVisible(false); return true;
+    }
+
+    private boolean validarSegundoApellido() {
+        String val = txtSecondLastName.getText().trim();
+        if (val.isEmpty()) { lb_errorSecondLastName.setVisible(false); return true; }
+        if (!esNombreValido(val)) {
+            lb_errorSecondLastName.setText("Caracteres inválidos"); lb_errorSecondLastName.setVisible(true); return false;
+        }
+        txtSecondLastName.setText(normalizarNombre(val));
+        lb_errorSecondLastName.setVisible(false); return true;
+    }
+
+    private boolean validarTelefono() {
+        String val = txtPhoneNumber.getText().trim();
+        if (val.isEmpty()) {
+            lb_errorPhone.setText("Campo requerido"); lb_errorPhone.setVisible(true); return false;
+        }
+        try { Double.parseDouble(val); }
+        catch (NumberFormatException e) {
+            lb_errorPhone.setText("Solo números"); lb_errorPhone.setVisible(true); return false;
+        }
+        txtPhoneNumber.setText(val);
+        lb_errorPhone.setVisible(false); return true;
+    }
+
+    private boolean validarPassword() {
+        if (txtPassword.getText().isEmpty()) {
+            lb_errorPassword.setText("Campo requerido"); lb_errorPassword.setVisible(true); return false;
+        }
+        if (!validarPasswordSegura(txtPassword.getText())) {
+            lb_errorPassword.setText("Contraseña débil (6 car., mayús., número, especial)");
+            lb_errorPassword.setVisible(true); return false;
+        }
+        if (!txtConPassword.getText().isEmpty() && !txtPassword.getText().equals(txtConPassword.getText())) {
+            lb_errorPassword.setText("Las contraseñas no coinciden");
+            lb_errorPassword.setVisible(true); return false;
+        }
+        lb_errorPassword.setVisible(false); return true;
+    }
+
+    private boolean validarHorario() {
+        try {
+            LocalTime arrival   = LocalTime.parse(txtArrivalTime.getText().trim(), TIME_FORMATTER);
+            LocalTime departure = LocalTime.parse(txtDepartureTime.getText().trim(), TIME_FORMATTER);
+            if (arrival.isAfter(departure)) {
+                lb_errorSchedule.setText("Llegada no puede ser mayor que salida");
+                lb_errorSchedule.setVisible(true); return false;
+            }
+        } catch (DateTimeParseException e) {
+            lb_errorSchedule.setText("Formato HH:mm requerido"); lb_errorSchedule.setVisible(true); return false;
+        }
+        lb_errorSchedule.setVisible(false); return true;
+    }
+
+    private boolean validarIntervalo() {
+        try {
+            int interval = Integer.parseInt(txtAttentionInterval.getText().trim());
+            if (interval <= 0) throw new NumberFormatException();
+        } catch (NumberFormatException e) {
+            lb_errorSchedule.setText("Intervalo debe ser un número positivo");
+            lb_errorSchedule.setVisible(true); return false;
+        }
+        lb_errorSchedule.setVisible(false); return true;
     }
 
     // ---- Agregar día no laborable ----------------------------------
@@ -128,8 +307,7 @@ public class RegisterProfessionalController {
             showAlert(Alert.AlertType.WARNING, "Fecha inválida", "La fecha no puede ser anterior a hoy.");
             return;
         }
-        boolean duplicado = unavailableDays.stream()
-                .anyMatch(r -> r.getDate().equals(date));
+        boolean duplicado = unavailableDays.stream().anyMatch(r -> r.getDate().equals(date));
         if (duplicado) {
             showAlert(Alert.AlertType.WARNING, "Fecha duplicada", "Esa fecha ya está en la lista.");
             return;
@@ -144,17 +322,28 @@ public class RegisterProfessionalController {
     @FXML
     public void handleTogglePassword() {
         mostrarPassword = !mostrarPassword;
-        btnEye.setText(mostrarPassword ? "(O)" : "(-)");
+
+        // Campo 1
+        txtPassword.setVisible(!mostrarPassword);
+        txtPassword.setManaged(!mostrarPassword);
+        txtShowPassword.setVisible(mostrarPassword);
+        txtShowPassword.setManaged(mostrarPassword);
+
+        // Campo 2
+        txtConPassword.setVisible(!mostrarPassword);
+        txtConPassword.setManaged(!mostrarPassword);
+        txtShowConPassword.setVisible(mostrarPassword);
+        txtShowConPassword.setManaged(mostrarPassword);
+
+        btnEye.setText(mostrarPassword ? "🙈" : "👁");
     }
 
-    // ---- Guardar ---------------------------------------------------
     @FXML
     public void handleSave() {
         ocultarErrores();
-        if (!validarCampos()) return;
+        if (!validarTodosCampos()) return;
 
         try {
-            // 1) Construir objeto Professional
             Professional p = new Professional();
             p.setCedUser((long) Integer.parseInt(txtNumCedula.getText().trim()));
             p.setPassUser(txtPassword.getText());
@@ -177,13 +366,12 @@ public class RegisterProfessionalController {
                 case "Terapeuta" -> p.setTypeProf(TypeProfEnum.Therapist);
             }
             switch (cbxEspecialidad.getValue()) {
-                case "Terapia neural"    -> p.setSpecialityProf(SpecialityProfEnum.Neural_Therapy);
-                case "Quiropraxia"       -> p.setSpecialityProf(SpecialityProfEnum.Chiropractor);
-                case "Fisioterapia"      -> p.setSpecialityProf(SpecialityProfEnum.Physiotherapy);
-                case "Medicina general"  -> p.setSpecialityProf(SpecialityProfEnum.General);
+                case "Terapia neural"   -> p.setSpecialityProf(SpecialityProfEnum.Neural_Therapy);
+                case "Quiropraxia"      -> p.setSpecialityProf(SpecialityProfEnum.Chiropractor);
+                case "Fisioterapia"     -> p.setSpecialityProf(SpecialityProfEnum.Physiotherapy);
+                case "Medicina general" -> p.setSpecialityProf(SpecialityProfEnum.General);
             }
 
-            // 2) Registrar en auth-service
             var userRegistrado = ServiceManager.getInstance().getUserService().regUser(p);
             if (userRegistrado == null) {
                 showAlert(Alert.AlertType.ERROR, "Error", "No se pudo registrar el usuario. Verifique los datos.");
@@ -191,7 +379,6 @@ public class RegisterProfessionalController {
             }
             p.setCodUser(userRegistrado.getCodUser());
 
-            // 3) Registrar en people-service
             boolean profOk = ServiceManager.getInstance().getProfessionalService().register(p);
             if (!profOk) {
                 showAlert(Alert.AlertType.WARNING, "Atención",
@@ -200,10 +387,9 @@ public class RegisterProfessionalController {
                 return;
             }
 
-            // 4) Registrar días no laborables (si se agregaron)
             if (!unavailableDays.isEmpty()) {
                 Professional profRegistrado = ServiceManager.getInstance()
-                        .getProfessionalService().findByCod(p.getCodUser());
+                        .getProfessionalService().findByCodUser(p.getCodUser());
 
                 if (profRegistrado == null || profRegistrado.getCodProf() == null) {
                     showAlert(Alert.AlertType.WARNING, "Atención",
@@ -237,84 +423,27 @@ public class RegisterProfessionalController {
         }
     }
 
-    // ---- Cancelar --------------------------------------------------
     @FXML
     public void handleCancel() {
         NavigationService.getInstance().navigateTo("/fxml/LoginView.fxml", "Piedra Azul - Login", btnCancel);
     }
 
-    // ---- Regresar al Admin -----------------------------------------
     @FXML
     public void handleRegresar() {
         NavigationService.getInstance().navigateTo("/fxml/AdminView.fxml", "Piedra Azul - Administrador", btnRegresar);
     }
 
-    // ================================================================
-    // Validaciones
-    // ================================================================
-    private boolean validarCampos() {
+    private boolean validarTodosCampos() {
         boolean ok = true;
-
-        if (txtNumCedula.getText().trim().isEmpty()) {
-            lb_errorID.setText("Campo requerido"); lb_errorID.setVisible(true); ok = false;
-        } else {
-            try { Long.parseLong(txtNumCedula.getText().trim()); }
-            catch (NumberFormatException e) { lb_errorID.setText("Solo números"); lb_errorID.setVisible(true); ok = false; }
-        }
-
-        if (txtFirstName.getText().trim().isEmpty()) {
-            lb_errorFirstName.setText("Campo requerido"); lb_errorFirstName.setVisible(true); ok = false;
-        } else if (!esNombreValido(txtFirstName.getText().trim())) {
-            lb_errorFirstName.setText("Caracteres inválidos"); lb_errorFirstName.setVisible(true); ok = false;
-        }
-
-        if (!txtSecondName.getText().trim().isEmpty() && !esNombreValido(txtSecondName.getText().trim())) {
-            lb_errorSecondName.setText("Caracteres inválidos"); lb_errorSecondName.setVisible(true); ok = false;
-        }
-
-        if (txtFirstLastName.getText().trim().isEmpty()) {
-            lb_errorFirstLastName.setText("Campo requerido"); lb_errorFirstLastName.setVisible(true); ok = false;
-        } else if (!esNombreValido(txtFirstLastName.getText().trim())) {
-            lb_errorFirstLastName.setText("Caracteres inválidos"); lb_errorFirstLastName.setVisible(true); ok = false;
-        }
-
-        if (!txtSecondLastName.getText().trim().isEmpty() && !esNombreValido(txtSecondLastName.getText().trim())) {
-            lb_errorSecondLastName.setText("Caracteres inválidos"); lb_errorSecondLastName.setVisible(true); ok = false;
-        }
-
-        if (txtPhoneNumber.getText().trim().isEmpty()) {
-            lb_errorPhone.setText("Campo requerido"); lb_errorPhone.setVisible(true); ok = false;
-        } else {
-            try { Double.parseDouble(txtPhoneNumber.getText().trim()); }
-            catch (NumberFormatException e) { lb_errorPhone.setText("Solo números"); lb_errorPhone.setVisible(true); ok = false; }
-        }
-
-        if (txtPassword.getText().isEmpty()) {
-            lb_errorPassword.setText("Campo requerido"); lb_errorPassword.setVisible(true); ok = false;
-        } else if (!validarPasswordSegura(txtPassword.getText())) {
-            lb_errorPassword.setText("Contraseña débil (6 car., mayús., número, especial)"); lb_errorPassword.setVisible(true); ok = false;
-        } else if (!txtPassword.getText().equals(txtConPassword.getText())) {
-            lb_errorPassword.setText("Las contraseñas no coinciden"); lb_errorPassword.setVisible(true); ok = false;
-        }
-
-        try {
-            LocalTime arrival   = LocalTime.parse(txtArrivalTime.getText().trim(), TIME_FORMATTER);
-            LocalTime departure = LocalTime.parse(txtDepartureTime.getText().trim(), TIME_FORMATTER);
-            if (arrival.isAfter(departure)) {
-                lb_errorSchedule.setText("Llegada no puede ser mayor que salida");
-                lb_errorSchedule.setVisible(true); ok = false;
-            }
-        } catch (DateTimeParseException e) {
-            lb_errorSchedule.setText("Formato HH:mm requerido"); lb_errorSchedule.setVisible(true); ok = false;
-        }
-
-        try {
-            int interval = Integer.parseInt(txtAttentionInterval.getText().trim());
-            if (interval <= 0) throw new NumberFormatException();
-        } catch (NumberFormatException e) {
-            lb_errorSchedule.setText("Intervalo debe ser un número positivo");
-            lb_errorSchedule.setVisible(true); ok = false;
-        }
+        ok = validarCedula()          && ok;
+        ok = validarPrimerNombre()    && ok;
+        ok = validarSegundoNombre()   && ok;
+        ok = validarPrimerApellido()  && ok;
+        ok = validarSegundoApellido() && ok;
+        ok = validarTelefono()        && ok;
+        ok = validarPassword()        && ok;
+        ok = validarHorario()         && ok;
+        ok = validarIntervalo()       && ok;
 
         if (!ok) showAlert(Alert.AlertType.WARNING, "Campos incompletos",
                 "Por favor corrige los errores marcados en rojo.");
@@ -325,13 +454,19 @@ public class RegisterProfessionalController {
         return texto.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+");
     }
 
+    private String normalizarNombre(String texto) {
+        if (texto == null || texto.isEmpty()) return texto;
+        String sinTildes = java.text.Normalizer
+                .normalize(texto, java.text.Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}", "");
+        String lower = sinTildes.toLowerCase();
+        return Character.toUpperCase(lower.charAt(0)) + lower.substring(1);
+    }
+
     private boolean validarPasswordSegura(String password) {
         return password.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._-]).{6,}$");
     }
 
-    // ================================================================
-    // Utilidades
-    // ================================================================
     private void ocultarErrores() {
         lb_errorID.setVisible(false);
         lb_errorFirstName.setVisible(false);
@@ -365,9 +500,6 @@ public class RegisterProfessionalController {
         alert.showAndWait();
     }
 
-    // ================================================================
-    // Clase interna para filas de la tabla
-    // ================================================================
     public static class UnavailableDayRow {
         private final LocalDate date;
         private final SimpleStringProperty dateStr;
