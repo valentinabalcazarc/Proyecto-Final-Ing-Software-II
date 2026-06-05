@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 public class ProfessionalCreateAppStep2Controller {
 
@@ -30,6 +31,7 @@ public class ProfessionalCreateAppStep2Controller {
     @FXML private Label lblAge;
     @FXML private TextField txtAppSummary;
     @FXML private TextArea txtObservation;
+    @FXML private Button btnSave;
 
     // ── Checkboxes de tipo de cita (patrón Decorador) ────────────
     @FXML private CheckBox chkUrgente;
@@ -37,6 +39,8 @@ public class ProfessionalCreateAppStep2Controller {
     @FXML private CheckBox chkCitaControl;
 
     private Appointment appointment;
+    private boolean hasAppointments = false;
+    private Patient patient;
 
     @FXML
     public void initialize() {
@@ -111,10 +115,9 @@ public class ProfessionalCreateAppStep2Controller {
     private void handleFindPatient(ActionEvent event) {
         String cedula = txtCedula.getText().trim();
         if (cedula.isEmpty()) return;
-
         try {
             Long ced = Long.parseLong(cedula);
-            Patient patient = ServiceManager.getInstance().getPatientService().findByCed(ced);
+            patient = ServiceManager.getInstance().getPatientService().findByCed(ced);
 
             if (patient != null) {
                 txtFirstName.setText(patient.getNamePatient());
@@ -124,9 +127,11 @@ public class ProfessionalCreateAppStep2Controller {
                 cbxGender.setValue(patient.getGenderPatient());
                 txtPhone.setText(String.valueOf(patient.getPhonePatient()));
                 dpBirthDate.setValue(patient.getDateBirthPatient());
+                verificarCitasPrevias();
             } else {
                 showAlert(Alert.AlertType.INFORMATION, "Paciente no encontrado",
                         "El paciente no existe. Por favor, complete los datos manualmente.");
+                btnSave.setDisable(false);
             }
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Ingrese un número de cédula válido.");
@@ -144,18 +149,18 @@ public class ProfessionalCreateAppStep2Controller {
         if (!validateFields()) return;
 
         try {
-            Patient patient = new Patient();
-            patient.setIdPatient(Long.parseLong(txtCedula.getText().trim()));
-            patient.setNamePatient(txtFirstName.getText().trim());
-            patient.setLastNamePatient(txtFirstLastName.getText().trim());
-            patient.setGenderPatient(cbxGender.getValue());
-            patient.setPhonePatient(Long.parseLong(txtPhone.getText().trim()));
-            patient.setDateBirthPatient(dpBirthDate.getValue());
+            Patient pat = new Patient();
+            pat.setIdPatient(Long.parseLong(txtCedula.getText().trim()));
+            pat.setNamePatient(txtFirstName.getText().trim());
+            pat.setLastNamePatient(txtFirstLastName.getText().trim());
+            pat.setGenderPatient(cbxGender.getValue());
+            pat.setPhonePatient(Long.parseLong(txtPhone.getText().trim()));
+            pat.setDateBirthPatient(dpBirthDate.getValue());
 
             if (txtSecondName.getText() != null)
-                patient.setSecondNamePatient(txtSecondName.getText().trim());
+                pat.setSecondNamePatient(txtSecondName.getText().trim());
             if (txtSecondLastName.getText() != null)
-                patient.setSecondLastNamePatient(txtSecondLastName.getText().trim());
+                pat.setSecondLastNamePatient(txtSecondLastName.getText().trim());
 
             // Patrón Decorador: calcula el tag de tipo de cita
             DescriptionTagDecorator decorator =
@@ -174,7 +179,7 @@ public class ProfessionalCreateAppStep2Controller {
                     txtFirstName.getText().trim() + " " + txtFirstLastName.getText().trim(),
                     descDecored);
 
-            int result = AppointmentFacade.getInstance().scheduleAppointment(patient, appointment);
+            int result = AppointmentFacade.getInstance().scheduleAppointment(pat, appointment);
 
             if (result == 0) {
                 showAlert(Alert.AlertType.INFORMATION, "Éxito", "¡Cita guardada con éxito!");
@@ -208,5 +213,33 @@ public class ProfessionalCreateAppStep2Controller {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    private void verificarCitasPrevias() {
+        if (patient == null || patient.getCodPatient() == null) {
+            btnSave.setDisable(false);
+            return;
+        }
+
+        try {
+            List<Appointment> citas = ServiceManager.getInstance()
+                    .getAppointmentService()
+                    .getAppointmentsByPatient(patient.getCodPatient());
+
+            boolean tieneCitaAgendada = citas != null && citas.stream()
+                    .anyMatch(a -> "Scheduled".equalsIgnoreCase(a.getStatus()));
+
+            if (tieneCitaAgendada) {
+                btnSave.setDisable(true);
+                showAlert(Alert.AlertType.WARNING,
+                        "Cita ya agendada",
+                        "Este paciente ya tiene una cita en estado Agendada. No es posible agendar otra hasta que sea atendida o cancelada.");
+            } else {
+                btnSave.setDisable(false);
+            }
+        } catch (Exception e) {
+            System.err.println(">> Error al verificar citas del paciente: " + e.getMessage());
+            btnSave.setDisable(false);
+        }
     }
 }

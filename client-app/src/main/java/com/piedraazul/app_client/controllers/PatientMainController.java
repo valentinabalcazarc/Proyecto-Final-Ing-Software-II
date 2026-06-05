@@ -3,6 +3,7 @@ package com.piedraazul.app_client.controllers;
 import com.piedraazul.app_client.enums.SpecialityProfEnum;
 import com.piedraazul.app_client.models.Appointment;
 import com.piedraazul.app_client.models.Patient;
+import com.piedraazul.app_client.models.Professional;
 import com.piedraazul.app_client.services.ServiceManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,11 +24,17 @@ public class PatientMainController {
     @FXML private Button btnAddAppointment;
     @FXML private Button btnViewAppointments;
     @FXML private Button btnCerrarSesion;
+    private Long codPatSesion;
 
     @FXML
     public void handleAddAppointment(ActionEvent event) {
-        Long cedUser = SessionManager.getCurrentUserCodUser();
-        Patient patient = ServiceManager.getInstance().getPatientService().findByCed(cedUser);
+        //Long cedUser = SessionManager.getCurrentUserCodUser();
+        //Patient patient = ServiceManager.getInstance().getPatientService().findByCed(cedUser);
+        Long cedUser = SessionManager.getCurrentUser().getCedUser();
+        Patient patient = ServiceManager.getInstance()
+                .getPatientService()
+                .findByCed(cedUser);
+        codPatSesion = patient.getCodPatient();
 
         // Validar que el paciente no tenga una cita en estado "Scheduled" (Agendada)
         if (patient != null && pacienteTieneCitaAgendada(patient.getCodPatient())) {

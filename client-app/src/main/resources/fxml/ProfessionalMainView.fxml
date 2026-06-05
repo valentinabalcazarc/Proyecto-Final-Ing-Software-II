@@ -8,22 +8,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="460.0" prefWidth="680.0"
-      xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.piedraazul.app_client.controllers.ProfessionalMainController">
+<VBox prefHeight="460.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.piedraazul.app_client.controllers.ProfessionalMainController">
    <children>
 
       <!-- ══ HEADER ══ -->
       <AnchorPane prefHeight="110.0" prefWidth="680.0" styleClass="header--patient-gradient">
          <children>
-            <HBox alignment="CENTER_LEFT" spacing="0.0"
-                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <HBox alignment="CENTER_LEFT" spacing="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
 
                   <!-- Títulos del header (lado izquierdo) -->
-                  <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" spacing="4.0">
+                  <VBox alignment="CENTER_LEFT" spacing="4.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Label text="MENÚ PRINCIPAL" textFill="WHITE">
                            <font><Font name="Cascadia Code Bold" size="26.0" /></font>
@@ -36,12 +31,7 @@
                   </VBox>
 
                   <!-- Botón Cerrar Sesión (lado derecho) -->
-                  <Button fx:id="btnCerrarSesion"
-                          mnemonicParsing="false"
-                          onAction="#handleCerrarSesion"
-                          prefHeight="36.0" prefWidth="140.0"
-                          styleClass="btn--ghost-white"
-                          text="Cerrar Sesión">
+                  <Button fx:id="btnCerrarSesion" mnemonicParsing="false" onAction="#handleCerrarSesion" prefHeight="36.0" prefWidth="140.0" styleClass="btn--ghost-white" text="Cerrar Sesión">
                      <font><Font name="Cascadia Code Bold" size="13.0" /></font>
                      <HBox.margin><Insets right="25.0" /></HBox.margin>
                   </Button>
@@ -52,16 +42,13 @@
       </AnchorPane>
 
       <!-- ══ BODY ══ -->
-      <AnchorPane VBox.vgrow="ALWAYS" prefWidth="680.0" styleClass="page--gradient-professional">
+      <AnchorPane prefWidth="680.0" styleClass="page--gradient-professional" VBox.vgrow="ALWAYS">
          <children>
-            <VBox alignment="CENTER" spacing="22.0"
-                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox alignment="CENTER" spacing="22.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
 
                   <!-- Subtítulo de sección -->
-                  <Label text="Gestión de Citas y Pacientes"
-                         styleClass="patient-main__section-title">
+                  <Label styleClass="patient-main__section-title" text="Gestión de Citas y Pacientes">
                      <font><Font name="Cascadia Code Bold" size="15.0" /></font>
                   </Label>
 
@@ -70,41 +57,29 @@
                      <children>
 
                         <!-- Tarjeta: Agendar Cita -->
-                        <VBox styleClass="professional-main__action-card" alignment="CENTER" spacing="12.0"
-                              prefWidth="200.0" prefHeight="140.0">
+                        <VBox alignment="CENTER" prefHeight="140.0" prefWidth="200.0" spacing="12.0" styleClass="professional-main__action-card">
                            <children>
-                              <Label text="📅" styleClass="professional-main__card-icon">
+                              <Label styleClass="professional-main__card-icon" text="📅">
                                  <font><Font size="32.0" /></font>
                               </Label>
-                              <Button fx:id="btnAddAppointment"
-                                      mnemonicParsing="false"
-                                      onAction="#handleAddAppointment"
-                                      prefHeight="38.0" maxWidth="Infinity"
-                                      styleClass="btn--patient-primary"
-                                      text="Agendar Cita">
+                              <Button fx:id="btnAddAppointment" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleAddAppointment" prefHeight="38.0" styleClass="btn--patient-primary" text="Agendar Cita">
                                  <font><Font name="Cascadia Code Bold" size="13.0" /></font>
                               </Button>
                            </children>
-                           <padding><Insets top="20.0" right="20.0" bottom="20.0" left="20.0" /></padding>
+                           <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
                         </VBox>
 
                         <!-- Tarjeta: Gestionar Citas -->
-                        <VBox styleClass="professional-main__action-card" alignment="CENTER" spacing="12.0"
-                              prefWidth="200.0" prefHeight="140.0">
+                        <VBox alignment="CENTER" prefHeight="140.0" prefWidth="200.0" spacing="12.0" styleClass="professional-main__action-card">
                            <children>
-                              <Label text="📂" styleClass="professional-main__card-icon">
+                              <Label styleClass="professional-main__card-icon" text="📂">
                                  <font><Font size="32.0" /></font>
                               </Label>
-                              <Button fx:id="btnManageAppointments"
-                                      mnemonicParsing="false"
-                                      onAction="#handleManageAppointments"
-                                      prefHeight="38.0" maxWidth="Infinity"
-                                      styleClass="btn--patient-outline"
-                                      text="Gestionar Citas">
+                              <Button fx:id="btnManageAppointments" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleManageAppointments" prefHeight="38.0" styleClass="btn--patient-outline" text="Gestionar Citas">
                                  <font><Font name="Cascadia Code Bold" size="13.0" /></font>
                               </Button>
                            </children>
-                           <padding><Insets top="20.0" right="20.0" bottom="20.0" left="20.0" /></padding>
+                           <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
                         </VBox>
 
                      </children>
@@ -115,49 +90,36 @@
                      <children>
 
                         <!-- Tarjeta: Ver Mis Citas -->
-                        <VBox styleClass="professional-main__action-card" alignment="CENTER" spacing="12.0"
-                              prefWidth="200.0" prefHeight="140.0">
+                        <VBox alignment="CENTER" prefHeight="140.0" prefWidth="200.0" spacing="12.0" styleClass="professional-main__action-card">
                            <children>
-                              <Label text="🗓✔" styleClass="professional-main__card-icon">
+                              <Label styleClass="professional-main__card-icon" text="🗓✔">
                                  <font><Font size="32.0" /></font>
                               </Label>
-                              <Button fx:id="btnViewAppointments"
-                                      mnemonicParsing="false"
-                                      onAction="#handleViewAppointments"
-                                      prefHeight="38.0" maxWidth="Infinity"
-                                      styleClass="btn--patient-primary"
-                                      text="Ver Mis Citas">
+                              <Button fx:id="btnViewAppointments" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleViewAppointments" prefHeight="38.0" styleClass="btn--patient-primary" text="Ver Citas">
                                  <font><Font name="Cascadia Code Bold" size="13.0" /></font>
                               </Button>
                            </children>
-                           <padding><Insets top="20.0" right="20.0" bottom="20.0" left="20.0" /></padding>
+                           <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
                         </VBox>
 
                         <!-- Tarjeta: Exportar Datos -->
-                        <VBox styleClass="professional-main__action-card" alignment="CENTER" spacing="12.0"
-                              prefWidth="200.0" prefHeight="140.0">
+                        <VBox alignment="CENTER" prefHeight="140.0" prefWidth="200.0" spacing="12.0" styleClass="professional-main__action-card">
                            <children>
-                              <Label text="📤" styleClass="professional-main__card-icon">
+                              <Label styleClass="professional-main__card-icon" text="📤">
                                  <font><Font size="32.0" /></font>
                               </Label>
-                              <Button fx:id="btnExportAppointments"
-                                      mnemonicParsing="false"
-                                      onAction="#handleExportAppointments"
-                                      prefHeight="38.0" maxWidth="Infinity"
-                                      styleClass="btn--patient-outline"
-                                      text="Exportar Datos">
+                              <Button fx:id="btnExportAppointments" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleExportAppointments" prefHeight="38.0" styleClass="btn--patient-outline" text="Exportar Datos">
                                  <font><Font name="Cascadia Code Bold" size="13.0" /></font>
                               </Button>
                            </children>
-                           <padding><Insets top="20.0" right="20.0" bottom="20.0" left="20.0" /></padding>
+                           <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
                         </VBox>
 
                      </children>
                   </HBox>
 
                   <!-- Footer -->
-                  <Label text="Servicios Médicos Piedra Azul © 2026"
-                         styleClass="appointments__empty-label">
+                  <Label styleClass="appointments__empty-label" text="Servicios Médicos Piedra Azul © 2026">
                      <font><Font size="11.0" /></font>
                   </Label>
 

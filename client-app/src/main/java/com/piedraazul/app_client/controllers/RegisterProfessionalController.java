@@ -203,7 +203,7 @@ public class RegisterProfessionalController {
             // 4) Registrar días no laborables (si se agregaron)
             if (!unavailableDays.isEmpty()) {
                 Professional profRegistrado = ServiceManager.getInstance()
-                        .getProfessionalService().findByCod(p.getCodUser().intValue());
+                        .getProfessionalService().findByCod(p.getCodUser());
 
                 if (profRegistrado == null || profRegistrado.getCodProf() == null) {
                     showAlert(Alert.AlertType.WARNING, "Atención",

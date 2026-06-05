@@ -1,5 +1,6 @@
 package com.piedraazul.app_client.controllers;
 
+import com.piedraazul.app_client.design_patterns.strategy.SearchByProfAndDateStrategy;
 import com.piedraazul.app_client.models.Appointment;
 import com.piedraazul.app_client.models.Patient;
 import com.piedraazul.app_client.design_patterns.strategy.AppointmentSearchContext;
@@ -37,6 +38,7 @@ public class SchedulerManageAppointmentsController {
 
     @FXML
     public void initialize() {
+        loadAllAppointments();
         setupTable();
     }
 
@@ -53,11 +55,27 @@ public class SchedulerManageAppointmentsController {
         tblAppointments.setItems(appointmentList);
     }
 
+    private void loadAllAppointments() {
+        try {
+            // ── Patrón Strategy: carga inicial — citas AGENDADAS reales, sin filtro ──
+            // Pasa ambos parámetros null → SearchByProfAndDateStrategy llama a
+            // searchAppointmentsTyped(null, null) → endpoint GET /appointments (todas)
+            searchContext.setStrategy(new SearchByProfAndDateStrategy());
+            List<Appointment> list = searchContext.executeSearch(
+                    new SearchParams.Builder().build());
+            appointmentList.setAll(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     private void handleFind(ActionEvent event) {
         String cedula = txtCedula.getText().trim();
-        if (cedula.isEmpty())
+        if (cedula.isEmpty()) {
+            loadAllAppointments();
             return;
+        }
 
         try {
             Long ced = Long.parseLong(cedula);
@@ -88,16 +106,20 @@ public class SchedulerManageAppointmentsController {
             return;
         }
 
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "¿Está seguro de que desea cancelar esta cita?",
-                ButtonType.YES, ButtonType.NO);
-        confirm.showAndWait();
-        if (confirm.getResult() == ButtonType.YES) {
-            boolean success = ServiceManager.getInstance().getAppointmentService().deleteAppointment(selected.getId());
-            if (success) {
-                showAlert(Alert.AlertType.INFORMATION, "Éxito", "Cita cancelada correctamente.");
-                handleFind(null); // Refresh table
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Error", "No se pudo cancelar la cita.");
+        if (selected.getStatus().equals("Cancelled") || selected.getStatus().equals("Completed")) {
+            showAlert(Alert.AlertType.ERROR, "Error", "No se puede cancelar una cita cancelada o completeda.");
+        }else{
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "¿Está seguro de que desea cancelar esta cita?",
+                    ButtonType.YES, ButtonType.NO);
+            confirm.showAndWait();
+            if (confirm.getResult() == ButtonType.YES) {
+                boolean success = ServiceManager.getInstance().getAppointmentService().deleteAppointment(selected.getId());
+                if (success) {
+                    showAlert(Alert.AlertType.INFORMATION, "Éxito", "Cita cancelada correctamente.");
+                    handleFind(null); // Refresh table
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Error", "No se pudo cancelar la cita.");
+                }
             }
         }
     }
@@ -110,8 +132,12 @@ public class SchedulerManageAppointmentsController {
             return;
         }
 
-        NavigationService.getInstance().navigateTo("/fxml/SchedulerCreateAppStep1.fxml",
-                "Reagendar Cita - Selección de Nueva Fecha", (Button) event.getSource());
+        if (selected.getStatus().equals("Cancelled") || selected.getStatus().equals("Completed")) {
+            showAlert(Alert.AlertType.ERROR, "Error", "No se puede reagendar una cita cancelada o completeda.");
+        }else{
+            NavigationService.getInstance().navigateTo("/fxml/SchedulerCreateAppStep1.fxml",
+                    "Reagendar Cita - Selección de Nueva Fecha", (Button) event.getSource());
+        }
     }
 
     @FXML

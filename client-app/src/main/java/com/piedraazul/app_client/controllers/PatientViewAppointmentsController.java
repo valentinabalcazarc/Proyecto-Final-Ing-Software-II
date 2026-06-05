@@ -27,6 +27,7 @@ public class PatientViewAppointmentsController {
     @FXML private Button btnRegresar;
     @FXML private Button btnCancelAppointment;
     @FXML private Button btnReschedule;
+    private Long codPatSesion;
 
     @FXML
     public void initialize() {
@@ -40,19 +41,24 @@ public class PatientViewAppointmentsController {
 
     private void loadAppointments() {
         try {
-            Long cedUser = SessionManager.getCurrentUserCodUser();
-            System.out.println("CurrentUserCedUser " + cedUser);
-            if (cedUser == null) return;
+           // codPatSesion = SessionManager.getCurrentUserCodUser();
+            Long cedUser = SessionManager.getCurrentUser().getCedUser();
+            Patient patient = ServiceManager.getInstance()
+                    .getPatientService()
+                    .findByCed(cedUser);
+            codPatSesion = patient.getIdPatient();
+            System.out.println("CurrentUserCedUser " + codPatSesion);
+            if (codPatSesion == null) return;
 
             // Buscar codPatient desde el patient-service
-            Patient patient = ServiceManager.getInstance().getPatientService().findByCed(cedUser);
+            patient = ServiceManager.getInstance().getPatientService().findByCed(codPatSesion);
             if (patient != null) {
                 List<Appointment> list = ServiceManager.getInstance().getAppointmentService()
                         .getAppointmentsByPatient(patient.getCodPatient());
                 tblAppointments.setItems(FXCollections.observableArrayList(list));
 
             }else{
-                System.out.println(">> No se encontró paciente para codUser: " + cedUser);
+                System.out.println(">> No se encontró paciente para codUser: " + codPatSesion);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -154,7 +154,7 @@ public class SchedulerCreateAppStep1Controller {
 
     @FXML
     private void handleRegresar(ActionEvent event) {
-        NavigationService.getInstance().navigateTo("/fxml/SchedulerMainView.fxml", "Menú Principal - Agendador", (Button) event.getSource());
+        NavigationService.getInstance().navigateTo("/fxml/SchedulerManageAppointments.fxml", "Menú Principal - Agendador", (Button) event.getSource());
     }
 
     @FXML

@@ -33,7 +33,9 @@ public class LoginController {
             
             if(rol != null) {
                 System.out.println("Login exitoso: " + rol);
-                SessionManager.setCurrentUserCodUser(ced);
+                //SessionManager.setCurrentUserCodUser(ced);
+                //System.out.println(">> codUser: " + SessionManager.getCurrentUser().getCodUser());
+                //System.out.println(">> cedUser: " + SessionManager.getCurrentUser().getCedUser());
                 redirectToMainView(rol);
             } else {
                 showAlert("Error de autenticación", "Usuario o contraseña incorrectos");

@@ -7,4 +7,5 @@ public interface PatientService {
     boolean regPatient(Patient newPatient);
     List<Patient> getAllPatients();
     Patient findByCed(Long idPatient);
+    Patient findByCod(Long codPat);
 }

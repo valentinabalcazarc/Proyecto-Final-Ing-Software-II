@@ -145,8 +145,8 @@ public class PatientSelectServiceController {
     @FXML
     private void handleRegresar(ActionEvent event) {
         NavigationService.getInstance().navigateTo(
-                "/fxml/PatientInfoView.fxml", 
-                "Piedra Azul - Información del Paciente", 
+                "/fxml/PatientMainView.fxml",
+                "Piedra Azul - Menú Paciente",
                 (Button) event.getSource()
         );
     }

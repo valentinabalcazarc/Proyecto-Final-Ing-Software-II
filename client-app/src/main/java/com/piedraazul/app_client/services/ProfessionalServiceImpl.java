@@ -58,7 +58,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     }
 
     @Override
-    public Professional findByCod(int codProf) {
+    public Professional findByCod(Long codProf) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/user/" + codProf))
@@ -67,8 +67,8 @@ public class ProfessionalServiceImpl implements ProfessionalService {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(">> Status findByCod: " + response.statusCode());
-            System.out.println(">> Body findByCod: " + response.body());
+            System.out.println(">> Status findByCod prof: " + response.statusCode());
+            System.out.println(">> Body findByCod prof: " + response.body());
 
             if (response.statusCode() == 200) {
                 ProfessionalResponseDTO dto = objectMapper.readValue(response.body(), ProfessionalResponseDTO.class);
