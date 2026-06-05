@@ -195,6 +195,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(">> JSON response: " + response);
 
             return response.statusCode() == 201 || response.statusCode() == 200;
         } catch (Exception e) {

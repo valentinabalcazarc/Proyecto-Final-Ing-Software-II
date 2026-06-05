@@ -1,5 +1,7 @@
 package com.piedraazul.app_client.services;
 
+import com.piedraazul.app_client.dto.ProfessionalResponseDTO;
+import com.piedraazul.app_client.mappers.ProfessionalMapper;
 import com.piedraazul.app_client.models.Patient;
 import com.piedraazul.app_client.models.Professional;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -76,6 +78,8 @@ public class PatientServiceImpl implements PatientService {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(">> Status findByCed pat: " + response.statusCode());
+            System.out.println(">> Body findByCed pat: " + response.body());
 
             if (response.statusCode() == 200) {
                 PatientDTO dto = objectMapper.readValue(response.body(), PatientDTO.class);
@@ -87,5 +91,26 @@ public class PatientServiceImpl implements PatientService {
         return null;
     }
 
+    @Override
+    public Patient findByCod(Long codPat) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(API_URL + "/codPatient/" + codPat))
+                    .header("Authorization", "Bearer " + SessionManager.getToken())
+                    .GET()
+                    .build();
 
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(">> Status findByCod pat: " + response.statusCode());
+            System.out.println(">> Body findByCod pat: " + response.body());
+
+            if (response.statusCode() == 200) {
+                PatientDTO dto = objectMapper.readValue(response.body(), PatientDTO.class);
+                return PatientMapper.toModel(dto);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

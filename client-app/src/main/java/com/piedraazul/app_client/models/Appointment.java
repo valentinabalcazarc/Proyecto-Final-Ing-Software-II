@@ -1,5 +1,6 @@
 package com.piedraazul.app_client.models;
 
+import com.piedraazul.app_client.enums.StatusAppointment;
 import lombok.Data;
 
 import java.time.LocalDate;

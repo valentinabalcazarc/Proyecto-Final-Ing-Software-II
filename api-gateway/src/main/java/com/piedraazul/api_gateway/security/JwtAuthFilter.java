@@ -33,7 +33,7 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
 
     private static final Map<String, List<String>> ROLE_RULES = Map.of(
             "/piedraAzul/auth/users", List.of("Admin"),
-            "/piedraAzul/professionals", List.of("Admin", "Professional", "Scheduler"),
+            "/piedraAzul/professionals", List.of("Admin", "Professional", "Scheduler", "Patient"),
             "/piedraAzul/patients", List.of("Admin", "Professional", "Patient","Scheduler"),
             "/piedraAzul/appointments", List.of("Admin", "Professional", "Patient","Scheduler"),
             "/piedraAzul/professionals/speciality/", List.of("Patient","Scheduler")

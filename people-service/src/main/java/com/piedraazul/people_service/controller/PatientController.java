@@ -88,4 +88,13 @@ public class PatientController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+    @GetMapping("/codPatient/{codPatient}")
+    public ResponseEntity<?> findByCod(@PathVariable Long codPatient) {
+        return patientService.findByCodPatient(codPatient)
+                .map(ResponseEntity::ok)
+                .<ResponseEntity<?>>map(r -> r)
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No se encontró el paciente con id: " + codPatient));
+    }
 }

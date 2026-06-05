@@ -74,4 +74,8 @@ public class PatientServiceImpl implements PatientService {
     public void delete(Long id) {
         patientRepository.deleteById(id);
     }
+
+    public Optional<Patient> findByCodPatient(Long codPatient){
+        return patientRepository.findByCodPatient(codPatient);
+    }
 }

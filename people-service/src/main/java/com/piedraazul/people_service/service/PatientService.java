@@ -12,4 +12,5 @@ public interface PatientService {
     List<Patient> findAll();
     Patient update(Long id, UpdatePatientDTO dto);
     void delete(Long id);
+    Optional<Patient> findByCodPatient(Long codPatient);
 }
