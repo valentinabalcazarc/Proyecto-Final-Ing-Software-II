@@ -31,6 +31,7 @@ public class AppointmentService implements AppointmentServicePort {
     private final AppointmentRepositoryPort appointmentRepository;
     private final ProfessionalRefRepositoryPort professionalRefRepository;
     private final PatientRefRepositoryPort patientRefRepository;
+    private final FestivosService festivosService;
 
     @Override
     public Appointment create(CreateAppointmentDTO dto) {
@@ -210,6 +211,12 @@ public class AppointmentService implements AppointmentServicePort {
             // Saltar fines de semana
             if (dateSearch.getDayOfWeek() == DayOfWeek.SATURDAY ||
                     dateSearch.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                dateSearch = dateSearch.plusDays(1);
+                continue;
+            }
+
+            // Saltar festivos
+            if (festivosService.esFestivo(dateSearch)) {
                 dateSearch = dateSearch.plusDays(1);
                 continue;
             }
