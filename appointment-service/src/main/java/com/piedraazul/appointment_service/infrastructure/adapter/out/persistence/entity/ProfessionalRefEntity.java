@@ -5,20 +5,15 @@ import com.piedraazul.appointment_service.enums.TypeProfEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.time.LocalTime;
-import java.util.List;
 
 @Entity
 @Table(name = "PROFESSIONAL_REF")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "codProf")
-@ToString(exclude = "unavailableDays")
 public class ProfessionalRefEntity {
 
     @Id
@@ -48,6 +43,6 @@ public class ProfessionalRefEntity {
     @Column(name = "ATTENTIONINTERVAL")
     private Integer attentionInterval;
 
-    @OneToMany(mappedBy = "professionalRef", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UnavailableDayRefEntity> unavailableDays;
+    @Column(name = "UNAVAILABLE_DAYS")
+    private String unavailableDays;
 }

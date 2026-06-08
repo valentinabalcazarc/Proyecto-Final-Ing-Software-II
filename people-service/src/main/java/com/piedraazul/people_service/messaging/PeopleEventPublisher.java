@@ -60,7 +60,8 @@ public class PeopleEventPublisher {
                 professional.getTypeProf().name(),
                 professional.getArrivalTime(),
                 professional.getDepartureTime(),
-                professional.getAttentionInterval() != null ? professional.getAttentionInterval() : 30
+                professional.getAttentionInterval() != null ? professional.getAttentionInterval() : 30,
+                professional.getUnavailableDays()
         );
     }
 }

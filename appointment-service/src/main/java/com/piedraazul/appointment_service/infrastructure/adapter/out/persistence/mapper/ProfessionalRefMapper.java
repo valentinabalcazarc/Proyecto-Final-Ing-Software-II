@@ -20,9 +20,7 @@ public class ProfessionalRefMapper {
                 .arrivalTime(entity.getArrivalTime())
                 .departureTime(entity.getDepartureTime())
                 .attentionInterval(entity.getAttentionInterval())
-                // unavailableDays NO se mapea aquí: es una colección lazy y se obtiene
-                // explícitamente vía UnavailableDayRefRepositoryPort cuando se necesita.
-                .unavailableDays(null)
+                .unavailableDays(entity.getUnavailableDays())
                 .build();
     }
 
@@ -39,6 +37,7 @@ public class ProfessionalRefMapper {
         entity.setArrivalTime(domain.getArrivalTime());
         entity.setDepartureTime(domain.getDepartureTime());
         entity.setAttentionInterval(domain.getAttentionInterval());
+        entity.setUnavailableDays(domain.getUnavailableDays());
         return entity;
     }
 }

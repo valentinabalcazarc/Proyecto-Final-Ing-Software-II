@@ -68,6 +68,7 @@ public class PeopleEventListener {
                     .arrivalTime(dto.getArrivalTime())
                     .departureTime(dto.getDepartureTime())
                     .attentionInterval(dto.getAttentionInterval() != null ? dto.getAttentionInterval() : 30)
+                    .unavailableDays(dto.getUnavailableDays())
                     .build();
             professionalRefRepository.save(ref);
         } catch (Exception e) {
@@ -88,6 +89,7 @@ public class PeopleEventListener {
             if (dto.getArrivalTime() != null) ref.setArrivalTime(dto.getArrivalTime());
             if (dto.getDepartureTime() != null) ref.setDepartureTime(dto.getDepartureTime());
             if (dto.getAttentionInterval() != null) ref.setAttentionInterval(dto.getAttentionInterval());
+            if (dto.getUnavailableDays() != null) ref.setUnavailableDays(dto.getUnavailableDays());
             professionalRefRepository.save(ref);
         } catch (Exception e) {
             System.err.println("Error actualizando professional_ref: " + e.getMessage());

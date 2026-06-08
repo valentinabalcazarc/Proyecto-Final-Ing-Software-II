@@ -119,6 +119,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
                 dto.setArrivalTime(professional.getArrivalTime());
                 dto.setDepartureTime(professional.getDepartureTime());
                 dto.setAttentionInterval(professional.getAttentionInterval());
+                dto.setUnavailableDays(professional.getUnavailableDays());
 
                 String jsonBody = objectMapper.writeValueAsString(dto);
                 System.out.println(">> Intento " + intento + " - Registrando profesional: " + jsonBody);

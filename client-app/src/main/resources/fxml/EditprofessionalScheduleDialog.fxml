@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -103,44 +104,16 @@
                                text="Agrega las fechas en las que el profesional NO estará disponible (opcional)"
                                style="-fx-text-fill: #666666; -fx-font-size: 11px;"/>
 
-                        <!-- Fila agregar -->
-                        <Label layoutX="20.0" layoutY="66.0" text="Fecha">
-                            <font><Font name="Cascadia Code Regular" size="11.0"/></font>
-                        </Label>
-                        <Label layoutX="210.0" layoutY="66.0" text="Motivo">
-                            <font><Font name="Cascadia Code Regular" size="11.0"/></font>
-                        </Label>
-                        <Label layoutX="210.0" layoutY="64.0"
-                               text="  (opcional)"
-                               style="-fx-text-fill: #9999aa; -fx-font-size: 10px; -fx-padding: 0 0 0 44;"/>
-
-                        <DatePicker fx:id="dpUnavailableDate"
-                                    layoutX="20.0" layoutY="84.0"
-                                    prefWidth="176.0"/>
-                        <TextField fx:id="txtUnavailableReason"
-                                   layoutX="210.0" layoutY="84.0"
-                                   prefWidth="330.0"
-                                   promptText="Ej: Vacaciones, capacitación, cita médica..."
-                                   styleClass="textfield--styled"/>
-                        <Button fx:id="btnAddDay"
-                                layoutX="552.0" layoutY="84.0"
-                                prefHeight="30.0" prefWidth="60.0"
-                                text="+ Agregar"
-                                onAction="#handleAddUnavailableDay"
-                                styleClass="btn--success"
-                                style="-fx-font-size: 11px; -fx-background-radius: 5;"/>
-
-                        <!-- Tabla días no laborables -->
-                        <TableView fx:id="tableUnavailableDays"
-                                   layoutX="20.0" layoutY="126.0"
-                                   prefHeight="130.0" prefWidth="592.0"
-                                   styleClass="appointments__table">
-                            <columns>
-                                <TableColumn fx:id="colUnavDate" text="Fecha" prefWidth="160.0"/>
-                                <TableColumn fx:id="colUnavReason" text="Motivo" prefWidth="340.0"/>
-                                <TableColumn fx:id="colUnavDelete" text="Eliminar" prefWidth="90.0"/>
-                            </columns>
-                        </TableView>
+                        <!-- Fila de checkboxes -->
+                        <HBox layoutX="20.0" layoutY="66.0" spacing="15.0" alignment="CENTER_LEFT">
+                            <children>
+                                <CheckBox fx:id="chkMonday" text="Lunes" style="-fx-text-fill: #555577;" />
+                                <CheckBox fx:id="chkTuesday" text="Martes" style="-fx-text-fill: #555577;" />
+                                <CheckBox fx:id="chkWednesday" text="Miércoles" style="-fx-text-fill: #555577;" />
+                                <CheckBox fx:id="chkThursday" text="Jueves" style="-fx-text-fill: #555577;" />
+                                <CheckBox fx:id="chkFriday" text="Viernes" style="-fx-text-fill: #555577;" />
+                            </children>
+                        </HBox>
                     </children>
                 </Pane>
 

@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import com.piedraazul.app_client.dto.UnavailableDayDTO;
 import com.piedraazul.app_client.enums.RoleUserEnum;
 import com.piedraazul.app_client.enums.SpecialityProfEnum;
 import com.piedraazul.app_client.enums.StatusUserEnum;
@@ -59,14 +58,11 @@ public class RegisterProfessionalController {
     @FXML private Button btnRegresar;
 
     // --- Sección días no laborables ---
-    @FXML private DatePicker dpUnavailableDate;
-    @FXML private TextField txtUnavailableReason;
-    @FXML private TableView<UnavailableDayRow> tableUnavailableDays;
-    @FXML private TableColumn<UnavailableDayRow, String> colDate;
-    @FXML private TableColumn<UnavailableDayRow, String> colReason;
-    @FXML private TableColumn<UnavailableDayRow, Void> colDelete;
-
-    private final ObservableList<UnavailableDayRow> unavailableDays = FXCollections.observableArrayList();
+    @FXML private CheckBox chkMonday;
+    @FXML private CheckBox chkTuesday;
+    @FXML private CheckBox chkWednesday;
+    @FXML private CheckBox chkThursday;
+    @FXML private CheckBox chkFriday;
 
     private boolean mostrarPassword = false;
 
@@ -91,29 +87,7 @@ public class RegisterProfessionalController {
         cbxGenero.setItems(FXCollections.observableArrayList("Masculino", "Femenino", "Otro"));
         cbxGenero.getSelectionModel().selectFirst();
 
-        // Configurar tabla días no laborables
-        colDate.setCellValueFactory(data -> data.getValue().dateStrProperty());
-        colReason.setCellValueFactory(data -> data.getValue().reasonProperty());
 
-        colDelete.setCellFactory(col -> new TableCell<>() {
-            private final Button btn = new Button("✕");
-            {
-                btn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; " +
-                        "-fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 2 8 2 8;");
-                btn.setOnAction(e -> {
-                    UnavailableDayRow row = getTableView().getItems().get(getIndex());
-                    unavailableDays.remove(row);
-                });
-            }
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty ? null : btn);
-            }
-        });
-
-        tableUnavailableDays.setItems(unavailableDays);
-        tableUnavailableDays.setPlaceholder(new Label("Aún no se han agregado días no laborables"));
 
         ocultarErrores();
 
@@ -295,28 +269,7 @@ public class RegisterProfessionalController {
         lb_errorSchedule.setVisible(false); return true;
     }
 
-    // ---- Agregar día no laborable ----------------------------------
-    @FXML
-    public void handleAddUnavailableDay() {
-        LocalDate date = dpUnavailableDate.getValue();
-        if (date == null) {
-            showAlert(Alert.AlertType.WARNING, "Fecha requerida", "Selecciona una fecha para el día no laborable.");
-            return;
-        }
-        if (date.isBefore(LocalDate.now())) {
-            showAlert(Alert.AlertType.WARNING, "Fecha inválida", "La fecha no puede ser anterior a hoy.");
-            return;
-        }
-        boolean duplicado = unavailableDays.stream().anyMatch(r -> r.getDate().equals(date));
-        if (duplicado) {
-            showAlert(Alert.AlertType.WARNING, "Fecha duplicada", "Esa fecha ya está en la lista.");
-            return;
-        }
-        String reason = txtUnavailableReason.getText().trim();
-        unavailableDays.add(new UnavailableDayRow(date, reason));
-        dpUnavailableDate.setValue(null);
-        txtUnavailableReason.clear();
-    }
+
 
     // ---- Mostrar/ocultar contraseña --------------------------------
     @FXML
@@ -372,6 +325,14 @@ public class RegisterProfessionalController {
                 case "Medicina general" -> p.setSpecialityProf(SpecialityProfEnum.General);
             }
 
+            java.util.List<String> days = new java.util.ArrayList<>();
+            if (chkMonday.isSelected()) days.add("MONDAY");
+            if (chkTuesday.isSelected()) days.add("TUESDAY");
+            if (chkWednesday.isSelected()) days.add("WEDNESDAY");
+            if (chkThursday.isSelected()) days.add("THURSDAY");
+            if (chkFriday.isSelected()) days.add("FRIDAY");
+            p.setUnavailableDays(String.join(",", days));
+
             var userRegistrado = ServiceManager.getInstance().getUserService().regUser(p);
             if (userRegistrado == null) {
                 showAlert(Alert.AlertType.ERROR, "Error", "No se pudo registrar el usuario. Verifique los datos.");
@@ -385,33 +346,6 @@ public class RegisterProfessionalController {
                         "El usuario fue creado pero no se pudo registrar el perfil profesional. " +
                                 "Contacte al administrador.");
                 return;
-            }
-
-            if (!unavailableDays.isEmpty()) {
-                Professional profRegistrado = ServiceManager.getInstance()
-                        .getProfessionalService().findByCodUser(p.getCodUser());
-
-                if (profRegistrado == null || profRegistrado.getCodProf() == null) {
-                    showAlert(Alert.AlertType.WARNING, "Atención",
-                            "Profesional registrado, pero no se pudieron guardar los días no laborables. " +
-                                    "Puede agregarlos después desde su perfil.");
-                } else {
-                    int fallidos = 0;
-                    for (UnavailableDayRow row : unavailableDays) {
-                        UnavailableDayDTO dto = new UnavailableDayDTO();
-                        dto.setCodProf(profRegistrado.getCodProf());
-                        dto.setDate(row.getDate());
-                        dto.setReason(row.getReason().isEmpty() ? null : row.getReason());
-                        boolean ok = ServiceManager.getInstance().getUnavailableDayService().create(dto);
-                        if (!ok) fallidos++;
-                    }
-                    if (fallidos > 0) {
-                        showAlert(Alert.AlertType.WARNING, "Atención",
-                                "Profesional registrado, pero " + fallidos + " día(s) no laborable(s) no se pudieron guardar.");
-                        limpiarFormulario();
-                        return;
-                    }
-                }
             }
 
             showAlert(Alert.AlertType.INFORMATION, "Éxito", "Profesional registrado correctamente.");
@@ -487,9 +421,11 @@ public class RegisterProfessionalController {
         cbxEspecialidad.getSelectionModel().selectFirst();
         cbxSecurityQuestion.getSelectionModel().selectFirst();
         cbxGenero.getSelectionModel().selectFirst();
-        unavailableDays.clear();
-        dpUnavailableDate.setValue(null);
-        txtUnavailableReason.clear();
+        chkMonday.setSelected(false);
+        chkTuesday.setSelected(false);
+        chkWednesday.setSelected(false);
+        chkThursday.setSelected(false);
+        chkFriday.setSelected(false);
     }
 
     private void showAlert(Alert.AlertType type, String title, String content) {
@@ -500,21 +436,4 @@ public class RegisterProfessionalController {
         alert.showAndWait();
     }
 
-    public static class UnavailableDayRow {
-        private final LocalDate date;
-        private final SimpleStringProperty dateStr;
-        private final SimpleStringProperty reason;
-
-        public UnavailableDayRow(LocalDate date, String reason) {
-            this.date = date;
-            this.dateStr = new SimpleStringProperty(date.toString());
-            this.reason = new SimpleStringProperty(reason != null ? reason : "");
-        }
-
-        public LocalDate getDate() { return date; }
-        public String getDateStr() { return dateStr.get(); }
-        public SimpleStringProperty dateStrProperty() { return dateStr; }
-        public String getReason() { return reason.get(); }
-        public SimpleStringProperty reasonProperty() { return reason; }
-    }
 }

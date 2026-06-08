@@ -4,7 +4,6 @@ import com.piedraazul.people_service.enums.SpecialityProfEnum;
 import com.piedraazul.people_service.enums.TypeProfEnum;
 import lombok.Data;
 
-import java.time.Duration;
 import java.time.LocalTime;
 
 @Data
@@ -17,4 +16,5 @@ public class UpdateProfessionalDTO {
     private LocalTime arrivalTime;
     private LocalTime departureTime;
     private Integer attentionInterval;
+    private String unavailableDays;
 }

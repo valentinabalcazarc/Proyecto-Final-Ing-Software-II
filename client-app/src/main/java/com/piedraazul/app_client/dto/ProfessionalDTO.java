@@ -14,4 +14,5 @@ public class ProfessionalDTO {
     private LocalTime arrivalTime;
     private LocalTime departureTime;
     private Integer attentionInterval;
+    private String unavailableDays;
 }
