@@ -80,7 +80,7 @@
                         alignment="CENTER" spacing="10.0"
                         maxWidth="Infinity">
                      <children>
-                        <Label text="🩺" styleClass="service__card-icon">
+                        <Label text="👩‍⚕️" styleClass="service__card-icon">
                            <font><Font size="36.0" /></font>
                         </Label>
                         <Label text="Consulta General" styleClass="service__card-title" wrapText="true" maxWidth="Infinity">

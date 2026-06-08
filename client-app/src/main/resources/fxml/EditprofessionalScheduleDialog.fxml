@@ -20,123 +20,112 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.piedraazul.app_client.controllers.EditProfessionalScheduleController">
     <children>
-
-        <!-- Header -->
-        <Pane prefHeight="80.0" prefWidth="680.0" styleClass="header--blue">
-            <children>
-                <Label layoutX="0.0" layoutY="18.0" prefWidth="680.0"
-                       text="EDITAR HORARIO DEL PROFESIONAL"
-                       textFill="WHITE" textAlignment="CENTER">
-                    <font><Font name="Cascadia Code Bold" size="17.0"/></font>
-                </Label>
-                <Label fx:id="lblProfName" layoutX="0.0" layoutY="48.0"
-                       prefWidth="680.0" textFill="WHITE" textAlignment="CENTER">
-                    <font><Font name="Cascadia Code Regular" size="12.0"/></font>
-                </Label>
-            </children>
-        </Pane>
-
-        <!-- Contenido -->
-        <Pane layoutY="80.0" prefHeight="540.0" prefWidth="680.0" styleClass="page--gray">
-            <children>
-
-                <!-- Card horario -->
-                <Pane layoutX="24.0" layoutY="18.0"
-                      prefHeight="176.0" prefWidth="632.0" styleClass="card">
-                    <children>
-                        <Label layoutX="20.0" layoutY="16.0" text="⏰  Horario de atención">
-                            <font><Font name="Cascadia Code Bold" size="13.0"/></font>
-                        </Label>
-
-                        <!-- Hora llegada -->
-                        <Label layoutX="20.0" layoutY="50.0" text="Hora llegada *">
-                            <font><Font name="Cascadia Code Regular" size="11.0"/></font>
-                        </Label>
-                        <TextField fx:id="txtArrivalTime"
-                                   layoutX="20.0" layoutY="68.0"
-                                   prefWidth="276.0" promptText="HH:mm"
-                                   styleClass="textfield--styled"/>
-                        <Label layoutX="20.0" layoutY="95.0"
-                               text="Formato 24h, ej: 08:00"
-                               style="-fx-text-fill: #999999; -fx-font-size: 10px;"/>
-
-                        <!-- Hora salida -->
-                        <Label layoutX="336.0" layoutY="50.0" text="Hora salida *">
-                            <font><Font name="Cascadia Code Regular" size="11.0"/></font>
-                        </Label>
-                        <TextField fx:id="txtDepartureTime"
-                                   layoutX="336.0" layoutY="68.0"
-                                   prefWidth="276.0" promptText="HH:mm"
-                                   styleClass="textfield--styled"/>
-                        <Label layoutX="336.0" layoutY="95.0"
-                               text="Formato 24h, ej: 17:00"
-                               style="-fx-text-fill: #999999; -fx-font-size: 10px;"/>
-
-                        <!-- Intervalo -->
-                        <Label layoutX="20.0" layoutY="118.0" text="Intervalo (min) *">
-                            <font><Font name="Cascadia Code Regular" size="11.0"/></font>
-                        </Label>
-                        <TextField fx:id="txtInterval"
-                                   layoutX="20.0" layoutY="136.0"
-                                   prefWidth="276.0" promptText="Ej: 30"
-                                   styleClass="textfield--styled"/>
-                        <Label layoutX="20.0" layoutY="160.0"
-                               text="Tiempo en minutos entre citas"
-                               style="-fx-text-fill: #999999; -fx-font-size: 10px;"/>
-
-                        <!-- Label error horario -->
-                        <Label fx:id="lblErrorSchedule"
-                               layoutX="336.0" layoutY="136.0"
-                               prefWidth="276.0"
-                               style="-fx-text-fill: #D94F4F; -fx-font-size: 11px;"
-                               visible="false"/>
-                    </children>
-                </Pane>
-
-                <!-- Card días no laborables -->
-                <Pane layoutX="24.0" layoutY="210.0"
-                      prefHeight="272.0" prefWidth="632.0" styleClass="card">
-                    <children>
-                        <Label layoutX="20.0" layoutY="16.0" text="📅  Días no laborables">
-                            <font><Font name="Cascadia Code Bold" size="13.0"/></font>
-                        </Label>
-                        <Label layoutX="20.0" layoutY="36.0"
-                               text="Agrega las fechas en las que el profesional NO estará disponible (opcional)"
-                               style="-fx-text-fill: #666666; -fx-font-size: 11px;"/>
-
-                        <!-- Fila de checkboxes -->
-                        <HBox layoutX="20.0" layoutY="66.0" spacing="15.0" alignment="CENTER_LEFT">
-                            <children>
-                                <CheckBox fx:id="chkMonday" text="Lunes" style="-fx-text-fill: #555577;" />
-                                <CheckBox fx:id="chkTuesday" text="Martes" style="-fx-text-fill: #555577;" />
-                                <CheckBox fx:id="chkWednesday" text="Miércoles" style="-fx-text-fill: #555577;" />
-                                <CheckBox fx:id="chkThursday" text="Jueves" style="-fx-text-fill: #555577;" />
-                                <CheckBox fx:id="chkFriday" text="Viernes" style="-fx-text-fill: #555577;" />
-                            </children>
-                        </HBox>
-                    </children>
-                </Pane>
-
-                <!-- Botones -->
-                <HBox layoutX="24.0" layoutY="496.0" spacing="12.0">
-                    <Button fx:id="btnCancel"
-                            prefHeight="34.0" prefWidth="150.0"
-                            text="Cancelar"
-                            onAction="#handleCancel"
-                            styleClass="btn--secondary">
+        <VBox AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" styleClass="page--gray">
+            
+            <!-- Header -->
+            <VBox alignment="CENTER" spacing="5.0" styleClass="header--patient-gradient" prefHeight="80.0" style="-fx-padding: 15 0 15 0;">
+                <children>
+                    <Label text="EDITAR HORARIO DEL PROFESIONAL" textFill="WHITE">
+                        <font><Font name="Cascadia Code Bold" size="17.0"/></font>
+                    </Label>
+                    <Label fx:id="lblProfName" textFill="#d0d0ff">
                         <font><Font name="Cascadia Code Regular" size="12.0"/></font>
-                    </Button>
-                    <Button fx:id="btnSave"
-                            prefHeight="34.0" prefWidth="150.0"
-                            text="Guardar cambios"
-                            onAction="#handleSave"
-                            styleClass="btn--primary">
-                        <font><Font name="Cascadia Code Regular" size="12.0"/></font>
-                    </Button>
-                </HBox>
+                    </Label>
+                </children>
+            </VBox>
 
-            </children>
-        </Pane>
+            <!-- Contenido -->
+            <VBox spacing="20.0" style="-fx-padding: 24 24 24 24;" VBox.vgrow="ALWAYS">
+                <children>
 
+                    <!-- Card horario -->
+                    <VBox spacing="15.0" styleClass="card--form">
+                        <children>
+                            <Label text="⏰  Horario de atención" style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #333355;" />
+
+                            <HBox spacing="20.0">
+                                <children>
+                                    <!-- Hora llegada -->
+                                    <VBox spacing="4.0" HBox.hgrow="ALWAYS" prefWidth="280.0">
+                                        <children>
+                                            <Label text="Hora llegada *" style="-fx-font-weight: bold; -fx-font-size: 11px; -fx-text-fill: #555577;" />
+                                            <TextField fx:id="txtArrivalTime" promptText="HH:mm" styleClass="textfield--styled" maxWidth="Infinity" />
+                                            <Label text="Formato 24h, ej: 08:00" style="-fx-text-fill: #999999; -fx-font-size: 11px;" />
+                                        </children>
+                                    </VBox>
+
+                                    <!-- Hora salida -->
+                                    <VBox spacing="4.0" HBox.hgrow="ALWAYS" prefWidth="280.0">
+                                        <children>
+                                            <Label text="Hora salida *" style="-fx-font-weight: bold; -fx-font-size: 11px; -fx-text-fill: #555577;" />
+                                            <TextField fx:id="txtDepartureTime" promptText="HH:mm" styleClass="textfield--styled" maxWidth="Infinity" />
+                                            <Label text="Formato 24h, ej: 17:00" style="-fx-text-fill: #999999; -fx-font-size: 11px;" />
+                                        </children>
+                                    </VBox>
+                                </children>
+                            </HBox>
+
+                            <HBox spacing="20.0">
+                                <children>
+                                    <!-- Intervalo -->
+                                    <VBox spacing="4.0" HBox.hgrow="ALWAYS" prefWidth="280.0">
+                                        <children>
+                                            <Label text="Intervalo (min) *" style="-fx-font-weight: bold; -fx-font-size: 11px; -fx-text-fill: #555577;" />
+                                            <TextField fx:id="txtInterval" promptText="Ej: 30" styleClass="textfield--styled" maxWidth="Infinity" />
+                                            <Label text="Tiempo en minutos entre citas" style="-fx-text-fill: #999999; -fx-font-size: 11px;" />
+                                        </children>
+                                    </VBox>
+
+                                    <!-- Error label -->
+                                    <VBox spacing="4.0" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" prefWidth="280.0">
+                                        <children>
+                                            <Label fx:id="lblErrorSchedule" text="" style="-fx-text-fill: #D94F4F; -fx-font-size: 11px; -fx-font-weight: bold;" visible="false" />
+                                        </children>
+                                    </VBox>
+                                </children>
+                            </HBox>
+                        </children>
+                    </VBox>
+
+                    <!-- Card días no laborables -->
+                    <VBox spacing="15.0" styleClass="card--form">
+                        <children>
+                            <VBox spacing="2.0">
+                                <children>
+                                    <Label text="📅  Días no laborables" style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #333355;" />
+                                    <Label text="Agrega las fechas en las que el profesional NO estará disponible (opcional)" style="-fx-text-fill: #666666; -fx-font-size: 11px;" />
+                                </children>
+                            </VBox>
+
+                            <!-- Fila de checkboxes -->
+                            <HBox spacing="15.0" alignment="CENTER_LEFT" style="-fx-padding: 5 0 0 0;">
+                                <children>
+                                    <CheckBox fx:id="chkMonday" text="Lunes" styleClass="checkbox--chip" />
+                                    <CheckBox fx:id="chkTuesday" text="Martes" styleClass="checkbox--chip" />
+                                    <CheckBox fx:id="chkWednesday" text="Miércoles" styleClass="checkbox--chip" />
+                                    <CheckBox fx:id="chkThursday" text="Jueves" styleClass="checkbox--chip" />
+                                    <CheckBox fx:id="chkFriday" text="Viernes" styleClass="checkbox--chip" />
+                                </children>
+                            </HBox>
+                        </children>
+                    </VBox>
+
+                    <Pane VBox.vgrow="ALWAYS" />
+
+                    <!-- Botones -->
+                    <HBox spacing="12.0" alignment="CENTER_LEFT">
+                        <children>
+                            <Button fx:id="btnCancel" prefHeight="38.0" prefWidth="150.0" text="Cancelar" onAction="#handleCancel" styleClass="btn--secondary">
+                                <font><Font name="Cascadia Code Regular" size="12.0"/></font>
+                            </Button>
+                            <Button fx:id="btnSave" prefHeight="38.0" prefWidth="160.0" text="Guardar cambios" onAction="#handleSave" styleClass="btn--primary">
+                                <font><Font name="Cascadia Code Regular" size="12.0"/></font>
+                            </Button>
+                        </children>
+                    </HBox>
+
+                </children>
+            </VBox>
+        </VBox>
     </children>
 </AnchorPane>

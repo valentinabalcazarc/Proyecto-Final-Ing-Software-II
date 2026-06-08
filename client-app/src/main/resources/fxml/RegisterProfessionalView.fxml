@@ -387,11 +387,11 @@
                         <HBox spacing="15.0" alignment="CENTER_LEFT"
                               style="-fx-padding: 10 10 10 10;">
                            <children>
-                              <CheckBox fx:id="chkMonday" text="Lunes" style="-fx-text-fill: #555577;" />
-                              <CheckBox fx:id="chkTuesday" text="Martes" style="-fx-text-fill: #555577;" />
-                              <CheckBox fx:id="chkWednesday" text="Miércoles" style="-fx-text-fill: #555577;" />
-                              <CheckBox fx:id="chkThursday" text="Jueves" style="-fx-text-fill: #555577;" />
-                              <CheckBox fx:id="chkFriday" text="Viernes" style="-fx-text-fill: #555577;" />
+                              <CheckBox fx:id="chkMonday" text="Lunes" styleClass="checkbox--chip" />
+                              <CheckBox fx:id="chkTuesday" text="Martes" styleClass="checkbox--chip" />
+                              <CheckBox fx:id="chkWednesday" text="Miércoles" styleClass="checkbox--chip" />
+                              <CheckBox fx:id="chkThursday" text="Jueves" styleClass="checkbox--chip" />
+                              <CheckBox fx:id="chkFriday" text="Viernes" styleClass="checkbox--chip" />
                            </children>
                         </HBox>
 

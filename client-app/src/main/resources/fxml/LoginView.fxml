@@ -19,22 +19,19 @@
    <children>
 
       <!-- ══ HEADER ══ -->
-      <AnchorPane prefHeight="120.0" prefWidth="593.0" styleClass="header--blue">
+      <VBox alignment="CENTER" prefHeight="140.0" prefWidth="593.0" spacing="5.0" styleClass="header--patient-gradient">
          <children>
-            <VBox alignment="CENTER"
-                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <Label text="PIEDRA AZUL" textFill="WHITE">
-                     <font><Font name="Cascadia Code Bold" size="34.0" /></font>
-                  </Label>
-                  <Label text="Servicios Médicos" textFill="WHITE">
-                     <font><Font name="Cascadia Code Bold" size="17.0" /></font>
-                  </Label>
-               </children>
-            </VBox>
+            <Label text="PIEDRA AZUL" textFill="WHITE">
+               <font><Font name="Cascadia Code Bold" size="38.0" /></font>
+            </Label>
+            <Label text="SERVICIOS MÉDICOS" textFill="#d0d0ff">
+               <font><Font name="Cascadia Code Bold" size="16.0" /></font>
+            </Label>
          </children>
-      </AnchorPane>
+         <padding>
+            <Insets top="20.0" bottom="20.0" />
+         </padding>
+      </VBox>
 
       <!-- ══ BODY ══ -->
       <AnchorPane VBox.vgrow="ALWAYS" prefWidth="593.0" styleClass="page--white">

@@ -1078,3 +1078,43 @@
     -fx-padding: 5 10 5 10;
     -fx-opacity: 1;
 }
+
+/* ---------- Form UX: Checkbox estilo Chip/Pill ---------- */
+
+.checkbox--chip {
+    -fx-background-color: #f8f8ff;
+    -fx-border-color: #c5c5ff;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-text-fill: #333366;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 6 16 6 16;
+    -fx-cursor: hand;
+    -fx-alignment: center;
+    -fx-graphic-text-gap: 0;
+}
+
+.checkbox--chip:hover {
+    -fx-border-color: #6666ff;
+    -fx-background-color: #f0f0ff;
+}
+
+.checkbox--chip:selected {
+    -fx-background-color: #6666ff;
+    -fx-border-color: #5947ff;
+    -fx-text-fill: white;
+}
+
+.checkbox--chip .box {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+.checkbox--chip .mark {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+    -fx-shape: null;
+}
