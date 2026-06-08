@@ -11,5 +11,4 @@ public interface UnavailableDayRefRepositoryPort {
     void deleteAllByProfessionalRef(ProfessionalRef professionalRef);
     boolean existsById(Long id);
     void deleteById(Long id);
-    List<UnavailableDayRef> findGlobalUnavailableDays();
 }

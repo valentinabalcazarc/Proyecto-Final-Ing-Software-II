@@ -24,7 +24,7 @@ public interface AppointmentServicePort {
     List<AppointmentDTO> generateAvailableSlots(Long codProf, LocalDate date);
     List<Appointment> findByDateApp(LocalDate dateApp);
     List<Appointment> findBySpecialityProf(SpecialityProfEnum specialityProf);
-    AppointmentDTO findFirstAvailableBySpeciality(SpecialityProfEnum speciality, LocalDate fromDate);
+    AppointmentDTO findFirstAvailableBySpeciality(SpecialityProfEnum speciality);
     List<AppointmentDTO> generateBySpeciality(SpecialityProfEnum speciality);
     List<AppointmentDTO> generateAvailableSlots(Long codProf, LocalDate date, SpecialityProfEnum speciality);
 }
