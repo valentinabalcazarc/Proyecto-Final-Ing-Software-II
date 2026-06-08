@@ -165,12 +165,20 @@ public class AppointmentService implements AppointmentServicePort {
                 .map(a -> a.getProfessionalRef().getCodProf() + "-" + a.getTimeApp().toString())
                 .collect(Collectors.toSet());
 
+        // FIX: cargar días festivos globales una sola vez
+        Set<LocalDate> globalUnavailableDates = unavailableDayRefRepository.findGlobalUnavailableDays()
+                .stream().map(UnavailableDayRef::getDate).collect(Collectors.toSet());
+
+        // Si la fecha solicitada es un festivo global, no hay slots disponibles
+        if (globalUnavailableDates.contains(date)) {
+            return availableSlots;
+        }
+
         for (ProfessionalRef prof : professionals) {
-            // FIX: usar horario real del profesional
             LocalTime startDay = prof.getArrivalTime() != null ? prof.getArrivalTime() : LocalTime.of(7, 0);
             LocalTime endDay = prof.getDepartureTime() != null ? prof.getDepartureTime() : LocalTime.of(18, 0);
 
-            // FIX: respetar días no laborables
+            // Días no laborables del profesional
             Set<LocalDate> unavailableDates = unavailableDayRefRepository.findByProfessionalRef(prof)
                     .stream().map(UnavailableDayRef::getDate).collect(Collectors.toSet());
             if (unavailableDates.contains(date))
@@ -205,10 +213,14 @@ public class AppointmentService implements AppointmentServicePort {
     }
 
     @Override
-    public AppointmentDTO findFirstAvailableBySpeciality(SpecialityProfEnum speciality) {
-        LocalDate dateSearch = LocalDate.now();
+    public AppointmentDTO findFirstAvailableBySpeciality(SpecialityProfEnum speciality, LocalDate fromDate) {
+        LocalDate dateSearch = (fromDate != null) ? fromDate : LocalDate.now();
         LocalDate limitDate = dateSearch.plusDays(60);
         LocalTime now = LocalTime.now();
+
+        // FIX: cargar días festivos globales una sola vez antes de iterar fechas
+        Set<LocalDate> globalUnavailableDates = unavailableDayRefRepository.findGlobalUnavailableDays()
+                .stream().map(UnavailableDayRef::getDate).collect(Collectors.toSet());
 
         while (dateSearch.isBefore(limitDate)) {
             // Saltar fines de semana
@@ -218,10 +230,14 @@ public class AppointmentService implements AppointmentServicePort {
                 continue;
             }
 
-            // Obtener profesionales de esa especialidad
+            // FIX: saltar días festivos globales
+            if (globalUnavailableDates.contains(dateSearch)) {
+                dateSearch = dateSearch.plusDays(1);
+                continue;
+            }
+
             List<ProfessionalRef> professionals = professionalRefRepository.findBySpecialityProf(speciality);
 
-            // Obtener citas ocupadas ese día (no canceladas)
             List<Appointment> occupied = appointmentRepository.findByDateAppAndStatusAppNot(dateSearch,
                     StatusAppointment.Cancelled);
 
@@ -234,18 +250,16 @@ public class AppointmentService implements AppointmentServicePort {
                 if (interval == null || interval <= 0)
                     interval = 30;
 
-                // FIX: usar horario real del profesional
                 LocalTime currentTime = prof.getArrivalTime() != null ? prof.getArrivalTime() : LocalTime.of(7, 0);
                 LocalTime endDay = prof.getDepartureTime() != null ? prof.getDepartureTime() : LocalTime.of(18, 0);
 
-                // FIX: respetar días no laborables
+                // Días no laborables del profesional
                 Set<LocalDate> unavailableDates = unavailableDayRefRepository.findByProfessionalRef(prof)
                         .stream().map(UnavailableDayRef::getDate).collect(Collectors.toSet());
                 if (unavailableDates.contains(dateSearch))
                     continue;
 
                 while (!currentTime.plusMinutes(interval).isAfter(endDay)) {
-                    // Si es hoy, evitar horas pasadas
                     if (dateSearch.equals(LocalDate.now()) && currentTime.isBefore(now)) {
                         currentTime = currentTime.plusMinutes(interval);
                         continue;
@@ -253,7 +267,6 @@ public class AppointmentService implements AppointmentServicePort {
 
                     String key = prof.getCodProf() + "-" + currentTime;
                     if (!busyKeys.contains(key)) {
-                        // Encontró el primer slot disponible
                         AppointmentDTO slot = new AppointmentDTO();
                         slot.setDateApp(dateSearch);
                         slot.setTimeApp(currentTime);
@@ -277,7 +290,14 @@ public class AppointmentService implements AppointmentServicePort {
         LocalDate date = LocalDate.now();
         LocalTime now = LocalTime.now();
 
-        // Filtrar profesionales por especialidad
+        // FIX: verificar si hoy es festivo global antes de generar slots
+        Set<LocalDate> globalUnavailableDates = unavailableDayRefRepository.findGlobalUnavailableDays()
+                .stream().map(UnavailableDayRef::getDate).collect(Collectors.toSet());
+
+        if (globalUnavailableDates.contains(date)) {
+            return availableSlots;
+        }
+
         List<ProfessionalRef> professionals = professionalRefRepository.findBySpecialityProf(speciality);
 
         List<Appointment> occupied = appointmentRepository
@@ -288,11 +308,10 @@ public class AppointmentService implements AppointmentServicePort {
                 .collect(Collectors.toSet());
 
         for (ProfessionalRef prof : professionals) {
-            // Usar horario real del profesional
             LocalTime profStart = prof.getArrivalTime() != null ? prof.getArrivalTime() : LocalTime.of(7, 0);
             LocalTime profEnd = prof.getDepartureTime() != null ? prof.getDepartureTime() : LocalTime.of(18, 0);
 
-            // Respetar días no laborables
+            // Días no laborables del profesional
             Set<LocalDate> unavailableDates = unavailableDayRefRepository.findByProfessionalRef(prof)
                     .stream().map(UnavailableDayRef::getDate).collect(Collectors.toSet());
             if (unavailableDates.contains(date))
@@ -332,7 +351,15 @@ public class AppointmentService implements AppointmentServicePort {
         LocalDate targetDate = (date != null) ? date : LocalDate.now();
         LocalTime now = LocalTime.now();
 
-        // Obtener profesionales según filtros
+        // FIX: cargar días festivos globales una sola vez
+        Set<LocalDate> globalUnavailableDates = unavailableDayRefRepository.findGlobalUnavailableDays()
+                .stream().map(UnavailableDayRef::getDate).collect(Collectors.toSet());
+
+        // Si la fecha solicitada es un festivo global, no hay slots disponibles
+        if (globalUnavailableDates.contains(targetDate)) {
+            return availableSlots;
+        }
+
         List<ProfessionalRef> professionals;
         if (codProf != null) {
             professionals = professionalRefRepository.findById(codProf)
@@ -351,11 +378,10 @@ public class AppointmentService implements AppointmentServicePort {
                 .collect(Collectors.toSet());
 
         for (ProfessionalRef prof : professionals) {
-            // FIX: usar horario real del profesional
             LocalTime profStart = prof.getArrivalTime() != null ? prof.getArrivalTime() : LocalTime.of(7, 0);
             LocalTime profEnd = prof.getDepartureTime() != null ? prof.getDepartureTime() : LocalTime.of(18, 0);
 
-            // FIX: respetar días no laborables
+            // Días no laborables del profesional
             Set<LocalDate> unavailableDates = unavailableDayRefRepository.findByProfessionalRef(prof)
                     .stream().map(UnavailableDayRef::getDate).collect(Collectors.toSet());
             if (unavailableDates.contains(targetDate))

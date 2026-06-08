@@ -50,4 +50,12 @@ public class UnavailableDayRefPersistenceAdapter implements UnavailableDayRefRep
     public void deleteById(Long id) {
         unavailableDayRefJpaRepository.deleteById(id);
     }
+
+    @Override
+    public List<UnavailableDayRef> findGlobalUnavailableDays() {
+        return unavailableDayRefJpaRepository.findGlobalUnavailableDays()
+                .stream()
+                .map(unavailableDayRefMapper::toDomain)
+                .collect(Collectors.toList());
+    }
 }

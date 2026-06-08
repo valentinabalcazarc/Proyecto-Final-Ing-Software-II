@@ -58,34 +58,20 @@ public class AppointmentController {
         return appointmentService.findById(id)
                 .map(ResponseEntity::ok)
                 .<ResponseEntity<?>>map(r -> r)
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("No se encontró la cita con id: " + id));
-    }
-
-    @GetMapping("/professional/{codProf}")
-    public ResponseEntity<?> findByCodProf(@PathVariable Long codProf) {
-        List<Appointment> appointments = appointmentService.findByCodProf(codProf);
-        if (appointments.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(appointments);
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/patient/{codPatient}")
     public ResponseEntity<?> findByCodPatient(@PathVariable Long codPatient) {
         List<Appointment> appointments = appointmentService.findByCodPatient(codPatient);
-        if (appointments.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
+        if (appointments.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(appointments);
     }
 
-    @GetMapping("/status/{status}")
-    public ResponseEntity<?> findByStatus(@PathVariable StatusAppointment status) {
-        List<Appointment> appointments = appointmentService.findByStatus(status);
-        if (appointments.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
+    @GetMapping("/professional/{codProf}")
+    public ResponseEntity<?> findByCodProf(@PathVariable Long codProf) {
+        List<Appointment> appointments = appointmentService.findByCodProf(codProf);
+        if (appointments.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(appointments);
     }
 
@@ -94,31 +80,31 @@ public class AppointmentController {
             @PathVariable Long codProf,
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         List<Appointment> appointments = appointmentService.findByCodProfAndDate(codProf, date);
-        if (appointments.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
+        if (appointments.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(appointments);
     }
 
     @GetMapping("/date/{date}")
-    public ResponseEntity<?> findByDate(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+    public ResponseEntity<?> findByDate(
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         List<Appointment> appointments = appointmentService.findByDateApp(date);
         if (appointments.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(appointments);
     }
 
-    @GetMapping("/professional/speciality/{specialityProf}")
-    public ResponseEntity<?> findBySpecialityProf(@PathVariable SpecialityProfEnum specialityProf) {
-        List<Appointment> appointments = appointmentService.findBySpecialityProf(specialityProf);
-        if (appointments.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
+    @GetMapping("/status/{status}")
+    public ResponseEntity<?> findByStatus(@PathVariable StatusAppointment status) {
+        List<Appointment> appointments = appointmentService.findByStatus(status);
+        if (appointments.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(appointments);
     }
 
+    // FIX: agregado parámetro opcional fromDate para buscar desde una fecha específica
     @GetMapping("/first-available/{speciality}")
-    public ResponseEntity<?> findFirstAvailable(@PathVariable SpecialityProfEnum speciality) {
-        AppointmentDTO slot = appointmentService.findFirstAvailableBySpeciality(speciality);
+    public ResponseEntity<?> findFirstAvailable(
+            @PathVariable SpecialityProfEnum speciality,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate) {
+        AppointmentDTO slot = appointmentService.findFirstAvailableBySpeciality(speciality, fromDate);
         if (slot == null) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(slot);
     }
@@ -130,112 +116,73 @@ public class AppointmentController {
         return ResponseEntity.ok(slots);
     }
 
-    @PostMapping("/export")
-    public ResponseEntity<?> exportAppointments(
-            @RequestParam String format,
-            @RequestBody List<Long> ids) {
-        try {
-            // Obtener solo las citas cuyos IDs fueron enviados por el cliente
-            List<Appointment> appointments = ids.stream()
-                    .map(id -> appointmentService.findById(id).orElse(null))
-                    .filter(app -> app != null)
+    @PostMapping
+    public ResponseEntity<?> create(@Valid @RequestBody CreateAppointmentDTO dto, BindingResult result) {
+        if (result.hasErrors()) {
+            List<String> errors = result.getFieldErrors().stream()
+                    .map(e -> e.getField() + ": " + e.getDefaultMessage())
                     .collect(Collectors.toList());
-
-            if (appointments.isEmpty()) {
-                return ResponseEntity.noContent().build();
-            }
-
-            byte[] fileContent = appointmentExportService.exportAppointments(appointments, format);
-            String contentType = appointmentExportService.getContentType(format);
-            String extension = appointmentExportService.getFileExtension(format);
-
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(contentType))
-                    .header(HttpHeaders.CONTENT_DISPOSITION,
-                            "attachment; filename=\"citas_export" + extension + "\"")
-                    .body(fileContent);
-
-        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(errors);
+        }
+        try {
+            Appointment created = appointmentService.create(dto);
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                    .path("/{id}").buildAndExpand(created.getCodApp()).toUri();
+            return ResponseEntity.created(location).body(created);
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody CreateAppointmentDTO dto, BindingResult result) {
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(
-                    result.getFieldErrors().stream()
-                            .map(error -> "El campo '" + error.getField() + "' " + error.getDefaultMessage())
-                            .toList()
-            );
-        }
-        try {
-            Appointment newApp = appointmentService.create(dto);
-            URI location = ServletUriComponentsBuilder
-                    .fromCurrentRequest()
-                    .path("/{id}")
-                    .buildAndExpand(newApp.getCodApp())
-                    .toUri();
-            return ResponseEntity.created(location).body(newApp);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
-    }
-
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id,
-                                    @Valid @RequestBody UpdateAppointmentDTO dto, BindingResult result) {
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(
-                    result.getFieldErrors().stream()
-                            .map(error -> "El campo '" + error.getField() + "' " + error.getDefaultMessage())
-                            .toList()
-            );
-        }
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UpdateAppointmentDTO dto) {
         try {
             Appointment updated = appointmentService.update(id, dto);
             return ResponseEntity.ok(updated);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 
     @PutMapping("/{id}/status")
-    public ResponseEntity<?> updateStatus(@PathVariable Long id, @RequestBody java.util.Map<String, String> body) {
+    public ResponseEntity<?> updateStatus(@PathVariable Long id, @RequestBody UpdateAppointmentDTO dto) {
         try {
-            String newStatusStr = body.get("statusApp");
-            if (newStatusStr == null) {
-                return ResponseEntity.badRequest().body("Falta el campo 'statusApp'");
-            }
-
-            StatusAppointment mappedStatus;
-            if ("ATENDIDA".equalsIgnoreCase(newStatusStr)) {
-                mappedStatus = StatusAppointment.Completed;
-            } else if ("CANCELADA".equalsIgnoreCase(newStatusStr)) {
-                mappedStatus = StatusAppointment.Cancelled;
-            } else if ("AGENDADA".equalsIgnoreCase(newStatusStr)) {
-                mappedStatus = StatusAppointment.Scheduled;
-            } else {
-                return ResponseEntity.badRequest().body("Estado no válido: " + newStatusStr);
-            }
-
-            UpdateAppointmentDTO updateDto = new UpdateAppointmentDTO();
-            updateDto.setStatusApp(mappedStatus);
-
-            Appointment updated = appointmentService.update(id, updateDto);
+            Appointment updated = appointmentService.update(id, dto);
             return ResponseEntity.ok(updated);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> cancel(@PathVariable Long id) {
         boolean cancelled = appointmentService.cancel(id);
-        if (!cancelled) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No se encontró la cita con id: " + id);
-        }
+        if (!cancelled) return ResponseEntity.notFound().build();
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/export")
+    public ResponseEntity<?> exportAppointments(
+            @RequestParam String format,
+            @RequestBody List<Long> ids) {
+        try {
+            List<Appointment> appointments = ids.stream()
+                    .map(id -> appointmentService.findById(id).orElse(null))
+                    .filter(app -> app != null)
+                    .collect(Collectors.toList());
+
+            byte[] fileBytes = appointmentExportService.exportAppointments(appointments, format);
+            String contentType = appointmentExportService.getContentType(format);
+            String filename = "citas" + appointmentExportService.getFileExtension(format);
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .body(fileBytes);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al exportar: " + e.getMessage());
+        }
     }
 }

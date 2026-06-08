@@ -18,7 +18,7 @@ public class UnavailableDayRefEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "CODPROF", nullable = false)
+    @JoinColumn(name = "CODPROF", nullable = true)
     private ProfessionalRefEntity professionalRef;
 
     @Column(name = "DATE", nullable = false)

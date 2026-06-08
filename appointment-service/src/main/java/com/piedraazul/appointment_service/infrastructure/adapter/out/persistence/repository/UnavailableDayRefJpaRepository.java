@@ -16,4 +16,7 @@ public interface UnavailableDayRefJpaRepository extends JpaRepository<Unavailabl
     List<UnavailableDayRefEntity> findByProfessionalRefId(@Param("codProf") Long codProf);
 
     void deleteAllByProfessionalRef(ProfessionalRefEntity professionalRef);
+
+    @Query("SELECT u FROM UnavailableDayRefEntity u WHERE u.professionalRef IS NULL")
+    List<UnavailableDayRefEntity> findGlobalUnavailableDays();
 }
