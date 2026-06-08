@@ -6,7 +6,6 @@ import com.piedraazul.people_service.enums.SpecialityProfEnum;
 import com.piedraazul.people_service.enums.StatusProfEnum;
 import com.piedraazul.people_service.messaging.PeopleEventPublisher;
 import com.piedraazul.people_service.model.Professional;
-import com.piedraazul.people_service.model.UnavailableDay;
 import com.piedraazul.people_service.model.UserRef;
 import com.piedraazul.people_service.repository.ProfessionalRepository;
 import com.piedraazul.people_service.repository.UserRefRepository;
@@ -14,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +48,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         prof.setArrivalTime(dto.getArrivalTime());
         prof.setDepartureTime(dto.getDepartureTime());
         prof.setAttentionInterval(dto.getAttentionInterval());
+        prof.setUnavailableDays(dto.getUnavailableDays());
         prof.setStatusProf(StatusProfEnum.Active);
         Professional saved = professionalRepository.save(prof);
         peopleEventPublisher.publishProfessionalRegistered(saved);
@@ -108,6 +107,10 @@ public class ProfessionalServiceImpl implements ProfessionalService {
             prof.setAttentionInterval(dto.getAttentionInterval());
         }
 
+        if (dto.getUnavailableDays() != null) {
+            prof.setUnavailableDays(dto.getUnavailableDays());
+        }
+
         Professional updated = professionalRepository.save(prof);
         peopleEventPublisher.publishProfessionalUpdated(updated);
 
@@ -120,13 +123,6 @@ public class ProfessionalServiceImpl implements ProfessionalService {
                 .orElseThrow(() -> new RuntimeException("Profesional no encontrado"));
         prof.setStatusProf(StatusProfEnum.Inactive);
         professionalRepository.save(prof);
-    }
-
-    @Override
-    public List<UnavailableDay> findUnavailableDaysByUserRef(Long codUser) {
-        UserRef userRef = userRefRepository.findById(codUser)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + codUser));
-        return professionalRepository.findUnavailableDaysByUserRef(userRef);
     }
 
     @Override

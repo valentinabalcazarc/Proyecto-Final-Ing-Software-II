@@ -9,11 +9,9 @@ import com.piedraazul.appointment_service.enums.TypeProfEnum;
 import com.piedraazul.appointment_service.domain.model.Appointment;
 import com.piedraazul.appointment_service.domain.model.PatientRef;
 import com.piedraazul.appointment_service.domain.model.ProfessionalRef;
-import com.piedraazul.appointment_service.domain.model.UnavailableDayRef;
 import com.piedraazul.appointment_service.domain.port.out.AppointmentRepositoryPort;
 import com.piedraazul.appointment_service.domain.port.out.PatientRefRepositoryPort;
 import com.piedraazul.appointment_service.domain.port.out.ProfessionalRefRepositoryPort;
-import com.piedraazul.appointment_service.domain.port.out.UnavailableDayRefRepositoryPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,7 +36,6 @@ class AppointmentServiceTest {
     @Mock private AppointmentRepositoryPort appointmentRepository;
     @Mock private ProfessionalRefRepositoryPort professionalRefRepository;
     @Mock private PatientRefRepositoryPort patientRefRepository;
-    @Mock private UnavailableDayRefRepositoryPort unavailableDayRefRepository;
 
     @InjectMocks private AppointmentService appointmentService;
 
@@ -57,6 +54,7 @@ class AppointmentServiceTest {
                 .arrivalTime(LocalTime.of(8, 0))
                 .departureTime(LocalTime.of(10, 0))
                 .attentionInterval(60)
+                .unavailableDays("")
                 .build();
 
         patientMock = PatientRef.builder()
@@ -317,7 +315,6 @@ class AppointmentServiceTest {
         when(professionalRefRepository.findById(1L)).thenReturn(Optional.of(profMock));
         when(appointmentRepository.findByDateAppAndStatusAppNot(futureDate, StatusAppointment.Cancelled))
                 .thenReturn(List.of());
-        when(unavailableDayRefRepository.findByProfessionalRef(profMock)).thenReturn(List.of());
 
         List<AppointmentDTO> slots = appointmentService.generateAvailableSlots(1L, futureDate);
 
@@ -331,18 +328,11 @@ class AppointmentServiceTest {
     @DisplayName("generateAvailableSlots: excluye día no laborable del profesional")
     void generateAvailableSlots_diaNoLaborable() {
         LocalDate unavailableDate = LocalDate.now().plusDays(3);
-
-        UnavailableDayRef unavDay = UnavailableDayRef.builder()
-                .id(1L)
-                .professionalRef(profMock)
-                .date(unavailableDate)
-                .build();
+        profMock.setUnavailableDays(unavailableDate.getDayOfWeek().name());
 
         when(professionalRefRepository.findById(1L)).thenReturn(Optional.of(profMock));
         when(appointmentRepository.findByDateAppAndStatusAppNot(unavailableDate, StatusAppointment.Cancelled))
                 .thenReturn(List.of());
-        when(unavailableDayRefRepository.findByProfessionalRef(profMock))
-                .thenReturn(List.of(unavDay));
 
         List<AppointmentDTO> slots = appointmentService.generateAvailableSlots(1L, unavailableDate);
 
@@ -360,7 +350,6 @@ class AppointmentServiceTest {
         when(professionalRefRepository.findById(1L)).thenReturn(Optional.of(profMock));
         when(appointmentRepository.findByDateAppAndStatusAppNot(futureDate, StatusAppointment.Cancelled))
                 .thenReturn(List.of(occupied));
-        when(unavailableDayRefRepository.findByProfessionalRef(profMock)).thenReturn(List.of());
 
         List<AppointmentDTO> slots = appointmentService.generateAvailableSlots(1L, futureDate);
 
@@ -412,7 +401,6 @@ class AppointmentServiceTest {
                 .thenReturn(List.of(profPasado));
         when(appointmentRepository.findByDateAppAndStatusAppNot(any(), eq(StatusAppointment.Cancelled)))
                 .thenReturn(List.of());
-        when(unavailableDayRefRepository.findByProfessionalRef(profPasado)).thenReturn(List.of());
 
         List<AppointmentDTO> slots = appointmentService.generateBySpeciality(SpecialityProfEnum.Physiotherapy);
 

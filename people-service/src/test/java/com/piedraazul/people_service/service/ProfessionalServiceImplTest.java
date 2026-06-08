@@ -7,7 +7,6 @@ import com.piedraazul.people_service.enums.StatusProfEnum;
 import com.piedraazul.people_service.enums.TypeProfEnum;
 import com.piedraazul.people_service.messaging.PeopleEventPublisher;
 import com.piedraazul.people_service.model.Professional;
-import com.piedraazul.people_service.model.UnavailableDay;
 import com.piedraazul.people_service.model.UserRef;
 import com.piedraazul.people_service.repository.ProfessionalRepository;
 import com.piedraazul.people_service.repository.UserRefRepository;
@@ -247,35 +246,7 @@ class ProfessionalServiceImplTest {
                 .hasMessage("Profesional no encontrado");
     }
 
-    // ── findUnavailableDaysByUserRef ──────────────────────────────────────
 
-    @Test
-    @DisplayName("findUnavailableDaysByUserRef: retorna días no laborables del profesional")
-    void findUnavailableDaysByUserRef_conResultados() {
-        UnavailableDay day = new UnavailableDay();
-        day.setId(1L);
-        day.setDate(LocalDate.of(2026, 6, 10));
-        day.setProfessional(professionalMock);
-
-        when(userRefRepository.findById(10L)).thenReturn(Optional.of(userRefMock));
-        when(professionalRepository.findUnavailableDaysByUserRef(userRefMock))
-                .thenReturn(List.of(day));
-
-        List<UnavailableDay> result = professionalService.findUnavailableDaysByUserRef(10L);
-
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).getDate()).isEqualTo(LocalDate.of(2026, 6, 10));
-    }
-
-    @Test
-    @DisplayName("findUnavailableDaysByUserRef falla: usuario no encontrado")
-    void findUnavailableDaysByUserRef_usuarioNoExiste() {
-        when(userRefRepository.findById(99L)).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> professionalService.findUnavailableDaysByUserRef(99L))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("Usuario no encontrado");
-    }
 
     // ── helper ────────────────────────────────────────────────────────────
 

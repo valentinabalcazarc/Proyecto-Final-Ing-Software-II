@@ -8,12 +8,10 @@ import com.piedraazul.appointment_service.enums.StatusAppointment;
 import com.piedraazul.appointment_service.domain.model.Appointment;
 import com.piedraazul.appointment_service.domain.model.PatientRef;
 import com.piedraazul.appointment_service.domain.model.ProfessionalRef;
-import com.piedraazul.appointment_service.domain.model.UnavailableDayRef;
 import com.piedraazul.appointment_service.domain.port.in.AppointmentServicePort;
 import com.piedraazul.appointment_service.domain.port.out.AppointmentRepositoryPort;
 import com.piedraazul.appointment_service.domain.port.out.PatientRefRepositoryPort;
 import com.piedraazul.appointment_service.domain.port.out.ProfessionalRefRepositoryPort;
-import com.piedraazul.appointment_service.domain.port.out.UnavailableDayRefRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +31,6 @@ public class AppointmentService implements AppointmentServicePort {
     private final AppointmentRepositoryPort appointmentRepository;
     private final ProfessionalRefRepositoryPort professionalRefRepository;
     private final PatientRefRepositoryPort patientRefRepository;
-    private final UnavailableDayRefRepositoryPort unavailableDayRefRepository;
 
     @Override
     public Appointment create(CreateAppointmentDTO dto) {
@@ -170,11 +167,10 @@ public class AppointmentService implements AppointmentServicePort {
             LocalTime startDay = prof.getArrivalTime() != null ? prof.getArrivalTime() : LocalTime.of(7, 0);
             LocalTime endDay = prof.getDepartureTime() != null ? prof.getDepartureTime() : LocalTime.of(18, 0);
 
-            // FIX: respetar días no laborables
-            Set<LocalDate> unavailableDates = unavailableDayRefRepository.findByProfessionalRef(prof)
-                    .stream().map(UnavailableDayRef::getDate).collect(Collectors.toSet());
-            if (unavailableDates.contains(date))
+            // FIX: respetar días no laborables de la semana
+            if (prof.getUnavailableDaysList().contains(date.getDayOfWeek())) {
                 continue;
+            }
 
             Integer interval = prof.getAttentionInterval();
             if (interval == null || interval <= 0)
@@ -239,10 +235,9 @@ public class AppointmentService implements AppointmentServicePort {
                 LocalTime endDay = prof.getDepartureTime() != null ? prof.getDepartureTime() : LocalTime.of(18, 0);
 
                 // FIX: respetar días no laborables
-                Set<LocalDate> unavailableDates = unavailableDayRefRepository.findByProfessionalRef(prof)
-                        .stream().map(UnavailableDayRef::getDate).collect(Collectors.toSet());
-                if (unavailableDates.contains(dateSearch))
+                if (prof.getUnavailableDaysList().contains(dateSearch.getDayOfWeek())) {
                     continue;
+                }
 
                 while (!currentTime.plusMinutes(interval).isAfter(endDay)) {
                     // Si es hoy, evitar horas pasadas
@@ -293,10 +288,9 @@ public class AppointmentService implements AppointmentServicePort {
             LocalTime profEnd = prof.getDepartureTime() != null ? prof.getDepartureTime() : LocalTime.of(18, 0);
 
             // Respetar días no laborables
-            Set<LocalDate> unavailableDates = unavailableDayRefRepository.findByProfessionalRef(prof)
-                    .stream().map(UnavailableDayRef::getDate).collect(Collectors.toSet());
-            if (unavailableDates.contains(date))
+            if (prof.getUnavailableDaysList().contains(date.getDayOfWeek())) {
                 continue;
+            }
 
             Integer interval = prof.getAttentionInterval();
             if (interval == null || interval <= 0)
@@ -356,10 +350,9 @@ public class AppointmentService implements AppointmentServicePort {
             LocalTime profEnd = prof.getDepartureTime() != null ? prof.getDepartureTime() : LocalTime.of(18, 0);
 
             // FIX: respetar días no laborables
-            Set<LocalDate> unavailableDates = unavailableDayRefRepository.findByProfessionalRef(prof)
-                    .stream().map(UnavailableDayRef::getDate).collect(Collectors.toSet());
-            if (unavailableDates.contains(targetDate))
+            if (prof.getUnavailableDaysList().contains(targetDate.getDayOfWeek())) {
                 continue;
+            }
 
             Integer interval = prof.getAttentionInterval();
             if (interval == null || interval <= 0)

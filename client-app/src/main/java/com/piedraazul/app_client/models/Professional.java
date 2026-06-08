@@ -18,6 +18,7 @@ public class Professional extends User {
     private Integer attentionInterval;
     private LocalTime arrivalTime;
     private LocalTime departureTime;
+    private String unavailableDays;
 
     public String getFullName() {
         return getNameUser() + " " + getLastNameUser();

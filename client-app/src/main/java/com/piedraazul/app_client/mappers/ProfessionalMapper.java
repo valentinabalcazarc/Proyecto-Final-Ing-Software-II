@@ -15,6 +15,7 @@ public class ProfessionalMapper {
         dto.setTypeProf(model.getTypeProf());
         dto.setSpecialityProf(model.getSpecialityProf());
         dto.setAttentionInterval(model.getAttentionInterval());
+        dto.setUnavailableDays(model.getUnavailableDays());
         return dto;
     }
 
@@ -38,6 +39,7 @@ public class ProfessionalMapper {
         model.setStatusProf(responseDto.getStatusProf());
         model.setArrivalTime(responseDto.getArrivalTime());  
         model.setDepartureTime(responseDto.getDepartureTime());
+        model.setUnavailableDays(responseDto.getUnavailableDays());
 
         return model;
     }

@@ -20,6 +20,7 @@ public class ProfessionalResponseDTO {
     private StatusUserEnum statusProf;
     private LocalTime arrivalTime;
     private LocalTime departureTime;
+    private String unavailableDays;
 
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)

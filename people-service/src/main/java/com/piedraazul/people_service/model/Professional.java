@@ -1,6 +1,5 @@
 package com.piedraazul.people_service.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.piedraazul.people_service.enums.SpecialityProfEnum;
 import com.piedraazul.people_service.enums.StatusProfEnum;
 import com.piedraazul.people_service.enums.TypeProfEnum;
@@ -9,9 +8,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Duration;
+import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "PROFESSIONAL")
@@ -56,7 +58,21 @@ public class Professional {
     @Column(name = "ATTENTIONINTERVAL", nullable = false)
     private Integer attentionInterval;
 
-    @OneToMany(mappedBy = "professional", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<UnavailableDay> unavailableDays;
+    @Column(name = "UNAVAILABLE_DAYS")
+    private String unavailableDays;
+
+    /**
+     * Convierte el String de días no laborables a una lista de DayOfWeek.
+     * Ej: "MONDAY,WEDNESDAY" → [MONDAY, WEDNESDAY]
+     */
+    public List<DayOfWeek> getUnavailableDaysList() {
+        if (unavailableDays == null || unavailableDays.isBlank()) {
+            return Collections.emptyList();
+        }
+        return Arrays.stream(unavailableDays.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .map(DayOfWeek::valueOf)
+                .collect(Collectors.toList());
+    }
 }

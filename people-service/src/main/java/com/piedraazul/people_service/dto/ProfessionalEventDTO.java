@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -19,4 +18,5 @@ public class ProfessionalEventDTO {
     private LocalTime arrivalTime;
     private LocalTime departureTime;
     private Integer attentionInterval;
+    private String unavailableDays;
 }
