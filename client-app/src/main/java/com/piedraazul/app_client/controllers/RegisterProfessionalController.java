@@ -350,6 +350,7 @@ public class RegisterProfessionalController {
 
             showAlert(Alert.AlertType.INFORMATION, "Éxito", "Profesional registrado correctamente.");
             limpiarFormulario();
+            NavigationService.getInstance().navigateTo("/fxml/AdminView.fxml", "Piedra Azul - Login", btnSave);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -359,7 +360,7 @@ public class RegisterProfessionalController {
 
     @FXML
     public void handleCancel() {
-        NavigationService.getInstance().navigateTo("/fxml/LoginView.fxml", "Piedra Azul - Login", btnCancel);
+        NavigationService.getInstance().navigateTo("/fxml/AdminView.fxml", "Piedra Azul - Login", btnCancel);
     }
 
     @FXML
